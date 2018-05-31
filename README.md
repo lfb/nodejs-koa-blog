@@ -14,7 +14,10 @@
 
 
 ##### git clone
-- git clone https://github.com/liangfengbo/nodejs-koa2-mysql-sequelize-jwt.git
+
+```
+git clone https://github.com/liangfengbo/nodejs-koa2-mysql-sequelize-jwt.git
+```
 
 ##### 安装包
 
