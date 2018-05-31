@@ -13,7 +13,7 @@
 #### 学习使用
 
 ##### git clone
-- git clone https://github.com/liangfengbo/nodejs-koa2-mysql.git
+- git clone https://github.com/liangfengbo/nodejs-koa2-mysql-sequelize-jwt.git
 
 ##### 安装包
 
