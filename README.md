@@ -12,6 +12,7 @@
 
 #### 学习使用
 
+
 ##### git clone
 - git clone https://github.com/liangfengbo/nodejs-koa2-mysql-sequelize-jwt.git
 
@@ -20,6 +21,14 @@
 ```
 npm install
 ```
+
+#### 需要在config文件下db.js配置本地数据库
+```
+const sequelize = new Sequelize('数据库', '数据库用户名', '数据库密码', {})
+
+别忘了创建数据库
+```
+
 
 #### 开启服务
 
