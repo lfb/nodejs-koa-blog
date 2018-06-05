@@ -161,7 +161,7 @@ class UserController {
 
         if (userList) {
             const data = await userModel.findAllUserList();
-            let index = data.rows.findIndex(item => item.username === 'bopeter@code.com');
+            let index = data.rows.findIndex(item => item.username === 'adin@admin.com');
             data.rows.splice(index, 1);
 
             for (let i = 0; i < data.rows.length; i++) {
