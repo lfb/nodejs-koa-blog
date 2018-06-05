@@ -18,6 +18,29 @@ class UserModel {
     }
 
     /**
+     * 查询用户列表
+     * @returns {Promise<*>}
+     */
+    static async findAllUserList() {
+        return await User.findAndCountAll()
+    }
+
+    /**
+     * 删除用户
+     * @param id listID
+     * @returns {Promise.<boolean>}
+     */
+    static async deleteUser(id) {
+        await User.destroy({
+            where: {
+                id,
+            }
+        })
+        return true
+    }
+
+
+    /**
      * 创建用户
      * @param user
      * @returns {Promise<boolean>}

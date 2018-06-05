@@ -2,7 +2,7 @@ const ArticleModel = require('../modules/article')
 
 class articleController {
     /**
-     * 创建导航条列表
+     * 创建文章列表
      * @param ctx
      * @returns {Promise.<void>}
      */
@@ -10,26 +10,6 @@ class articleController {
         let articleData = ctx.request.body;
 
         if (articleData) {
-            let title = ctx.query.title,
-                author = ctx.query.author,
-                content = ctx.query.content,
-                cover = ctx.query.cover,
-                star = ctx.query.star,
-                is_top = ctx.query.is_top,
-                browse = ctx.query.browse,
-                category = ctx.query.category;
-
-            articleData = {
-                title,
-                author,
-                content,
-                cover,
-                star,
-                is_top,
-                browse,
-                category
-            }
-
             let ret = await ArticleModel.createArticle(articleData);
             let data = await ArticleModel.getArticleDetail(ret.id);
 
@@ -80,12 +60,11 @@ class articleController {
         let id = ctx.params.id;
 
         if (id) {
-            const data = await ArticleModel.getArticleDetail(id)
+            let data = await ArticleModel.getArticleDetail(id);
+
             ctx.body = {
                 code: 200,
-                data: {
-                    data
-                },
+                data,
                 message: '查询成功'
             }
         } else {
@@ -125,31 +104,12 @@ class articleController {
      */
     static async updateArticle(ctx) {
         let articleData = ctx.request.body
-        if (articleData) {
-            let id = ctx.params.id,
-                title = ctx.query.title,
-                author = ctx.query.author,
-                content = ctx.query.content,
-                cover = ctx.query.cover,
-                star = ctx.query.star,
-                is_top = ctx.query.is_top,
-                browse = ctx.query.browse,
-                category = ctx.query.category;
 
-            articleData = {
-                id,
-                title,
-                author,
-                content,
-                cover,
-                star,
-                is_top,
-                browse,
-                category
-            }
+        if (articleData) {
 
             await ArticleModel.updateArticle(articleData.id, articleData);
             let data = await ArticleModel.getArticleDetail(articleData.id);
+
             ctx.body = {
                 code: 200,
                 data: data,

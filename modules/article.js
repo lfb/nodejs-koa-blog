@@ -15,9 +15,11 @@ class ArticleModel {
             content = data.content,
             cover = data.cover,
             star = data.star,
-            is_top = data.is_top,
+            recommend = data.recommend,
             browse = data.browse,
-            category = data.category;
+            category = data.category,
+            category_color = data.category_color,
+            category_bg_color = data.category_bg_color;
 
         return await Article.create({
             title,
@@ -25,9 +27,11 @@ class ArticleModel {
             content,
             cover,
             star,
-            is_top,
+            recommend,
             browse,
             category,
+            category_color,
+            category_bg_color
         })
     }
 
@@ -79,9 +83,11 @@ class ArticleModel {
             content = ret.content,
             cover = ret.cover,
             star = ret.star,
-            is_top = ret.is_top,
+            recommend = ret.recommend,
             browse = ret.browse,
-            category = ret.category;
+            category = ret.category,
+            category_color = ret.category_color,
+            category_bg_color = ret.category_bg_color;
 
         await Article.update({
             title,
@@ -89,14 +95,16 @@ class ArticleModel {
             content,
             cover,
             star,
-            is_top,
+            recommend,
             browse,
             category,
+            category_color,
+            category_bg_color
         }, {
             where: {
                 id
             },
-            fields: ['title', 'author', 'star', 'cover', 'is_top', 'content', 'browse', 'category']
+            fields: ['title', 'author', 'star', 'cover', 'recommend', 'content', 'browse', 'category', 'category_color', 'category_bg_color']
         })
         return true
     }

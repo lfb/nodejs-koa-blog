@@ -9,11 +9,12 @@ const logger = require('koa-logger')
 const cors = require('koa-cors');
 const index = require('./routes/index')
 const secret = require('./config/secret')
-
+const err = require('./middlreware/error')
 
 // error handler
 onerror(app)
 
+app.use(err())
 app.use(cors());
 
 app.use(jwt({secret: secret.sign}).unless({path: [/^\/api\/v1\/login/, /^\/api\/v1\/createUser/]}))

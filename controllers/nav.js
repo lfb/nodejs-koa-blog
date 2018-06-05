@@ -1,6 +1,4 @@
 const NavModel = require('../modules/nav')
-const jwt = require('jsonwebtoken')
-const secret = require('../config/secret')
 
 class navController {
     /**
@@ -12,24 +10,13 @@ class navController {
         let navList = ctx.request.body
 
         if (navList) {
-            let title_cn = ctx.query.title_cn,
-                title_en = ctx.query.title_en,
-                path = ctx.query.path;
-
-            navList = {
-                title_cn,
-                title_en,
-                path
-            }
 
             let ret = await NavModel.createNav(navList);
             let data = await NavModel.getNavDetail(ret.id);
 
-            const token = jwt.sign(navList, secret.sign, {expiresIn: '1h'})  // 签发token
-
             ctx.body = {
                 code: 200,
-                data: token,
+                data: data,
                 message: '创建成功'
             }
         } else {
@@ -122,17 +109,6 @@ class navController {
         let navList = ctx.request.body
 
         if (navList) {
-            let id = ctx.params.id,
-                title_cn = ctx.query.title_cn,
-                title_en = ctx.query.title_en,
-                path = ctx.query.path;
-
-            navList = {
-                id,
-                title_cn,
-                title_en,
-                path
-            }
 
             await NavModel.updateNav(navList.id, navList);
             let data = await NavModel.getNavDetail(navList.id);

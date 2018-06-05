@@ -1,3 +1,4 @@
+const moment = require('moment');
 module.exports = function (sequelize, DataTypes) {
     return sequelize.define('article', {
         // 文章ID
@@ -39,11 +40,11 @@ module.exports = function (sequelize, DataTypes) {
             field: 'star'
         },
         // 文章是否置顶
-        is_top: {
+        recommend: {
             type: DataTypes.BOOLEAN,
             allowNull: false,
             defaultValue: false,
-            field: 'is_top'
+            field: 'recommend'
         },
         // 文章浏览次数
         browse: {
@@ -57,6 +58,30 @@ module.exports = function (sequelize, DataTypes) {
             type: DataTypes.STRING,
             allowNull: false,
             field: 'category'
+        },
+        // 分类颜色
+        category_color: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            field: 'category_color'
+        },
+        // 分类背景颜色
+        category_bg_color: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            field: 'category_bg_color'
+        },
+        createdAt: {
+            type: DataTypes.DATE,
+            get() {
+                return moment(this.getDataValue('createdAt')).format('YYYY-MM-DD HH:mm:ss');
+            }
+        },
+        updatedAt: {
+            type: DataTypes.DATE,
+            get() {
+                return moment(this.getDataValue('updatedAt')).format('YYYY-MM-DD HH:mm:ss');
+            }
         }
     }, {
         // 如果为 true 则表的名称和 model 相同，即 user
