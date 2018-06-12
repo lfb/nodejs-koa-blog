@@ -10,36 +10,40 @@ class ArticleModel {
      * @returns {Promise<*>}
      */
     static async createArticle(data) {
-        let title = data.title,
-            author = data.author,
-            content = data.content,
-            cover = data.cover,
-            star = data.star,
-            recommend = data.recommend,
-            browse = data.browse,
-            category = data.category,
-            category_color = data.category_color,
-            category_bg_color = data.category_bg_color;
-
         return await Article.create({
-            title,
-            author,
-            content,
-            cover,
-            star,
-            recommend,
-            browse,
-            category,
-            category_color,
-            category_bg_color
+            title: data.title,
+            author: data.author,
+            content: data.content,
+            category: data.category
         })
+    }
+
+    /**
+     * 更新文章数据
+     * @param id  用户ID
+     * @param status  事项的状态
+     * @returns {Promise.<boolean>}
+     */
+    static async updateArticle(id, data) {
+        await Article.update({
+            title: data.title,
+            author: data.author,
+            content: data.content,
+            category: data.category
+        }, {
+            where: {
+                id
+            },
+            fields: ['title', 'author', 'content', 'category']
+        })
+        return true
     }
 
     /**
      * 获取文章列表
      * @returns {Promise<*>}
      */
-    static async getArticlelist() {
+    static async getArticleList() {
         return await Article.findAndCountAll()
     }
 
@@ -56,7 +60,6 @@ class ArticleModel {
         })
     }
 
-
     /**
      * 删除文章
      * @param id listID
@@ -71,43 +74,6 @@ class ArticleModel {
         return true
     }
 
-    /**
-     * 更新文章数据
-     * @param id  用户ID
-     * @param status  事项的状态
-     * @returns {Promise.<boolean>}
-     */
-    static async updateArticle(id, ret) {
-        let title = ret.title,
-            author = ret.author,
-            content = ret.content,
-            cover = ret.cover,
-            star = ret.star,
-            recommend = ret.recommend,
-            browse = ret.browse,
-            category = ret.category,
-            category_color = ret.category_color,
-            category_bg_color = ret.category_bg_color;
-
-        await Article.update({
-            title,
-            author,
-            content,
-            cover,
-            star,
-            recommend,
-            browse,
-            category,
-            category_color,
-            category_bg_color
-        }, {
-            where: {
-                id
-            },
-            fields: ['title', 'author', 'star', 'cover', 'recommend', 'content', 'browse', 'category', 'category_color', 'category_bg_color']
-        })
-        return true
-    }
 }
 
 module.exports = ArticleModel

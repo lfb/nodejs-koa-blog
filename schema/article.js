@@ -26,50 +26,11 @@ module.exports = function (sequelize, DataTypes) {
             allowNull: false,
             field: 'content'
         },
-        // 文章封面
-        cover: {
-            type: DataTypes.STRING,
-            allowNull: false,
-            field: 'cover'
-        },
-        // 文章点赞
-        star: {
-            type: DataTypes.STRING,
-            allowNull: false,
-            defaultValue: 0,
-            field: 'star'
-        },
-        // 文章是否置顶
-        recommend: {
-            type: DataTypes.BOOLEAN,
-            allowNull: false,
-            defaultValue: false,
-            field: 'recommend'
-        },
-        // 文章浏览次数
-        browse: {
-            type: DataTypes.STRING,
-            allowNull: false,
-            defaultValue: 0,
-            field: 'browse'
-        },
         // 文章分类
         category: {
             type: DataTypes.STRING,
             allowNull: false,
             field: 'category'
-        },
-        // 分类颜色
-        category_color: {
-            type: DataTypes.STRING,
-            allowNull: false,
-            field: 'category_color'
-        },
-        // 分类背景颜色
-        category_bg_color: {
-            type: DataTypes.STRING,
-            allowNull: false,
-            field: 'category_bg_color'
         },
         createdAt: {
             type: DataTypes.DATE,

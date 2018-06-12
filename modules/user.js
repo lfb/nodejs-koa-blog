@@ -5,16 +5,32 @@ User.sync({force: false});
 
 class UserModel {
     /**
-     * 查询用户信息
-     * @param username  姓名
-     * @returns {Promise.<*>}
+     * 创建用户
+     * @param user
+     * @returns {Promise<boolean>}
      */
-    static async findUserByName(username) {
-        return await User.findOne({
+    static async create(user) {
+        let {username, password} = user;
+
+        await User.create({
+            username,
+            password
+        })
+        return true
+    }
+
+    /**
+     * 删除用户
+     * @param id listID
+     * @returns {Promise.<boolean>}
+     */
+    static async delete(id) {
+        await User.destroy({
             where: {
-                username
+                id,
             }
         })
+        return true
     }
 
     /**
@@ -26,34 +42,16 @@ class UserModel {
     }
 
     /**
-     * 删除用户
-     * @param id listID
-     * @returns {Promise.<boolean>}
+     * 查询用户信息
+     * @param username  姓名
+     * @returns {Promise.<*>}
      */
-    static async deleteUser(id) {
-        await User.destroy({
+    static async findUserByName(username) {
+        return await User.findOne({
             where: {
-                id,
+                username
             }
         })
-        return true
-    }
-
-
-    /**
-     * 创建用户
-     * @param user
-     * @returns {Promise<boolean>}
-     */
-    static async createUser(user) {
-        let username = user.username,
-            password = user.password;
-
-        await User.create({
-            username,
-            password
-        })
-        return true
     }
 }
 

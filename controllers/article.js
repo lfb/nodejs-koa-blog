@@ -1,28 +1,22 @@
 const ArticleModel = require('../modules/article')
+const statusCode = require('../util/status-code')
 
 class articleController {
     /**
-     * 创建文章列表
+     * 创建文章
      * @param ctx
      * @returns {Promise.<void>}
      */
-    static async createArticle(ctx) {
-        let articleData = ctx.request.body;
-
-        if (articleData) {
-            let ret = await ArticleModel.createArticle(articleData);
+    static async create(ctx) {
+        let req = ctx.request.body;
+        if (req.title && req.author && req.content && req.category) {
+            let ret = await ArticleModel.createArticle(req);
             let data = await ArticleModel.getArticleDetail(ret.id);
 
-            ctx.body = {
-                code: 200,
-                data: data,
-                message: '创建成功'
-            }
+            ctx.body = statusCode.SUCCESS_200('创建文章成功', data)
         } else {
-            ctx.body = {
-                code: -1,
-                message: '创建失败'
-            }
+
+            ctx.body = statusCode.ERROR_412('创建文章失败，请求参数不能为空！')
         }
     }
 
@@ -32,21 +26,14 @@ class articleController {
      * @returns {Promise.<void>}
      */
     static async getArticleList(ctx) {
-        let articleList = ctx.request.body
-        if (articleList) {
-            const data = await ArticleModel.getArticlelist()
-            ctx.body = {
-                code: 200,
-                data: {
-                    data
-                },
-                message: '查询成功'
-            }
+        let req = ctx.request.body
+
+        if (req) {
+            const data = await ArticleModel.getArticleList();
+            ctx.body = statusCode.SUCCESS_200('查询文章列表成功！', data)
         } else {
-            ctx.body = {
-                code: -1,
-                message: '获取失败'
-            }
+
+            ctx.body = statusCode.ERROR_412('查询文章列表失败！');
         }
 
     }
@@ -56,22 +43,15 @@ class articleController {
      * @param ctx
      * @returns {Promise.<void>}
      */
-    static async getArticleDetail(ctx) {
+    static async detail(ctx) {
         let id = ctx.params.id;
 
         if (id) {
             let data = await ArticleModel.getArticleDetail(id);
-
-            ctx.body = {
-                code: 200,
-                data,
-                message: '查询成功'
-            }
+            ctx.body = statusCode.SUCCESS_200('查询成功！', data)
         } else {
-            ctx.body = {
-                code: -1,
-                message: 'ID必须传'
-            }
+
+            ctx.body = statusCode.ERROR_412('文章ID必须传');
         }
     }
 
@@ -81,19 +61,15 @@ class articleController {
      * @param ctx
      * @returns {Promise.<void>}
      */
-    static async deleteArticle(ctx) {
+    static async delete(ctx) {
         let id = ctx.params.id;
+
         if (id && !isNaN(id)) {
             await ArticleModel.deleteArticle(id);
-            ctx.body = {
-                code: 200,
-                message: '删除成功'
-            }
+            ctx.body = statusCode.SUCCESS_200('删除文章成功！')
         } else {
-            ctx.body = {
-                code: -1,
-                message: '删除失败'
-            }
+
+            ctx.body = statusCode.ERROR_412('文章ID必须传！');
         }
     }
 
@@ -102,25 +78,18 @@ class articleController {
      * @param ctx
      * @returns {Promise.<void>}
      */
-    static async updateArticle(ctx) {
-        let articleData = ctx.request.body
+    static async update(ctx) {
+        let req = ctx.request.body;
+        let id = ctx.params.id;
 
-        if (articleData) {
+        if (req) {
+            await ArticleModel.updateArticle(id, req);
+            let data = await ArticleModel.getArticleDetail(id);
 
-            await ArticleModel.updateArticle(articleData.id, articleData);
-            let data = await ArticleModel.getArticleDetail(articleData.id);
-
-            ctx.body = {
-                code: 200,
-                data: data,
-                message: '更新成功'
-            }
-
+            ctx.body = statusCode.SUCCESS_200('更新文章成功！', data);
         } else {
-            ctx.body = {
-                code: -1,
-                message: '更新失败'
-            }
+
+            ctx.body = statusCode.ERROR_412('更新文章失败！')
         }
     }
 }

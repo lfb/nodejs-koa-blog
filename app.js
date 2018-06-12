@@ -17,7 +17,12 @@ onerror(app)
 app.use(err())
 app.use(cors());
 
-app.use(jwt({secret: secret.sign}).unless({path: [/^\/api\/v1\/login/, /^\/api\/v1\/createUser/]}))
+// 过滤不用jwt验证
+app.use(jwt({secret: secret.sign}).unless({
+    path: [
+        /^\/api\/v1\/user/,
+        /^\/api\/v1\/user\/login/]
+}))
 
 // middlewares
 app.use(bodyparser({

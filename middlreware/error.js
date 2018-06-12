@@ -23,8 +23,6 @@ module.exports = function () {
                 }
             }
 
-            console.log(`token: ${token}`)
-
             await next()
         } catch (err) {
             if (err.status === 401) {
@@ -36,7 +34,7 @@ module.exports = function () {
             } else {
                 err.status = 404
                 ctx.body = '404'
-                console.log('不服就是怼：', err)
+                console.log('不存在用户：', err)
             }
         }
     }
