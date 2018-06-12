@@ -1,14 +1,13 @@
 
-# nodejs-koa2-mysql 做后端接口
+# nodejs-koa2-mysql-sequelize-jwt
 
-- 使用nodejs-koa2-mysql后台接口功能
-- 已实现登录注册接口，文章增删改查接口
-- jwt身份验证，中间件，参数处理
-- 使用koa2 + mysql
-- 操作mysql数据库ORM选择sequelize
-- 身份验证使用jwt
+- 技术栈：nodejs, koa2, mysql, sequelize, jwt
+- 项目数据层和操作层分明
+- 使用koa2框架中间件，参数处理
+- jwt做权限接口验证
+- sequelize管理mysql数据库
 - 异步处理async/await
-- 统一处理参数和数据
+- 已实现登录注册接口，文章增删改查接口
 - 喜欢或对你有帮助的话请点star✨✨，Thanks.
 
 ### 一、学习使用
