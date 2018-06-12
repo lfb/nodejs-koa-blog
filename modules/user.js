@@ -38,7 +38,9 @@ class UserModel {
      * @returns {Promise<*>}
      */
     static async findAllUserList() {
-        return await User.findAndCountAll()
+        return await User.findAll({
+            attributes: ['id', 'username']
+        })
     }
 
     /**

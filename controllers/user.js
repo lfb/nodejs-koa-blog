@@ -148,20 +148,14 @@ class UserController {
      * @param ctx
      * @returns {Promise.<void>}
      */
-    static
-    async getUserList(ctx) {
+    static async getUserList(ctx) {
         let userList = ctx.request.body;
-        let list = [];
 
         if (userList) {
             const data = await userModel.findAllUserList();
 
-            for (let i = 0; i < data.rows.length; i++) {
-                list.push({id: data.rows[i].id, username: data.rows[i].username})
-            }
-
             ctx.response.status = 200;
-            ctx.body = statusCode.SUCCESS_200('查询成功', list)
+            ctx.body = statusCode.SUCCESS_200('查询成功', data)
         } else {
 
             ctx.response.status = 412;
