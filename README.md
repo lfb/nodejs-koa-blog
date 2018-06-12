@@ -8,40 +8,43 @@
 - 操作mysql数据库ORM选择sequelize
 - 身份验证使用jwt
 - 异步处理async/await
+- 统一处理参数和数据
 - 喜欢或对你有帮助的话请点star✨✨，Thanks.
 
-#### 学习使用
+### 一、学习使用
 
 
-##### git clone
+git clone
 
 ```
 git clone https://github.com/liangfengbo/nodejs-koa2-mysql-sequelize-jwt.git
 ```
 
-##### 安装包
+1.1.安装
 
 ```
 npm install
 ```
 
-#### 需要在config文件下db.js配置本地数据库
+1.2.需要在config文件下db.js配置本地数据库
 ```
 const sequelize = new Sequelize('数据库', '数据库用户名', '数据库密码', {})
 
-别忘了创建数据库
+别忘了创建数据库，黑窗口登录msyql：create database '数据库用户名'
 ```
 
 
-#### 开启服务
+1.3.开启服务
 
 ```
 npm start
 ```
 
-#### 使用接口（在router/index.js），开启服务后，可以用postman软件测试接口
+#### 二、路由说明
 
 ```js
+// └──routes/index.js文件
+
 const router = new Router({
     prefix: '/api/v1'
 })
@@ -50,79 +53,191 @@ const router = new Router({
  * 用户接口
  */
 // 用户注册
-router.post('/createUser', UserController.createUser);
-// 获取用户信息
-router.get('/userInfo', UserController.getUserName);
+router.post('/user', UserController.create);
 // 用户登录
-router.post('/login', UserController.postLogin);
+router.post('/user/login', UserController.login);
+// 获取用户信息
+router.get('/user', UserController.getUserInfo);
+// 获取用户列表
+router.get('/user/list', UserController.getUserList);
+// 删除用户
+router.delete('/user/:id', UserController.delete);
 
 /**
  * 文章接口
  */
 // 创建文章
-router.post('/article', ArticleController.createArticle);
+router.post('/article', ArticleController.create);
 // 获取文章列表
 router.get('/article', ArticleController.getArticleList);
 // 获取文章详情
-router.get('/article/:id', ArticleController.getArticleDetail);
+router.get('/article/:id', ArticleController.detail);
 // 删除文章
-router.delete('/article/:id', ArticleController.deleteArticle);
+router.delete('/article/:id', ArticleController.delete);
 // 更改文章
-router.put('/article/:id', ArticleController.updateArticle);
-
-/**
- * 导航接口
- */
-// 创建导航
-router.post('/nav', NavController.createNav);
-// 获取导航列表
-router.get('/nav', NavController.getNavlist);
-// 获取导航详情
-router.get('/nav/:id', NavController.getNavDetail);
-// 删除导航
-router.delete('/nav/:id', NavController.deleteNav);
-// 更改导航
-router.put('/nav/:id', NavController.updateNav);
+router.put('/article/:id', ArticleController.update);
 
 ```
 
+#### 三、接口说明（用户接口）
 
-#### 项目主要文件
+##### 创建用户接口
 
-schema文件
+```
+/user
+```
+3.1.请求方式
+
+```
+post
+```
+3.2.请求参数
+
+
+参数 | 说明 | 需求
+---|--- |---
+username | 用户名 | 必填
+password | 密码 | 必填
+
+3.3.返回数据
+
+```
+{
+    "code": 200,
+    "msg": "创建用户成功",
+    "data": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkJvYiIsImlkIjozLCJpYXQiOjE1Mjg3NzUzOTMsImV4cCI6MTUyODc3ODk5M30.cnWcgJQF1z7adgKp49AgP4UvpqIXUNjGfjWLMq-rMeA"
+}
+```
+
+##### 登录接口
+
+```
+/user/login
+```
+3.4.请求方式
+
+```
+post
+```
+3.5.请求参数
+
+
+参数 | 说明 | 需求
+---|--- |---
+username | 用户名 | 必填
+password | 密码 | 必填
+
+3.6.返回数据
+
+```
+{
+    "code": 200,
+    "msg": "登录成功",
+    "data": {
+        "id": 3,
+        "username": "Bob",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkJvYiIsImlkIjozLCJpYXQiOjE1Mjg3NzU0NTIsImV4cCI6MTUyODc3OTA1Mn0.v_B_EXvzYTk7Wz-jl4D8F5n5kn2iah8oht0s6S72Zsc"
+    }
+}
+```
+
+##### 获取用户信息
+
+```
+/user
+```
+3.7.请求方式
+
+```
+get
+```
+3.8.说明
+
+token 一定要传
+
+```
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IuaigeWHpOazomJvIiwiaWQiOjUsImlhdCI6MTUyNzczNjc2NSwiZXhwIjoxNTI3NzQwMzY1fQ.y5w4lEFRf8bpR4fFPNDms1m9WSX9mfQ3fo5dejG7y3A
+```
+
+
+
+
+
+3.9.返回数据
+
+```
+{
+    "code": 200,
+    "msg": "查询成功",
+    "data": {
+        "id": 3,
+        "username": "Bob"
+    }
+}
+```
+
+##### 删除用户接口
+
+```
+/user/:id
+```
+3.10.请求方式
+
+```
+delete
+```
+3.11.请求参数
+
+
+参数 | 说明 | 需求
+---|--- |---
+id | 用户ID | 必填
+
+3.12.返回数据
+
+```
+{
+    "code": 200,
+    "msg": "删除用户成功"
+}
+```
+
+
+
+#### 四、项目主要文件
+
+4.1.1schema文件
 ```
 创建数据库表
 ```
 
-modules文件
+4.2.1modules文件
 
 ```
 model层 - 主要处理参数
 ```
 
-controllers文件
+4.3.1controllers文件
 
 ```
 控制器 - 处理数据库增删改查
 ```
 
-#### router 文件
+4.4.1router 文件
 
 ```
 路由
 ```
 
-#### app.js
+4.5.1app.js
 
 ```
 入口文件
 ```
 
-#### 项目身份验证使用了jwt，就是说登录注册和获取用户信息不用jwt验证，其他接口都需要token验证
+项目身份验证使用了jwt，就是说登录注册和获取用户信息不用jwt验证，其他接口都需要token验证
 
-比如注册用户接口：在postman软件操作接口
-
-#### 注册
+比如注册用户接口：在postman软件操作接口，例注册接口：
 
 ```
 post 请求
@@ -142,12 +257,12 @@ http://localhost:3000/api/v1/createUser?username=梁凤波bo&password=bobo12345
 }
 ```
 
-#### 注册
+注册
 
 ```js
 post 请求
 
-http://localhost:3000/api/v1/login?username=梁凤波bo&password=bobo12345
+http://localhost:3000/api/v1/user/login?username=梁凤波bo&password=bobo12345
 ```
 成功返回信息：
 
