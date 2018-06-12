@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken')
 const secret = require('../config/secret')
 const util = require('util')
 const verify = util.promisify(jwt.verify)
+const statusCode = require('../util/status-code')
 
 /**
  * 判断token是否可用
@@ -27,14 +28,10 @@ module.exports = function () {
         } catch (err) {
             if (err.status === 401) {
                 ctx.status = 401;
-                ctx.body = {
-                    code: 401,
-                    message: '认证失败'
-                }
+                ctx.body = statusCode.ERROR_401();
             } else {
-                err.status = 404
-                ctx.body = '404'
-                console.log('不存在用户：', err)
+                err.status = 404;
+                ctx.body = statusCode.ERROR_404('不存在用户');
             }
         }
     }
