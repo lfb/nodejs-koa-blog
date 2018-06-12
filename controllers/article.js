@@ -33,6 +33,7 @@ class articleController {
 
         if (req) {
             const data = await ArticleModel.getArticleList();
+
             ctx.response.status = 200;
             ctx.body = statusCode.SUCCESS_200('查询文章列表成功！', data)
         } else {
@@ -53,6 +54,7 @@ class articleController {
 
         if (id) {
             let data = await ArticleModel.getArticleDetail(id);
+
             ctx.response.status = 200;
             ctx.body = statusCode.SUCCESS_200('查询成功！', data)
         } else {
@@ -73,6 +75,7 @@ class articleController {
 
         if (id && !isNaN(id)) {
             await ArticleModel.deleteArticle(id);
+
             ctx.response.status = 200;
             ctx.body = statusCode.SUCCESS_200('删除文章成功！')
         } else {

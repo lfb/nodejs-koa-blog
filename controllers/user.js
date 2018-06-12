@@ -42,7 +42,7 @@ class UserController {
 
                 // 储存token失效有效期1小时
                 const token = jwt.sign(userToken, secret.sign, {expiresIn: '1h'});
-                
+
                 ctx.response.status = 200;
                 ctx.body = statusCode.SUCCESS_200('创建用户成功', token)
             }
@@ -94,6 +94,7 @@ class UserController {
 
         if (id && !isNaN(id)) {
             await userModel.delete(id);
+
             ctx.response.status = 200;
             ctx.body = statusCode.SUCCESS_200('删除用户成功')
         } else {

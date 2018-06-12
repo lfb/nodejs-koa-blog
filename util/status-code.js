@@ -1,8 +1,8 @@
 const statusCode = {
-    ERROR_401: () => {
+    ERROR_401: (msg) => {
         return {
             code: 401,
-            msg: 'unauthorized，请求需要用户的身份认证！'
+            msg
         }
     },
 
