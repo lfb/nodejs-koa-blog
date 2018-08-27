@@ -174,7 +174,7 @@ GET
 
 
 参数 | 特别说明
----|---|----
+---|---
 Authorization |  JWT验证是报文headers带过来的token参数，格式为：Authorization Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkJvYiIsImlkIjo0LCJpYXQiOjE1MzUzNzczODksImV4cCI6MTUzNTM4MDk4OX0.1wM7Y7wDC-Ly9V5Vm-el_CW85IfcN41JrmcPPvipLEA
 
 #### 示例
