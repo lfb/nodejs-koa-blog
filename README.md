@@ -173,17 +173,18 @@ GET
 #### 参数
 
 
-参数 | 说明 | 特别说明
+参数 | 特别说明
 ---|---|----
-Authorization |  JWT验证是报文headers带过来的token参数 | 格式为：Authorization Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkJvYiIsImlkIjo0LCJpYXQiOjE1MzUzNzczODksImV4cCI6MTUzNTM4MDk4OX0.1wM7Y7wDC-Ly9V5Vm-el_CW85IfcN41JrmcPPvipLEA
+Authorization |  JWT验证是报文headers带过来的token参数，格式为：Authorization Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkJvYiIsImlkIjo0LCJpYXQiOjE1MzUzNzczODksImV4cCI6MTUzNTM4MDk4OX0.1wM7Y7wDC-Ly9V5Vm-el_CW85IfcN41JrmcPPvipLEA
 
 #### 示例
 
 ```
+// vue axios写法
 config.headers.common['Authorization'] = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkJvYiIsImlkIjo0LCJpYXQiOjE1MzUzNzczODksImV4cCI6MTUzNTM4MDk4OX0.1wM7Y7wDC-Ly9V5Vm-el_CW85IfcN41JrmcPPvipLEA';
 ```
 
-#### 传递token示范
+#### 传递token格式示范
 
 ```
 Authorization Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkJvYiIsImlkIjo0LCJpYXQiOjE1MzUzNzczODksImV4cCI6MTUzNTM4MDk4OX0.1wM7Y7wDC-Ly9V5Vm-el_CW85IfcN41JrmcPPvipLEA
@@ -282,7 +283,7 @@ DELETE
 
 参数 | 说明 | 必填 | 类型
 ---|---|---|---
-id | 用户id | 是 | Nubmer
+id | 用户id | 是 | Number
 
 #### 示例
 
@@ -356,7 +357,7 @@ browser | browser | 否 | Number
 }
 ```
 
-#### 传递token示范
+#### 传递token格式示范
 
 ```
 Authorization Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkJvYiIsImlkIjo0LCJpYXQiOjE1MzUzNzczODksImV4cCI6MTUzNTM4MDk4OX0.1wM7Y7wDC-Ly9V5Vm-el_CW85IfcN41JrmcPPvipLEA
