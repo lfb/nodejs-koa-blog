@@ -323,7 +323,7 @@ content | 文章内容 | 是 | String
 tag | 文章标签 | 是 | String
 category | 文章分类 | 是 | String
 recommend | 是否为推荐 | 否 | Boolean
-browser | browser | 否 | Number
+browser | 浏览次数 | 否 | Number
 
 #### 返回成功结果
 
@@ -449,10 +449,10 @@ category | 分类查询 | 否 | String | http://localhost:3000/api/v1/article/li
 
 字段 | 说明
 ---|---
-current_page | 当前页面
-per_page | 一页代码有多少篇文章数据
+current_page | 当前页码
+per_page | 一页代码有多少篇文章数据，默认10条
 count | 全部文章总篇数
-total_pages | 全部分页
+total_pages | 全部分页数
 
 
 
