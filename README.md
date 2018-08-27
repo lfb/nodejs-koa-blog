@@ -107,7 +107,7 @@ password | 密码 | 是 | String
 #### 示例
 
 ```
-http://localhost:3000/api/v1/user/login
+http://localhost:3000/api/v1/user/register
 ```
 
 #### 返回结果
