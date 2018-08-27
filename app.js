@@ -20,8 +20,11 @@ app.use(cors());
 // 过滤不用jwt验证
 app.use(jwt({secret: secret.sign}).unless({
     path: [
-        /^\/api\/v1\/user/,
-        /^\/api\/v1\/user\/login/]
+        // 注册接口
+        /^\/api\/v1\/user\/register/,
+        // 登录接口
+        /^\/api\/v1\/user\/login/
+    ]
 }))
 
 // middlewares

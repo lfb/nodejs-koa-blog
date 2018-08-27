@@ -7,7 +7,7 @@
 - jwt做权限接口验证
 - sequelize管理mysql数据库
 - 异步处理async/await
-- 已实现登录注册接口，文章增删改查接口
+- 已实现用户登录注册接口，文章增删改查接口
 - 喜欢或对你有帮助的话请点star✨✨，或有您有更好的建议和意见，请提出来告知我，可以留言issues，可以加我QQ: 841053515, Thanks.
 
 ### 一、学习使用
@@ -52,236 +52,156 @@ const router = new Router({
  * 用户接口
  */
 // 用户注册
-router.post('/user', UserController.create);
+router.post('/user/register', UserController.create);
 // 用户登录
 router.post('/user/login', UserController.login);
+// 删除用户
+router.delete('/user/delete/:id', UserController.delete);
 // 获取用户信息
-router.get('/user', UserController.getUserInfo);
+router.get('/user/info', UserController.getUserInfo);
 // 获取用户列表
 router.get('/user/list', UserController.getUserList);
-// 删除用户
-router.delete('/user/:id', UserController.delete);
 
 /**
  * 文章接口
  */
 // 创建文章
-router.post('/article', ArticleController.create);
-// 获取文章列表
-router.get('/article', ArticleController.getArticleList);
+router.post('/article/create', ArticleController.create);
 // 获取文章详情
-router.get('/article/:id', ArticleController.detail);
+router.get('/article/detail/:id', ArticleController.detail);
 // 删除文章
-router.delete('/article/:id', ArticleController.delete);
+router.delete('/article/delete/:id', ArticleController.delete);
 // 更改文章
-router.put('/article/:id', ArticleController.update);
-
+router.put('/article/update/:id', ArticleController.update);
+// 获取文章列表
+router.get('/article/list', ArticleController.getArticleList);
 ```
 
-#### 三、接口说明（用户接口）
 
-##### 创建用户接口
-
-```
-/user
-```
-3.1.请求方式
+# 服务器地址
 
 ```
-post
+http://localhost:3000/api/v1
 ```
-3.2.请求参数
+
+## 一、注册接口
+
+```
+/user/register
+```
+
+#### 请求方式
+
+```
+POST
+```
+
+#### 参数
 
 
-参数 | 说明 | 需求
----|--- |---
-username | 用户名 | 必填
-password | 密码 | 必填
+参数 | 说明 | 必填 | 类型
+---|---|---|---
+username | 用户名 | 是 | String
+password | 密码 | 是 | String
 
-3.3.返回数据
+#### 示例
+
+```
+http://localhost:3000/api/v1/user/login
+```
+
+#### 返回结果
+
 
 ```
 {
     "code": 200,
     "msg": "创建用户成功",
-    "data": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkJvYiIsImlkIjozLCJpYXQiOjE1Mjg3NzUzOTMsImV4cCI6MTUyODc3ODk5M30.cnWcgJQF1z7adgKp49AgP4UvpqIXUNjGfjWLMq-rMeA"
+    "data": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkJvYiIsImlkIjo0LCJpYXQiOjE1MzUzNzcyMTcsImV4cCI6MTUzNTM4MDgxN30.AqlVBYV_AGpuzvUo6KjHAXlKkYbsuja10EH-eU_u88Q"
 }
 ```
 
-##### 登录接口
+## 二、登录接口
 
 ```
 /user/login
 ```
-3.4.请求方式
+
+#### 请求方式
 
 ```
-post
+POST
 ```
-3.5.请求参数
+
+#### 参数
+
+参数 | 说明 | 必填 | 类型
+---|---|---|---
+username | 用户名 | 是 | String
+password | 密码 | 是 | String
 
 
-参数 | 说明 | 需求
----|--- |---
-username | 用户名 | 必填
-password | 密码 | 必填
-
-3.6.返回数据
+#### 返回结果
 
 ```
 {
     "code": 200,
     "msg": "登录成功",
     "data": {
-        "id": 3,
+        "id": 4,
         "username": "Bob",
-        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkJvYiIsImlkIjozLCJpYXQiOjE1Mjg3NzU0NTIsImV4cCI6MTUyODc3OTA1Mn0.v_B_EXvzYTk7Wz-jl4D8F5n5kn2iah8oht0s6S72Zsc"
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkJvYiIsImlkIjo0LCJpYXQiOjE1MzUzNzczODksImV4cCI6MTUzNTM4MDk4OX0.1wM7Y7wDC-Ly9V5Vm-el_CW85IfcN41JrmcPPvipLEA"
     }
 }
 ```
 
-##### 获取用户信息
+
+
+
+## 三、获取用户信息接口
 
 ```
-/user
-```
-3.7.请求方式
-
-```
-get
-```
-3.8.说明
-
-token 一定要传
-
-```
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IuaigeWHpOazomJvIiwiaWQiOjUsImlhdCI6MTUyNzczNjc2NSwiZXhwIjoxNTI3NzQwMzY1fQ.y5w4lEFRf8bpR4fFPNDms1m9WSX9mfQ3fo5dejG7y3A
+/user/info
 ```
 
-
-
-
-
-3.9.返回数据
+#### 请求方式
 
 ```
-{
-    "code": 200,
-    "msg": "查询成功",
-    "data": {
-        "id": 3,
-        "username": "Bob"
-    }
-}
+GET
 ```
 
-##### 删除用户接口
+#### 参数
+
+
+参数 | 说明 | 特别说明
+---|---|----
+Authorization |  JWT验证是报文headers带过来的token参数 | 格式为：Authorization Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkJvYiIsImlkIjo0LCJpYXQiOjE1MzUzNzczODksImV4cCI6MTUzNTM4MDk4OX0.1wM7Y7wDC-Ly9V5Vm-el_CW85IfcN41JrmcPPvipLEA
+
+#### 示例
 
 ```
-/user/:id
-```
-3.10.请求方式
-
-```
-delete
-```
-3.11.请求参数
-
-
-参数 | 说明 | 需求
----|--- |---
-id | 用户ID | 必填
-
-3.12.返回数据
-
-```
-{
-    "code": 200,
-    "msg": "删除用户成功"
-}
+config.headers.common['Authorization'] = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkJvYiIsImlkIjo0LCJpYXQiOjE1MzUzNzczODksImV4cCI6MTUzNTM4MDk4OX0.1wM7Y7wDC-Ly9V5Vm-el_CW85IfcN41JrmcPPvipLEA';
 ```
 
-
-
-#### 四、项目主要文件
-
-4.1.1schema文件
-```
-创建数据库表
-```
-
-4.2.1modules文件
+#### 传递token示范
 
 ```
-model层 - 主要处理参数
+Authorization Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkJvYiIsImlkIjo0LCJpYXQiOjE1MzUzNzczODksImV4cCI6MTUzNTM4MDk4OX0.1wM7Y7wDC-Ly9V5Vm-el_CW85IfcN41JrmcPPvipLEA
 ```
-
-4.3.1controllers文件
-
-```
-控制器 - 处理数据库增删改查
-```
-
-4.4.1router 文件
-
-```
-路由
-```
-
-4.5.1app.js
-
-```
-入口文件
-```
-
-项目身份验证使用了jwt，就是说登录注册和获取用户信息不用jwt验证，其他接口都需要token验证
-
-比如注册用户接口：在postman软件操作接口，例注册接口：
-
-```
-post 请求
-
-http://localhost:3000/api/v1/createUser?username=梁凤波bo&password=bobo12345
-```
-
-创建成功后返回信息：
-
-```js
-{
-    "code": 200,
-    "message": "创建成功",
-    "bean": {
-        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IuaigeWHpOazomJvIiwiaWQiOjUsImlhdCI6MTUyNzczNjUzMSwiZXhwIjoxNTI3NzQwMTMxfQ.GAQg-hZm3rDYq70-16sgfNHvD64gmrWSFzQCZQs7bl4"
-    }
-}
-```
-
-注册
-
-```js
-post 请求
-
-http://localhost:3000/api/v1/user/login?username=梁凤波bo&password=bobo12345
-```
-成功返回信息：
-
-```js
-{
-    "message": "登录成功！",
-    "data": {
-        "id": 5,
-        "username": "梁凤波bo",
-        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IuaigeWHpOazomJvIiwiaWQiOjUsImlhdCI6MTUyNzczNjc2NSwiZXhwIjoxNTI3NzQwMzY1fQ.y5w4lEFRf8bpR4fFPNDms1m9WSX9mfQ3fo5dejG7y3A"
-    },
-    "code": 200
-}
-```
-
 
 处理jwt验证时候，我添加了方法
 
 ```
-app.use(jwt({secret: secret.sign}).unless({path: [/^\/api\/v1\/login/, /^\/api\/v1\/createUser/]}))
+// |-app.js文件下
+// 过滤不用jwt验证
+app.use(jwt({secret: secret.sign}).unless({
+    path: [
+        // 注册接口
+        /^\/api\/v1\/user\/register/,
+        // 登录接口
+        /^\/api\/v1\/user\/login/
+    ]
+}))
 
 ```
 
@@ -295,15 +215,352 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Iuaig
 
 才能获取到接口信息，而且token有效期是1个小时就失效。
 
-具体可以看项目主要几个文件代码，一起学习进步，如果你有什么好的建议或意见，或如有错误恳请指导，请留言，谢谢
+
+#### 成功返回数据
+
+```
+{
+    "code": 200,
+    "msg": "查询成功",
+    "data": {
+        "id": 4,
+        "username": "Bob"
+    }
+}
+```
+
+## 四、获取用户列表
+
+```
+/user/list
+```
+
+#### 请求方式
+
+```
+GET
+```
+
+#### 返回成功数据
+
+```
+{
+    "code": 200,
+    "msg": "查询成功",
+    "data": [
+        {
+            "id": 1,
+            "username": "梁凤波"
+        },
+        {
+            "id": 2,
+            "username": "梁凤波1"
+        },
+        {
+            "id": 3,
+            "username": "梁凤波11"
+        },
+        {
+            "id": 4,
+            "username": "Bob"
+        }
+    ]
+}
+```
+
+## 五、删除用户接口
+
+```
+/user/delete/:id
+```
+
+#### 请求方式
+
+```
+DELETE
+```
+
+参数 | 说明 | 必填 | 类型
+---|---|---|---
+id | 用户id | 是 | Nubmer
+
+#### 示例
+
+```
+http://localhost:3000/api/v1/user/delete/1
+```
+
+#### 删除成功返回数据
+
+```
+{
+    "code": 200,
+    "msg": "删除用户成功"
+}
+```
+
+### 六、创建文章接口
+
+```
+/article/create
+```
+
+#### 请求方式
+
+```
+POST
+```
+
+#### 参数
+
+参数 | 说明 | 必填 | 类型
+---|---|---|---
+title | 文章标题 | 是 | String
+introduction | 文章简介 | 是 | String
+author | 作者 | 是 | String
+content | 文章内容 | 是 | String
+tag | 文章标签 | 是 | String
+category | 文章分类 | 是 | String
+recommend | 是否为推荐 | 否 | Boolean
+browser | browser | 否 | Number
+
+#### 返回成功结果
+
+```
+{
+    "code": 200,
+    "msg": "创建文章成功",
+    "data": {
+        "createdAt": "2018-08-27 21:52:11",
+        "updatedAt": "2018-08-27 21:52:11",
+        "id": 1,
+        "title": "js创建对象的方法",
+        "introduction": "原型模式",
+        "author": "梁凤波",
+        "tag": "原型链",
+        "content": "我们创建的每个函数都有一个prototype（原型）属性，这个属性是一个指针，指向一个对象，而这个对象的用途是包含可以由特定类型的所有实例共享的属性和方法。如果按照字面意思来理解，那么prototype就是通过调用构造函数而创建的那个对象实例的原型对象。使用原型对象的好处是可以让所有对象实例共享它所包含的属性和方法。",
+        "category": "javascript",
+        "recommend": false,
+        "browser": 0
+    }
+}
+```
+
+
+#### 如果返回401错误结果，需要从headers带上Authorization和token
+
+```
+{
+    "code": 401,
+    "msg": "unauthorized，请求需要用户的身份认证！"
+}
+```
+
+#### 传递token示范
+
+```
+Authorization Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkJvYiIsImlkIjo0LCJpYXQiOjE1MzUzNzczODksImV4cCI6MTUzNTM4MDk4OX0.1wM7Y7wDC-Ly9V5Vm-el_CW85IfcN41JrmcPPvipLEA
+```
+
+处理jwt验证时候，我添加了方法
+
+```
+// 过滤不用jwt验证
+app.use(jwt({secret: secret.sign}).unless({
+    path: [
+        // 注册接口
+        /^\/api\/v1\/user\/register/,
+        // 登录接口
+        /^\/api\/v1\/user\/login/
+    ]
+}))
+
+```
+
+登录注册都会返回token信息，除了这两个接口必须要发送header头
+
+在header中加入token
+
+```
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IuaigeWHpOazomJvIiwiaWQiOjUsImlhdCI6MTUyNzczNjc2NSwiZXhwIjoxNTI3NzQwMzY1fQ.y5w4lEFRf8bpR4fFPNDms1m9WSX9mfQ3fo5dejG7y3A
+```
+
+才能获取到接口信息，而且token有效期是1个小时就失效。
+
+## 七、获取文章列表
+
+```
+/article/list
+```
+
+
+#### 请求方式
+
+```
+GET
+```
+
+#### 参数
+
+#### 参数
+
+参数 | 说明 | 必填 | 类型 | 示例
+---|---|---|---|---
+page | 分页查询 | 否 | Number | http://localhost:3000/api/v1/article/list?page=2
+category | 分类查询 | 否 | String | http://localhost:3000/api/v1/article/list?category=javascript
+
+### 查询成功返回数据
+
+```
+{
+    "code": 200,
+    "msg": "查询文章列表成功！",
+    "data": {
+        "code": 200,
+        "data": [
+            {
+                "createdAt": "2018-08-27 21:52:11",
+                "updatedAt": "2018-08-27 21:52:11",
+                "id": 1,
+                "title": "js创建对象的方法",
+                "introduction": "原型模式",
+                "author": "梁凤波",
+                "tag": "原型链",
+                "content": "我们创建的每个函数都有一个prototype（原型）属性，这个属性是一个指针，指向一个对象，而这个对象的用途是包含可以由特定类型的所有实例共享的属性和方法。如果按照字面意思来理解，那么prototype就是通过调用构造函数而创建的那个对象实例的原型对象。使用原型对象的好处是可以让所有对象实例共享它所包含的属性和方法。",
+                "category": "javascript",
+                "recommend": false,
+                "browser": 0
+            }
+        ],
+        "meta": {
+            "current_page": 1,
+            "per_page": 10,
+            "count": 1,
+            "total": 1,
+            "total_pages": 1
+        }
+    }
+}
+```
+
+#### 文章列表分页说明
+
+
+字段 | 说明
+---|---
+current_page | 当前页面
+per_page | 一页代码有多少篇文章数据
+count | 全部文章总篇数
+total_pages | 全部分页
 
 
 
-学习推荐链接：
+```
+"meta": {
+    "current_page": 1,
+    "per_page": 10,
+    "count": 1,
+    "total": 1,
+    "total_pages": 1
+}
+```
+
+
+## 八、更新文章
+
+```
+/article/update/:id
+```
+
+#### 请求方式
+
+```
+PUT
+```
+
+#### 参数
+
+参数 | 说明 | 必填 | 类型
+---|---|---|---
+id | 文章id | 必填 | Number
+title | 文章标题 | 是 | String
+introduction | 文章简介 | 是 | String
+author | 作者 | 是 | String
+content | 文章内容 | 是 | String
+tag | 文章标签 | 是 | String
+category | 文章分类 | 是 | String
+recommend | 是否为推荐 | 否 | Boolean
+browser | browser | 否 | Number
+
+
+
+#### 示例
+
+```
+http://localhost:3000/api/v1/article/update/1
+```
+
+#### 返回成功数据
+
+```
+{
+    "code": 200,
+    "msg": "更新文章成功！",
+    "data": {
+        "createdAt": "2018-08-27 21:52:11",
+        "updatedAt": "2018-08-27 22:02:00",
+        "id": 1,
+        "title": "我们来学习创建js的对象方法",
+        "introduction": "原型模式",
+        "author": "梁凤波",
+        "tag": "原型链",
+        "content": "我们创建的每个函数都有一个prototype（原型）属性，这个属性是一个指针，指向一个对象，而这个对象的用途是包含可以由特定类型的所有实例共享的属性和方法。如果按照字面意思来理解，那么prototype就是通过调用构造函数而创建的那个对象实例的原型对象。使用原型对象的好处是可以让所有对象实例共享它所包含的属性和方法。",
+        "category": "javascript",
+        "recommend": false,
+        "browser": 0
+    }
+}
+```
+
+## 九、删除文章
+
+```
+/article/delete/:id
+```
+
+#### 请求方式
+
+```
+DELETE
+```
+
+#### 参数
+
+参数 | 说明 | 必填 | 类型
+---|---|---|---
+id | 文章id | 必填 | Number
+
+
+
+#### 示例
+
+```
+http://localhost:3000/api/v1/article/update/1
+```
+
+#### 返回成功数据
+
+```
+{
+    "code": 200,
+    "msg": "删除文章成功！"
+}
+```
+
+学习参考链接：
 
 [koa2 实现jwt认证 作者日暮途远_ https://www.jianshu.com/p/176198fbdb35](https://www.jianshu.com/p/176198fbdb35)
 
 [基于 Egg.js 框架的 Node.js 服务构建之用户管理设计](https://zhaomenghuan.github.io/blog/nodejs-eggjs-usersytem.html#%E4%B8%BA%E4%BB%80%E4%B9%88%E6%98%AF-egg-js-%EF%BC%9F)
 
 如果对你学习nodejs有帮助，请给个星星star✨✨谢谢
-

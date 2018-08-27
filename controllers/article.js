@@ -9,18 +9,33 @@ class articleController {
      */
     static async create(ctx) {
         let req = ctx.request.body;
+        if (req.title
+            && req.author
+            && req.tag
+            && req.content
+            && req.category
+            && req.introduction
+        ) {
+            try {
+                const ret = await ArticleModel.createArticle(req);
+                const data = await ArticleModel.getArticleDetail(ret.id);
+                ctx.response.status = 200;
+                ctx.body = statusCode.SUCCESS_200('创建文章成功', data);
 
-        if (req.title && req.author && req.content && req.category) {
-            let ret = await ArticleModel.createArticle(req);
-            let data = await ArticleModel.getArticleDetail(ret.id);
-
-            ctx.response.status = 200;
-            ctx.body = statusCode.SUCCESS_200('创建文章成功', data)
+            } catch (err) {
+                ctx.response.status = 412;
+                ctx.body = statusCode.ERROR_412({
+                    msg: '创建失败',
+                    err,
+                })
+            }
         } else {
-
             ctx.response.status = 412;
-            ctx.body = statusCode.ERROR_412('创建文章失败，请求参数不能为空！')
+            ctx.body = statusCode.ERROR_412({
+                msg: '请检查参数！'
+            })
         }
+
     }
 
     /**
@@ -29,19 +44,16 @@ class articleController {
      * @returns {Promise.<void>}
      */
     static async getArticleList(ctx) {
-        let req = ctx.request.body
-
-        if (req) {
-            const data = await ArticleModel.getArticleList();
-
+        let params = ctx.query;
+        try {
+            const data = await ArticleModel.getArticleList(params);
             ctx.response.status = 200;
             ctx.body = statusCode.SUCCESS_200('查询文章列表成功！', data)
-        } else {
+        } catch (e) {
 
             ctx.response.status = 412;
-            ctx.body = statusCode.ERROR_412('查询文章列表失败！');
+            ctx.body = statusCode.ERROR_412(e);
         }
-
     }
 
     /**
@@ -53,12 +65,21 @@ class articleController {
         let id = ctx.params.id;
 
         if (id) {
-            let data = await ArticleModel.getArticleDetail(id);
+            try {
+                let data = await ArticleModel.getArticleDetail(id);
+                ctx.response.status = 200;
+                ctx.body = statusCode.SUCCESS_200('查询成功！', {
+                    data
+                });
 
-            ctx.response.status = 200;
-            ctx.body = statusCode.SUCCESS_200('查询成功！', data)
+            } catch (err) {
+                ctx.response.status = 412;
+                ctx.body = statusCode.ERROR_412({
+                    mgs: '查询失败',
+                    err,
+                })
+            }
         } else {
-
             ctx.response.status = 412;
             ctx.body = statusCode.ERROR_412('文章ID必须传');
         }
@@ -74,12 +95,20 @@ class articleController {
         let id = ctx.params.id;
 
         if (id && !isNaN(id)) {
-            await ArticleModel.deleteArticle(id);
+            try {
+                await ArticleModel.deleteArticle(id);
+                ctx.response.status = 200;
+                ctx.body = statusCode.SUCCESS_200('删除文章成功！');
 
-            ctx.response.status = 200;
-            ctx.body = statusCode.SUCCESS_200('删除文章成功！')
+            } catch (err) {
+                ctx.response.status = 200;
+                ctx.body = statusCode.SUCCESS_200({
+                    msg: '删除失败',
+                    err,
+                });
+
+            }
         } else {
-
             ctx.response.status = 412;
             ctx.body = statusCode.ERROR_412('文章ID必须传！');
         }
