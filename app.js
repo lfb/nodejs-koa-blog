@@ -23,7 +23,9 @@ app.use(jwt({secret: secret.sign}).unless({
         // 注册接口
         /^\/api\/v1\/user\/register/,
         // 登录接口
-        /^\/api\/v1\/user\/login/
+        /^\/api\/v1\/user\/login/,
+        // 文章列表
+        /^\/api\/v1\/article\/list/,
     ]
 }))
 

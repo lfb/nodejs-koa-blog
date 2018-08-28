@@ -177,19 +177,6 @@ GET
 ---|---
 Authorization |  JWT验证是报文headers带过来的token参数，格式为：Authorization Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkJvYiIsImlkIjo0LCJpYXQiOjE1MzUzNzczODksImV4cCI6MTUzNTM4MDk4OX0.1wM7Y7wDC-Ly9V5Vm-el_CW85IfcN41JrmcPPvipLEA
 
-#### 示例
-
-```
-// vue axios写法
-config.headers.common['Authorization'] = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkJvYiIsImlkIjo0LCJpYXQiOjE1MzUzNzczODksImV4cCI6MTUzNTM4MDk4OX0.1wM7Y7wDC-Ly9V5Vm-el_CW85IfcN41JrmcPPvipLEA';
-```
-
-#### 传递token格式示范
-
-```
-Authorization Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkJvYiIsImlkIjo0LCJpYXQiOjE1MzUzNzczODksImV4cCI6MTUzNTM4MDk4OX0.1wM7Y7wDC-Ly9V5Vm-el_CW85IfcN41JrmcPPvipLEA
-```
-
 处理jwt验证时候，我添加了方法
 
 ```
@@ -206,15 +193,27 @@ app.use(jwt({secret: secret.sign}).unless({
 
 ```
 
-登录注册都会返回token信息，除了这两个接口必须要发送header头
-
-在header中加入token
+#### 需要从headers的Authorization带上Bearer + token
 
 ```
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IuaigeWHpOazomJvIiwiaWQiOjUsImlhdCI6MTUyNzczNjc2NSwiZXhwIjoxNTI3NzQwMzY1fQ.y5w4lEFRf8bpR4fFPNDms1m9WSX9mfQ3fo5dejG7y3A
+Authorization Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkJvYiIsImlkIjo0LCJpYXQiOjE1MzUzNzczODksImV4cCI6MTUzNTM4MDk4OX0.1wM7Y7wDC-Ly9V5Vm-el_CW85IfcN41JrmcPPvipLEA
 ```
 
-才能获取到接口信息，而且token有效期是1个小时就失效。
+登录注册都会返回token信息，用户信息，删除，更新都需要传递token验证
+
+```
+{
+    "code": 200,
+    "msg": "登录成功",
+    "data": {
+        "id": 4,
+        "username": "Bob",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkJvYiIsImlkIjo0LCJpYXQiOjE1MzUzNzczODksImV4cCI6MTUzNTM4MDk4OX0.1wM7Y7wDC-Ly9V5Vm-el_CW85IfcN41JrmcPPvipLEA"
+    }
+}
+```
+
+在header中加入token才能获取到接口信息，而且token有效期是1个小时就失效。
 
 
 #### 成功返回数据
@@ -300,7 +299,7 @@ http://localhost:3000/api/v1/user/delete/1
 }
 ```
 
-### 六、创建文章接口
+## 六、创建文章接口
 
 ```
 /article/create
@@ -348,7 +347,7 @@ browser | 浏览次数 | 否 | Number
 ```
 
 
-#### 如果返回401错误结果，需要从headers带上Authorization和token
+#### 如果返回401错误结果，需要从headers的Authorization带上Bearer + token
 
 ```
 {
@@ -491,7 +490,7 @@ content | 文章内容 | 是 | String
 tag | 文章标签 | 是 | String
 category | 文章分类 | 是 | String
 recommend | 是否为推荐 | 否 | Boolean
-browser | browser | 否 | Number
+browser | 浏览次数 | 否 | Number
 
 
 
@@ -546,7 +545,7 @@ id | 文章id | 必填 | Number
 #### 示例
 
 ```
-http://localhost:3000/api/v1/article/update/1
+http://localhost:3000/api/v1/article/delete/1
 ```
 
 #### 返回成功数据
