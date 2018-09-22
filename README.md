@@ -10,6 +10,8 @@
 - 已实现用户登录注册接口，文章增删改查接口
 - 喜欢或对你有帮助的话请点star✨✨，或有您有更好的建议和意见，请提出来告知我，可以留言issues，可以加我QQ: 841053515, Thanks.
 
+### 注：学习详细教程：[Koa2从0搭建到实现文章API接口 https://www.imooc.com/article/80671](https://www.imooc.com/article/80671)
+
 ### 一、学习使用
 
 
