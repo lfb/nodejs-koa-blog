@@ -278,7 +278,7 @@ http://localhost:3000/api/v1/user/info
     "msg": "查询成功",
     "data": {
         "id": 3,
-        "username": "liangfengbo"
+        "username": "bobo"
     }
 }
 ```
