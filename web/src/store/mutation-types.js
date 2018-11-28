@@ -1,0 +1,2 @@
+export const SET_DOCTOR_LIST = 'SET_DOCTOR_LIST';
+export const SET_DOCTOR_DETAIL = 'SET_DOCTOR_DETAIL';

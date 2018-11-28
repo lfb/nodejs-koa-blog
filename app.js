@@ -17,15 +17,19 @@ onerror(app)
 app.use(err())
 app.use(cors());
 
-// 过滤不用jwt验证
+// 此接口列表，过滤不用jwt验证
 app.use(jwt({secret: secret.sign}).unless({
     path: [
-        // 注册接口
-        /^\/api\/v1\/user\/register/,
-        // 登录接口
-        /^\/api\/v1\/user\/login/,
+        // 文章详情
+        /^\/api\/v1\/article\/detail/,
         // 文章列表
         /^\/api\/v1\/article\/list/,
+        // 登录
+        /^\/api\/v1\/user\/login/,
+        // 分类列表
+        /^\/api\/v1\/category\/list/,
+        // 文章搜索
+        /^\/api\/v1\/article\/search/
     ]
 }))
 

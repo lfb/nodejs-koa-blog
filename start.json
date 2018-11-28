@@ -1,0 +1,44 @@
+{
+  "name": "",
+  // 应用名称
+
+  "script": "node ./app.js",
+  // 实际启动脚本
+
+  "instances": 1,
+  //多少个进程，0为按CPU核数启动
+
+  // "cwd"         : "./",  // 当前工作路径
+
+  "watch": [
+    // 监控变化的目录，一旦变化，自动重启
+
+    "bin",
+    "routers"
+  ],
+  "ignore_watch": [
+    // 从监控目录中排除
+
+    "node_modules",
+    "logs"
+  ],
+  "watch_options": {
+    "followSymlinks": false
+  },
+  "error_file": "./logs/app-err.log",
+  // 错误日志路径
+
+  "out_file": "./logs/app-out.log",
+  // 普通日志路径
+
+  "env": {
+    "HOST": "0.0.0.0",
+    // 这样配置就可以，启动时内外ip都可以链接
+
+    "PORT": "8081",
+    // 端口号
+
+    "NODE_ENV": "production"
+    // 环境参数，当前指定为生产环境
+  }
+}

@@ -11,14 +11,15 @@ class articleController {
         let req = ctx.request.body;
         if (req.title
             && req.author
-            && req.tag
-            && req.content
+            && req.introduce
             && req.category
-            && req.introduction
+            && req.banner
+            && req.content
         ) {
             try {
                 const ret = await ArticleModel.createArticle(req);
                 const data = await ArticleModel.getArticleDetail(ret.id);
+
                 ctx.response.status = 200;
                 ctx.body = statusCode.SUCCESS_200('创建文章成功', data);
 
@@ -35,7 +36,18 @@ class articleController {
                 msg: '请检查参数！'
             })
         }
+    }
 
+    static async search(ctx) {
+        try {
+            let data = await ArticleModel.search(ctx.query);
+            ctx.response.status = 200;
+            ctx.body = statusCode.SUCCESS_200('查询文章成功！', data)
+        } catch (e) {
+            console.log(e);
+            ctx.response.status = 412;
+            ctx.body = statusCode.ERROR_412(e);
+        }
     }
 
     /**
@@ -43,7 +55,7 @@ class articleController {
      * @param ctx
      * @returns {Promise.<void>}
      */
-    static async getArticleList(ctx) {
+    static async list(ctx) {
         let params = ctx.query;
         try {
             const data = await ArticleModel.getArticleList(params);

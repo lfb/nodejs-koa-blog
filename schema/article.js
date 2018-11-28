@@ -14,29 +14,23 @@ module.exports = function (sequelize, DataTypes) {
             allowNull: false,
             field: 'title',
         },
-        // 文章简介
-        introduction: {
-            type: DataTypes.TEXT,
-            allowNull: false,
-            field: 'introduction'
-        },
         // 文章作者
         author: {
             type: DataTypes.STRING,
             allowNull: false,
-            field: 'author'
+            field: 'author',
         },
-        // 文章标签
-        tag: {
+        // 是否推荐
+        recommend: {
+            type: DataTypes.BOOLEAN,
+            allowNull: false,
+            defaultValue: false
+        },
+        // 文章介绍
+        introduce: {
             type: DataTypes.STRING,
             allowNull: false,
-            field: 'tag'
-        },
-        // 文章内容
-        content: {
-            type: DataTypes.TEXT,
-            allowNull: false,
-            field: 'content'
+            field: 'introduce'
         },
         // 文章分类
         category: {
@@ -44,11 +38,17 @@ module.exports = function (sequelize, DataTypes) {
             allowNull: false,
             field: 'category'
         },
-        // 是否为推荐
-        recommend: {
-            type: DataTypes.BOOLEAN,
+        // 文章封面
+        banner: {
+            type: DataTypes.STRING,
             allowNull: false,
-            defaultValue: false
+            field: 'banner'
+        },
+        // 文章内容
+        content: {
+            type: DataTypes.TEXT,
+            allowNull: false,
+            field: 'content'
         },
         // 浏览次数
         browser: {
@@ -60,13 +60,13 @@ module.exports = function (sequelize, DataTypes) {
         createdAt: {
             type: DataTypes.DATE,
             get() {
-                return moment(this.getDataValue('createdAt')).format('YYYY-MM-DD HH:mm:ss');
+                return moment(this.getDataValue('createdAt')).format('YYYY-MM-DD');
             }
         },
         updatedAt: {
             type: DataTypes.DATE,
             get() {
-                return moment(this.getDataValue('updatedAt')).format('YYYY-MM-DD HH:mm:ss');
+                return moment(this.getDataValue('updatedAt')).format('YYYY-MM-DD');
             }
         }
     }, {

@@ -1,3 +1,4 @@
+const moment = require('moment');
 module.exports = function (sequelize, DataTypes) {
     return sequelize.define('user', {
         id: {
@@ -13,6 +14,18 @@ module.exports = function (sequelize, DataTypes) {
         password: {
             type: DataTypes.STRING(255),
             allowNull: false
+        },
+        createdAt: {
+            type: DataTypes.DATE,
+            get() {
+                return moment(this.getDataValue('createdAt')).format('YYYY-MM-DD');
+            }
+        },
+        updatedAt: {
+            type: DataTypes.DATE,
+            get() {
+                return moment(this.getDataValue('updatedAt')).format('YYYY-MM-DD');
+            }
         }
     }, {
         // 如果为 true 则表的名称和 model 相同，即 user

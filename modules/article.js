@@ -1,5 +1,6 @@
 const db = require('../config/db');
 const Sequelize = db.sequelize;
+const Op = Sequelize.Op;
 const Article = Sequelize.import('../schema/article');
 
 Article.sync({force: false});
@@ -14,12 +15,10 @@ class ArticleModel {
         return await Article.create({
             title: data.title,
             author: data.author,
-            tag: data.tag,
-            introduction: data.introduction,
-            content: data.content,
+            introduce: data.introduce,
             category: data.category,
-            recommend: data.recommend,
-            browser: data.browser,
+            banner: data.banner,
+            content: data.content
         })
     }
 
@@ -33,19 +32,38 @@ class ArticleModel {
         await Article.update({
             title: data.title,
             author: data.author,
-            tag: data.tag,
-            introduction: data.introduction,
-            content: data.content,
+            introduce: data.introduce,
             category: data.category,
+            banner: data.banner,
             recommend: data.recommend,
-            browser: data.browser,
+            content: data.content
         }, {
             where: {
                 id
             },
-            fields: ['title', 'author', 'tag', 'introduction', 'content', 'category', 'recommend', 'browser']
+            fields: ['title', 'author', 'introduce', 'category', 'banner', 'content', 'recommend']
         });
         return true
+    }
+
+    /**
+     * 搜索
+     * @param params
+     * @return {Promise<void>}
+     */
+    static async search(params) {
+        return await Article.findAll({
+            raw: true,
+            order: [
+                ['title', 'DESC']
+            ],
+            where: {
+                title: {
+                    // 模糊查询
+                    [Op.like]: '%' + params.keyword + '%'
+                }
+            }
+        })
     }
 
     /**
@@ -54,9 +72,7 @@ class ArticleModel {
      */
     static async getArticleList(params) {
         let ret = null;
-        let page = params.page ? params.page : 1;
-        let category = params.category ? params.category : '';
-        let sort = params.sort ? params.sort : '';
+        let {page = 1, category, title, recommend} = params;
 
         if (category) {
             ret = await Article.findAndCountAll({
@@ -64,6 +80,24 @@ class ArticleModel {
                 offset: (page - 1) * 10,
                 where: {
                     category: category
+                },
+            });
+
+        } else if (title) {
+            ret = await Article.findAndCountAll({
+                limit: 10,//每页10条
+                offset: (page - 1) * 10,
+                where: {
+                    title
+                },
+            });
+
+        } else if (recommend) {
+            ret = await Article.findAndCountAll({
+                limit: 10,//每页10条
+                offset: (page - 1) * 10,
+                where: {
+                    recommend
                 },
             });
 
