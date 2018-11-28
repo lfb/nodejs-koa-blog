@@ -54,15 +54,16 @@ class ArticleModel {
     static async search(params) {
         return await Article.findAll({
             raw: true,
-            order: [
-                ['title', 'DESC']
+            'order': [
+                ['id', 'DESC']
             ],
             where: {
                 title: {
                     // 模糊查询
                     [Op.like]: '%' + params.keyword + '%'
                 }
-            }
+            },
+            attributes: {exclude: ['content']}
         })
     }
 
@@ -81,6 +82,10 @@ class ArticleModel {
                 where: {
                     category: category
                 },
+                'order': [
+                    ['id', 'DESC']
+                ],
+                attributes: {exclude: ['content']}
             });
 
         } else if (title) {
@@ -90,6 +95,10 @@ class ArticleModel {
                 where: {
                     title
                 },
+                'order': [
+                    ['id', 'DESC']
+                ],
+                attributes: {exclude: ['content']}
             });
 
         } else if (recommend) {
@@ -99,12 +108,21 @@ class ArticleModel {
                 where: {
                     recommend
                 },
+                'order': [
+                    ['id', 'DESC']
+                ],
+                attributes: {exclude: ['content']}
             });
 
         } else {
             ret = await Article.findAndCountAll({
                 limit: 10,//每页10条
                 offset: (page - 1) * 10,
+                'order': [
+                    ['id', 'DESC']
+                ],
+                attributes: {exclude: ['content']}
+
             });
         }
 
