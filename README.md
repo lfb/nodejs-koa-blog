@@ -111,8 +111,8 @@ router.get('/category/list', CategoryController.list);
 ```js
 // └──web/src/router/index.js文件
 
-/* 首页 */    path: '/',
-/* 文章详情 */  path: '/article/detail/:id',
+/* 首页 */        path: '/',
+/* 文章详情 */    path: '/article/detail/:id',
 ```
 
 #### 4.3.后端项目路由
@@ -130,3 +130,165 @@ router.get('/category/list', CategoryController.list);
 /* 新增分类 */    path: '/category/create',
 /* 更新分类 */    path: '/category/update/:id', 
 ```
+
+## 五、部分接口说明
+
+#### 5.1.用户(管理员)接口
+
+
+#### 5.1.1.注册接口
+
+##### 地址：
+```
+/user/register
+```
+
+##### 请求方式
+
+```
+POST
+```
+
+##### 参数说明
+
+参数 | 说明 | 必填 | 类型
+---|---|---|---
+username | 用户名 | 是 | String
+password | 用户名 | 是 | String
+
+##### 示例（postman软件测试，自己下载测试）
+
+```
+http://localhost:3000/api/v1/user/register
+
+参数一：username bobo
+参数二：password bobo123
+```
+
+
+##### 创建成功
+
+```js
+{
+    "code": 200,
+    "msg": "创建用户成功",
+    "data": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImxpYW5nZmVuZ2JvIiwiaWQiOjMsImlhdCI6MTU0MzM4MjAwOCwiZXhwIjoxNTQzMzg1NjA4fQ.-AEyGpqf5l7uKdaHArEGpKC3L5wHRHSNkvcciVumhBo"
+}
+```
+
+#### 5.1.2.登录
+##### 地址
+
+```
+/user/login
+```
+##### 请求方式
+
+```
+POST
+```
+##### 参数说明
+
+参数 | 说明 | 必填 | 类型
+---|---|---|---
+username | 用户名 | 是 | String
+password | 用户名 | 是 | String
+
+##### 示例（postman软件测试，自己下载测试）
+
+```
+http://localhost:3000/api/v1/user/login
+
+参数一：username bobo
+参数二：password bobo123
+```
+
+
+##### 创建成功
+
+```js
+{
+    "code": 200,
+    "msg": "登录成功",
+    "data": {
+        "id": 3,
+        "username": "liangfengbo",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImxpYW5nZmVuZ2JvIiwiaWQiOjMsImlhdCI6MTU0MzM4MjI2MiwiZXhwIjoxNTQzMzg1ODYyfQ.xsTAkURA8nx8cMS12IGAb5uU69-ipmkgfpk6fROV7Ec"
+    }
+}
+```
+
+#### 5.1.3.获取用户信息
+
+##### 地址
+
+```
+/user/info
+```
+
+##### 请求方式
+```
+GET
+```
+
+##### 参数说明
+
+
+参数 | 说明 | 必填 | 类型
+---|---|---|---
+Authorization | JWT验证是报文headers带过来的token参数 | 是 | String
+
+##### 在header发送中加入token传递格式为：
+
+> Authorization Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImxpYW5nZmVuZ2JvIiwiaWQiOjMsImlhdCI6MTU0MzM4MjI2MiwiZXhwIjoxNTQzMzg1ODYyfQ.xsTAkURA8nx8cMS12IGAb5uU69-ipmkgfpk6fROV7Ec，该token是由上面登录接口返回来的token
+
+##### 处理jwt验证时候，我添加了方法，凡是以下没有过滤的接口，都要带上token验证，否则报401权限不足错误。
+
+```js
+// |-在根目录app.js文件下，过滤不用jwt验证
+// 此接口列表，过滤不用jwt验证
+app.use(jwt({secret: secret.sign}).unless({
+    path: [
+        // 文章详情
+        /^\/api\/v1\/article\/detail/,
+        // 文章列表
+        /^\/api\/v1\/article\/list/,
+        // 登录
+        /^\/api\/v1\/user\/login/,
+        // 创建用户
+        /^\/api\/v1\/user\/register/,
+        // 分类列表
+        /^\/api\/v1\/category\/list/,
+        // 文章搜索
+        /^\/api\/v1\/article\/search/
+    ]
+}))
+```
+
+##### 示例
+
+```
+http://localhost:3000/api/v1/user/info
+```
+
+##### 返回成功信息
+```
+{
+    "code": 200,
+    "msg": "查询成功",
+    "data": {
+        "id": 3,
+        "username": "liangfengbo"
+    }
+}
+```
+
+## 最后
+
+项目已实现登录注册接口，文章以及文章分类增删改查接口，自己可以去postman测试或学习；喜欢或对你有帮助的话请点star✨✨，或有您有更好的建议和意见，请提出来告知我，可以留言issues，可以加我QQ: 841053515, Thanks.
+
+## License
+
+[MIT](http://opensource.org/licenses/MIT)
+
+Copyright (c) 2018 Fengbo Liang

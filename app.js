@@ -27,7 +27,7 @@ app.use(jwt({secret: secret.sign}).unless({
         // 登录
         /^\/api\/v1\/user\/login/,
         // 创建用户
-        /^\/api\/v1\/user\/create/,
+        /^\/api\/v1\/user\/register/,
         // 分类列表
         /^\/api\/v1\/category\/list/,
         // 文章搜索
