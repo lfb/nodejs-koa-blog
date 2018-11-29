@@ -63,15 +63,8 @@ module.exports = {
           limit: 10000,
           name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
         }
-      },
-      {
-        test: /\.less$/,
-        loader: "style-loader!css-loader!less-loader",
-      },
+      }
     ]
-  },
-  externals: {
-    'MuseUI': 'MUSEUI'
   },
   node: {
     // prevent webpack from injecting useless setImmediate polyfill because Vue

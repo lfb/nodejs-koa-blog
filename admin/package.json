@@ -12,8 +12,6 @@
   "dependencies": {
     "axios": "^0.18.0",
     "iview": "^3.1.5",
-    "less": "^3.0.4",
-    "less-loader": "^4.1.0",
     "lib-flexible": "^0.3.2",
     "mavon-editor": "^2.6.17",
     "px2rem-loader": "^0.1.9",
