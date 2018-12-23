@@ -50,6 +50,31 @@ class categoryController {
     }
 
     /**
+     * 查询ID分类下的所有文章
+     * @returns {Promise.<void>}
+     */
+    static async getCategoryArticle(ctx) {
+        let id = ctx.params.id;
+        console.log(id);
+        if (id) {
+            try {
+                const data = await CategoryModel.getCategoryArticleList(id);
+                ctx.response.status = 200;
+                ctx.body = statusCode.SUCCESS_200('查询成功！', data);
+
+            } catch (e) {
+                ctx.response.status = 412;
+                ctx.body = statusCode.ERROR_412(e);
+            }
+        } else {
+            ctx.response.status = 412;
+            ctx.body = statusCode.ERROR_412({
+                msg: '请检查参数！'
+            })
+        }
+    }
+
+    /**
      * 查询单条分类数据
      * @param ctx
      * @returns {Promise.<void>}

@@ -1,4 +1,8 @@
 const ArticleModel = require('../modules/article')
+const db = require('../config/db');
+const Sequelize = db.sequelize;
+const Category = Sequelize.import('../schema/category');
+
 const statusCode = require('../util/status-code')
 
 class articleController {
@@ -9,6 +13,7 @@ class articleController {
      */
     static async create(ctx) {
         let req = ctx.request.body;
+
         if (req.title
             && req.author
             && req.introduce
@@ -17,6 +22,23 @@ class articleController {
             && req.content
         ) {
             try {
+                // 查询分类是否存在
+                let categoryDetail = await Category.findOne({
+                    where: {
+                        name: req.category,
+                    },
+                });
+                if (categoryDetail) {
+                    req.categoryId = categoryDetail.id;
+
+                } else {
+                    ctx.response.status = 412;
+                    ctx.body = statusCode.ERROR_412({
+                        msg: '缺少此文章分类，请重新创建分类: ' + req.category
+                    })
+                    return false;
+                }
+
                 const ret = await ArticleModel.createArticle(req);
                 const data = await ArticleModel.getArticleDetail(ret.id);
 
@@ -33,7 +55,7 @@ class articleController {
         } else {
             ctx.response.status = 412;
             ctx.body = statusCode.ERROR_412({
-                msg: '请检查参数！'
+                msg: '请检查参数2！'
             })
         }
     }

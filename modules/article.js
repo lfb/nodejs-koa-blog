@@ -2,6 +2,10 @@ const db = require('../config/db');
 const Sequelize = db.sequelize;
 const Op = Sequelize.Op;
 const Article = Sequelize.import('../schema/article');
+const Category = Sequelize.import('../schema/category');
+
+Category.hasMany(Article); // 将会添加 userId 到 Task 模型
+Article.belongsTo(Category, {as: 'Current', foreignKey: 'categoryId', constraints: false}); // 也将会添加 userId 到 Task 模型
 
 Article.sync({force: false});
 
@@ -18,7 +22,8 @@ class ArticleModel {
             introduce: data.introduce,
             category: data.category,
             banner: data.banner,
-            content: data.content
+            content: data.content,
+            categoryId: data.categoryId
         })
     }
 

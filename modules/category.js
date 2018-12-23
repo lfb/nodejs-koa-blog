@@ -1,6 +1,7 @@
 const db = require('../config/db');
 const Sequelize = db.sequelize;
 const Category = Sequelize.import('../schema/category');
+const Article = Sequelize.import('../schema/article');
 
 Category.sync({force: false});
 
@@ -40,7 +41,19 @@ class CategoryModel {
      */
     static async getCategoryList() {
         return await Category.findAll({
-            attributes: ['id', 'name']
+            attributes: ['id', 'name'],
+        })
+    }
+
+    // 查询ID分类下的所有文章
+    static async getCategoryArticleList(id) {
+        return await Category.findAll({
+            where: {
+                id,
+            },
+            include: [{
+                model: Article
+            }]
         })
     }
 

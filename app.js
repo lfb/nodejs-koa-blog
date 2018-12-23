@@ -31,7 +31,9 @@ app.use(jwt({secret: secret.sign}).unless({
         // 分类列表
         /^\/api\/v1\/category\/list/,
         // 文章搜索
-        /^\/api\/v1\/article\/search/
+        /^\/api\/v1\/article\/search/,
+        // 分类
+        /^\/api\/v1\/category\/article\/list/
     ]
 }))
 

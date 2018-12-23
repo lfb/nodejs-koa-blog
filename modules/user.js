@@ -1,6 +1,7 @@
 const db = require('../config/db')
 const Sequelize = db.sequelize
 const User = Sequelize.import('../schema/user.js')
+
 User.sync({force: false});
 
 class UserModel {

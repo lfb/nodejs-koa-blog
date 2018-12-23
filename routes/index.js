@@ -50,5 +50,7 @@ router.delete('/category/delete/:id', CategoryController.delete);
 router.put('/category/update/:id', CategoryController.update);
 // 获取分类列表
 router.get('/category/list', CategoryController.list);
+// 查询分类ID下的所有文章列表
+router.get('/category/article/list/:id', CategoryController.getCategoryArticle);
 
 module.exports = router
