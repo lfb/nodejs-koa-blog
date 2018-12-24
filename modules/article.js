@@ -4,8 +4,8 @@ const Op = Sequelize.Op;
 const Article = Sequelize.import('../schema/article');
 const Category = Sequelize.import('../schema/category');
 
-Category.hasMany(Article); // 将会添加 userId 到 Task 模型
-Article.belongsTo(Category, {as: 'Current', foreignKey: 'categoryId', constraints: false}); // 也将会添加 userId 到 Task 模型
+Category.hasMany(Article); // 将会添加 categoryId 到 Article 模型
+Article.belongsTo(Category, {as: 'Current', foreignKey: 'categoryId', constraints: false}); 
 
 Article.sync({force: false});
 
