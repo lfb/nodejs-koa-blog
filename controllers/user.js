@@ -4,7 +4,6 @@ const secret = require('../config/secret');
 const bcrypt = require('bcryptjs');
 const util = require('util')
 const verify = util.promisify(jwt.verify)
-const statusCode = require('../util/status-code')
 
 class UserController {
     /**
@@ -13,30 +12,59 @@ class UserController {
      * @returns {Promise<void>}
      */
     static async create(ctx) {
-        const user = ctx.request.body;
+        let {username, password, email, roles_id = 0} = ctx.request.body;
 
-        if (user.username && user.password) {
-            // 查询用户名是否重复
-            const existUser = await userModel.findUserByName(user.username)
+        let params = {
+            username,
+            password,
+            email
+        }
 
-            if (existUser) {
-                // 反馈存在用户名
-                ctx.response.status = 403;
-                ctx.body = statusCode.ERROR_403('用户已经存在')
-            } else {
+        // 检测参数是否存在为空
+        let errors = [];
+        for (let item in params) {
+            if (params[item] === undefined) {
+                let index = errors.length + 1;
+                errors.push("错误" + index + ": 参数: " + item + "不能为空")
+            }
+        }
 
+        if (errors.length > 0) {
+            ctx.response.status = 412;
+            ctx.body = {
+                code: 412,
+                message: errors
+            }
+            return false;
+        }
+
+        params.roles_id = roles_id;
+        // 查询用户名是否重复
+        const existUser = await userModel.findUserByName(params.username)
+
+        if (existUser) {
+            ctx.response.status = 403;
+            ctx.body = {
+                code: 403,
+                message: "用户已经存在"
+            }
+
+        } else {
+
+            try {
                 // 加密密码
                 const salt = bcrypt.genSaltSync();
-                const hash = bcrypt.hashSync(user.password, salt);
-                user.password = hash;
+                const hash = bcrypt.hashSync(params.password, salt);
+                params.password = hash;
 
                 // 创建用户
-                await userModel.create(user);
-                const newUser = await userModel.findUserByName(user.username)
+                await userModel.create(params);
+                const newUser = await userModel.findUserByName(params.username)
 
                 // 签发token
                 const userToken = {
                     username: newUser.username,
+                    email: newUser.email,
                     id: newUser.id
                 }
 
@@ -44,14 +72,21 @@ class UserController {
                 const token = jwt.sign(userToken, secret.sign, {expiresIn: '1h'});
 
                 ctx.response.status = 200;
-                ctx.body = statusCode.SUCCESS_200('创建用户成功', token)
-            }
-        } else {
+                ctx.body = {
+                    code: 200,
+                    message: `创建用户成功`,
+                    data: token
+                }
 
-            // 参数错误
-            ctx.response.status = 412;
-            ctx.body = statusCode.ERROR_412('创建失败，参数错误');
+            } catch (err) {
+                ctx.response.status = 500;
+                ctx.body = {
+                    code: 500,
+                    message: err
+                }
+            }
         }
+
     }
 
     /**
@@ -63,23 +98,36 @@ class UserController {
         // 获取jwt
         const token = ctx.header.authorization;
 
-        if (token) {
-            let payload
-            try {
-                // 解密payload，获取用户名和ID
-                payload = await verify(token.split(' ')[1], secret.sign)
+        if (!token) {
+            ctx.response.status = 403;
+            ctx.body = {
+                code: 403,
+                message: "Headers Token不能为空"
+            }
+        }
 
-                const user = {
-                    id: payload.id,
-                    username: payload.username,
-                }
+        let payload
+        try {
+            // 解密payload，获取用户名和ID
+            payload = await verify(token.split(' ')[1], secret.sign)
+            const user = {
+                id: payload.id,
+                email: payload.email,
+                username: payload.username
+            }
 
-                ctx.response.status = 200;
-                ctx.body = statusCode.SUCCESS_200('查询成功', user)
-            } catch (err) {
+            ctx.response.status = 200;
+            ctx.body = {
+                code: 200,
+                message: '查询成功！',
+                data: user
+            }
 
-                ctx.response.status = 412;
-                ctx.body = statusCode.ERROR_412('查询失败，authorization error!')
+        } catch (err) {
+            ctx.response.status = 500;
+            ctx.body = {
+                code: 500,
+                message: err
             }
         }
     }
@@ -90,17 +138,44 @@ class UserController {
      * @returns {Promise.<void>}
      */
     static async delete(ctx) {
-        let id = ctx.params.id;
+        let {id} = ctx.params;
 
-        if (id && !isNaN(id)) {
+        // 检测是否传入ID
+        if (!id) {
+            ctx.response.status = 412;
+            ctx.body = {
+                code: 412,
+                message: `ID不能为空`
+            }
+
+            return false;
+        }
+
+        if (isNaN(id)) {
+            ctx.response.status = 412;
+            ctx.body = {
+                code: 412,
+                message: `请传入正确的ID`
+            }
+
+            return false;
+        }
+
+        try {
             await userModel.delete(id);
 
             ctx.response.status = 200;
-            ctx.body = statusCode.SUCCESS_200('删除用户成功')
-        } else {
+            ctx.body = {
+                code: 200,
+                message: "删除成功"
+            }
 
-            ctx.response.status = 412;
-            ctx.body = statusCode.ERROR_412('用户ID必须传')
+        } catch (err) {
+            ctx.response.status = 500;
+            ctx.body = {
+                code: 500,
+                message: err
+            }
         }
     }
 
@@ -110,36 +185,50 @@ class UserController {
      * @returns {Promise.<void>}
      */
     static async login(ctx) {
-        const data = ctx.request.body
+        const {username, email, password} = ctx.request.body
         // 查询用户
-        const user = await userModel.findUserByName(data.username)
-        // 判断用户是否存在
-        if (user) {
-            // 判断前端传递的用户密码是否与数据库密码一致
-            if (bcrypt.compareSync(data.password, user.password)) {
-                // 用户token
-                const userToken = {
-                    username: user.username,
-                    id: user.id
-                }
-                // 签发token
-                const token = jwt.sign(userToken, secret.sign, {expiresIn: '1h'});
+        const userDetail = await userModel.findUserByName(username)
 
-                ctx.response.status = 200;
-                ctx.body = statusCode.SUCCESS_200('登录成功', {
-                    id: user.id,
-                    username: user.username,
-                    token: token
-                })
-            } else {
-
-                ctx.response.status = 412;
-                ctx.body = statusCode.ERROR_412('用户名或密码错误');
-            }
-        } else {
-
+        if (!userDetail) {
             ctx.response.status = 403;
-            ctx.body = statusCode.ERROR_403('用户不存在');
+            ctx.body = {
+                code: 403,
+                message: "用户不存在"
+            }
+
+            return false;
+        }
+
+
+        // 判断前端传递的用户密码是否与数据库密码一致
+        if (bcrypt.compareSync(password, userDetail.password)) {
+            // 用户token
+            const userToken = {
+                username: userDetail.username,
+                id: userDetail.id,
+                email: userDetail.email,
+            }
+            // 签发token
+            const token = jwt.sign(userToken, secret.sign, {expiresIn: '1h'});
+
+            ctx.response.status = 200;
+            ctx.body = {
+                code: 200,
+                message: "登录成功",
+                data: {
+                    id: userDetail.id,
+                    username: userDetail.username,
+                    email: userDetail.email,
+                    token: token
+                }
+            }
+
+        } else {
+            ctx.response.status = 401;
+            ctx.body = {
+                code: 401,
+                message: "用户名或密码错误"
+            }
         }
     }
 
@@ -148,19 +237,23 @@ class UserController {
      * @param ctx
      * @returns {Promise.<void>}
      */
-    static async getUserList(ctx) {
-        let userList = ctx.request.body;
-
-        if (userList) {
+    static
+    async getUserList(ctx) {
+        try {
             const data = await userModel.findAllUserList();
 
             ctx.response.status = 200;
-            ctx.body = statusCode.SUCCESS_200('查询成功', data)
-        } else {
-
-            ctx.response.status = 412;
-            ctx.body = statusCode.ERROR_412('获取失败')
-
+            ctx.body = {
+                code: 200,
+                message: "获取成功",
+                data
+            }
+        } catch (err) {
+            ctx.response.status = 500;
+            ctx.body = {
+                code: 500,
+                message: err
+            }
         }
     }
 }

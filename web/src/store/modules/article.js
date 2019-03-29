@@ -1,14 +1,10 @@
 import article from '../../api/article'
 
 const state = {
-  // 文章列表
+  // 文章
   articleList: [],
-  // 推荐文章列表
-  recommendArticleList: [],
-  // 页码
-  pagination: null,
   // 文章详情
-  articleDetail: null
+  articleDetail: null,
 };
 
 const mutations = {
@@ -16,14 +12,10 @@ const mutations = {
   SET_ARTICLE_LIST(state, data) {
     state.articleList = data
   },
-  // 推荐文章列表
-  SET_RECOMMEND_ARTICLE_LIST(state, data) {
-    state.recommendArticleList = data
-  },
-  // 文章详情
+  // 设置文章详情
   SET_ARTICLE_DETAIL(state, data) {
-    state.articleDetail = data;
-  }
+    state.articleDetail = data
+  },
 };
 
 const actions = {
@@ -37,53 +29,35 @@ const actions = {
    */
   async getArticleList({state, commit}, params) {
     let ret = await article.list(params);
-    commit("SET_ARTICLE_LIST", ret.data.data);
 
-    return ret.data.data;
+    commit('SET_ARTICLE_LIST', ret.data.data.data);
+
+    return ret.data.data.data;
   },
 
   /**
    * 获取文章详情信息
    * @param state
    * @param commit
-   * @param id 文章ID
    * @returns {Promise<void>}
    */
   async getArticleDetail({state, commit}, id) {
-    const ret = await article.detail(id);
-    commit("SET_ARTICLE_DETAIL", ret.data.data.data);
+    let ret = await article.detail(id);
+    commit('SET_ARTICLE_DETAIL', ret);
 
-    return ret.data.data.data;
+    return ret;
   },
-
   /**
-   * 搜索文章
+   * 搜索文章详情信息
    * @param state
    * @param commit
-   * @param params
-   * @return {Promise<void>}
+   * @returns {Promise<void>}
    */
   async searchArticle({state, commit}, params) {
     let ret = await article.search(params);
-    return ret.data.data;
-  },
+    commit('SET_ARTICLE_LIST', ret);
 
-  /**
-   * 搜索推荐文章
-   * @param state
-   * @param commit
-   * @param params
-   * @return {Promise<*>}
-   */
-  async recommendArticle({state, commit}, params) {
-    if (state.recommendArticleList.length > 0) {
-      return state.recommendArticleList;
-    }else {
-      let ret = await article.list(params);
-      commit("SET_RECOMMEND_ARTICLE_LIST", ret.data.data.data);
-
-      return ret.data.data;
-    }
+    return ret;
   }
 };
 

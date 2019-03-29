@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-Vue.use(Router);
+Vue.use(Router)
 
 export default new Router({
   // 哈斯
@@ -15,18 +15,51 @@ export default new Router({
     }
   },
   routes: [
-    // 文章首页
     {
+      // 重定向首页
       path: '/',
+      redirect: '/article'
+    },
+    {
+      // 文章列表
+      path: '/article',
       component(resolve) {
         require(['../views/article/list.vue'], resolve);
       }
     },
-    // 文章内容
     {
+      // 文章详情
       path: '/article/detail/:id',
       component(resolve) {
         require(['../views/article/detail.vue'], resolve);
+      }
+    },
+    {
+      // 资源
+      path: '/source',
+      component(resolve) {
+        require(['../views/source/list.vue'], resolve);
+      }
+    },
+    {
+      // 域名
+      path: '/domain',
+      component(resolve) {
+        require(['../views/domain/list.vue'], resolve);
+      }
+    },
+    {
+      // 生活
+      path: '/life',
+      component(resolve) {
+        require(['../views/life/list.vue'], resolve);
+      }
+    },
+    {
+      // 关于我
+      path: '/about',
+      component(resolve) {
+        require(['../views/about/index.vue'], resolve);
       }
     }
   ]

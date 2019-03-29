@@ -6,13 +6,10 @@
     <FormItem label="文章作者" prop="author">
       <Input v-model="articleData.author" placeholder="author"></Input>
     </FormItem>
-    <FormItem label="文章图片" prop="banner">
-      <Input v-model="articleData.banner" placeholder="banner"></Input>
-    </FormItem>
     <FormItem label="文章分类" prop="category">
       <Select
         v-if="categoryList.length > 0"
-        v-model="articleData.category"
+        v-model="articleData.category_id"
         placeholder="Select category"
         style="position:relative;z-index: 9999">
         <Option
@@ -23,10 +20,19 @@
         </Option>
       </Select>
     </FormItem>
+    <FormItem label="文章标签" prop="introduce">
+      <Input v-model="articleData.tag" type="textarea" :autosize="{minRows: 2,maxRows: 5}"
+             placeholder="tag"></Input>
+    </FormItem>
+    <FormItem label="文章图片" prop="banner">
+      <upload-images/>
+      <!--      <Input v-model="articleData.banner" placeholder="banner"></Input>-->
+    </FormItem>
     <FormItem label="文章简介" prop="introduce">
       <Input v-model="articleData.introduce" type="textarea" :autosize="{minRows: 2,maxRows: 5}"
              placeholder="introduce"></Input>
     </FormItem>
+
     <FormItem label="文章内容" prop="content">
       <mavon-editor v-model="articleData.content"/>
     </FormItem>
@@ -38,8 +44,12 @@
 </template>
 <script>
   import {mapState, mapActions} from 'vuex'
+  import UploadImages from '../../components/UploadImages'
 
   export default {
+    components: {
+      UploadImages
+    },
     computed: {
       ...mapState({
         categoryList: state => state.category.categoryList
@@ -50,7 +60,8 @@
         articleData: {
           title: '',
           author: '梁凤波',
-          category: '',
+          category_id: '',
+          tag: '',
           banner: '',
           introduce: '',
           content: ''
@@ -62,7 +73,10 @@
           author: [
             {required: true, message: 'Author cannot be empty', trigger: 'blur'}
           ],
-          category: [
+          category_id: [
+            {required: true, message: 'Please select the category', trigger: 'change'}
+          ],
+          tag: [
             {required: true, message: 'Please select the category', trigger: 'change'}
           ],
           banner: [
@@ -80,7 +94,6 @@
     },
     created() {
       this.getCategory();
-
     },
     methods: {
       ...mapActions({

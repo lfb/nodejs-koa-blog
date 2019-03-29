@@ -26,6 +26,7 @@
     "mysql": "^2.15.0",
     "mysql2": "^1.5.3",
     "pug": "^2.0.0-rc.1",
+    "qiniu": "^7.2.1",
     "sequelize": "^4.37.10"
   },
   "devDependencies": {

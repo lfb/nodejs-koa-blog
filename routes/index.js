@@ -2,6 +2,7 @@ const Router = require('koa-router')
 const UserController = require('../controllers/user')
 const ArticleController = require('../controllers/article')
 const CategoryController = require('../controllers/category')
+const UploadTokenController = require('../controllers/upload')
 
 const router = new Router({
     prefix: '/api/v1'
@@ -15,11 +16,16 @@ router.post('/user/register', UserController.create);
 // 用户登录
 router.post('/user/login', UserController.login);
 // 删除用户
-router.delete('/user/delete/:id', UserController.delete);
+router.delete('/user/detail/:id', UserController.delete);
 // 获取用户信息
 router.get('/user/info', UserController.getUserInfo);
 // 获取用户列表
 router.get('/user/list', UserController.getUserList);
+
+/**
+ * 上传token
+ */
+router.get('/upload/token', UploadTokenController.getUploadToken)
 
 /**
  * 文章接口
@@ -51,6 +57,6 @@ router.put('/category/update/:id', CategoryController.update);
 // 获取分类列表
 router.get('/category/list', CategoryController.list);
 // 查询分类ID下的所有文章列表
-router.get('/category/article/list/:id', CategoryController.getCategoryArticle);
+router.get('/category/article/:id', CategoryController.getCategoryArticle);
 
 module.exports = router

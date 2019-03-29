@@ -39,6 +39,14 @@
             key: 'name'
           },
           {
+            title: '父分类',
+            key: 'parent_id'
+          },
+          {
+            title: '层级',
+            key: 'z_index'
+          },
+          {
             title: '操作',
             key: 'action',
             width: 150,

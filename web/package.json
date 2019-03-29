@@ -12,11 +12,6 @@
   "dependencies": {
     "axios": "^0.18.0",
     "lib-flexible": "^0.3.2",
-    "mavon-editor": "^2.6.17",
-    "muse-ui": "^3.0.1",
-    "muse-ui-loading": "^0.2.0",
-    "muse-ui-progress": "^0.1.0",
-    "muse-ui-toast": "^0.3.0",
     "node-sass": "^4.10.0",
     "px2rem-loader": "^0.1.9",
     "qs": "^6.5.2",

@@ -39,8 +39,25 @@
             key: 'title'
           },
           {
-            title: '推荐',
-            key: 'recommend',
+            title: '简介',
+            key: "introduction",
+            width: 120,
+            align: 'center'
+          },
+          {
+            title: '标签',
+            key: 'tag',
+            width: 120,
+            align: 'center'
+          }, {
+            title: '浏览',
+            key: "browser",
+            width: 120,
+            align: 'center'
+          },
+          {
+            title: '软删除',
+            key: "is_del",
             width: 120,
             align: 'center'
           },

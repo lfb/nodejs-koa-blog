@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+// 医生
 
 Vue.use(Vuex);
 

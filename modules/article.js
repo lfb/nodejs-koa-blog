@@ -4,8 +4,8 @@ const Op = Sequelize.Op;
 const Article = Sequelize.import('../schema/article');
 const Category = Sequelize.import('../schema/category');
 
-Category.hasMany(Article); // 将会添加 categoryId 到 Article 模型
-Article.belongsTo(Category, {as: 'Current', foreignKey: 'categoryId', constraints: false}); 
+Category.hasMany(Article); // 将会添加 category_id 到 Article 模型
+Article.belongsTo(Category, {foreignKey: 'categoryId'});
 
 Article.sync({force: false});
 
@@ -16,39 +16,21 @@ class ArticleModel {
      * @returns {Promise<*>}
      */
     static async createArticle(data) {
-        return await Article.create({
-            title: data.title,
-            author: data.author,
-            introduce: data.introduce,
-            category: data.category,
-            banner: data.banner,
-            content: data.content,
-            categoryId: data.categoryId
-        })
+        return await Article.create(data)
     }
 
     /**
      * 更新文章数据
-     * @param id  用户ID
-     * @param data  事项的状态
-     * @returns {Promise.<boolean>}
+     * @param id
+     * @param data
      */
     static async updateArticle(id, data) {
-        await Article.update({
-            title: data.title,
-            author: data.author,
-            introduce: data.introduce,
-            category: data.category,
-            banner: data.banner,
-            recommend: data.recommend,
-            content: data.content
-        }, {
+        return await Article.update(data, {
             where: {
                 id
             },
-            fields: ['title', 'author', 'introduce', 'category', 'banner', 'content', 'recommend']
+            fields: ['title', 'author', 'introduction', 'categoryId', 'is_del', 'tag', 'cover', 'content']
         });
-        return true
     }
 
     /**
@@ -57,19 +39,41 @@ class ArticleModel {
      * @return {Promise<void>}
      */
     static async search(params) {
-        return await Article.findAll({
-            raw: true,
-            'order': [
-                ['id', 'DESC']
-            ],
+        let {page = 1, keyword} = params;
+
+        let ret = await Article.findAndCountAll({
+            limit: 10,//每页10条
+            offset: (page - 1) * 10,
             where: {
                 title: {
                     // 模糊查询
-                    [Op.like]: '%' + params.keyword + '%'
+                    [Op.like]: '%' + keyword + '%'
                 }
             },
-            attributes: {exclude: ['content']}
-        })
+            include: {
+                model: Category,
+                where: {
+                    categoryId: Sequelize.col('article.categoryId')
+                }
+            },
+            'order': [
+                ['id', 'DESC']
+            ],
+            attributes: {exclude: ['content', 'is_del']}
+        });
+
+
+        return {
+            code: 200,
+            data: ret.rows,
+            meta: {
+                current_page: parseInt(page),
+                per_page: 10,
+                count: ret.count,
+                total: ret.count,
+                total_pages: Math.ceil(ret.count / 10),
+            }
+        }
     }
 
     /**
@@ -78,19 +82,23 @@ class ArticleModel {
      */
     static async getArticleList(params) {
         let ret = null;
-        let {page = 1, category, title, recommend} = params;
+        let {page = 1, category_id, title} = params;
 
-        if (category) {
+        if (category_id) {
             ret = await Article.findAndCountAll({
                 limit: 10,//每页10条
                 offset: (page - 1) * 10,
                 where: {
-                    category: category
+                    category_id: category_id
                 },
+                include: [{
+                    model: Category,
+                    where: {categoryId: Sequelize.col('article.categoryId')}
+                }],
                 'order': [
                     ['id', 'DESC']
                 ],
-                attributes: {exclude: ['content']}
+                attributes: {exclude: ['content', 'is_del']}
             });
 
         } else if (title) {
@@ -100,23 +108,14 @@ class ArticleModel {
                 where: {
                     title
                 },
+                include: [{
+                    model: Category,
+                    where: {categoryId: Sequelize.col('article.categoryId')}
+                }],
                 'order': [
                     ['id', 'DESC']
                 ],
-                attributes: {exclude: ['content']}
-            });
-
-        } else if (recommend) {
-            ret = await Article.findAndCountAll({
-                limit: 10,//每页10条
-                offset: (page - 1) * 10,
-                where: {
-                    recommend
-                },
-                'order': [
-                    ['id', 'DESC']
-                ],
-                attributes: {exclude: ['content']}
+                attributes: {exclude: ['content', 'is_del']}
             });
 
         } else {
@@ -126,7 +125,11 @@ class ArticleModel {
                 'order': [
                     ['id', 'DESC']
                 ],
-                attributes: {exclude: ['content']}
+                include: [{
+                    model: Category,
+                    where: {categoryId: Sequelize.col('article.categoryId')}
+                }],
+                attributes: {exclude: ['content', 'is_del']}
 
             });
         }
@@ -154,6 +157,11 @@ class ArticleModel {
             where: {
                 id,
             },
+            include: [{
+                model: Category,
+                where: {categoryId: Sequelize.col('article.categoryId')}
+            }],
+            attributes: {exclude: ['is_del']}
         })
     }
 

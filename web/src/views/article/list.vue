@@ -1,341 +1,415 @@
 <template>
-  <!--article-->
-  <!--@author: 梁凤波-->
-  <!--@date  2018/11/21 08:43-->
-  <section class="wrap">
-    <!--column-->
-    <article class="column">
-      <sidebar-view @on-search="search" @on-change="fetchData"/>
+  <section class="container">
+
+    <section :class="categoryClass" id="category">
+      <ul class="category-box" v-if="categoryList.length > 0">
+        <li v-for="(cate, index) in categoryList"
+            @click="changCategory(cate.id, index)"
+            :class="categoryActiveIndex === index ? 'category-item category-item-active' : 'category-item'"
+            :key="index">
+          <img :src="cate.icon" :alt="cate.title">
+          {{cate.name}}
+          <span v-if="cate.children"
+                :class="categoryActiveIndex === index
+                ? 'category-more-icon category-more-icon-active'
+                : 'category-more-icon'"></span>
+          <div class="category-children" v-if="cate.sub_category">
+            <p class="category-children-item"
+               v-for="(child, index2) in cate.sub_category"
+               @click.stop="_getCategoryArticle(child.id)"
+               :key="index2">
+              {{child.name}}
+            </p>
+          </div>
+        </li>
+      </ul>
+    </section>
+
+    <article :class="articleClass" id="article">
+      <ul class="article-box" v-if="list.length > 0">
+        <li class="article-item" v-for="(item, index) in list"
+            @click="toPathLink('/article/detail/' + item.id)">
+
+          <div class="article-content">
+            <h1 class="article-title">{{item.title}}</h1>
+            <div class="article-introduction">
+              {{item.introduction}}
+            </div>
+            <div class="article-info">
+              <span class="article-category" v-if="item.category">
+                {{item.category.name}}
+              </span>
+              <span class="article-tag">{{item.tag}}</span>
+              <span class="article-browse">阅读：{{item.browser}}次</span>
+              <span class="article-author">{{item.author}}</span>
+              <span class="article-author">{{item.createdAt}}</span>
+            </div>
+          </div>
+
+          <div class="article-img">
+            <img v-lazy="item.cover" alt="img">
+          </div>
+        </li>
+      </ul>
     </article>
 
-    <!--article-->
-    <article class="article">
-      <nav class="article-nav">
-        <ul class="article-nav-box">
-          <li class="article-nav-item">文章列表</li>
-          <!--<li class="article-nav-item">前端</li>-->
-          <!--<li class="article-nav-item">JAVA</li>-->
-        </ul>
-      </nav>
-      <ul class="article-empty" v-if="list.length === 0">
-        很抱歉，此类文章作者正在写作的路上..
-      </ul>
-      <ul class="article-box" v-else>
-        <mu-container ref="container" class="demo-loadmore-content">
-          <mu-load-more :loading="loading" @load="load">
-            <li v-for="(item, index) in list" :key="index">
-              <router-link class="article-item" :to="{path: '/article/detail/' + item.id}">
-                <div class="article-content">
-                  <h2 class="article-title">
-                    {{item.title}}
-                  </h2>
-                  <div class="article-introduce">
-                    {{item.introduce}}
-                  </div>
-                  <div class="article-info">
-                    <span class="article-info_category">{{item.category}}</span>
-                    <span class="article-info_author">{{item.author}}</span>
-                    <span class="article-info_timer">{{item.createdAt}}</span>
-                  </div>
-                </div>
-                <div class="article-img">
-                  <img v-lazy="item.banner" alt="IMG">
-                </div>
-              </router-link>
-            </li>
-            <li class="all-article" v-if="isAll">
-              数据加载完毕
-            </li>
-          </mu-load-more>
-        </mu-container>
-      </ul>
-    </article>
-    <article class="advertising">
-      <!--<div class="advertising-img">-->
-      <!--<img src="../../assets/images/BOBLOG-02.png" alt="">-->
-      <!--</div>-->
-    </article>
   </section>
 </template>
-
 <script>
-  import {mapState, mapActions} from 'vuex';
-  import SidebarView from './Sidebar'
-  import merge from 'webpack-merge'
-  // import Pagination from '../../components/Pagination'
-  // import Navigation from '../../components/Navigation'
+  import {mapState, mapActions} from 'vuex'
 
   export default {
-    components: {
-      SidebarView
-    },
     data() {
       return {
-        list: [],
-        page: null,
-        pageIndex: 1,
-        category: this.$route.query.category,
-        loading: false,
-        isAll: false
+        categoryActiveIndex: 0,
+        // 是否分类固定
+        isCategoryFixed: false,
+        categoryList: []
       }
-    },
-    computed: {
-      ...mapState({})
     },
     created() {
-      if (this.category) {
-        this.fetchData({category: this.category});
-
-      } else {
-        this.fetchData();
+      this._getArticleList();
+    },
+    mounted() {
+      // 监听滚动条
+      window.addEventListener('scroll', this.handleScroll)
+    },
+    destroyed() {
+      // 移除滚动条
+      window.removeEventListener('scroll', this.handleScroll)
+    },
+    computed: {
+      ...mapState({
+        list: state => state.article.articleList
+      }),
+      // 分类
+      categoryClass() {
+        return this.isCategoryFixed ? 'category category-fixed' : 'category'
+      },
+      // 文章
+      articleClass() {
+        return this.isCategoryFixed ? 'article article-margin-left' : 'article'
       }
-
+    },
+    created() {
+      this._getArticleList();
+      this._getCategoryList();
     },
     methods: {
       ...mapActions({
         getArticleList: 'article/getArticleList',
-        searchArticle: 'article/searchArticle'
+        getCategoryList: 'category/getCategoryList',
+        getCategoryArticle: 'category/getCategoryArticle'
       }),
-      // 获取数据
-      async fetchData(params = {}) {
-        const loading = this.$loading({
-          text: '加载中..',
-          color: '#2d8cf0'
-        });
+      async _getArticleList() {
         try {
-          this.$progress.start();
+          await this.getArticleList();
 
-          const ret = await this.getArticleList(params);
-          if (params.page) {
-            this.list.push(ret.data);
-
-          } else {
-            this.list = ret.data;
-          }
-          this.page = ret.meta;
-
-          this.$progress.done();
-          loading.close();
-          this.loading = false;
+          console.log(this.list);
 
         } catch (e) {
-          loading.close();
-          this.$progress.done();
-          this.loading = false;
+          console.log(e);
         }
       },
-
-      // 滚动加载
-      load() {
-        if (this.isAll) return false;
-
-        let page = this.page;
-        if (page.current_page && page.current_page === page.total_pages) {
-          this.$toast.info('已加载完毕数据~');
-          this.isAll = true;
-          return false;
-
-        } else {
-          // 重新查询数据
-          this.isAll = false;
-          this.loading = true;
-          this.pageIndex += 1;
-          this.handlePage(this.pageIndex);
-        }
-      },
-
-      // 处理页码
-      handlePage(page) {
-        let query = Object.assign({}, this.$route.query);
-        query.page = page;
-
-        // 动态改变路由订单状态参数orderStatus
-        this.$router.push({
-          query: merge(this.$route.query, query)
-        });
-
-        this.fetchData(query);
-
-      },
-
-      // 重新获取数据
-      reloadData() {
-        this.routerLink('/');
-        this.fetchData();
-      },
-
-      /**
-       * 搜索文章
-       */
-      async search(params) {
-        const loading = this.$loading({
-          text: '加载中..',
-          color: '#2d8cf0'
-        });
+      // 获取分类
+      async _getCategoryList() {
         try {
-          this.$progress.start();
-          this.list = await this.searchArticle(params);
-          loading.close();
-          this.$progress.done();
+          const ret = await this.getCategoryList({
+            include: 'tree'
+          });
+          this.categoryList = ret.data.data;
 
         } catch (e) {
-          loading.close();
-          this.$progress.done();
-
+          console.log(e);
         }
       },
 
-      /**
-       * 路由跳转
-       * @param path
-       */
-      routerLink(path) {
-        this.$router.push(path);
+      // 分类下取文章
+      async _getCategoryArticle(id) {
+        try {
+          let res = await this.getCategoryArticle(id);
+
+          let arr = []
+          res.data.data.forEach(item => {
+            arr = item.articles.map(children => {
+              return children;
+            })
+          })
+
+          this.$store.commit('article/SET_ARTICLE_LIST', arr)
+
+        } catch (e) {
+          console.log(e);
+        }
+      },
+      // 处理滚动条
+      handleScroll() {
+        let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
+        let offsetTop = document.querySelector('#article').offsetTop;
+        this.isCategoryFixed = !!(scrollTop > offsetTop)
+      },
+      // 改变分类索引
+      changCategory(id, index) {
+        this.categoryActiveIndex = index;
+        this._getCategoryArticle(id);
+      },
+      // 路由跳转
+      toPathLink(path) {
+        this.$router.push(path)
       }
     }
   }
 </script>
 
 <style lang="scss" scoped>
-  .wrap {
+
+  .container {
+    box-sizing: content-box;
+    max-width: 1264px;
     display: flex;
-    width: 100%;
-    flex-direction: row;
+    margin: 0 auto;
     background: #fff;
-  }
 
-  .column {
-  }
+    & .category {
+      width: 220px;
 
-  .article {
-    flex: 1;
-    min-height: 100vh;
-    margin-left: 560px;
-  }
+      & .category-box {
+        margin: 32px 0;
 
-  .article-nav {
-    padding: 0 32px;
-  }
+        & .category-item {
+          position: relative;
+          cursor: pointer;
+          text-align: center;
+          color: #464c5b;
+          padding-bottom: 32px;
+          font-size: 18px;
+          display: flex;
+          align-items: center;
+          border-radius: 6px;
 
-  .article-nav-box {
-    display: flex;
-    height: 99px;
-    padding: 0 16px;
-    line-height: 99px;
-    border-bottom: 1px solid #f0f0f0;
-  }
+          & img {
+            width: 28px;
+            margin-right: 4px;
+          }
 
-  .article-nav-item {
-    font-size: 20px;
-    color: #262626;
-    margin-right: 32px;
-  }
+          &:hover .category-children {
+            display: block;
+          }
 
-  .article-box {
-    box-sizing: border-box;
-    padding: 32px;
-    background: #fff;
-  }
+          &:hover {
+            color: #2d8cf0;
+          }
 
-  .article-header {
-    width: 100%;
-    font-size: 24px;
-    font-weight: 800;
-    height: 100px;
-    color: #fff;
-    text-align: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+          &:hover .category-more-icon {
+            color: #2d8cf0;
+            border-color: #2d8cf0;
+            margin-top: 5px;
+            animation: categoryArrow 0.2s ease both;
+          }
 
-  .article-header-img {
-    height: 100px;
-    & img {
-      height: 100px;
-    }
-  }
 
-  .article-item {
-    border-radius: 6px;
-    padding: 16px;
-    display: flex;
-    color: #1c2438;
-    cursor: pointer;
-    margin-bottom: 16px;
-    border: 1px solid #eee;
-    background: #fff;
-    &:hover {
-      color: #2d8cf0;
-      border-bottom: 1px solid #f0f0f0;
-      box-shadow: 4px 4px 4px #f0f0f0;
-    }
-  }
+          & .category-more-icon {
+            display: inline-block;
+            border-right: 1px solid #808695;
+            border-bottom: 1px solid #808695;
+            width: 10px;
+            height: 10px;
+            margin-top: -5px;
+            margin-left: 8px;
+            transform: rotate(45deg);
+          }
 
-  .article-content {
-    flex: 1;
-    padding: 0 16px;
-  }
+          & .category-more-icon-active {
+            border-color: #2d8cf0;
+          }
 
-  .article-img {
-    width: 120px;
-    & img {
-      width: 100%;
-      border-radius: 5px;
-    }
-  }
+          & .category-children {
+            animation: showCategoryAnimation 0.2s ease both;
+            overflow: hidden;
+            color: #464c5b;
+            display: none;
+            position: absolute;
+            left: 0;
+            top: 48px;
+            line-height: 56px;
+            width: 80%;
+            border: 1px solid #dcdee2;
+            border-radius: 6px;
+            z-index: 8888;
+            padding: 16px 0;
+            background: #fff;
+            text-align: left;
 
-  .article-title {
-    font-size: 24px;
-  }
+            & p {
+              cursor: pointer;
+              padding: 0 16px;
 
-  .article-introduce {
-    font-size: 18px;
-    padding: 16px 0;
-    color: #404040;
-  }
+              &:hover {
+                color: #2d8cf0;
+                background: #f8f8f9;
+              }
+            }
+          }
+        }
 
-  .article-info {
-    & span {
-      color: #989898;
-      font-size: 16px;
-      margin-right: 16px;
-      &.article-info_category {
-        color: #2d8cf0;
-        display: inline-block;
-        padding: 5px 25px;
-        border-radius: 32px;
-        background: rgba(51, 119, 255, .1);
+        & .category-item-active {
+          color: #2d8cf0;
+        }
       }
     }
-  }
 
-  .advertising {
-    width: 320px;
-    text-align: center;
-    border-radius: 4px;
-  }
-
-  .article-empty, .all-article {
-    text-align: center;
-    padding: 32px 0;
-    font-size: 16px;
-    color: #989898;
-  }
-
-  /*.advertising-img {*/
-  /*width: 100%;*/
-  /*& img {*/
-  /*width: 100%;*/
-  /*}*/
-  /*}*/
-  @media screen and (min-width: 200px) and (max-width: 750px) {
-    .wrap {
-      flex-direction: column;
+    & .category-fixed {
+      position: fixed;
+      width: 220px;
+      top: 96px;
     }
-    .article {
+
+    & .article {
+      box-sizing: border-box;
       flex: 1;
-      margin-left: 0;
+
+      & .article-item {
+        cursor: pointer;
+        padding: 32px 0;
+        display: flex;
+        border-bottom: 1px solid #e8eaec;
+        animation: showArticleAnimation 0.66s ease both;
+        @for $i from 1 to 11 {
+          &:nth-child(#{$i}) {
+            animation-delay: (0.2s * $i);
+          }
+        }
+
+        &:hover .article-title {
+          color: #3399ff;
+          text-decoration: underline;
+        }
+
+
+        &:last-child {
+          border-bottom: none;
+        }
+      }
+
+      & .article-img {
+        width: 150px;
+        margin-left: 32px;
+
+        & img {
+          width: 100%;
+          border-radius: 5px;
+        }
+      }
+
+      .article-content {
+        flex: 1;
+      }
+
+      & .article-title {
+        color: #464c5b;
+        font-size: 24px;
+        margin: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      & .article-introduction {
+        font-size: 16px;
+        color: #657180;
+        padding: 16px 0;
+      }
+
+      & .article-info {
+        width: 100%;
+
+        & span {
+          display: inline-block;
+          margin-right: 10px;
+          font-size: 14px;
+          color: #9ea7b4;
+        }
+
+        & span.article-category,
+        & span.article-tag {
+          background: #e8eaec;
+          padding: 2px 16px;
+          border-radius: 32px;
+          background: rgba(51, 119, 255, .1);
+
+          /*padding: 2px 16px;*/
+          /*color: #5cadff;*/
+          /*border-radius: 32px;*/
+          /*display: inline-block;*/
+          /*background: rgba(51, 119, 255, .1);*/
+        }
+      }
+    }
+
+    & .article-margin-left {
+      margin-left: 220px;
+    }
+
+    @keyframes showArticleAnimation {
+      0% {
+        opacity: 0;
+        filter: alpha(opacity=0);
+        transform: scale(0, 0);
+      }
+      25% {
+        opacity: 0.25;
+        filter: alpha(opacity=25);
+      }
+      50% {
+        opacity: 0.5;
+        filter: alpha(opacity=50);
+      }
+      75% {
+        opacity: 0.75;
+        filter: alpha(opacity=75);
+      }
+
+      100% {
+        opacity: 1;
+        filter: alpha(opacity=100);
+        transform: scale(1, 1);
+      }
+    }
+
+    @keyframes showCategoryAnimation {
+      0% {
+        opacity: 0;
+        height: 0;
+        filter: alpha(opacity=0);
+      }
+      25% {
+        opacity: 0.25;
+        filter: alpha(opacity=25);
+      }
+      50% {
+        opacity: 0.5;
+        filter: alpha(opacity=50);
+      }
+      75% {
+        opacity: 0.75;
+        filter: alpha(opacity=75);
+      }
+
+      100% {
+        opacity: 1;
+        height: auto;
+        filter: alpha(opacity=100);
+      }
+    }
+
+    @keyframes categoryArrow {
+      0% {
+        transform: rotate(45deg);
+      }
+
+      100% {
+        transform: rotate(-135deg);
+      }
     }
   }
 </style>

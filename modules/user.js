@@ -11,11 +11,13 @@ class UserModel {
      * @returns {Promise<boolean>}
      */
     static async create(user) {
-        let {username, password} = user;
+        let {username, password, email, roles_id} = user;
 
         await User.create({
             username,
-            password
+            password,
+            email,
+            roles_id
         })
         return true
     }
@@ -40,7 +42,7 @@ class UserModel {
      */
     static async findAllUserList() {
         return await User.findAll({
-            attributes: ['id', 'username']
+            attributes: ['id', 'username', 'email']
         })
     }
 

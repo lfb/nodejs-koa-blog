@@ -12,7 +12,10 @@ Util.ajax.interceptors.request.use(config => {
    * 在这里做loading ...
    * @type {string}
    */
-
+  if (config.shouldLoading) {
+    // 开启loading
+    store.dispatch('loading/openLoading')
+  }
 
   // 获取token
   config.headers.common['Authorization'] = 'Bearer ' + Vue.ls.get("web-token");
@@ -36,12 +39,12 @@ Util.ajax.interceptors.response.use(response => {
     Vue.ls.set("web-token", newToken);
   }
   // 关闭loading
+  closeLoading()
 
   return response;
 
 }, error => {
   let response = error.response;
-
   if (response.status == 401) {
     // 处理401错误
 
@@ -56,6 +59,7 @@ Util.ajax.interceptors.response.use(response => {
 
   }
   // 关闭loading
+  closeLoading()
 
   return Promise.reject(response)
 

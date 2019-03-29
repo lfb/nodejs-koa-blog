@@ -28,6 +28,10 @@
             key: 'username'
           },
           {
+            title: '邮箱',
+            key: 'email'
+          },
+          {
             title: '操作',
             key: 'action',
             width: 150,
@@ -44,7 +48,7 @@
                   },
                   on: {
                     click: () => {
-                      this.show(params.index)
+                      this.show(params.list)
                     }
                   }
                 }, '修改'),
@@ -55,7 +59,7 @@
                   },
                   on: {
                     click: () => {
-                      this.remove(params.index)
+                      this.remove(params.list)
                     }
                   }
                 }, '删除')

@@ -12,9 +12,7 @@ class CategoryModel {
      * @returns {Promise<*>}
      */
     static async createCategory(data) {
-        return await Category.create({
-            name: data.name
-        })
+        return await Category.create(data)
     }
 
     /**
@@ -24,13 +22,11 @@ class CategoryModel {
      * @returns {Promise.<boolean>}
      */
     static async updateCategory(id, data) {
-        await Category.update({
-            name: data.name
-        }, {
+        await Category.update(data, {
             where: {
                 id
             },
-            fields: ['name']
+            fields: ['name', 'parent_id', 'icon', 'z_index']
         });
         return true
     }
@@ -41,7 +37,7 @@ class CategoryModel {
      */
     static async getCategoryList() {
         return await Category.findAll({
-            attributes: ['id', 'name'],
+            attributes: ['id', 'name', 'parent_id', 'icon', 'z_index'],
         })
     }
 
