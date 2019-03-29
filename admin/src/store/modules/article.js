@@ -82,9 +82,9 @@ const actions = {
    */
   async getArticleDetail({state, commit}, id) {
     const ret = await article.detail(id);
-    commit("SET_ARTICLE_DETAIL", ret.data.data.data);
+    commit("SET_ARTICLE_DETAIL", ret.data.data);
 
-    return ret.data.data.data;
+    return ret.data.data;
   },
 
   /**

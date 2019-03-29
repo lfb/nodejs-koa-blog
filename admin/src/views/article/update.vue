@@ -6,26 +6,29 @@
     <FormItem label="文章作者" prop="author">
       <Input v-model="articleData.author" placeholder="author"></Input>
     </FormItem>
+    <FormItem label="文章标签" prop="tag">
+      <Input v-model="articleData.tag" placeholder="tag"></Input>
+    </FormItem>
     <FormItem label="文章图片" prop="banner">
-      <Input v-model="articleData.banner" placeholder="banner"></Input>
+      <Input v-model="articleData.cover" placeholder="banner"></Input>
     </FormItem>
     <FormItem label="文章分类" prop="category">
       <Select
         v-if="categoryList.length > 0"
-        v-model="articleData.category"
+        v-model="articleData.categoryId"
         placeholder="Select category"
         style="position:relative;z-index: 9999">
         <Option
           v-for="(cate, key) in categoryList"
           :key="key"
-          :value="cate.name">
+          :value="cate.id">
           {{cate.name}}
         </Option>
       </Select>
     </FormItem>
     <FormItem label="文章简介" prop="introduce">
-      <Input v-model="articleData.introduce" type="textarea" :autosize="{minRows: 2,maxRows: 5}"
-             placeholder="introduce"></Input>
+      <Input v-model="articleData.introduction" type="textarea" :autosize="{minRows: 2,maxRows: 5}"
+             placeholder="introduction"></Input>
     </FormItem>
     <FormItem label="文章内容" prop="content">
       <mavon-editor v-model="articleData.content"/>
@@ -56,13 +59,15 @@
           author: [
             {required: true, message: 'Author cannot be empty', trigger: 'blur'}
           ],
-          category: [
+          categoryId: [
             {required: true, message: 'Please select the category', trigger: 'change'}
           ],
-          banner: [
-            {required: true, message: 'Banner cannot be empty', trigger: 'blur'}
+          tag: [
+            {required: true, message: 'tag cannot be empty', trigger: 'blur'}
+          ],cover: [
+            {required: true, message: 'cover cannot be empty', trigger: 'blur'}
           ],
-          introduce: [
+          introduction: [
             {required: true, message: 'Introduce cannot be empty', trigger: 'blur'}
           ],
           content: [
@@ -88,9 +93,11 @@
         try {
           const ret = await this.getArticleDetail(this.id);
           this.articleData = ret;
+          console.log(this.articleData);
           this.$Message.success('获取文章成功')
 
         } catch (e) {
+          console.log(e)
           this.$Message.error('获取文章失败')
         }
       },

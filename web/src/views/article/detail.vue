@@ -14,7 +14,15 @@
         </div>
 
         <div class="article-detail" id="article-detail">
-          {{detail.content}}
+          <mavon-editor
+            style="height: 100%"
+            :ishljs="true"
+            v-model="detail.content"
+            :defaultOpen="'preview'"
+            :editable="false"
+            :subfield="false"
+            :toolbarsFlag="false">
+          </mavon-editor>
         </div>
 
         <section class="article-comments">
@@ -44,7 +52,7 @@
         <div class="recommend">
           <h1 class="recommend-title">
             相关推荐
-            <img src="../../assets/recommend8.png" alt="recommend">
+            <!--            <img src="../../assets/recommend8.png" alt="recommend">-->
           </h1>
           <ul class="recommend-inner">
             <li class="recommend-item">
@@ -61,8 +69,13 @@
 </template>
 <script>
   import {mapState, mapActions} from 'vuex'
+  import {mavonEditor} from 'mavon-editor'
+  import 'mavon-editor/dist/css/index.css'
 
   export default {
+    components: {
+      mavonEditor
+    },
     data() {
       return {
         // 是否侧边栏
@@ -140,7 +153,7 @@
       animation: contentAnimation 0.36s 0.18s ease both;
 
       & .article-title {
-        font-size: 36px;
+        font-size: 38px;
         color: #464c5b;
       }
 
@@ -375,3 +388,21 @@
   }
 
 </style>
+<style>
+  .v-note-wrapper .v-note-panel {
+    box-shadow: none !important;
+  }
+
+  .v-note-wrapper .v-note-panel .v-note-show .v-show-content, .v-note-wrapper .v-note-panel .v-note-show .v-show-content-html {
+    background: #fff !important;
+  }
+
+  .v-note-wrapper .v-note-panel .v-note-edit.divarea-wrapper .content-input-wrapper {
+    padding: 0 !important;
+  }
+
+  .v-note-wrapper .v-note-panel .v-note-show .v-show-content, .v-note-wrapper .v-note-panel .v-note-show .v-show-content-html {
+    padding: 0!important;
+  }
+</style>
+

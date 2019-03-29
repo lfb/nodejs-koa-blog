@@ -36,13 +36,13 @@
           },
           {
             title: '文章标题',
-            key: 'title'
+            key: 'title',
+            width: 120,
           },
           {
             title: '简介',
             key: "introduction",
-            width: 120,
-            align: 'center'
+            align: 'left'
           },
           {
             title: '标签',

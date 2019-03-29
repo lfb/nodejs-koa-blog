@@ -12,9 +12,9 @@
       @imageuploading="uploadingImages"
       @errorhandle="uploadError"
       inputAccept='image/*'>
-      <button type="danger">
-        上传图片{{uploadTokenData.token}}
-      </button>
+      <Button type="primary">
+        {{isUpload ? '上传中..' : '上传图片'}}
+      </Button>
     </vue-core-image-upload>
   </section>
 </template>
@@ -24,19 +24,12 @@
   import VueCoreImageUpload from 'vue-core-image-upload';
 
   export default {
-    props: ['id'],
     components: {
       VueCoreImageUpload
     },
     data() {
       return {
-        showImg: false,
-        showFilesImgUrl: '',
-        files: {
-          id: '',
-          url: '',
-          key: ''
-        } // 上传到的图片
+        isUpload: false
       }
     },
     computed: {
@@ -57,34 +50,33 @@
         try {
           // 获取上传图片token
           await this.getUploadToken();
+
         } catch (e) {
+
         }
       },
 
       uploadError(res) {
-        alert(res)
+        this.$Message.error(res);
+        this.isUpload = false;
       },
 
       // 图片上传触发
       uploadingImages() {
-        console.log("上传中..");
+        this.isUpload = true;
       },
 
       // 获取上传图片到服务返回的数据
       uploadedImages(res) {
-        let files = this.files;
-        let id = this.id;
-        if (res.url && res.key) {
-          console.log("上传成功..");
 
-          // 存放已经上传的图片
-          this.files.id = id;
-          this.files.url = res.url;
-          this.files.key = res.key;
-
+        if (res.key) {
+          this.setCompleteUpload({
+            url: 'http://images.boblog.com/' + res.key
+          });
 
         } else {
-          console.log("上传失败");
+          this.$Message.error('上传失败');
+          this.isUpload = false;
           return false;
         }
 
@@ -95,6 +87,8 @@
        * @param data
        */
       setCompleteUpload(data) {
+        this.isUpload = false;
+        this.$Message.success('上传成功');
         this.$emit('completeUpload', data)
       },
 

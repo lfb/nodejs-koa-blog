@@ -28,7 +28,7 @@ module.exports = function (sequelize, DataTypes) {
         },
         // 文章标签
         tag: {
-            type: DataTypes.STRING(30),
+            type: DataTypes.STRING(255),
             allowNull: false,
             field: 'tag'
         },

@@ -9,27 +9,28 @@
     <FormItem label="文章分类" prop="category">
       <Select
         v-if="categoryList.length > 0"
-        v-model="articleData.category_id"
+        v-model="articleData.categoryId"
         placeholder="Select category"
         style="position:relative;z-index: 9999">
         <Option
           v-for="(cate, key) in categoryList"
           :key="key"
-          :value="cate.name">
+          :value="cate.id">
           {{cate.name}}
         </Option>
       </Select>
     </FormItem>
     <FormItem label="文章标签" prop="introduce">
-      <Input v-model="articleData.tag" type="textarea" :autosize="{minRows: 2,maxRows: 5}"
-             placeholder="tag"></Input>
+      <Input v-model="articleData.tag" placeholder="tag"></Input>
     </FormItem>
     <FormItem label="文章图片" prop="banner">
-      <upload-images/>
-      <!--      <Input v-model="articleData.banner" placeholder="banner"></Input>-->
+      <upload-images @completeUpload="completeUpload"/>
+      <div v-if="upload">
+        <img :src="upload.url" alt="img">
+      </div>
     </FormItem>
     <FormItem label="文章简介" prop="introduce">
-      <Input v-model="articleData.introduce" type="textarea" :autosize="{minRows: 2,maxRows: 5}"
+      <Input v-model="articleData.introduction" type="textarea" :autosize="{minRows: 2,maxRows: 5}"
              placeholder="introduce"></Input>
     </FormItem>
 
@@ -57,13 +58,14 @@
     },
     data() {
       return {
+        upload: null,
         articleData: {
           title: '',
           author: '梁凤波',
-          category_id: '',
+          categoryId: '',
           tag: '',
-          banner: '',
-          introduce: '',
+          cover: '',
+          introduction: '',
           content: ''
         },
         ruleValidate: {
@@ -73,16 +75,16 @@
           author: [
             {required: true, message: 'Author cannot be empty', trigger: 'blur'}
           ],
-          category_id: [
+          categoryId: [
             {required: true, message: 'Please select the category', trigger: 'change'}
           ],
           tag: [
             {required: true, message: 'Please select the category', trigger: 'change'}
           ],
-          banner: [
-            {required: true, message: 'Banner cannot be empty', trigger: 'blur'}
+          cover: [
+            {required: true, message: 'cover cannot be empty', trigger: 'blur'}
           ],
-          introduce: [
+          introduction: [
             {required: true, message: 'Introduce cannot be empty', trigger: 'blur'}
           ],
           content: [
@@ -110,6 +112,12 @@
         }
       },
 
+      // 上传图片成功回调
+      completeUpload(data) {
+        this.upload = data;
+        this.articleData.cover = data.url;
+      },
+
       // 提交
       handleSubmit(name) {
         this.$refs[name].validate(async (valid) => {
@@ -133,3 +141,10 @@
     }
   }
 </script>
+
+<style scoped lang="scss">
+  .upload-images {
+    display: flex;
+    align-items: center;
+  }
+</style>

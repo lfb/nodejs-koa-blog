@@ -12,6 +12,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "lib-flexible": "^0.3.2",
+    "mavon-editor": "^2.7.3",
     "node-sass": "^4.10.0",
     "px2rem-loader": "^0.1.9",
     "qs": "^6.5.2",
