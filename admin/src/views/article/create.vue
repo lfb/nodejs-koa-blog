@@ -34,8 +34,8 @@
              placeholder="introduce"></Input>
     </FormItem>
 
-    <FormItem label="文章内容" prop="content">
-      <mavon-editor v-model="articleData.content"/>
+    <FormItem label="文章内容" prop="content" v-if="uploadTokenData">
+      <mavon-editer-upload :data="articleData.content" @handleEditor="handleEditor"/>
     </FormItem>
     <FormItem>
       <Button @click="handleReset('articleData')">重置</Button>
@@ -44,16 +44,20 @@
   </Form>
 </template>
 <script>
+  import axios from 'axios';
   import {mapState, mapActions} from 'vuex'
   import UploadImages from '../../components/UploadImages'
+  import mavonEditerUpload from '../../components/mavonEditerUpload'
 
   export default {
     components: {
-      UploadImages
+      UploadImages,
+      mavonEditerUpload
     },
     computed: {
       ...mapState({
-        categoryList: state => state.category.categoryList
+        categoryList: state => state.category.categoryList,
+        uploadTokenData: state => state.uploadToken.uploadTokenData
       })
     },
     data() {
@@ -118,6 +122,10 @@
         this.articleData.cover = data.url;
       },
 
+      // 传递数值
+      handleEditor(value) {
+        this.articleData.content = value;
+      },
       // 提交
       handleSubmit(name) {
         this.$refs[name].validate(async (valid) => {
@@ -125,7 +133,18 @@
             try {
               await this.createArticle(this.articleData);
               this.$Message.success('创建文章成功');
-              window.location.href = "/article/list";
+              this.articleData = {
+                title: '',
+                author: '梁凤波',
+                categoryId: '',
+                tag: '',
+                cover: '',
+                introduction: '',
+                content: ''
+              }
+              // setTimeout(() => {
+              //   window.location.href = "/article/list";
+              // }, 2000)
 
             } catch (e) {
               this.$Message.error('创建文章失败')

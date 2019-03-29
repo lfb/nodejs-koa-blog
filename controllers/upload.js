@@ -21,9 +21,7 @@ class uploadTokenController {
                 code: 200,
                 message: `获取上传token成功！`,
                 data: {
-                    token: uploadToken,
-                    assess_key: ACCESS_KEY,
-                    secret_key: SECRET_KEY
+                    token: uploadToken
                 }
             }
 
