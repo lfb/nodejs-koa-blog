@@ -75,7 +75,7 @@
         try {
           await this.searchArticle({
             keyword: this.keyword
-          })
+          });
         } catch (e) {
 
         }

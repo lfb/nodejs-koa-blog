@@ -55,8 +55,7 @@ const actions = {
    */
   async searchArticle({state, commit}, params) {
     let ret = await article.search(params);
-    commit('SET_ARTICLE_LIST', ret);
-
+    commit('SET_ARTICLE_LIST', ret.data.data.data);
     return ret;
   }
 };

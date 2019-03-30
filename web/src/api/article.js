@@ -8,7 +8,7 @@ export default {
 
   // 搜索文章列表
   search(params) {
-    return fetch.get('/search', params)
+    return fetch.get('/article/search', params)
   },
 
   // 获取文章详情

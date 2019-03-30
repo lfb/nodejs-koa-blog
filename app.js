@@ -22,17 +22,21 @@ app.use(jwt({secret: secret.sign}).unless({
     path: [
         // 文章列表
         /^\/api\/v1\/article\/list/,
+        // 文章详情
         /^\/api\/v1\/article\/detail/,
+        // 文章搜索
+        /^\/api\/v1\/article\/search/,
+        // 上传token
         /^\/api\/v1\/upload\/token/,
-        // 登录
+        // 注册
         /^\/api\/v1\/user\/register/,
+        // 登录
         /^\/api\/v1\/user\/login/,
         // 分类列表
         /^\/api\/v1\/category\/list/,
+        // 分类文章
         /^\/api\/v1\/category\/article/,
-        // 文章搜索
-        /^\/api\/v1\/search/,
-        // 分类
+        // 分类列表
         /^\/api\/v1\/category\/article\/list/
     ]
 }))

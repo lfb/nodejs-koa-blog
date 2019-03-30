@@ -54,10 +54,10 @@
             相关推荐
             <!--            <img src="../../assets/recommend8.png" alt="recommend">-->
           </h1>
-          <ul class="recommend-inner">
+          <ul class="recommend-inner" v-if="recommend.length > 0">
             <li class="recommend-item">
-              <h1 v-for="item in 10">
-                Node.js实战-深入了理解中间件
+              <h1 v-for="(item, index) in recommend" @click="_getArticleDetail(item.id)" :key="index">
+                {{item.title}}
               </h1>
             </li>
           </ul>
@@ -83,7 +83,9 @@
         // 文章ID
         id: this.$route.params.id,
         // 文章详情
-        detail: null
+        detail: null,
+        // 推荐列表
+        recommend: []
       }
     },
     computed: {
@@ -114,13 +116,33 @@
     },
     methods: {
       ...mapActions({
-        getArticleDetail: 'article/getArticleDetail'
+        getArticleDetail: 'article/getArticleDetail',
+        getCategoryArticle: 'category/getCategoryArticle'
       }),
       // 获取文章详情
       async _getArticleDetail() {
         try {
           let ret = await this.getArticleDetail(this.id);
           this.detail = ret.data.data;
+          this._getCategoryArticle(this.detail.category.id);
+
+        } catch (e) {
+          console.log(e);
+        }
+      },
+      // 分类下取文章
+      async _getCategoryArticle(id) {
+        try {
+          let res = await this.getCategoryArticle(id);
+
+          let arr = []
+          res.data.data.forEach(item => {
+            arr = item.articles.map(children => {
+              return children;
+            })
+          })
+
+          this.recommend = arr;
 
         } catch (e) {
           console.log(e);
@@ -402,7 +424,7 @@
   }
 
   .v-note-wrapper .v-note-panel .v-note-show .v-show-content, .v-note-wrapper .v-note-panel .v-note-show .v-show-content-html {
-    padding: 0!important;
+    padding: 0 !important;
   }
 </style>
 
