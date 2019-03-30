@@ -52,7 +52,7 @@
         <div class="recommend">
           <h1 class="recommend-title">
             相关推荐
-            <!--            <img src="../../assets/recommend8.png" alt="recommend">-->
+            <img src="../../assets/recommend8.png" alt="recommend">
           </h1>
           <ul class="recommend-inner" v-if="recommend.length > 0">
             <li class="recommend-item">
@@ -61,6 +61,7 @@
               </h1>
             </li>
           </ul>
+          <ul class="recommend-empty" v-else>暂无推荐</ul>
         </div>
       </article>
 
@@ -324,6 +325,13 @@
 
     & .comments-inner {
       padding-left: 16px;
+    }
+
+    & .recommend-empty {
+      text-align: center;
+      padding: 32px 0;
+      font-size: 16px;
+      color: #989898;
     }
 
     & .user-info {

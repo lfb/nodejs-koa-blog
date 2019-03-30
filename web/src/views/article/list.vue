@@ -51,6 +51,7 @@
           </div>
         </li>
       </ul>
+      <ul class="article-empty">暂无文章</ul>
     </article>
 
   </section>
@@ -299,6 +300,13 @@
           width: 100%;
           border-radius: 5px;
         }
+      }
+
+      & .article-empty {
+        text-align: center;
+        padding: 32px 0;
+        font-size: 16px;
+        color: #989898;
       }
 
       .article-content {

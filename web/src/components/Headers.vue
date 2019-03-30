@@ -5,7 +5,7 @@
       <section class="header-inner">
         <div class="logo" @click="toPathLink('/')"></div>
         <div class="search" id="search">
-          <input type="text" v-model="keyword" placeholder="请输入您想要的.." class="search-input">
+          <input type="text" v-model="keyword" @keyup.enter="search" placeholder="请输入您想要的.." class="search-input">
           <button class="search-submit" @click="search">搜索</button>
         </div>
         <!--<div class="login-register">-->
@@ -37,7 +37,7 @@
         // 导航
         nav: [
           {title: '技术文章', key: 'article', path: '/article'},
-          {title: '学习资源', key: 'source', path: '/source'},
+          // {title: '学习资源', key: 'source', path: '/source'},
           {title: '收藏域名', key: 'domain', path: '/domain'},
           {title: '关于我', key: 'about', path: '/about'},
         ],
