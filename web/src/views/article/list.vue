@@ -47,7 +47,7 @@
           </div>
 
           <div class="article-img">
-            <img v-lazy="item.cover" alt="img">
+            <img v-lazy="item.cover + '?imageView2/1/w/150/h/150'" alt="img">
           </div>
         </li>
       </ul>

@@ -5,6 +5,10 @@
   <section class="list-wrap">
     <div class="list" v-if="list.length > 0">
       <Table border :columns="columns" :data="list"></Table>
+      <div class="page">
+        <pagination :page="page" @on-change="fetchData"></pagination>
+      </div>
+
     </div>
     <div class="model">
       <Modal
@@ -19,8 +23,12 @@
 
 <script>
   import {mapState, mapActions} from 'vuex';
+  import pagination from '../../components/pagination'
 
   export default {
+    components: {
+      pagination
+    },
     data() {
       return {
         // 文章ID
@@ -30,6 +38,8 @@
         // 是否软删除
         is_del: 0,
         list: [],
+        page: null,
+        pagination: '',
         columns: [
           {
             title: 'ID',
@@ -74,8 +84,8 @@
                   },
                   style: {
                     fontWeight: 800,
-                    fontSize: 18,
-                    color: "#404040"
+                    fontSize: 20,
+                    color: "#000"
                   },
                 }, params.row.title)
               ]);
@@ -171,7 +181,7 @@
       ...mapState({})
     },
     created() {
-      this.getArticleList()
+      this.fetchData()
     },
     methods: {
       ...mapActions({
@@ -179,11 +189,14 @@
         deleteArticle: 'article/deleteArticle'
       }),
       // 获取用户列表
-      async getArticleList() {
+      async fetchData(page) {
         try {
+          this.pagination = page;
           const ret = await this.articleList({
-            include: 'is_del'
+            include: 'is_del',
+            page
           });
+          this.page = ret.meta;
           this.$Message.success('获取文章列表成功');
           this.list = ret.data;
         } catch (e) {
@@ -204,7 +217,7 @@
             is_del: this.is_del
           });
           this.$Message.success('删除文章成功');
-          this.getArticleList();
+          this.fetchData(this.pagination);
 
         } catch (e) {
           console.log(e);
@@ -216,5 +229,8 @@
 </script>
 
 <style lang="scss" scoped>
-
+  .page {
+    text-align: center;
+    padding: 32px 0;
+  }
 </style>

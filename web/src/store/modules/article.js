@@ -32,7 +32,7 @@ const actions = {
 
     commit('SET_ARTICLE_LIST', ret.data.data.data);
 
-    return ret.data.data.data;
+    return ret.data.data;
   },
 
   /**
