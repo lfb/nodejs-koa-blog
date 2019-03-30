@@ -9,7 +9,7 @@
             :key="index">
           <img :src="cate.icon" :alt="cate.title">
           {{cate.name}}
-          <span v-if="cate.children"
+          <span v-if="cate.sub_category"
                 :class="categoryActiveIndex === index
                 ? 'category-more-icon category-more-icon-active'
                 : 'category-more-icon'"></span>

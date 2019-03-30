@@ -119,7 +119,7 @@
           this.getCategory();
 
         } catch (e) {
-          this.$Message.error('删除分类失败');
+          this.$Message.error(e.data.message);
         }
       }
     }

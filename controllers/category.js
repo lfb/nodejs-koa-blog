@@ -36,6 +36,7 @@ class categoryController {
 
         try {
             params.z_index = z_index || "10";
+            params.parent_id = parent_id || 0;
             const {id} = await CategoryModel.createCategory(params);
             const data = await CategoryModel.getCategoryDetail(id);
 
@@ -246,19 +247,31 @@ class categoryController {
         }
 
         try {
-            await CategoryModel.deleteCategory(id);
-            ctx.response.status = 200;
-            ctx.body = {
-                code: 200,
-                message: `删除成功`,
-                data
+            // 检测改分类下是否有文章关联，如果有文章关联则报出不能删除错误
+            let hasArticle = await CategoryModel.getCategoryArticleList(id);
+            if (hasArticle.length > 0) {
+                ctx.response.status = 403;
+                ctx.body = {
+                    code: 403,
+                    message: `此分类下有关联文章，不能删除`
+                }
+
+            } else {
+                let data = await CategoryModel.deleteCategory(id);
+                ctx.response.status = 200;
+                ctx.body = {
+                    code: 200,
+                    message: `删除成功`,
+                    data
+                }
             }
 
         } catch (err) {
+            console.log(err);
             ctx.response.status = 500;
             ctx.body = {
                 code: 500,
-                message: `获取失败`,
+                message: `删除失败`,
                 data: err
             }
         }
@@ -307,9 +320,9 @@ class categoryController {
             await CategoryModel.updateCategory(id, params);
             let data = await CategoryModel.getCategoryDetail(id);
 
-            ctx.response.status = 500;
+            ctx.response.status = 200;
             ctx.body = {
-                code: 500,
+                code: 200,
                 message: `更新分类成功`,
                 data
             }

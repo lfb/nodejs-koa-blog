@@ -105,7 +105,7 @@
               return h('div', [
                 h('Button', {
                   props: {
-                    type: 'success',
+                    type: 'warning',
                     size: 'small'
                   },
                 }, params.row.category.name)
@@ -122,10 +122,10 @@
               return h('div', [
                 h('Button', {
                   props: {
-                    type: params.row.is_del ? 'error' : 'primary',
+                    type: params.row.is_del ? 'error' : 'success',
                     size: 'small'
                   },
-                }, params.row.is_del ? '已被删除' : '正常显示')
+                }, params.row.is_del ? '已被隐藏' : '正常显示中')
               ]);
             }
           },
@@ -166,11 +166,11 @@
                     click: () => {
                       this.id = params.row.id;
                       this.showModel = true;
-                      this.tipsText = params.row.is_del ? '确定恢复吗' : '确定删除吗'
+                      this.tipsText = params.row.is_del ? '确定恢复文章吗' : '确定隐藏文章吗'
                       this.is_del = params.row.is_del ? 0 : 1
                     }
                   }
-                }, params.row.is_del ? '恢复' : '删除')
+                }, params.row.is_del ? '恢复文章' : '隐藏文章')
               ]);
             }
           }

@@ -75,9 +75,10 @@ const actions = {
    */
   async getCategoryDetail({state, commit}, id) {
     const ret = await category.detail(id);
-    commit("SET_CATEGORY_DETAIL", ret.data.data.data);
 
-    return ret.data.data.data;
+    commit("SET_CATEGORY_DETAIL", ret.data.data);
+
+    return ret.data.data;
   },
 };
 
