@@ -11,7 +11,7 @@
         v-model="showModel"
         title="提示"
         @on-ok="remove(id)">
-        <p>确定删除文章吗</p>
+        <p>{{tipsText}}</p>
       </Modal>
     </div>
   </section>
@@ -26,39 +26,103 @@
         // 文章ID
         id: '',
         showModel: false,
+        tipsText: '',
+        // 是否软删除
+        is_del: 0,
         list: [],
         columns: [
           {
             title: 'ID',
             key: 'id',
-            width: 80,
+            width: 50,
             align: 'center'
+          },
+
+          {
+            title: '文章封面',
+            key: 'cover',
+            width: 110,
+            render: (h, params) => {
+              return h('div', {
+                  style: {
+                    padding: "10px 0px"
+                  }
+                }, [
+                  h('img', {
+                      attrs: {
+                        src: `${params.row.cover}?imageView2/1/w/150/h/150`
+                      },
+                      style: {
+                        width: '75px',
+                      }
+                    }
+                  ),
+                  h('h2', params.row.name),
+                ]
+              );
+            }
           },
           {
             title: '文章标题',
             key: 'title',
-            width: 120,
-          },
-          {
-            title: '简介',
-            key: "introduction",
-            align: 'left'
+            render: (h, params) => {
+              return h('div', [
+                h('div', {
+                  props: {
+                    type: 'success',
+                    size: 'small'
+                  },
+                  style: {
+                    fontWeight: 800,
+                    fontSize: 18,
+                    color: "#404040"
+                  },
+                }, params.row.title)
+              ]);
+            }
           },
           {
             title: '标签',
             key: 'tag',
-            width: 120,
-            align: 'center'
-          }, {
-            title: '浏览',
-            key: "browser",
-            width: 120,
-            align: 'center'
+            width: 120
           },
           {
-            title: '软删除',
-            key: "is_del",
+            title: '分类',
+            key: 'category',
             width: 120,
+            align: 'center',
+            render: (h, params) => {
+              return h('div', [
+                h('Button', {
+                  props: {
+                    type: 'success',
+                    size: 'small'
+                  },
+                }, params.row.category.name)
+              ]);
+            }
+          },
+
+          {
+            title: '是否被删除',
+            key: "is_del",
+            width: 100,
+            align: 'center',
+            render: (h, params) => {
+              return h('div', [
+                h('Button', {
+                  props: {
+                    type: params.row.is_del ? 'error' : 'primary',
+                    size: 'small'
+                  },
+                }, params.row.is_del ? '已被删除' : '正常显示')
+              ]);
+            }
+          },
+          {
+            title: '浏览',
+            key: "browser",
+            width: 80,
             align: 'center'
           },
           {
@@ -71,7 +135,8 @@
                 h('Button', {
                   props: {
                     type: 'primary',
-                    size: 'small'
+                    size: 'small',
+                    disabled: params.row.is_del
                   },
                   style: {
                     marginRight: '5px'
@@ -84,16 +149,18 @@
                 }, '修改'),
                 h('Button', {
                   props: {
-                    type: 'error',
+                    type: params.row.is_del ? 'warning' : 'error',
                     size: 'small'
                   },
                   on: {
                     click: () => {
                       this.id = params.row.id;
                       this.showModel = true;
+                      this.tipsText = params.row.is_del ? '确定恢复吗' : '确定删除吗'
+                      this.is_del = params.row.is_del ? 0 : 1
                     }
                   }
-                }, '删除')
+                }, params.row.is_del ? '恢复' : '删除')
               ]);
             }
           }
@@ -114,7 +181,9 @@
       // 获取用户列表
       async getArticleList() {
         try {
-          const ret = await this.articleList();
+          const ret = await this.articleList({
+            include: 'is_del'
+          });
           this.$Message.success('获取文章列表成功');
           this.list = ret.data;
         } catch (e) {
@@ -130,7 +199,10 @@
       // 移除文章
       async remove(id) {
         try {
-          await this.deleteArticle(id);
+          await this.deleteArticle({
+            id,
+            is_del: this.is_del
+          });
           this.$Message.success('删除文章成功');
           this.getArticleList();
 

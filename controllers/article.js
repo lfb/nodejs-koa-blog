@@ -39,7 +39,6 @@ class articleController {
             return false;
         }
 
-
         try {
 
             // 查询分类是否存在
@@ -181,6 +180,9 @@ class articleController {
      */
     static async delete(ctx) {
         let {id} = ctx.params;
+        let { is_del} = ctx.request.body;
+
+
 
         // 检测是否传入ID
         if (!id) {
@@ -204,7 +206,12 @@ class articleController {
         }
 
         try {
-            await ArticleModel.deleteArticle(id);
+            console.log('is_del');
+            console.log('is_del');
+            console.log('is_del');
+            console.log(id);
+            console.log(is_del);
+            await ArticleModel.deleteArticle(id, {is_del});
 
             ctx.response.status = 200;
             ctx.body = {

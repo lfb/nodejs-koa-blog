@@ -1,21 +1,15 @@
 <template>
-  <Form ref="articleData" :model="articleData" :rules="ruleValidate" :label-width="80">
+  <Form ref="detail" :model="detail" :rules="ruleValidate" :label-width="80">
     <FormItem label="文章标题" prop="title">
-      <Input v-model="articleData.title" placeholder="title"></Input>
+      <Input v-model="detail.title" placeholder="title"></Input>
     </FormItem>
     <FormItem label="文章作者" prop="author">
-      <Input v-model="articleData.author" placeholder="author"></Input>
-    </FormItem>
-    <FormItem label="文章标签" prop="tag">
-      <Input v-model="articleData.tag" placeholder="tag"></Input>
-    </FormItem>
-    <FormItem label="文章图片" prop="banner">
-      <Input v-model="articleData.cover" placeholder="banner"></Input>
+      <Input v-model="detail.author" placeholder="author"></Input>
     </FormItem>
     <FormItem label="文章分类" prop="category">
       <Select
         v-if="categoryList.length > 0"
-        v-model="articleData.categoryId"
+        v-model="detail.categoryId"
         placeholder="Select category"
         style="position:relative;z-index: 9999">
         <Option
@@ -26,32 +20,49 @@
         </Option>
       </Select>
     </FormItem>
-    <FormItem label="文章简介" prop="introduce">
-      <Input v-model="articleData.introduction" type="textarea" :autosize="{minRows: 2,maxRows: 5}"
-             placeholder="introduction"></Input>
+    <FormItem label="文章标签" prop="introduce">
+      <Input v-model="detail.tag" placeholder="tag"></Input>
     </FormItem>
-    <FormItem label="文章内容" prop="content">
-      <mavon-editor v-model="articleData.content"/>
+    <FormItem label="文章图片" prop="banner">
+      <upload-images @completeUpload="completeUpload"/>
+      <div v-if="upload">
+        <img :src="upload.url" alt="img">
+      </div>
+    </FormItem>
+    <FormItem label="文章简介" prop="introduce">
+      <Input v-model="detail.introduction" type="textarea" :autosize="{minRows: 2,maxRows: 5}"
+             placeholder="introduce"></Input>
+    </FormItem>
+
+    <FormItem label="文章内容" prop="content" v-if="uploadTokenData">
+      <mavon-editer-upload :data="detail.content" @handleEditor="handleEditor"/>
     </FormItem>
     <FormItem>
-      <Button @click="handleReset('articleData')">重置</Button>
-      <Button type="primary" style="margin-left: 8px" @click="handleSubmit('articleData')">更新</Button>
+      <Button @click="handleReset('detail')">重置</Button>
+      <Button type="primary" style="margin-left: 8px" @click="handleSubmit('detail')">更新</Button>
     </FormItem>
   </Form>
 </template>
 <script>
   import {mapState, mapActions} from 'vuex'
+  import UploadImages from '../../components/UploadImages'
+  import mavonEditerUpload from '../../components/mavonEditerUpload'
 
   export default {
+    components: {
+      UploadImages,
+      mavonEditerUpload
+    },
     computed: {
       ...mapState({
-        categoryList: state => state.category.categoryList
+        categoryList: state => state.category.categoryList,
+        uploadTokenData: state => state.uploadToken.uploadTokenData
       })
     },
     data() {
       return {
         id: this.$route.params.id,
-        articleData: {},
+        detail: {},
         ruleValidate: {
           title: [
             {required: true, message: 'The name cannot be empty', trigger: 'blur'}
@@ -64,7 +75,7 @@
           ],
           tag: [
             {required: true, message: 'tag cannot be empty', trigger: 'blur'}
-          ],cover: [
+          ], cover: [
             {required: true, message: 'cover cannot be empty', trigger: 'blur'}
           ],
           introduction: [
@@ -92,8 +103,8 @@
       async getArticleInfo() {
         try {
           const ret = await this.getArticleDetail(this.id);
-          this.articleData = ret;
-          console.log(this.articleData);
+          this.detail = ret;
+          console.log(this.detail);
           this.$Message.success('获取文章成功')
 
         } catch (e) {
@@ -112,15 +123,25 @@
           this.$Message.error('获取分类失败')
         }
       },
+      // 上传图片成功回调
+      completeUpload(data) {
+        this.upload = data;
+        this.detail.cover = data.url;
+      },
+
+      // 传递数值
+      handleEditor(value) {
+        this.detail.content = value;
+      },
 
       // 提交
       handleSubmit(name) {
         this.$refs[name].validate(async (valid) => {
           if (valid) {
             try {
-              await this.updateArticle(this.articleData);
+              await this.updateArticle(this.detail);
               this.$Message.success('更新成功');
-              window.location.href = "/article/list";
+              // window.location.href = "/article/list";
 
             } catch (e) {
               this.$Message.error('更新失败')

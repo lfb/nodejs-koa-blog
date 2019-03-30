@@ -48,7 +48,8 @@ class ArticleModel {
                 title: {
                     // 模糊查询
                     [Op.like]: '%' + keyword + '%'
-                }
+                },
+                is_del: 0
             },
             include: {
                 model: Category,
@@ -59,7 +60,7 @@ class ArticleModel {
             'order': [
                 ['id', 'DESC']
             ],
-            attributes: {exclude: ['content', 'is_del']}
+            attributes: {exclude: ['content']}
         });
 
 
@@ -82,14 +83,19 @@ class ArticleModel {
      */
     static async getArticleList(params) {
         let ret = null;
-        let {page = 1, category_id, title} = params;
+        let {page = 1, category_id, title, include} = params;
+
+
+        let exclude = include === 'is_del' ? ['content'] : ['content', 'is_del']
+        let isShowIsDel = include === 'is_del' ? 1 : 0
 
         if (category_id) {
             ret = await Article.findAndCountAll({
                 limit: 10,//每页10条
                 offset: (page - 1) * 10,
                 where: {
-                    category_id: category_id
+                    category_id: category_id,
+                    is_del: isShowIsDel ? [0, 1] : [0]
                 },
                 include: [{
                     model: Category,
@@ -98,7 +104,7 @@ class ArticleModel {
                 'order': [
                     ['id', 'DESC']
                 ],
-                attributes: {exclude: ['content', 'is_del']}
+                attributes: {exclude: exclude}
             });
 
         } else if (title) {
@@ -106,7 +112,8 @@ class ArticleModel {
                 limit: 10,//每页10条
                 offset: (page - 1) * 10,
                 where: {
-                    title
+                    title,
+                    is_del: isShowIsDel ? [0, 1] : [0]
                 },
                 include: [{
                     model: Category,
@@ -115,7 +122,7 @@ class ArticleModel {
                 'order': [
                     ['id', 'DESC']
                 ],
-                attributes: {exclude: ['content', 'is_del']}
+                attributes: {exclude: exclude}
             });
 
         } else {
@@ -125,11 +132,14 @@ class ArticleModel {
                 'order': [
                     ['id', 'DESC']
                 ],
+                where: {
+                    is_del: isShowIsDel ? [0, 1] : [0]
+                },
                 include: [{
                     model: Category,
                     where: {categoryId: Sequelize.col('article.categoryId')}
                 }],
-                attributes: {exclude: ['content', 'is_del']}
+                attributes: {exclude: exclude}
 
             });
         }
@@ -156,6 +166,7 @@ class ArticleModel {
         return await Article.findOne({
             where: {
                 id,
+                is_del: 0
             },
             include: [{
                 model: Category,
@@ -170,15 +181,14 @@ class ArticleModel {
      * @param id listID
      * @returns {Promise.<boolean>}
      */
-    static async deleteArticle(id) {
-        await Article.destroy({
+    static async deleteArticle(id, data) {
+        return await Article.update(data, {
             where: {
                 id,
-            }
+            },
+            fields: ['is_del']
         })
-        return true
     }
-
 }
 
 module.exports = ArticleModel

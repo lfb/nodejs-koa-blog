@@ -22,8 +22,8 @@ export default {
   },
 
   // 删除文章
-  delete(id) {
-    return fetch.delete('/article/delete/' + id);
+  delete(params) {
+    return fetch.put('/article/delete/' + params.id, params);
   },
 
   // 更新文章

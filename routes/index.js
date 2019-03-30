@@ -35,7 +35,7 @@ router.post('/article/create', ArticleController.create);
 // 获取文章详情
 router.get('/article/detail/:id', ArticleController.detail);
 // 删除文章
-router.delete('/article/delete/:id', ArticleController.delete);
+router.put('/article/delete/:id', ArticleController.delete);
 // 更改文章
 router.put('/article/update/:id', ArticleController.update);
 // 获取文章列表

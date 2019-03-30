@@ -58,8 +58,8 @@ const actions = {
    * @param id
    * @return {Promise<void>}
    */
-  async deleteArticle({state, commit}, id) {
-    return await article.delete(id);
+  async deleteArticle({state, commit}, params) {
+    return await article.delete(params);
   },
 
   /**
