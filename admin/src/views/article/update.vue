@@ -83,8 +83,8 @@
             {required: true, message: 'Introduce cannot be empty', trigger: 'blur'}
           ],
           content: [
-            {required: true, message: 'Please enter a personal introduction', trigger: 'blur'},
-            {type: 'string', min: 20, message: 'Introduce no less than 20 words', trigger: 'blur'}
+            {required: true, message: 'Please enter a personal content', trigger: 'blur'},
+            {type: 'string', min: 20, message: 'content no less than 20 words', trigger: 'blur'}
           ]
         }
       }

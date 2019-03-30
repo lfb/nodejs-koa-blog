@@ -74,7 +74,7 @@
       },
 
       handleAvatarSuccess(res, file) {
-        const QINIU_IMAGE_DOMAIN = "http://images.boblog.com/"
+        const QINIU_IMAGE_DOMAIN = "http://cdn.boblog.com/"
         var url = QINIU_IMAGE_DOMAIN + res.key;
         this.$refs.md.$img2Url(this.pos, url);
       },

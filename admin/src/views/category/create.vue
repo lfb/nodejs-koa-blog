@@ -47,7 +47,7 @@
     },
     data() {
       return {
-        upload: null,
+        upload: {},
         category: {
           name: '',
           icon: '',
@@ -83,13 +83,15 @@
             try {
               await this.createCategory(this.category);
               this.$Message.success('创建分类成功');
-              window.location.href = "/category/list";
+              // window.location.href = "/category/list";
+              this.handleReset('category');
 
             } catch (e) {
-              this.$Message.error('创建分类失败')
+              this.$Message.error(e)
+
             }
           } else {
-            this.$Message.error('Fail!');
+            this.$Message.error('Empty Fail!');
           }
         })
       },

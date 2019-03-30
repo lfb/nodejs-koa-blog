@@ -33,7 +33,7 @@
           {domain: 'scode.net', chinese: '代码'},
           {domain: 'bobobo.org', chinese: '波波'},
           {domain: 'bobobo.com.cn', chinese: '波波'},
-          {domain: 'zhengjiayi.com', chinese: '郑嘉怡'},
+          {domain: 'zhengjiayi.cn', chinese: '郑嘉怡'},
           {domain: 'chuncaomeng.com', chinese: '春草梦'},
           {domain: 'lidehui.com', chinese: '李德辉'},
           {domain: 'lidehui.com', chinese: '李德辉'},

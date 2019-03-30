@@ -19,10 +19,14 @@ const actions = {
    */
   async getUploadToken({state, commit}) {
 
-    let res = await upload.uploadToken();
-    commit('SET_UPLOAD_TOKEN', res.data.data);
-    console.log(res.data.data);
+    if (state.uploadTokenData) {
+      return state.uploadTokenData
 
+    } else {
+      let res = await upload.uploadToken();
+      commit('SET_UPLOAD_TOKEN', res.data.data);
+      console.log(res.data.data);
+    }
   }
 }
 

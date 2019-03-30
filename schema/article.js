@@ -22,13 +22,13 @@ module.exports = function (sequelize, DataTypes) {
         },
         // 文章介绍
         introduction: {
-            type: DataTypes.STRING(100),
+            type: DataTypes.STRING(255),
             allowNull: false,
             field: 'introduction'
         },
         // 文章标签
         tag: {
-            type: DataTypes.STRING(255),
+            type: DataTypes.STRING(100),
             allowNull: false,
             field: 'tag'
         },

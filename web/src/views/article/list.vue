@@ -167,6 +167,7 @@
   .container {
     box-sizing: content-box;
     max-width: 1264px;
+    min-height: 100%;
     display: flex;
     margin: 0 auto;
     background: #fff;

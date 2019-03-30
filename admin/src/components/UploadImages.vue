@@ -71,7 +71,7 @@
 
         if (res.key) {
           this.setCompleteUpload({
-            url: 'http://images.boblog.com/' + res.key
+            url: 'http://cdn.boblog.com/' + res.key
           });
 
         } else {

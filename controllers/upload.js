@@ -10,7 +10,7 @@ class uploadTokenController {
             var mac = await new qiniu.auth.digest.Mac(ACCESS_KEY, SECRET_KEY);
 
             var options = {
-                scope: "sourcerobot",
+                scope: "boblog",
                 expires: 7200
             };
             var putPolicy = await new qiniu.rs.PutPolicy(options);
