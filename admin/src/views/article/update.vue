@@ -62,6 +62,7 @@
     data() {
       return {
         id: this.$route.params.id,
+        upload: {},
         detail: {},
         ruleValidate: {
           title: [
@@ -104,7 +105,7 @@
         try {
           const ret = await this.getArticleDetail(this.id);
           this.detail = ret;
-          console.log(this.detail);
+          this.upload.url = this.detail.cover;
           this.$Message.success('获取文章成功')
 
         } catch (e) {
