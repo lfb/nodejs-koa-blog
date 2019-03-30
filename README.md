@@ -118,6 +118,18 @@ package-lock.json
 package.json
 start.json
 ```
+## 四、相关文档：
+- [nodejs环境官网下载：http://nodejs.cn/download/](http://nodejs.cn/download/)
+- [Koa-generator](https://www.npmjs.com/package/koa2-generator)
+- [学习文档：Koa Context 上下文对象](https://github.com/demopark/koa-docs-Zh-CN/blob/master/api/context.md)  
+- [学习文档：Koa Request  请求对象](https://github.com/demopark/koa-docs-Zh-CN/blob/master/api/request.md)
+- [学习文档：Koa Response 响应对象](https://github.com/demopark/koa-docs-Zh-CN/blob/master/api/response.md)
+- [学习文档：Koa Middlewares  中间件](https://github.com/demopark/koa-docs-Zh-CN#%E4%B8%AD%E9%97%B4%E4%BB%B6)
+- [学习文档：Sequelize 文档的中文版](https://github.com/demopark/sequelize-docs-Zh-CN)
+- [学习文档：Sequelize Model definition - 模型定义 >](https://github.com/demopark/sequelize-docs-Zh-CN/blob/master/models-definition.md) 
+- [学习文档：Instances - 实例](https://github.com/demopark/sequelize-docs-Zh-CN/blob/master/instances.md)
+- [我的教程文章：Koa2从0搭建到实现文章API接口](https://www.imooc.com/article/80671)
+- [我的教程文章：详细MySQL基本操作](https://www.imooc.com/article/81273)
 
 ## 五、部分接口说明
 
