@@ -34,7 +34,7 @@ module.exports = function (sequelize, DataTypes) {
         },
         // 文章封面
         cover: {
-            type: DataTypes.STRING(50),
+            type: DataTypes.STRING(255),
             allowNull: false,
             field: 'cover'
         },
