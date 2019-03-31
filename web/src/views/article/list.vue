@@ -171,7 +171,7 @@
 
       // 分类下取文章
       async _getCategoryArticle(id) {
-        let res = await this.getCategoryArticle(id);
+        let res = await this.getCategoryArticle({id});
 
         let arr = []
         res.data.data.forEach(item => {
