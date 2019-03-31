@@ -5,8 +5,11 @@ import store from './store';
 import VueLocalStorage from 'vue-ls';
 import 'lib-flexible/flexible';
 import VueLazyLoad from 'vue-lazyload'
+import mavonEditor from 'mavon-editor'
+import 'mavon-editor/dist/css/index.css'
 
 Vue.config.productionTip = false
+Vue.use(mavonEditor)
 Vue.use(VueLocalStorage);
 Vue.use(VueLazyLoad, {
   error: '../static/lazyloading.svg',

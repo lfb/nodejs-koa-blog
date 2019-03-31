@@ -4,7 +4,7 @@ const state = {
   // 文章
   articleList: [],
   // 分页
-  page: null,
+  pagination: null,
   // 文章详情
   articleDetail: null,
 };
@@ -15,8 +15,8 @@ const mutations = {
     state.articleList = data
   },
   // 设置文章分页
-  SET_PAGE(state, page) {
-    state.page = page
+  SET_PAGINATION(state, page) {
+    state.pagination = page
   },
   // 设置文章详情
   SET_ARTICLE_DETAIL(state, data) {
@@ -38,7 +38,7 @@ const actions = {
 
     commit('SET_ARTICLE_LIST', ret.data.data.data);
 
-    commit('SET_PAGE', ret.data.data.meta);
+    commit('SET_PAGINATION', ret.data.data.meta);
     return ret.data.data;
   },
 

@@ -17,6 +17,7 @@
           <mavon-editor
             style="height: 100%"
             :ishljs="true"
+            codeStyle="vs2015"
             v-model="detail.content"
             :defaultOpen="'preview'"
             :editable="false"
@@ -56,7 +57,7 @@
           </h1>
           <ul class="recommend-inner" v-if="recommend.length > 0">
             <li class="recommend-item">
-              <h1 v-for="(item, index) in recommend" @click="_getArticleDetail(item.id)" :key="index">
+              <h1 v-for="(item, index) in recommend.slice(0, 5)" @click="_getArticleDetail(item.id)" :key="index">
                 {{item.title}}
               </h1>
             </li>
@@ -70,13 +71,9 @@
 </template>
 <script>
   import {mapState, mapActions} from 'vuex'
-  import {mavonEditor} from 'mavon-editor'
-  import 'mavon-editor/dist/css/index.css'
 
   export default {
-    components: {
-      mavonEditor
-    },
+    components: {},
     data() {
       return {
         // 是否侧边栏
@@ -157,11 +154,11 @@
     display: flex;
     max-width: 1264px;
     margin: 0 auto;
+    padding: 32px;
     background: #fff;
 
     & .content {
       position: relative;
-      padding: 32px;
       flex: 1;
       margin-right: 32px;
       animation: contentAnimation 0.36s 0.18s ease both;
@@ -235,7 +232,6 @@
       animation: rightAnimation 0.36s 0.18s ease both;
 
       & .recommend {
-        padding: 32px 0;
 
         & .recommend-title {
           font-size: 24px;
@@ -277,7 +273,7 @@
     & .sidebar-fixed {
       position: fixed;
       margin-left: 964px;
-      top: 96px;
+      top: 128px;
     }
 
     @keyframes rightAnimation {

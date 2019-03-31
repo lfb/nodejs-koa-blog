@@ -39,7 +39,7 @@
         nav: [
           {title: '技术文章', key: 'article', path: '/'},
           // {title: '学习资源', key: 'source', path: '/source'},
-          {title: '收藏域名', key: 'domain', path: '/domain'},
+          // {title: '收藏域名', key: 'domain', path: '/domain'},
           {title: '关于我', key: 'about', path: '/about'},
         ],
         // 导航高亮索引
