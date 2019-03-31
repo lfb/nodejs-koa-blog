@@ -103,8 +103,8 @@ admin - 后台管理系统
 bin	
 config                  - * 配置数据库
 controllers             - * 控制器，在这里处理前端发来的请求，以及数据。
-middlreware	            - * 中间件，在这里处理用户是否有权限操作
-modules                 - * 模型，对数据库进行增删改查操作都在这里
+middleware	            - * 中间件，在这里处理用户是否有权限操作
+models                 - * 模型，对数据库进行增删改查操作都在这里
 public/stylesheets
 routes                  - * 路由地址
 schema                  - * 对数据库进行建表等操作

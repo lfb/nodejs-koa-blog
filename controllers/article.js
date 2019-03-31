@@ -1,5 +1,5 @@
-const ArticleModel = require('../modules/article')
-const CategoryModel = require('../modules/category')
+const ArticleModel = require('../models/article')
+const CategoryModel = require('../models/category')
 
 class articleController {
     /**

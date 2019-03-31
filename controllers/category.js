@@ -1,4 +1,4 @@
-const CategoryModel = require('../modules/category')
+const CategoryModel = require('../models/category')
 
 class categoryController {
     /**
