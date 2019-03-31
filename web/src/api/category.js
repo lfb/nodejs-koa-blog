@@ -7,7 +7,7 @@ export default {
   },
 
   // 查询分类ID下的所有文章列表
-  article(id) {
-    return fetch.get('/category/article/' + id);
+  article(params) {
+    return fetch.get('/category/article/' + params.id, params);
   }
 }

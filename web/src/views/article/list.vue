@@ -28,6 +28,7 @@
     <article :class="articleClass" id="article">
       <ul class="article-box" v-if="list.length > 0">
         <li class="article-item" v-for="(item, index) in list"
+            :key="index"
             @click="toPathLink('/article/detail/' + item.id)">
 
           <div class="article-content">
@@ -50,6 +51,27 @@
             <img v-lazy="item.cover + '?imageView2/1/w/150/h/150'" alt="img">
           </div>
         </li>
+        <section class="page" v-if="page">
+          <div class="page-click">
+            <li class="page-click-header">B</li>
+            <li v-for="(item, index) in page.total_pages"
+                @click="changePage(index + 1)"
+                :class="(index) + 1 == page.current_page ? 'page-click-header page-click-item' : 'page-click-header'"
+                :key="index">
+              o
+            </li>
+            <li class="page-click-tail">b</li>
+            <li class="page-click-tail">l</li>
+            <li class="page-click-tail">o</li>
+            <li class="page-click-tail">g</li>
+          </div>
+          <div class="page-text" v-if="page.current_page !== page.total_pages">
+            可以点击 <span class="page-click-header">o</span> 加载下一页
+          </div>
+          <div class="page-text" v-if="page.current_page === page.total_pages">
+            加载完毕
+          </div>
+        </section>
       </ul>
       <ul class="article-empty" v-else>暂无文章</ul>
     </article>
@@ -57,6 +79,7 @@
   </section>
 </template>
 <script>
+  import merge from 'webpack-merge'
   import {mapState, mapActions} from 'vuex'
 
   export default {
@@ -67,11 +90,10 @@
         isCategoryFixed: false,
         categoryList: [],
         // 搜索关键字
-        keyword: this.$route.query.keyword
+        keyword: this.$route.query.keyword,
+        // 页面索引
+        pageIndex: this.$route.query.page || 1
       }
-    },
-    created() {
-      this._getArticleList();
     },
     mounted() {
       // 监听滚动条
@@ -83,7 +105,8 @@
     },
     computed: {
       ...mapState({
-        list: state => state.article.articleList
+        list: state => state.article.articleList,
+        page: state => state.article.page
       }),
       // 分类
       categoryClass() {
@@ -95,8 +118,14 @@
       }
     },
     created() {
-      this._getArticleList();
       this._getCategoryList();
+
+      if (this.pageIndex > 1) {
+        this._getArticleList(this.pageIndex);
+      } else {
+        this._getArticleList();
+      }
+
 
       // 存在关键字就自动搜索
       if (this.keyword) {
@@ -110,8 +139,8 @@
         getCategoryArticle: 'category/getCategoryArticle',
         searchArticle: 'article/searchArticle'
       }),
-      async _getArticleList() {
-        await this.getArticleList();
+      async _getArticleList(page) {
+        await this.getArticleList({page});
       },
       // 获取分类
       async _getCategoryList() {
@@ -121,6 +150,18 @@
         this.categoryList = ret.data.data;
       },
 
+      // 切换分页
+      changePage(index) {
+        if (this.pageIndex === index) {
+          return false;
+        }
+        this.pageIndex = index;
+        // 动态改变路由订单状态参数page
+        this.$router.push({
+          query: merge(this.$route.query, {'page': index})
+        })
+        this._getArticleList(index);
+      },
       // 搜索
       async search() {
         await this.searchArticle({
@@ -355,6 +396,46 @@
 
     & .article-margin-left {
       margin-left: 220px;
+    }
+
+    .page {
+      margin: 32px 0;
+      width: 100%;
+      text-align: center;
+
+      & li {
+        cursor: pointer;
+        text-align: center;
+        display: inline-block;
+        padding: 0 16px;
+        font-size: 32px;
+      }
+
+      & .page-click {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &-header {
+          color: #0064db;
+        }
+
+        &-item {
+          color: #0064db;
+          font-weight: 800;
+        }
+
+        &-tail {
+          color: #2b2b2b;
+        }
+      }
+
+      & .page-text {
+        font-size: 16px;
+        color: #989898;
+        padding: 16px 0;
+      }
+
     }
 
     @keyframes showArticleAnimation {

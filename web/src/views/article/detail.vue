@@ -119,7 +119,12 @@
       async _getArticleDetail() {
         let ret = await this.getArticleDetail(this.id);
         this.detail = ret.data.data;
-        this._getCategoryArticle(this.detail.category.id);
+
+        // 获取分类列表
+        this._getCategoryArticle({
+          id: this.detail.category.id,
+          isLoading: false
+        });
 
       },
       // 分类下取文章

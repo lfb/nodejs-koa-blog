@@ -3,6 +3,8 @@ import article from '../../api/article'
 const state = {
   // 文章
   articleList: [],
+  // 分页
+  page: null,
   // 文章详情
   articleDetail: null,
 };
@@ -11,6 +13,10 @@ const mutations = {
   // 设置文章列表
   SET_ARTICLE_LIST(state, data) {
     state.articleList = data
+  },
+  // 设置文章分页
+  SET_PAGE(state, page) {
+    state.page = page
   },
   // 设置文章详情
   SET_ARTICLE_DETAIL(state, data) {
@@ -32,6 +38,7 @@ const actions = {
 
     commit('SET_ARTICLE_LIST', ret.data.data.data);
 
+    commit('SET_PAGE', ret.data.data.meta);
     return ret.data.data;
   },
 
