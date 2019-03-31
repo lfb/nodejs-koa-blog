@@ -51,7 +51,7 @@
           </div>
         </li>
       </ul>
-      <ul class="article-empty">暂无文章</ul>
+      <ul class="article-empty" v-else>暂无文章</ul>
     </article>
 
   </section>
@@ -65,7 +65,9 @@
         categoryActiveIndex: 0,
         // 是否分类固定
         isCategoryFixed: false,
-        categoryList: []
+        categoryList: [],
+        // 搜索关键字
+        keyword: this.$route.query.keyword
       }
     },
     created() {
@@ -95,18 +97,22 @@
     created() {
       this._getArticleList();
       this._getCategoryList();
+
+      // 存在关键字就自动搜索
+      if (this.keyword) {
+        this.search();
+      }
     },
     methods: {
       ...mapActions({
         getArticleList: 'article/getArticleList',
         getCategoryList: 'category/getCategoryList',
-        getCategoryArticle: 'category/getCategoryArticle'
+        getCategoryArticle: 'category/getCategoryArticle',
+        searchArticle: 'article/searchArticle'
       }),
       async _getArticleList() {
         try {
           await this.getArticleList();
-
-          console.log(this.list);
 
         } catch (e) {
           console.log(e);
@@ -122,6 +128,19 @@
 
         } catch (e) {
           console.log(e);
+        }
+      },
+
+      // 搜索
+      async search() {
+        if (!this.keyword) return false;
+
+        try {
+          await this.searchArticle({
+            keyword: this.keyword
+          });
+        } catch (e) {
+
         }
       },
 
@@ -166,6 +185,7 @@
 
   .container {
     box-sizing: content-box;
+    padding: 0 32px;
     max-width: 1264px;
     min-height: 100%;
     display: flex;
@@ -345,7 +365,6 @@
           padding: 2px 16px;
           border-radius: 32px;
           background: rgba(51, 119, 255, .1);
-
           /*padding: 2px 16px;*/
           /*color: #5cadff;*/
           /*border-radius: 32px;*/
@@ -418,6 +437,46 @@
 
       100% {
         transform: rotate(-135deg);
+      }
+    }
+  }
+
+  @media screen and (min-width: 200px) and (max-width: 750px) {
+    .container {
+      & .category {
+        display: none;
+      }
+
+      & .article-margin-left {
+        margin-left: 0;
+      }
+
+      & .article {
+        & .article-img {
+          width: 100px;
+          margin-left: 32px;
+
+          & img {
+            width: 100%;
+            border-radius: 5px;
+          }
+        }
+
+        & .article-info {
+          width: 100%;
+
+          & span {
+            display: inline-block;
+            margin-right: 5px;
+            font-size: 14px;
+            color: #9ea7b4;
+          }
+
+          & span.article-category,
+          & span.article-tag {
+            padding: 2px 10px;
+          }
+        }
       }
     }
   }

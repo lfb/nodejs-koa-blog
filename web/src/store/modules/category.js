@@ -24,7 +24,6 @@ const actions = {
    */
   async getCategoryList({state, commit}, params) {
     let ret = await category.list(params);
-    console.log(ret);
 
     commit('SET_CATEGORY_LIST', ret);
 

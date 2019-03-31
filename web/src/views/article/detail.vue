@@ -165,12 +165,13 @@
     position: relative;
     display: flex;
     max-width: 1264px;
+    min-height: 100%;
     margin: 0 auto;
-    padding: 32px 16px;
     background: #fff;
 
     & .content {
       position: relative;
+      padding: 32px;
       flex: 1;
       margin-right: 32px;
       animation: contentAnimation 0.36s 0.18s ease both;
@@ -244,7 +245,7 @@
       animation: rightAnimation 0.36s 0.18s ease both;
 
       & .recommend {
-
+        padding: 32px 0;
         & .recommend-title {
           font-size: 24px;
           padding-bottom: 16px;
@@ -285,7 +286,7 @@
     & .sidebar-fixed {
       position: fixed;
       margin-left: 964px;
-      top: 112px;
+      top: 96px;
     }
 
     @keyframes rightAnimation {
@@ -402,18 +403,21 @@
       flex-direction: column;
       max-width: 1264px;
       margin: 0 auto;
-      padding: 32px 16px;
       background: #fff;
-    }
-    .container .sidebar-fixed {
-      position: relative !important;
-      margin-left: 0 !important;
-      top: 0 !important;
-    }
 
-    & .sidebar {
-      box-sizing: border-box;
-      width: 100% !important;
+      & .content {
+        margin-right: 0;
+      }
+
+      & .sidebar-fixed {
+        position: relative !important;
+        margin-left: 0 !important;
+        top: 0 !important;
+      }
+
+      & .sidebar {
+        display: none;
+      }
     }
   }
 

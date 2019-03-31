@@ -52,6 +52,7 @@
   .domain-inner {
     margin: 32px auto;
     max-width: 1264px;
+    padding: 0 32px;
   }
 
   .domain-list {

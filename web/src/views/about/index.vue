@@ -61,6 +61,7 @@
     max-width: 1264px;
     margin: 32px auto;
     display: flex;
+    padding: 0 32px;
 
     & .author-box {
       margin-right: 32px;

@@ -3,7 +3,7 @@
 
     <header :class="headerFixed ? 'header header-fixed' : 'header'" id="header">
       <section class="header-inner">
-        <div class="logo" @click="toPathLink('/')"></div>
+        <div class="logo" @click="goHome('/')"></div>
         <div class="search" id="search">
           <input type="text" v-model="keyword" @keyup.enter="search" placeholder="请输入您想要的.." class="search-input">
           <button class="search-submit" @click="search">搜索</button>
@@ -69,8 +69,11 @@
 
       // 搜索
       async search() {
-
         if (!this.keyword) return false;
+
+        if (this.$route.path !== '/article') {
+          this.toPathLink('/article?keyword=' + this.keyword);
+        }
 
         try {
           await this.searchArticle({
@@ -79,6 +82,10 @@
         } catch (e) {
 
         }
+      },
+      // 回到首页
+      goHome(path) {
+        window.location.href = path
       },
       // 路由跳转
       toPathLink(path) {
@@ -100,6 +107,7 @@
     max-width: 1264px;
     height: 100%;
     margin: 0 auto;
+    padding: 0 32px;
     display: flex;
     align-items: center;
   }
@@ -217,6 +225,7 @@
 
     & .nav-box {
       box-sizing: content-box;
+      padding: 0 32px;
       max-width: 1264px;
       margin: 0 auto;
       display: flex;
@@ -245,4 +254,11 @@
     }
   }
 
+  @media screen and (min-width: 200px) and (max-width: 750px) {
+    .nav {
+      & .nav-item {
+        width: 150px;
+      }
+    }
+  }
 </style>
