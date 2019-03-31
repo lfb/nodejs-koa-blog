@@ -111,56 +111,35 @@
         searchArticle: 'article/searchArticle'
       }),
       async _getArticleList() {
-        try {
-          await this.getArticleList();
-
-        } catch (e) {
-          console.log(e);
-        }
+        await this.getArticleList();
       },
       // 获取分类
       async _getCategoryList() {
-        try {
-          const ret = await this.getCategoryList({
-            include: 'tree'
-          });
-          this.categoryList = ret.data.data;
-
-        } catch (e) {
-          console.log(e);
-        }
+        const ret = await this.getCategoryList({
+          include: 'tree'
+        });
+        this.categoryList = ret.data.data;
       },
 
       // 搜索
       async search() {
-        if (!this.keyword) return false;
-
-        try {
-          await this.searchArticle({
-            keyword: this.keyword
-          });
-        } catch (e) {
-
-        }
+        await this.searchArticle({
+          keyword: this.keyword
+        });
       },
 
       // 分类下取文章
       async _getCategoryArticle(id) {
-        try {
-          let res = await this.getCategoryArticle(id);
+        let res = await this.getCategoryArticle(id);
 
-          let arr = []
-          res.data.data.forEach(item => {
-            arr = item.articles.map(children => {
-              return children;
-            })
+        let arr = []
+        res.data.data.forEach(item => {
+          arr = item.articles.map(children => {
+            return children;
           })
+        })
 
-          this.$store.commit('article/SET_ARTICLE_LIST', arr)
-
-        } catch (e) {
-          console.log(e);
-        }
+        this.$store.commit('article/SET_ARTICLE_LIST', arr)
       },
       // 处理滚动条
       handleScroll() {

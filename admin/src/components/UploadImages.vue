@@ -48,11 +48,12 @@
       // 获取数据
       async fetchData() {
         try {
+          console.log("Asasa");
           // 获取上传图片token
           await this.getUploadToken();
 
         } catch (e) {
-
+        console.log(e);
         }
       },
 

@@ -18,14 +18,14 @@ const actions = {
    * @returns {Promise<void>}
    */
   async getUploadToken({state, commit}) {
-
-    if (state.uploadTokenData) {
+    if (!state.uploadTokenData) {
       return state.uploadTokenData
 
     } else {
       let res = await upload.uploadToken();
       commit('SET_UPLOAD_TOKEN', res.data.data);
-      console.log(res.data.data);
+
+      return res.data.data;
     }
   }
 }

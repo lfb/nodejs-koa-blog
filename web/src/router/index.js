@@ -16,13 +16,8 @@ export default new Router({
   },
   routes: [
     {
-      // 重定向首页
-      path: '/',
-      redirect: '/article'
-    },
-    {
       // 文章列表
-      path: '/article',
+      path: '/',
       component(resolve) {
         require(['../views/article/list.vue'], resolve);
       }

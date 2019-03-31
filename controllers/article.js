@@ -37,9 +37,9 @@ class articleController {
         }
 
         if (errors.length > 0) {
-            ctx.response.status = 412;
+            ctx.response.status = 422;
             ctx.body = {
-                code: 412,
+                code: 422,
                 message: errors
             }
 

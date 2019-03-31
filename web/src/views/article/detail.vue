@@ -101,11 +101,6 @@
     },
     created() {
       this._getArticleDetail();
-      // this.openLoading();
-      //
-      // setTimeout(() => {
-      //   this.closeLoading();
-      // }, 1000);
     },
     mounted() {
       // 监听滚动条
@@ -122,32 +117,23 @@
       }),
       // 获取文章详情
       async _getArticleDetail() {
-        try {
-          let ret = await this.getArticleDetail(this.id);
-          this.detail = ret.data.data;
-          this._getCategoryArticle(this.detail.category.id);
+        let ret = await this.getArticleDetail(this.id);
+        this.detail = ret.data.data;
+        this._getCategoryArticle(this.detail.category.id);
 
-        } catch (e) {
-          console.log(e);
-        }
       },
       // 分类下取文章
       async _getCategoryArticle(id) {
-        try {
-          let res = await this.getCategoryArticle(id);
+        let res = await this.getCategoryArticle(id);
 
-          let arr = []
-          res.data.data.forEach(item => {
-            arr = item.articles.map(children => {
-              return children;
-            })
+        let arr = []
+        res.data.data.forEach(item => {
+          arr = item.articles.map(children => {
+            return children;
           })
+        })
 
-          this.recommend = arr;
-
-        } catch (e) {
-          console.log(e);
-        }
+        this.recommend = arr;
       },
       // 处理滚动条
       handleScroll() {
@@ -165,7 +151,6 @@
     position: relative;
     display: flex;
     max-width: 1264px;
-    min-height: 100%;
     margin: 0 auto;
     background: #fff;
 
@@ -246,6 +231,7 @@
 
       & .recommend {
         padding: 32px 0;
+
         & .recommend-title {
           font-size: 24px;
           padding-bottom: 16px;

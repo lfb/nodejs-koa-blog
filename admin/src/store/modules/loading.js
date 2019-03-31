@@ -4,7 +4,7 @@
 
 const state = {
   loadingList: [],
-  shouldLoading: true,
+  isLoading: true,
 }
 
 const mutations = {
@@ -18,7 +18,7 @@ const mutations = {
   },
   // 控制是否需要loading
   SHOULD_LOADING(state, isShould) {
-    state.shouldLoading = isShould;
+    state.isLoading = isShould;
   }
 }
 const getters = {

@@ -29,6 +29,7 @@
 
 <script>
   import {mapActions} from 'vuex'
+  import merge from 'webpack-merge'
 
   export default {
     name: "Header",
@@ -36,7 +37,7 @@
       return {
         // 导航
         nav: [
-          {title: '技术文章', key: 'article', path: '/article'},
+          {title: '技术文章', key: 'article', path: '/'},
           // {title: '学习资源', key: 'source', path: '/source'},
           {title: '收藏域名', key: 'domain', path: '/domain'},
           {title: '关于我', key: 'about', path: '/about'},
@@ -69,23 +70,26 @@
 
       // 搜索
       async search() {
-        if (!this.keyword) return false;
-
-        if (this.$route.path !== '/article') {
-          this.toPathLink('/article?keyword=' + this.keyword);
+        if (this.$route.path !== '/') {
+          this.toPathLink('/?keyword=' + this.keyword);
         }
 
         try {
+          // 动态改变路由订单状态参数orderStatus
+          this.$router.push({
+            query: merge(this.$route.query, {'keyword': this.keyword})
+          })
           await this.searchArticle({
             keyword: this.keyword
           });
         } catch (e) {
+          console.log(e);
 
         }
       },
       // 回到首页
       goHome() {
-        window.location.href = "/article"
+        window.location.href = "/"
       },
       // 路由跳转
       toPathLink(path) {
