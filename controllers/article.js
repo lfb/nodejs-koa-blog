@@ -90,7 +90,7 @@ class articleController {
      */
     static async search(ctx) {
 
-        let keyword = ctx.query
+        let {keyword} = ctx.query
         try {
             let data = await ArticleModel.search({keyword});
             ctx.response.status = 200;
@@ -101,6 +101,7 @@ class articleController {
             }
 
         } catch (err) {
+            console.log(err)
             ctx.response.status = 500;
             ctx.body = {
                 code: 500,
