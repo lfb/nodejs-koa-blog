@@ -3,8 +3,12 @@ const CategoryModel = require('../modules/category')
 class categoryController {
     /**
      * 创建分类
-     * @param ctx
-     * @returns {Promise.<void>}
+     * @param ctx name         分类名称
+     * @param ctx icon         分类icon图标
+     * @param ctx parent_id    父分类ID
+     * @param ctx z_index      权重
+     *
+     * @returns 成功创建分类返回分类详情数据，失败返回错误信息
      */
     static async create(ctx) {
         let {name, icon, parent_id, z_index} = ctx.request.body;
@@ -58,7 +62,11 @@ class categoryController {
 
     }
 
-    // 分类树结构
+    /**
+     * 分类列表创建树结构
+     * @param list 分类列表
+     * @returns {*}
+     */
     categoryTree(list) {
         // 对源数据深度克隆
         let cloneData = JSON.parse(JSON.stringify(list))
@@ -82,7 +90,9 @@ class categoryController {
 
     /**
      * 获取分类列表
-     * @returns {Promise.<void>}
+     * @params ctx include 包含内容
+     *
+     * @returns 分类列表数据
      */
     static async list(ctx) {
         let {include} = ctx.query;
@@ -121,7 +131,8 @@ class categoryController {
 
     /**
      * 查询ID分类下的所有文章
-     * @returns {Promise.<void>}
+     *
+     * @returns 文章列表数据
      */
     static async getCategoryArticle(ctx) {
         let {id} = ctx.params;
@@ -147,7 +158,6 @@ class categoryController {
             return false;
         }
 
-
         try {
             const data = await CategoryModel.getCategoryArticleList(id);
 
@@ -169,9 +179,10 @@ class categoryController {
     }
 
     /**
-     * 查询单条分类数据
-     * @param ctx
-     * @returns {Promise.<void>}
+     * 查询分类详情数据
+     * @param ctx id 分类ID
+     *
+     * @returns 分类详情
      */
     static async detail(ctx) {
         let {id} = ctx.params;
@@ -220,7 +231,8 @@ class categoryController {
     /**
      * 删除分类数据
      * @param ctx
-     * @returns {Promise.<void>}
+     *
+     * @returns 删除成功返回true，失败返回错误信息
      */
     static async delete(ctx) {
         let {id} = ctx.params;
@@ -257,17 +269,15 @@ class categoryController {
                 }
 
             } else {
-                let data = await CategoryModel.deleteCategory(id);
+                await CategoryModel.deleteCategory(id);
                 ctx.response.status = 200;
                 ctx.body = {
                     code: 200,
-                    message: `删除成功`,
-                    data
+                    message: `删除成功`
                 }
             }
 
         } catch (err) {
-            console.log(err);
             ctx.response.status = 500;
             ctx.body = {
                 code: 500,
@@ -280,8 +290,13 @@ class categoryController {
 
     /**
      * 更新分类数据
-     * @param ctx
-     * @returns {Promise.<void>}
+     * @param ctx id 文章分类ID
+     * @param ctx name         分类名称
+     * @param ctx icon         分类icon图标
+     * @param ctx parent_id    父分类ID
+     * @param ctx z_index      权重
+     *
+     * @returns 更新成功返回更新后的数据，失败返回错误信息
      */
     static async update(ctx) {
         let {id} = ctx.params;
@@ -308,7 +323,6 @@ class categoryController {
         }
 
         let {name, icon, parent_id, z_index = 10} = ctx.request.body;
-
         let params = {
             name,
             icon,
@@ -317,6 +331,7 @@ class categoryController {
         }
 
         try {
+
             await CategoryModel.updateCategory(id, params);
             let data = await CategoryModel.getCategoryDetail(id);
 

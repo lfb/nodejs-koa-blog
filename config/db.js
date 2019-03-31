@@ -1,4 +1,13 @@
 const Sequelize = require('sequelize');
+
+/**
+ *
+ * 配置数据库
+ *
+ * 第一个参数 boblog    数据库名字
+ * 第二个参数 root      数据库名字
+ * 第三个参数 password  数据库密码
+ */
 const sequelize = new Sequelize('boblog', 'root', 'password', {
     host: 'localhost',
     dialect: 'mysql',

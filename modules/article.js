@@ -12,8 +12,8 @@ Article.sync({force: false});
 class ArticleModel {
     /**
      * 创建文章
-     * @param data
-     * @returns {Promise<*>}
+     * @param data 创建文章的参数
+     * @returns {Promise<void>}
      */
     static async createArticle(data) {
         return await Article.create(data)
@@ -21,22 +21,23 @@ class ArticleModel {
 
     /**
      * 更新文章数据
-     * @param id
-     * @param data
+     * @param id 文章ID
+     * @param data 文章更新的属性参数
      */
     static async updateArticle(id, data) {
         return await Article.update(data, {
             where: {
                 id
             },
-            fields: ['title', 'author', 'introduction', 'categoryId', 'is_del', 'tag', 'cover', 'content']
+            fields: ['title', 'browser', 'author', 'introduction', 'categoryId', 'is_del', 'tag', 'cover', 'content']
         });
     }
 
     /**
-     * 搜索
-     * @param params
-     * @return {Promise<void>}
+     * 搜索文章
+     * @param params keyword 关键字
+     *
+     * @returns  返回匹配文章标题的文章列表数据
      */
     static async search(params) {
         let {page = 1, keyword} = params;
@@ -177,11 +178,11 @@ class ArticleModel {
     }
 
     /**
-     * 删除文章
-     * @param id listID
-     * @returns {Promise.<boolean>}
+     * 软删除文章（隐藏文章）
+     * @param id 文章ID
+     * @param data 文章ID
      */
-    static async deleteArticle(id, data) {
+    static async softDeleteArticle(id, data) {
         return await Article.update(data, {
             where: {
                 id,

@@ -8,8 +8,12 @@ const verify = util.promisify(jwt.verify)
 class UserController {
     /**
      * 创建用户
-     * @param ctx
-     * @returns {Promise<void>}
+     * @param ctx username     用户名字
+     * @param ctx password     用户密码
+     * @param ctx email        用户邮箱
+     * @param ctx roles_id     用户权限组 （未写）
+     *
+     * @returns 创建成功返回用户信息，失败返回错误信息
      */
     static async create(ctx) {
         let {username, password, email, roles_id = 0} = ctx.request.body;
@@ -91,8 +95,9 @@ class UserController {
 
     /**
      * 查询用户信息
-     * @param ctx
-     * @returns {Promise<void>}
+     * @param ctx token 分发的用户token
+     *
+     * @returns 查询成功返回用户信息，失败返回错误原因
      */
     static async getUserInfo(ctx) {
         // 获取jwt
@@ -134,8 +139,8 @@ class UserController {
 
     /**
      * 删除用户
-     * @param ctx
-     * @returns {Promise.<void>}
+     * @param ctx id 用户ID
+     * @returns  删除成功返回true，失败返回错误原因
      */
     static async delete(ctx) {
         let {id} = ctx.params;
@@ -181,8 +186,10 @@ class UserController {
 
     /**
      * 登录
-     * @param ctx
-     * @returns {Promise.<void>}
+     * @param ctx username     用户名字
+     * @param ctx password     用户密码
+     *
+     * @returns 登录成功返回用户信息，失败返回错误原因
      */
     static async login(ctx) {
         const {username, email, password} = ctx.request.body
@@ -235,7 +242,8 @@ class UserController {
     /**
      * 获取用户列表
      * @param ctx
-     * @returns {Promise.<void>}
+     *
+     * @returns 用户列表数据
      */
     static
     async getUserList(ctx) {

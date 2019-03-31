@@ -4,7 +4,14 @@ const CategoryModel = require('../modules/category')
 class articleController {
     /**
      * 创建文章
-     * @param ctx
+     * @param ctx title            文章标题
+     * @param ctx introduction     文章简介
+     * @param ctx categoryId       文章分类ID
+     * @param ctx tag              文章标签
+     * @param ctx cover            文章封面
+     * @param ctx content          文章内容
+     *
+     * @returns  成功创建文章返回文章详情数据，失败返回错误信息
      */
     static async create(ctx) {
         // 接收参数
@@ -75,10 +82,17 @@ class articleController {
 
     }
 
-    // 搜索文章
+    /**
+     * 搜索文章
+     * @param ctx keyword      关键字
+     *
+     * @returns  返回匹配文章标题的文章列表数据
+     */
     static async search(ctx) {
+
+        let keyword = ctx.query
         try {
-            let data = await ArticleModel.search(ctx.query);
+            let data = await ArticleModel.search({keyword});
             ctx.response.status = 200;
             ctx.body = {
                 code: 200,
@@ -99,7 +113,8 @@ class articleController {
     /**
      * 获取文章列表
      * @param ctx
-     * @returns {Promise.<void>}
+     *
+     * @returns 文章列表数据
      */
     static async list(ctx) {
         let params = ctx.query;
@@ -123,11 +138,13 @@ class articleController {
     }
 
     /**
-     * 查询单条文章数据
-     * @param ctx
-     * @returns {Promise<boolean>}
+     * 查询文章详情
+     * @param ctx id  文章ID
+     *
+     * @returns 文章的详情
      */
     static async detail(ctx) {
+        // 文章ID
         let {id} = ctx.params;
 
         // 检测是否传入ID
@@ -152,7 +169,16 @@ class articleController {
         }
 
         try {
+
             let data = await ArticleModel.getArticleDetail(id);
+
+            if (data !== null) {
+                // 浏览次数增加1
+                let browser = data.browser + 1;
+                await ArticleModel.updateArticle(id, {
+                    browser: browser
+                })
+            }
 
             ctx.response.status = 200;
             ctx.body = {
@@ -174,14 +200,14 @@ class articleController {
 
 
     /**
-     * 删除文章数据
-     * @param ctx
+     * 软删除文章数据（隐藏数据）
+     * @param ctx id 文章ID
+     * @param ctx is_del 是否软删除
      * @returns {Promise<boolean>}
      */
     static async delete(ctx) {
         let {id} = ctx.params;
-        let { is_del} = ctx.request.body;
-
+        let {is_del} = ctx.request.body;
 
 
         // 检测是否传入ID
@@ -206,12 +232,7 @@ class articleController {
         }
 
         try {
-            console.log('is_del');
-            console.log('is_del');
-            console.log('is_del');
-            console.log(id);
-            console.log(is_del);
-            await ArticleModel.deleteArticle(id, {is_del});
+            await ArticleModel.softDeleteArticle(id, {is_del});
 
             ctx.response.status = 200;
             ctx.body = {
@@ -232,8 +253,14 @@ class articleController {
 
     /**
      * 更新导航条数据
-     * @param ctx
-     * @returns {Promise.<void>}
+     * @param ctx title            文章标题
+     * @param ctx introduction     文章简介
+     * @param ctx categoryId       文章分类ID
+     * @param ctx tag              文章标签
+     * @param ctx cover            文章封面
+     * @param ctx content          文章内容
+     *
+     * @returns 更新成功则返回更新后的文章数据，失败返回更新失败的原因
      */
     static async update(ctx) {
         let {id} = ctx.params;
