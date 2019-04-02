@@ -55,8 +55,10 @@ class Article {
                 ctx.response.status = 412;
                 ctx.body = {
                     code: 412,
-                    message: `分类ID${categoryId}不存在！`
+                    message: `分类ID：${categoryId}，不存在！`
                 }
+
+                return false;
             }
 
             // 创建文章

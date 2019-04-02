@@ -269,6 +269,8 @@ class Category {
                     message: `此分类下有关联文章，不能删除`
                 }
 
+                return false;
+
             } else {
                 await CategoryModel.delete(id);
                 ctx.response.status = 200;
@@ -279,10 +281,6 @@ class Category {
             }
 
         } catch (err) {
-            console.log("err");
-            console.log("err");
-            console.log("err");
-            console.log(err);
             ctx.response.status = 500;
             ctx.body = {
                 code: 500,

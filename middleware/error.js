@@ -28,6 +28,8 @@ module.exports = function () {
                         code: 401,
                         message: "Token身份无效!"
                     }
+
+                    return false;
                 }
             }
             await next()
