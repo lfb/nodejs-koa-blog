@@ -63,7 +63,7 @@ class User {
 
                 // 创建用户
                 await UserModel.create(params);
-                const newUser = await UserModel.findUserByName(params.username)
+                const newUser = await UserModel.username(params.username)
 
                 // 签发token
                 const userToken = {
@@ -73,7 +73,7 @@ class User {
                 }
 
                 // 储存token失效有效期1小时
-                const token = jwt.sign(userToken, secret.sign, {expiresIn: 60 * 60});
+                const token = jwt.sign(userToken, secret.sign, {expiresIn: '1h'});
 
                 ctx.response.status = 200;
                 ctx.body = {
@@ -194,7 +194,7 @@ class User {
     static async login(ctx) {
         const {username, email, password} = ctx.request.body
         // 查询用户
-        const userDetail = await UserModel.findUserByName(username)
+        const userDetail = await UserModel.username(username)
 
         if (!userDetail) {
             ctx.response.status = 403;

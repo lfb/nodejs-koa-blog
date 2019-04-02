@@ -7,14 +7,14 @@ const bodyparser = require('koa-bodyparser')
 const jwt = require('koa-jwt')
 const logger = require('koa-logger')
 const cors = require('koa-cors');
-const index = require('./routes/index')
+const Routers = require('./routes/index')
 const secret = require('./config/secret')
-const err = require('./middleware/error')
+const JWTToken = require('./middleware/JWTToken')
 
 // error handler
 onerror(app)
 
-app.use(err())
+app.use(JWTToken())
 app.use(cors());
 
 // 此接口列表，过滤不用jwt验证
@@ -61,7 +61,7 @@ app.use(async (ctx, next) => {
 })
 
 // routes
-app.use(index.routes(), index.allowedMethods())
+app.use(Routers.routes(), Routers.allowedMethods())
 
 // error-handling
 app.on('error', (err, ctx) => {

@@ -8,14 +8,16 @@ const verify = util.promisify(jwt.verify)
  */
 module.exports = function () {
     return async function (ctx, next) {
+
+        // 检查此次请求中是否带有 token，如果没有则抛出异常。
+        const token = ctx.header.authorization;
+
         try {
-            // 获取jwt
-            const token = ctx.header.authorization
+
             if (token) {
-                let payload
                 try {
-                    // 解密payload，获取用户名和ID
-                    payload = await verify(token.split(' ')[1], secret.sign)
+                    // 解密payload，获取用户名，邮箱和ID
+                    let payload = await verify(token.split(' ')[1], secret.sign)
                     ctx.user = {
                         name: payload.name,
                         email: payload.email,
@@ -26,7 +28,8 @@ module.exports = function () {
                     ctx.status = 401;
                     ctx.body = {
                         code: 401,
-                        message: "Token身份无效!"
+                        message: 'Token is Expired  Token已过期，需要重新登录！',
+                        err
                     }
 
                     return false;
@@ -35,20 +38,22 @@ module.exports = function () {
             await next()
 
         } catch (err) {
+
             if (err.status === 401) {
                 ctx.status = 401;
                 ctx.body = {
                     code: 401,
-                    message: err
+                    message: 'Authentication Error 需要在request头附带Authorization:Bearer [token]字段',
+                    err
                 }
             } else {
                 ctx.status = 500;
                 ctx.body = {
                     code: 500,
-                    message: err
+                    message: 'Authentication Error 身份验证错误',
+                    err
                 }
             }
-
         }
     }
 }

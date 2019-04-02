@@ -51,7 +51,7 @@ class UserModel {
      * @param username  姓名
      * @returns {Promise.<*>}
      */
-    static async findUserByName(username) {
+    static async username(username) {
         return await User.findOne({
             where: {
                 username
