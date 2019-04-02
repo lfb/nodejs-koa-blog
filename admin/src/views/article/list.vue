@@ -186,7 +186,7 @@
     methods: {
       ...mapActions({
         articleList: 'article/articleList',
-        deleteArticle: 'article/deleteArticle'
+        hiddenArticle: 'article/hiddenArticle'
       }),
       // 获取用户列表
       async fetchData(page) {
@@ -212,7 +212,7 @@
       // 移除文章
       async remove(id) {
         try {
-          await this.deleteArticle({
+          await this.hiddenArticle({
             id,
             is_del: this.is_del
           });
