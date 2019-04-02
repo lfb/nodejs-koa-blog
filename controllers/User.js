@@ -1,11 +1,11 @@
-const userModel = require('../models/user');
+const UserModel = require('../models/UserModel');
 const jwt = require('jsonwebtoken');
 const secret = require('../config/secret');
 const bcrypt = require('bcryptjs');
 const util = require('util')
 const verify = util.promisify(jwt.verify)
 
-class UserController {
+class User {
     /**
      * 创建用户
      * @param ctx username     用户名字
@@ -44,7 +44,7 @@ class UserController {
 
         params.roles_id = roles_id;
         // 查询用户名是否重复
-        const existUser = await userModel.findUserByName(params.username)
+        const existUser = await UserModel.findUserByName(params.username)
 
         if (existUser) {
             ctx.response.status = 403;
@@ -62,8 +62,8 @@ class UserController {
                 params.password = hash;
 
                 // 创建用户
-                await userModel.create(params);
-                const newUser = await userModel.findUserByName(params.username)
+                await UserModel.create(params);
+                const newUser = await UserModel.findUserByName(params.username)
 
                 // 签发token
                 const userToken = {
@@ -73,7 +73,7 @@ class UserController {
                 }
 
                 // 储存token失效有效期1小时
-                const token = jwt.sign(userToken, secret.sign, {expiresIn: '1h'});
+                const token = jwt.sign(userToken, secret.sign, {expiresIn: 60 * 60});
 
                 ctx.response.status = 200;
                 ctx.body = {
@@ -99,7 +99,7 @@ class UserController {
      *
      * @returns 查询成功返回用户信息，失败返回错误原因
      */
-    static async getUserInfo(ctx) {
+    static async info(ctx) {
         // 获取jwt
         const token = ctx.header.authorization;
 
@@ -167,7 +167,7 @@ class UserController {
         }
 
         try {
-            await userModel.delete(id);
+            await UserModel.delete(id);
 
             ctx.response.status = 200;
             ctx.body = {
@@ -194,7 +194,7 @@ class UserController {
     static async login(ctx) {
         const {username, email, password} = ctx.request.body
         // 查询用户
-        const userDetail = await userModel.findUserByName(username)
+        const userDetail = await UserModel.findUserByName(username)
 
         if (!userDetail) {
             ctx.response.status = 403;
@@ -246,9 +246,9 @@ class UserController {
      * @returns 用户列表数据
      */
     static
-    async getUserList(ctx) {
+    async list(ctx) {
         try {
-            const data = await userModel.findAllUserList();
+            const data = await UserModel.findAllUserList();
 
             ctx.response.status = 200;
             ctx.body = {
@@ -266,4 +266,4 @@ class UserController {
     }
 }
 
-module.exports = UserController
+module.exports = User

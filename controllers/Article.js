@@ -1,7 +1,7 @@
-const ArticleModel = require('../models/article')
-const CategoryModel = require('../models/category')
+const ArticleModel = require('../models/ArticleModel')
+const CategoryModel = require('../models/CategoryModel')
 
-class articleController {
+class Article {
     /**
      * 创建文章
      * @param ctx title            文章标题
@@ -49,7 +49,7 @@ class articleController {
         try {
 
             // 查询分类是否存在
-            let detail = await CategoryModel.getCategoryDetail(categoryId);
+            let detail = await CategoryModel.detail(categoryId);
 
             if (!detail) {
                 ctx.response.status = 412;
@@ -60,9 +60,9 @@ class articleController {
             }
 
             // 创建文章
-            const {id} = await ArticleModel.createArticle(params);
+            const {id} = await ArticleModel.create(params);
             // 查询文章
-            const data = await ArticleModel.getArticleDetail(id);
+            const data = await ArticleModel.detail(id);
 
             ctx.response.status = 200;
             ctx.body = {
@@ -120,7 +120,7 @@ class articleController {
     static async list(ctx) {
         let params = ctx.query;
         try {
-            const data = await ArticleModel.getArticleList(params);
+            const data = await ArticleModel.list(params);
             ctx.response.status = 200;
             ctx.body = {
                 code: 200,
@@ -171,12 +171,12 @@ class articleController {
 
         try {
 
-            let data = await ArticleModel.getArticleDetail(id);
+            let data = await ArticleModel.detail(id);
 
             if (data !== null) {
                 // 浏览次数增加1
                 let browser = data.browser + 1;
-                await ArticleModel.updateArticle(id, {
+                await ArticleModel.update(id, {
                     browser: browser
                 })
             }
@@ -206,9 +206,9 @@ class articleController {
      * @param ctx is_del 是否软删除
      * @returns {Promise<boolean>}
      */
-    static async delete(ctx) {
+    static async hidden(ctx) {
         let {id} = ctx.params;
-        let {is_del} = ctx.request.body;
+        let {is_del = 1} = ctx.request.body;
 
 
         // 检测是否传入ID
@@ -233,7 +233,7 @@ class articleController {
         }
 
         try {
-            await ArticleModel.softDeleteArticle(id, {is_del});
+            await ArticleModel.hidden(id, {is_del});
 
             ctx.response.status = 200;
             ctx.body = {
@@ -301,8 +301,8 @@ class articleController {
         }
 
         try {
-            await ArticleModel.updateArticle(id, params);
-            let data = await ArticleModel.getArticleDetail(id);
+            await ArticleModel.update(id, params);
+            let data = await ArticleModel.detail(id);
 
             ctx.response.status = 200;
             ctx.body = {
@@ -322,4 +322,4 @@ class articleController {
     }
 }
 
-module.exports = articleController
+module.exports = Article

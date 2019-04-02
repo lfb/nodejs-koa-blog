@@ -37,7 +37,7 @@ module.exports = function () {
                 ctx.status = 401;
                 ctx.body = {
                     code: 401,
-                    message: "401 Unauthorized，请求要求用户的身份认证!"
+                    message: err
                 }
             } else {
                 ctx.status = 500;

@@ -4,7 +4,7 @@ const Op = Sequelize.Op;
 const Article = Sequelize.import('../schema/article');
 const Category = Sequelize.import('../schema/category');
 
-Category.hasMany(Article); // 将会添加 category_id 到 Article 模型
+Category.hasMany(Article); // 将会添加 category_id 到 ArticleModel 模型
 Article.belongsTo(Category, {foreignKey: 'categoryId'});
 
 Article.sync({force: false});
@@ -15,7 +15,7 @@ class ArticleModel {
      * @param data 创建文章的参数
      * @returns {Promise<void>}
      */
-    static async createArticle(data) {
+    static async create(data) {
         return await Article.create(data)
     }
 
@@ -24,7 +24,7 @@ class ArticleModel {
      * @param id 文章ID
      * @param data 文章更新的属性参数
      */
-    static async updateArticle(id, data) {
+    static async update(id, data) {
         return await Article.update(data, {
             where: {
                 id
@@ -82,7 +82,7 @@ class ArticleModel {
      * 获取文章列表
      * @returns {Promise<*>}
      */
-    static async getArticleList(params) {
+    static async list(params) {
         let ret = null;
         let {page = 1, category_id, title, include} = params;
 
@@ -163,7 +163,7 @@ class ArticleModel {
      * @param id  文章ID
      * @returns {Promise<Model>}
      */
-    static async getArticleDetail(id) {
+    static async detail(id) {
         return await Article.findOne({
             where: {
                 id,
@@ -182,7 +182,7 @@ class ArticleModel {
      * @param id 文章ID
      * @param data 文章ID
      */
-    static async softDeleteArticle(id, data) {
+    static async hidden(id, data) {
         return await Article.update(data, {
             where: {
                 id,

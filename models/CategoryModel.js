@@ -11,7 +11,7 @@ class CategoryModel {
      * @param data
      * @returns {Promise<*>}
      */
-    static async createCategory(data) {
+    static async create(data) {
         return await Category.create(data)
     }
 
@@ -21,7 +21,7 @@ class CategoryModel {
      * @param data  事项的状态
      * @returns {Promise.<boolean>}
      */
-    static async updateCategory(id, data) {
+    static async update(id, data) {
         await Category.update(data, {
             where: {
                 id
@@ -35,14 +35,14 @@ class CategoryModel {
      * 获取分类列表
      * @returns {Promise<*>}
      */
-    static async getCategoryList() {
+    static async list() {
         return await Category.findAll({
             attributes: ['id', 'name', 'parent_id', 'icon', 'z_index'],
         })
     }
 
     // 查询ID分类下的所有文章
-    static async getCategoryArticleList(id) {
+    static async article(id) {
         return await Category.findAll({
             where: {
                 id,
@@ -58,7 +58,7 @@ class CategoryModel {
      * @param id  文章ID
      * @returns {Promise<Model>}
      */
-    static async getCategoryDetail(id) {
+    static async detail(id) {
         return await Category.findOne({
             where: {
                 id,
@@ -71,7 +71,7 @@ class CategoryModel {
      * @param id
      * @returns {Promise.<boolean>}
      */
-    static async deleteCategory(id) {
+    static async delete(id) {
         await Category.destroy({
             where: {
                 id,

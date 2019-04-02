@@ -1,10 +1,10 @@
-const Router = require('koa-router')
-const UserController = require('../controllers/user')
-const ArticleController = require('../controllers/article')
-const CategoryController = require('../controllers/category')
-const UploadTokenController = require('../controllers/upload')
+const KoaRouter = require('koa-router')
+const User = require('../controllers/User')
+const Article = require('../controllers/Article')
+const Category = require('../controllers/Category')
+const UploadToken = require('../controllers/UploadToken')
 
-const router = new Router({
+const Router = new KoaRouter({
     prefix: '/api/v1'
 })
 
@@ -12,51 +12,53 @@ const router = new Router({
  * 用户接口
  */
 // 用户注册
-router.post('/user/register', UserController.create);
+Router.post('/user/register', User.create);
 // 用户登录
-router.post('/user/login', UserController.login);
+Router.post('/user/login', User.login);
 // 删除用户
-router.delete('/user/detail/:id', UserController.delete);
+Router.delete('/user/delete/:id', User.delete);
 // 获取用户信息
-router.get('/user/info', UserController.getUserInfo);
+Router.get('/user/info', User.info);
 // 获取用户列表
-router.get('/user/list', UserController.getUserList);
-
-/**
- * 上传token
- */
-router.get('/upload/token', UploadTokenController.getUploadToken)
+Router.get('/user/list', User.list);
 
 /**
  * 文章接口
  */
 // 创建文章
-router.post('/article/create', ArticleController.create);
+Router.post('/article/create', Article.create);
 // 获取文章详情
-router.get('/article/detail/:id', ArticleController.detail);
+Router.get('/article/detail/:id', Article.detail);
 // 删除文章
-router.put('/article/delete/:id', ArticleController.delete);
+Router.delete('/article/hidden/:id', Article.hidden);
 // 更改文章
-router.put('/article/update/:id', ArticleController.update);
+Router.put('/article/update/:id', Article.update);
 // 获取文章列表
-router.get('/article/list', ArticleController.list);
+Router.get('/article/list', Article.list);
 // 搜索文章
-router.get('/article/search', ArticleController.search)
+Router.get('/article/search', Article.search)
 
 /**
  * 分类接口
  */
 // 创建分类
-router.post('/category/create', CategoryController.create);
+Router.post('/category/create', Category.create);
 // 获取分类详情
-router.get('/category/detail/:id', CategoryController.detail);
+Router.get('/category/detail/:id', Category.detail);
 // 删除分类
-router.delete('/category/delete/:id', CategoryController.delete);
+Router.delete('/category/delete/:id', Category.delete);
 // 更改分类
-router.put('/category/update/:id', CategoryController.update);
+Router.put('/category/update/:id', Category.update);
 // 获取分类列表
-router.get('/category/list', CategoryController.list);
+Router.get('/category/list', Category.list);
 // 查询分类ID下的所有文章列表
-router.get('/category/article/:id', CategoryController.getCategoryArticle);
+Router.get('/category/article/:id', Category.article);
 
-module.exports = router
+
+/**
+ * 上传token
+ */
+Router.get('/upload/token', UploadToken.token)
+
+
+module.exports = Router

@@ -1,6 +1,6 @@
-const CategoryModel = require('../models/category')
+const CategoryModel = require('../models/CategoryModel')
 
-class categoryController {
+class Category {
     /**
      * 创建分类
      * @param ctx name         分类名称
@@ -41,8 +41,8 @@ class categoryController {
         try {
             params.z_index = z_index || "10";
             params.parent_id = parent_id || 0;
-            const {id} = await CategoryModel.createCategory(params);
-            const data = await CategoryModel.getCategoryDetail(id);
+            const {id} = await CategoryModel.create(params);
+            const data = await CategoryModel.detail(id);
 
             ctx.response.status = 200;
             ctx.body = {
@@ -102,12 +102,12 @@ class categoryController {
 
             if (include === 'tree') {
                 // 获取完分类数据后，进行树结构遍历
-                data = new categoryController().categoryTree(
-                    await CategoryModel.getCategoryList()
+                data = new Category().categoryTree(
+                    await CategoryModel.list()
                 );
 
             } else {
-                data = await CategoryModel.getCategoryList()
+                data = await CategoryModel.list()
             }
 
 
@@ -134,7 +134,7 @@ class categoryController {
      *
      * @returns 文章列表数据
      */
-    static async getCategoryArticle(ctx) {
+    static async article(ctx) {
         let {id} = ctx.params;
 
         // 检测是否传入ID
@@ -159,7 +159,7 @@ class categoryController {
         }
 
         try {
-            const data = await CategoryModel.getCategoryArticleList(id);
+            const data = await CategoryModel.article(id);
 
             ctx.response.status = 200;
             ctx.body = {
@@ -209,10 +209,10 @@ class categoryController {
         }
 
         try {
-            let data = await CategoryModel.getCategoryDetail(id);
+            let data = await CategoryModel.detail(id);
             ctx.response.status = 200;
             ctx.body = {
-                code: 500,
+                code: 200,
                 message: `查询成功`,
                 data
             }
@@ -260,8 +260,9 @@ class categoryController {
 
         try {
             // 检测改分类下是否有文章关联，如果有文章关联则报出不能删除错误
-            let hasArticle = await CategoryModel.getCategoryArticleList(id);
-            if (hasArticle.length > 0) {
+            let hasArticle = await CategoryModel.article(id);
+
+            if (hasArticle && hasArticle[0].articles.length > 0) {
                 ctx.response.status = 403;
                 ctx.body = {
                     code: 403,
@@ -269,7 +270,7 @@ class categoryController {
                 }
 
             } else {
-                await CategoryModel.deleteCategory(id);
+                await CategoryModel.delete(id);
                 ctx.response.status = 200;
                 ctx.body = {
                     code: 200,
@@ -278,6 +279,10 @@ class categoryController {
             }
 
         } catch (err) {
+            console.log("err");
+            console.log("err");
+            console.log("err");
+            console.log(err);
             ctx.response.status = 500;
             ctx.body = {
                 code: 500,
@@ -332,8 +337,8 @@ class categoryController {
 
         try {
 
-            await CategoryModel.updateCategory(id, params);
-            let data = await CategoryModel.getCategoryDetail(id);
+            await CategoryModel.update(id, params);
+            let data = await CategoryModel.detail(id);
 
             ctx.response.status = 200;
             ctx.body = {
@@ -355,4 +360,4 @@ class categoryController {
     }
 }
 
-module.exports = categoryController
+module.exports = Category
