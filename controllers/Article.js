@@ -210,7 +210,7 @@ class Article {
      */
     static async hidden(ctx) {
         let {id} = ctx.params;
-        let {is_del = 1} = ctx.request.body;
+        let {is_del} = ctx.query;
 
 
         // 检测是否传入ID

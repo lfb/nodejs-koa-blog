@@ -1,7 +1,7 @@
 import user from '../../api/user'
 
 const state = {
-  userInfo: null
+  userInfo: {}
 };
 
 const mutations = {

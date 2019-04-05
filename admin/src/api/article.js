@@ -23,7 +23,7 @@ export default {
 
   // 隐藏文章
   hidden(params) {
-    return fetch.put('/article/hidden/' + params.id, params);
+    return fetch.delete('/article/hidden/' + params.id, params);
   },
 
   // 更新文章

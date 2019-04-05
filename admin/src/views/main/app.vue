@@ -67,7 +67,7 @@
   export default {
     computed: {
       ...mapState({
-        userInfo: state => state.users.userInfo,
+        userInfo: state => state.user.userInfo,
         routerMetaName: state => state.common.routerMetaName
       })
     },
