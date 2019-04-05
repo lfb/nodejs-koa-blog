@@ -16,7 +16,7 @@
     },
     computed: {
       ...mapState({
-        userInfo: state => state.users.userInfo
+        userInfo: state => state.user.userInfo
       })
     },
     created() {
