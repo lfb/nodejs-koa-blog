@@ -302,6 +302,7 @@
   }
 
   .article-comments {
+    display: none;
     margin: 32px 0 16px;
     border-top: 1px solid #e8eaec;
 
