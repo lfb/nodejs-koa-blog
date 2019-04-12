@@ -44,7 +44,7 @@ class User {
 
         params.roles_id = roles_id;
         // 查询用户名是否重复
-        const existUser = await UserModel.findUserByName(params.username)
+        const existUser = await UserModel.username(params.username)
 
         if (existUser) {
             ctx.response.status = 403;

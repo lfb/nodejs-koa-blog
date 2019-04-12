@@ -179,7 +179,7 @@ class Article {
                 // 浏览次数增加1
                 let browser = data.browser + 1;
                 await ArticleModel.update(id, {
-                    browser: browser
+                    browser
                 })
             }
 
