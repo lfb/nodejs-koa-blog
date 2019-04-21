@@ -90,10 +90,10 @@ const sequelize = new Sequelize('数据库', '数据库用户名', '数据库密
 
 - [接口地址（点击即可看源码）](https://github.com/liangfengbo/nodejs-koa2-mysql-sequelize-jwt/blob/master/routes/index.js)
 - [过滤JWT接口地址（点击即可看源码）](https://github.com/liangfengbo/nodejs-koa2-mysql-sequelize-jwt/blob/master/app.js)
-- [处理文章数据（点击即可看源码）](https://github.com/liangfengbo/nodejs-koa2-mysql-sequelize-jwt/blob/master/controllers/article.js)
-- [处理分类数据（点击即可看源码）](https://github.com/liangfengbo/nodejs-koa2-mysql-sequelize-jwt/blob/master/controllers/category.js)
-- [上传七牛Token（点击即可看源码）](https://github.com/liangfengbo/nodejs-koa2-mysql-sequelize-jwt/blob/master/controllers/upload.js)
-- [用户管理（点击即可看源码）](https://github.com/liangfengbo/nodejs-koa2-mysql-sequelize-jwt/blob/master/controllers/user.js)
+- [处理文章数据（点击即可看源码）](https://github.com/liangfengbo/nodejs-koa2-mysql-sequelize-jwt/blob/master/controllers/Article.js)
+- [处理分类数据（点击即可看源码）](https://github.com/liangfengbo/nodejs-koa2-mysql-sequelize-jwt/blob/master/controllers/Category.js)
+- [上传七牛Token（点击即可看源码）](https://github.com/liangfengbo/nodejs-koa2-mysql-sequelize-jwt/blob/master/controllers/UploadToken.js)
+- [用户管理（点击即可看源码）](https://github.com/liangfengbo/nodejs-koa2-mysql-sequelize-jwt/blob/master/controllers/ser.js)
 - 前端项目，后台管理项目都是Vue.js写的，自己整理搭建的框架[vue-cli-project](https://github.com/liangfengbo/vue-cli-project)，重点使用了Vuex管理api接口数据，推荐看一看，有什么好的建议或者改进欢迎留言issues，谢谢。
 - 以下是整个项目结构，自己可以看代码研究看，有什么问题请留言issues：
 
