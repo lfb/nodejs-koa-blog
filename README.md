@@ -64,8 +64,16 @@
 // 重要一定要创建好数据库，且在config文件夹下的db.js配置好数据库。
 const sequelize = new Sequelize('数据库', '数据库用户名', '数据库密码', {})
 
-别忘了创建数据库，黑窗口登录msyql：create database '数据库用户名'
+别忘了创建数据库，黑窗口登录 mysql -uroot -p 
+
+# 创建  boblog 数据库
+CREATE DATABASE IF NOT EXISTS boblog DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+# 使用 boblog 数据库
+USE boblog;
 ```
+
+
 - 2.1.3. 开启服务 `npm start`；然后看到成功创建本地的数据库；浏览器打开：http://localhost:3000/ 即可以访问，但会有JWT权限提示。
 
 ##### 
