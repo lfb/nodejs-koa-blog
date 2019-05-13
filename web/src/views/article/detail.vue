@@ -1,23 +1,23 @@
 <template>
   <section id="article">
     <section class="container" v-if="detail">
-
-      <section :class="contentClass">
+      <section class="content">
         <h1 class="article-title">{{detail.title}}</h1>
 
         <div class="article-info">
-          <span class="article-category">{{detail.category.name}}</span>
-          <span class="article-tag">{{detail.tag}}</span>
-          <span class="article-browse">阅读：{{detail.browser}}次</span>
-          <span class="article-author">{{detail.author}}</span>
-          <span class="article-author">{{detail.createdAt}}</span>
+          <p class="article-category" v-if="detail.category">
+            {{detail.category.name}}
+          </p>
+          <p class="article-author"> by {{detail.author}}</p>
+          <p class="article-browser">阅读 {{detail.browser}} 次
+          </p>
+          <p class="article-author">{{detail.createdAt}}</p>
         </div>
 
         <div class="article-detail" id="article-detail">
           <mavon-editor
             style="height: 100%"
             :ishljs="true"
-            codeStyle="vs2015"
             v-model="detail.content"
             :defaultOpen="'preview'"
             :editable="false"
@@ -49,31 +49,21 @@
 
       </section>
 
-      <article :class="sidebarClass">
-        <div class="recommend">
-          <h1 class="recommend-title">
-            相关推荐
-            <img src="../../assets/recommend8.png" alt="recommend">
-          </h1>
-          <ul class="recommend-inner" v-if="recommend.length > 0">
-            <li class="recommend-item">
-              <h1 v-for="(item, index) in recommend.slice(0, 5)" @click="_getArticleDetail(item.id)" :key="index">
-                {{item.title}}
-              </h1>
-            </li>
-          </ul>
-          <ul class="recommend-empty" v-else>暂无推荐</ul>
-        </div>
-      </article>
+      <div class="sidebar">
+        <v-category/>
+      </div>
 
     </section>
   </section>
 </template>
 <script>
   import {mapState, mapActions} from 'vuex'
+  import VCategory from '../../components/Category'
 
   export default {
-    components: {},
+    components: {
+      VCategory
+    },
     data() {
       return {
         // 是否侧边栏
@@ -81,21 +71,10 @@
         // 文章ID
         id: this.$route.params.id,
         // 文章详情
-        detail: null,
-        // 推荐列表
-        recommend: []
+        detail: null
       }
     },
-    computed: {
-      // 内容样式
-      contentClass() {
-        return this.sidebarFixed ? 'content margin-right-300' : 'content'
-      },
-      // 侧边栏样式
-      sidebarClass() {
-        return this.sidebarFixed ? 'sidebar sidebar-fixed' : 'sidebar'
-      }
-    },
+    computed: {},
     created() {
       this._getArticleDetail();
     },
@@ -116,26 +95,6 @@
       async _getArticleDetail() {
         let ret = await this.getArticleDetail(this.id);
         this.detail = ret.data.data;
-
-        // 获取分类列表
-        this._getCategoryArticle({
-          id: this.detail.category.id,
-          isLoading: false
-        });
-
-      },
-      // 分类下取文章
-      async _getCategoryArticle(id) {
-        let res = await this.getCategoryArticle(id);
-
-        let arr = []
-        res.data.data.forEach(item => {
-          arr = item.articles.map(children => {
-            return children;
-          })
-        })
-
-        this.recommend = arr;
       },
       // 处理滚动条
       handleScroll() {
@@ -152,38 +111,42 @@
   .container {
     position: relative;
     display: flex;
-    max-width: 1264px;
-    margin: 0 auto;
-    padding: 32px;
-    background: #fff;
+    width: 1280px;
+    margin: 24px auto;
+    border-radius: 5px;
 
     & .content {
+      padding: 32px;
       position: relative;
+      background: #fff;
       flex: 1;
-      margin-right: 32px;
       animation: contentAnimation 0.36s 0.18s ease both;
 
       & .article-title {
-        font-size: 38px;
-        color: #464c5b;
+        font-size: 48px;
+        color: #404040;
       }
 
-      .article-info {
+      & .article-info {
         width: 100%;
-        margin: 32px 0;
+        margin-top: 24px;
+        display: flex;
+        align-items: center;
 
-        & span {
+        & p {
           display: inline-block;
-          margin-right: 10px;
-          font-size: 16px;
+          margin-right: 24px;
+          font-size: 14px;
           color: #9ea7b4;
         }
 
-        & span.article-category,
-        & span.article-tag {
-          background: #e8eaec;
-          padding: 2px 16px;
-          border-radius: 4px;
+        & p.article-category {
+          height: 28px;
+          line-height: 28px;
+          padding: 0 16px;
+          font-size: 14px;
+          color: #2d8cf0;
+          border-radius: 24px;
           background: rgba(51, 119, 255, .1);
         }
       }
@@ -225,84 +188,15 @@
     & .margin-right-300 {
       margin-right: 316px;
     }
+  }
 
-    & .sidebar {
-      box-sizing: border-box;
-      width: 300px;
-      animation: rightAnimation 0.36s 0.18s ease both;
-
-      & .recommend {
-
-        & .recommend-title {
-          font-size: 24px;
-          padding-bottom: 16px;
-          color: #464c5b;
-          display: flex;
-          align-items: center;
-          border-bottom: 1px solid #e8eaec;
-
-          & img {
-            width: 24px;
-          }
-        }
-
-        & .recommend-inner {
-        }
-
-        & .recommend-item {
-          & h1 {
-            cursor: pointer;
-            padding: 0;
-            margin: 16px 0;
-            font-size: 18px;
-            color: #464c5b;
-            font-weight: 400;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-
-            &:hover {
-              color: #3399ff;
-              text-decoration: underline;
-            }
-          }
-        }
-      }
-    }
-
-    & .sidebar-fixed {
-      position: fixed;
-      margin-left: 964px;
-      top: 128px;
-    }
-
-    @keyframes rightAnimation {
-      0% {
-        opacity: 0;
-        filter: alpha(opacity=0);
-      }
-
-      25% {
-        opacity: 0.25;
-      }
-      50% {
-        opacity: 0.5;
-        filter: alpha(opacity=50);
-      }
-      75% {
-        opacity: 0.75;
-        filter: alpha(opacity=75);
-      }
-
-      100% {
-        opacity: 1;
-        filter: alpha(opacity=100);
-      }
-    }
+  .sidebar {
+    box-sizing: border-box;
+    width: 320px;
+    margin-left: 24px;
   }
 
   .article-comments {
-    display: none;
     margin: 32px 0 16px;
     border-top: 1px solid #e8eaec;
 
@@ -384,30 +278,6 @@
     }
   }
 
-  @media screen and (min-width: 200px) and (max-width: 750px) {
-    .container {
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      max-width: 1264px;
-      margin: 0 auto;
-      background: #fff;
-
-      & .content {
-        margin-right: 0;
-      }
-
-      & .sidebar-fixed {
-        position: relative !important;
-        margin-left: 0 !important;
-        top: 0 !important;
-      }
-
-      & .sidebar {
-        display: none;
-      }
-    }
-  }
 
 </style>
 <style>

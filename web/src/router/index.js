@@ -30,27 +30,6 @@ export default new Router({
       }
     },
     {
-      // 资源
-      path: '/source',
-      component(resolve) {
-        require(['../views/source/list.vue'], resolve);
-      }
-    },
-    {
-      // 域名
-      path: '/domain',
-      component(resolve) {
-        require(['../views/domain/list.vue'], resolve);
-      }
-    },
-    {
-      // 生活
-      path: '/life',
-      component(resolve) {
-        require(['../views/life/list.vue'], resolve);
-      }
-    },
-    {
       // 关于我
       path: '/about',
       component(resolve) {

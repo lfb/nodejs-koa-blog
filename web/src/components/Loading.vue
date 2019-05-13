@@ -1,5 +1,5 @@
 <template>
-  <section :class="loadingClass">
+  <section class="loading-wrap">
     <div class="loading-box"></div>
     <div class="loading-text">{{ text }}</div>
   </section>
@@ -8,40 +8,19 @@
   export default {
     props: ['text'],
     data() {
-      return {
-        // 是否置顶
-        isFixed: false
-      }
+      return {}
     },
-    computed: {
-      loadingClass() {
-        return this.isFixed ? 'loading-wrap loading-wrap-fixed-top' : 'loading-wrap'
-      }
-
-    },
+    computed: {},
     mounted() {
-      // 监听滚动条
-      window.addEventListener('scroll', this.handleScroll)
     },
-    destroyed() {
-      // 移除滚动条
-      window.removeEventListener('scroll', this.handleScroll)
-    },
-    methods: {
-      // 处理滚动条
-      handleScroll() {
-        let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
-        let offsetTop = document.querySelector('#nav').offsetTop;
-        this.isFixed = !!(scrollTop > offsetTop)
-      }
-    }
+    methods: {}
   }
 </script>
 <style scoped>
   .loading-wrap {
     position: fixed;
     left: 0;
-    top: 214px;
+    top: 0;
     width: 100vw;
     height: 100vh;
     z-index: 9999;
@@ -49,11 +28,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(255, 255, 255, 1);
-  }
-
-  .loading-wrap-fixed-top {
-    top: 0;
+    background: rgba(255, 255, 255, 0.88);
   }
 
   .loading-box {

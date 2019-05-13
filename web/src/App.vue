@@ -1,28 +1,22 @@
 <template>
   <div id="app">
-    <loading-view
-      :text="loadingText"
-      v-if="isLoading">
-    </loading-view>
-
-    <headers/>
-
+    <v-loading :text="loadingText" v-if="isLoading"/>
+    <v-headers/>
     <router-view/>
-
     <main-footer/>
   </div>
 </template>
 
 <script>
-  import loadingView from './components/loading'
-  import Headers from './components/Headers'
+  import VLoading from './components/Loading'
+  import VHeaders from './components/Headers'
   import MainFooter from './components/MainFooter'
   import {mapGetters} from 'vuex';
 
   export default {
     components: {
-      loadingView,
-      Headers,
+      VLoading,
+      VHeaders,
       MainFooter
     },
     computed: {
@@ -35,6 +29,8 @@
 </script>
 
 <style>
+  @import "assets/fonts/iconfont.css";
+
   html, body {
     box-sizing: border-box;
     width: 100%;
@@ -44,16 +40,20 @@
     font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
   }
 
-  #app {
-    height: 100%;
+  body {
+    background: #f8f8f8;
   }
 
-  li {
-    list-style: none;
+  #app {
+    height: 100%;
   }
 
   section, article, header, nav, ul, li, h1, h2, h3, p {
     margin: 0;
     padding: 0;
+  }
+
+  li {
+    list-style: none;
   }
 </style>
