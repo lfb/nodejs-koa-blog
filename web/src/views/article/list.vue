@@ -4,7 +4,7 @@
       <ul class="article-box" v-if="list.length > 0">
         <li class="article-item" v-for="(item, index) in list"
             :key="index"
-            @click="toPathLink('/article/detail/' + item.id)">
+            @click="toPath('/article/detail/' + item.id)">
           <div class="article-img">
             <img v-lazy="item.cover + '?imageView2/1/w/150/h/150'" alt="img">
           </div>
@@ -133,9 +133,9 @@
         this._getCategoryArticle(id);
       },
       // 路由跳转
-      toPathLink(path) {
+      toPath(path) {
         this.$router.push(path)
-      }
+      },
     }
   }
 </script>

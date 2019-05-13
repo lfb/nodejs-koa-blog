@@ -1,19 +1,17 @@
 <template>
   <section :class="headerFixed ? 'header header-fixed' : 'header'">
     <header class="header-box">
-      <div class="logo" @click="toPath('/')">
+      <div class="logo" @click="toPath('/article', index)">
         <img src="http://images.boblog.com/BOBLOG-03.png?imageView2/1/w/400/h/200" alt="LOGO">
       </div>
       <div class="nav">
         <ul class="nav-box">
-          <li>
-            <router-link class="nav-item" :to="{path: '/'}">前端开发</router-link>
-          </li>
-          <li>
-            <router-link class="nav-item" :to="{path: '/'}">小程序</router-link>
-          </li>
-          <li>
-            <router-link class="nav-item" :to="{path: '/about'}">关于</router-link>
+          <li v-for="(item, index) in nav" :key="index">
+            <router-link
+              :class="navIndex === index ? 'nav-item nav-item--active' : 'nav-item'"
+              :to="{path: item.path}">
+              {{item.name}}
+            </router-link>
           </li>
         </ul>
       </div>
@@ -29,8 +27,18 @@
   export default {
     data() {
       return {
+        navIndex: 0,
+        nav: [
+          {name: '前端开发', path: '/article'},
+          {name: '诗与远方', path: '/life'},
+          {name: '学习资料', path: '/learning'},
+          {name: 'Coding Monkey', path: '/about'},
+        ],
         headerFixed: false
       }
+    },
+    created() {
+      this.checkParams()
     },
     mounted() {
       // 监听滚动条
@@ -41,7 +49,16 @@
       window.removeEventListener('scroll', this.handleScroll)
     },
     methods: {
-      toPath(path) {
+
+      // 检测分类
+      checkParams() {
+        const path = this.$route.path
+        console.log(path)
+        this.navIndex = this.nav.findIndex(item => item.path === path)
+      },
+      // 路由调整
+      toPath(path, index) {
+        this.navIndex = index;
         this.$router.push(path)
       },
       // 处理滚动条
@@ -103,9 +120,14 @@
         font-size: 20px;
         padding-right: 32px;
         text-decoration: none;
-        &:hover{
+
+        &:hover {
           color: #2d8cf0;
         }
+      }
+
+      & .nav-item--active {
+        color: #2d8cf0;
       }
     }
   }
