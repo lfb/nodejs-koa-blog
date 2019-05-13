@@ -2,7 +2,7 @@ const Router = require('koa-router')
 
 const {ArticleValidator} = require('../../validators/article')
 const {Article} = require('../../models/article')
-const {success} = require('../../lib/helper')
+const {handleResult} = require('../../lib/helper')
 
 const router = new Router({
     prefix: '/v1/article'
@@ -21,7 +21,7 @@ router.post('/create', async (ctx) => {
 
     const r = await Article.create(article)
 
-    success('创建成功')
+    handleResult('创建成功')
 })
 
 module.exports = router

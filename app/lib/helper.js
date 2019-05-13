@@ -1,7 +1,7 @@
-function success(msg, errorCode) {
+function handleResult(msg, errorCode) {
     throw new global.errs.Success(msg, errorCode)
 }
 
 module.exports = {
-    success
+    handleResult
 }
