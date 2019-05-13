@@ -1,36 +1,43 @@
 {
-  "name": "server",
-  "version": "0.1.0",
-  "private": true,
+  "name": "nodejs-koa2-wxapp",
+  "version": "1.0.0",
+  "description": "Node.js + Koa2实战小程序项目",
+  "main": "index.js",
   "scripts": {
-    "start": "node bin/www",
-    "dev": "./node_modules/.bin/nodemon bin/www",
-    "prd": "pm2 start bin/www",
+    "dev": "nodemon app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "dependencies": {
-    "bcryptjs": "^2.4.3",
-    "debug": "^2.6.3",
-    "jsonwebtoken": "^8.2.2",
-    "koa": "^2.2.0",
-    "koa-bodyparser": "^3.2.0",
-    "koa-convert": "^1.2.0",
-    "koa-cors": "0.0.16",
-    "koa-json": "^2.0.2",
-    "koa-jwt": "^3.3.2",
-    "koa-logger": "^2.0.1",
-    "koa-onerror": "^1.2.1",
-    "koa-router": "^7.1.1",
-    "koa-static": "^3.0.0",
-    "koa-views": "^5.2.1",
-    "koa2-cors": "^2.0.6",
-    "mysql": "^2.15.0",
-    "mysql2": "^1.5.3",
-    "pug": "^2.0.0-rc.1",
-    "qiniu": "^7.2.1",
-    "sequelize": "^4.37.10"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/liangfengbo/nodejs-koa2-wxapp.git"
   },
-  "devDependencies": {
-    "nodemon": "^1.8.1"
+  "keywords": [
+    "nodejs",
+    "koa2"
+  ],
+  "author": "https://github.com/liangfengbo",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/liangfengbo/nodejs-koa2-wxapp/issues"
+  },
+  "homepage": "https://github.com/liangfengbo/nodejs-koa2-wxapp#readme",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "basic-auth": "^2.0.1",
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^8.4.0",
+    "koa": "^2.7.0",
+    "koa-bodyparser": "^4.2.1",
+    "koa-router": "^7.4.0",
+    "koa-static": "^5.0.0",
+    "lodash": "^4.17.11",
+    "mysql2": "^1.6.5",
+    "npm-check": "^5.9.0",
+    "require-directory": "^2.1.1",
+    "sequelize": "^5.6.1",
+    "validator": "^10.11.0"
+  },
+  "directories": {
+    "test": "test"
   }
 }
