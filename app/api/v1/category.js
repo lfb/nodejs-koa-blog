@@ -3,7 +3,7 @@ const Router = require('koa-router')
 const {CategoryValidator, PositiveKeyParamsValidator} = require('../../validators/category')
 
 // 使用分类模型
-const {CategoryModelUsage} = require('../../usage/category')
+const {CategoryModelUsage} = require('../../usages/category')
 const Category = new CategoryModelUsage()
 
 const router = new Router({

@@ -3,7 +3,7 @@ const Router = require('koa-router')
 const {ArticleValidator, PositiveIdParamsValidator} = require('../../validators/article')
 
 // 使用文章模型
-const {ArticleModelUsage} = require('../../usage/article')
+const {ArticleModelUsage} = require('../../usages/article')
 const Article = new ArticleModelUsage()
 
 const router = new Router({

@@ -2,7 +2,7 @@ const Router = require('koa-router')
 
 const {RegisterValidator} = require('../../validators/user')
 
-const {UserModelUsage} = require('../../usage/user')
+const {UserModelUsage} = require('../../usages/user')
 const User = new UserModelUsage()
 
 
