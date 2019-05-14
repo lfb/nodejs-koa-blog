@@ -1,9 +1,9 @@
 const Router = require('koa-router')
 
 const {ArticleValidator, PositiveIdParamsValidator} = require('../../validators/article')
-const {Article} = require('../../models/article')
-const {Category} = require('../../models/category')
-const {handleResult} = require('../../lib/helper')
+
+const {ArticleUsage} = require('../../usage/article')
+const Article = new ArticleUsage()
 
 const router = new Router({
     prefix: '/v1/article'
@@ -30,25 +30,25 @@ router.post('/create', async (ctx) => {
     // 通过文章模型创建文章
     await Article.create(article)
 
-    // 处理成功方法
-    handleResult('创建文章成功')
+    // 返回结果
+    ctx.status = 200
+    ctx.body = {
+        msg: '创建文章成功',
+        errorCode: 0
+    }
 })
 
 router.get('/list', async (ctx) => {
 
     // 通过文章模型查询
-    const result = await Article.findAll({
-        // 过滤文章内容
-        attributes: {
-            exclude: ['content']
-        }
-    })
+    const data = await Article.list()
 
-    // 处理成功方法
-    if (result) {
-        handleResult(result)
-    } else {
-        handleResult("文章列表为空")
+    // 返回结果
+    ctx.status = 200
+    ctx.body = {
+        msg: 'success',
+        errorCode: 0,
+        data
     }
 })
 
@@ -64,22 +64,14 @@ router.get('/detail/:id', async (ctx) => {
     const id = v.get('path.id')
 
     // 查询文章
-    const result = await Article.findOne({
-        where: {
-            id
-        },
-        // 把文章关联的分类也查询出来
-        include: [{
-            model: Category
-        }]
-    })
+    const data = await Article.detail(id)
 
-    // 返回查询得到的结果
-    if (result) {
-        handleResult(result)
-
-    } else {
-        handleResult("文章不存在", 10001)
+    // 返回结果
+    ctx.status = 200
+    ctx.body = {
+        msg: 'success',
+        errorCode: 0,
+        data
     }
 })
 

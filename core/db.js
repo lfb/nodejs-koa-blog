@@ -29,7 +29,7 @@ const sequelize = new Sequelize(dbName, user, password, {
 
 // 创建模型
 sequelize.sync({
-    force: false
+    force: true
 })
 
 module.exports = {

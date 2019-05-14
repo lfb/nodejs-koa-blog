@@ -1,9 +1,9 @@
 const Router = require('koa-router')
 
 const {CategoryValidator, PositiveKeyParamsValidator} = require('../../validators/category')
-const {Article} = require('../../models/article')
-const {Category} = require('../../models/category')
-const {handleResult} = require('../../lib/helper')
+
+const {CategoryUsage} = require('../../usage/category')
+const Category = new CategoryUsage()
 
 const router = new Router({
     prefix: '/v1/category'
@@ -24,11 +24,15 @@ router.post('/create', async (ctx) => {
         parent_id: v.get('body.parent_id')
     }
 
-    // 通过分类模型创建文章
+    // 创建分类
     await Category.create(category)
 
-    // 处理成功方法
-    handleResult('创建分类成功')
+    // 返回结果
+    ctx.status = 200
+    ctx.body = {
+        msg: '创建分类成功',
+        errorCode: 0,
+    }
 })
 
 /**
@@ -37,29 +41,15 @@ router.post('/create', async (ctx) => {
 router.get('/list', async (ctx) => {
 
     // 通过分类模型查询文章
-    const result = await Category.findAndCountAll({
-        include: [{
-            model: Article,
-            // 过滤文章的字段，只返回文章的id和标题即可
-            attributes: {
-                exclude: [
-                    'author',
-                    'content',
-                    'cover',
-                    'browse',
-                    'create_at',
-                    'update_at',
-                    'delete_at',
-                    'category_id',
-                    'CategoryId'
-                ]
-            }
-        }]
+    const data = await Category.list()
 
-    })
-
-    // 处理成功方法
-    handleResult(result)
+    // 返回结果
+    ctx.status = 200
+    ctx.body = {
+        msg: 'success',
+        errorCode: 0,
+        data
+    }
 })
 
 /**
@@ -74,28 +64,14 @@ router.get('/:key/article', async (ctx) => {
     const key = v.get('path.key')
 
     // 通过分类模型查询
-    const result = await Category.findAll({
-        where: {
-            key
-        },
-        include: [{
-            model: Article,
-            include: [{
-                model: Category
-            }],
-            // 过滤文章内容
-            attributes: {
-                exclude: ['content']
-            }
-        }]
-    })
+    const data = await Category.article(key)
 
-    // 处理成功方法
-    if (result) {
-        handleResult(result)
-
-    } else {
-        handleResult("分类文章不存在", 10001)
+    // 返回结果
+    ctx.status = 200
+    ctx.body = {
+        msg: 'success',
+        errorCode: 0,
+        data
     }
 })
 
