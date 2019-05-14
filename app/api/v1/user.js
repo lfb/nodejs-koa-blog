@@ -10,15 +10,21 @@ const router = new Router({
 
 // 用户注册
 router.post('/register', async (ctx) => {
+
+    // 通过验证器校验参数是否通过
     const v = await new RegisterValidator().validate(ctx)
+
+    // 获取用户注册的参数
     const user = {
         email: v.get('body.email'),
         password: v.get('body.password2'),
         nickname: v.get('body.nickname')
     }
 
-    const r = await User.create(user)
+    // 创建用户
+    await User.create(user)
 
+    // 处理成功方法
     handleResult('注册成功')
 })
 
