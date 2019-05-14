@@ -1,6 +1,6 @@
 const {User} = require('../models/user')
 
-class UserUsage {
+class UserModelUsage {
     // 创建文章
     async create(cxt) {
         return await User.create(cxt)
@@ -8,5 +8,5 @@ class UserUsage {
 }
 
 module.exports = {
-    UserUsage
+    UserModelUsage
 }

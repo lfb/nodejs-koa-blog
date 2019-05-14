@@ -2,8 +2,9 @@ const Router = require('koa-router')
 
 const {ArticleValidator, PositiveIdParamsValidator} = require('../../validators/article')
 
-const {ArticleUsage} = require('../../usage/article')
-const Article = new ArticleUsage()
+// 使用文章模型
+const {ArticleModelUsage} = require('../../usage/article')
+const Article = new ArticleModelUsage()
 
 const router = new Router({
     prefix: '/v1/article'

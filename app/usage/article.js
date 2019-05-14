@@ -1,7 +1,7 @@
 const {Article} = require('../models/article')
 const {Category} = require('../models/category')
 
-class ArticleUsage {
+class ArticleModelUsage {
     // 创建文章
     async create(cxt) {
         return await Article.create(cxt)
@@ -32,5 +32,5 @@ class ArticleUsage {
 }
 
 module.exports = {
-    ArticleUsage
+    ArticleModelUsage
 }
