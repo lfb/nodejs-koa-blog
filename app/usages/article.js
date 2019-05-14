@@ -12,7 +12,10 @@ class ArticleModelUsage {
         return await Article.findAll({
             // 过滤文章内容
             attributes: {
-                exclude: ['content']
+                exclude: [
+                    'content',
+                    'CategoryId'
+                ]
             }
         })
     }
