@@ -2,12 +2,13 @@ const {Article} = require('../models/article')
 const {Category} = require('../models/category')
 
 class ArticleModelUsage {
+
     // 创建文章
     async create(cxt) {
         return await Article.create(cxt)
     }
 
-    // 获取文章列表
+    // 文章列表
     async list() {
         return await Article.findAll({
             // 过滤文章内容
@@ -20,7 +21,7 @@ class ArticleModelUsage {
         })
     }
 
-    // 获取文章详情
+    // 文章详情
     async detail(id) {
         return await Article.findOne({
             where: {

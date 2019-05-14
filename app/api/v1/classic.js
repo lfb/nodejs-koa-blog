@@ -1,7 +1,6 @@
 const Router = require('koa-router')
 const router = new Router()
 
-const {ParameterException} = require('../../../core/http-exception')
 const {PositiveIntegerValidator} = require('../../validators/classic')
 
 router.post('/v1/:id/classic/latest', async (ctx, next) => {

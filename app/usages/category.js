@@ -2,12 +2,13 @@ const {Article} = require('../models/article')
 const {Category} = require('../models/category')
 
 class CategoryModelUsage {
+
     // 创建分类
     async create(cxt) {
         return await Category.create(cxt)
     }
 
-    // 获取文章列表
+    // 分类列表
     async list() {
         return await Category.findAndCountAll({
             include: [{
@@ -31,7 +32,7 @@ class CategoryModelUsage {
         })
     }
 
-    // 获取文章详情
+    // 关联分类的文章
     async article(key) {
         return await Category.findAll({
             where: {

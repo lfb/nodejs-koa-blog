@@ -1,7 +1,8 @@
 const {User} = require('../models/user')
 
 class UserModelUsage {
-    // 创建文章
+
+    // 创建用户
     async create(cxt) {
         return await User.create(cxt)
     }
