@@ -25,9 +25,9 @@ class RegisterValidator extends LinValidator {
         ]
         this.password2 = this.password1
         this.nickname = [
-            new Rule('isLength', '昵称长度必须在4~32之间', {
-                min: 4,
-                max: 32
+            new Rule('isLength', '昵称长度必须在2~16之间', {
+                min: 2,
+                max: 16
             }),
         ]
     }
