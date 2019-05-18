@@ -3,8 +3,8 @@ const Router = require('koa-router')
 const {CategoryValidator, PositiveKeyParamsValidator} = require('../../validators/category')
 
 // 使用分类模型
-const {CategoryModelUsage} = require('../../usages/category')
-const Category = new CategoryModelUsage()
+const {Category} = require('../../models/category')
+const {Auth} = require('../../../middlewares/auth')
 
 const router = new Router({
     prefix: '/v1/category'
@@ -13,7 +13,7 @@ const router = new Router({
 /**
  * 创建分类
  */
-router.post('/create', async (ctx) => {
+router.post('/create', new Auth().m, async (ctx) => {
 
     // 通过验证器校验参数是否通过
     const v = await new CategoryValidator().validate(ctx)
@@ -26,7 +26,7 @@ router.post('/create', async (ctx) => {
     }
 
     // 创建分类
-    await Category.create(category)
+    await Category.createCategory(category)
 
     // 返回结果
     ctx.status = 200

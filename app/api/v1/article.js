@@ -1,10 +1,8 @@
 const Router = require('koa-router')
 
 const {ArticleValidator, PositiveIdParamsValidator} = require('../../validators/article')
-
-// 使用文章模型
-const {ArticleModelUsage} = require('../../usages/article')
-const Article = new ArticleModelUsage()
+const {Article} = require('../../models/article')
+const {Auth} = require('../../../middlewares/auth')
 
 const router = new Router({
     prefix: '/v1/article'
@@ -13,7 +11,7 @@ const router = new Router({
 /**
  * 创建文章
  */
-router.post('/create', async (ctx) => {
+router.post('/create', new Auth().m, async (ctx) => {
 
     // 通过验证器校验参数是否通过
     const v = await new ArticleValidator().validate(ctx)
@@ -29,7 +27,7 @@ router.post('/create', async (ctx) => {
     }
 
     // 创建文章
-    await Article.create(article)
+    await Article.createArticle(article)
 
     // 返回结果
     ctx.status = 200

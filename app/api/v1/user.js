@@ -2,8 +2,7 @@ const Router = require('koa-router')
 
 const {RegisterValidator} = require('../../validators/user')
 
-const {UserModelUsage} = require('../../usages/user')
-const User = new UserModelUsage()
+const {User} = require('../../models/user')
 
 const router = new Router({
     prefix: '/v1/user'
@@ -23,7 +22,7 @@ router.post('/register', async (ctx) => {
     }
 
     // 创建用户
-    await User.create(user)
+    await User.createUser(user)
 
     // 返回结果
     ctx.status = 200
