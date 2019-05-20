@@ -52,26 +52,6 @@ class Auth {
         }
     }
 
-    // 验证token是否有效
-    static verifyToken(token) {
-        try {
-            jwt.verify(token, global.config.security.secretKey);
-            return {
-                msg: 'token有效',
-                verify: true
-            };
-
-        } catch (error) {
-            let errMsg = error.name === 'TokenExpiredError' ? 'token已过期' : '无效的token';
-            return {
-                msg: errMsg,
-                verify: false
-            };
-        }
-
-
-    }
-
 }
 
 module.exports = {

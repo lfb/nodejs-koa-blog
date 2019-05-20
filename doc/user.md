@@ -17,7 +17,25 @@ POST    /user/register
 ```json
 {
     "msg": "注册成功",
-    "error_code": 0,
-    "request": "POST /v1/user/register"
+    "errorCode": 0
+}
+```
+
+## 用户登录
+```
+POST    /user/login
+```
+### 请求参数
+|参数名|说明|是否必填
+|---|---|---
+|account|邮箱|必填
+|secret|密码|必填
+|type|登录类型 小程序：100, 普通用户：101，管理员：200|必填
+
+### 注册成功返回数据
+```json
+{
+    "msg": "登录成功",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjIsInNjb3BlIjo4LCJpYXQiOjE1NTgzMzk5OTMsImV4cCI6MTU1ODM0MzU5M30.yJMnrEwBoGXEVvfrbCz0VtNa-2_HeEui9nxnX9hbCBQ"
 }
 ```

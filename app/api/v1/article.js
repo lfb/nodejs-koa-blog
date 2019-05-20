@@ -31,6 +31,48 @@ router.post('/create', new Auth().m, async (ctx) => {
     }
 })
 
+
+/**
+ * 删除文章
+ */
+router.delete('/delete/:id', new Auth().m, async (ctx) => {
+    // 通过验证器校验参数是否通过
+    const v = await new PositiveIdParamsValidator().validate(ctx);
+
+    // 获取文章ID参数
+    const id = v.get('path.id');
+
+    // 删除文章
+    await ArticleDao.deleteArticle(id);
+
+    ctx.body = {
+        msg: '删除成功',
+        errorCode: 0
+    }
+
+})
+
+/**
+ * 更新文章
+ */
+router.put('/update/:id', new Auth().m, async (ctx) => {
+    // 通过验证器校验参数是否通过
+    const v = await new PositiveIdParamsValidator().validate(ctx);
+
+    // 获取文章ID参数
+    const id = v.get('path.id');
+
+    // 更新文章
+    await ArticleDao.updateArticle(id, v);
+
+    ctx.body = {
+        msg: '更新成功',
+        errorCode: 0
+    }
+
+})
+
+
 /**
  * 获取文章列表
  */
@@ -46,26 +88,6 @@ router.get('/list', async (ctx) => {
         errorCode: 0,
         data
     }
-})
-
-/**
- * 更新文章
- */
-router.put('/update/:id', async (ctx) => {
-    // 通过验证器校验参数是否通过
-    const v = await new PositiveIdParamsValidator().validate(ctx);
-
-    // 获取文章ID参数
-    const id = v.get('path.id');
-
-    // 更新文章
-    await ArticleDao.updateArticle(id, v);
-
-    ctx.body = {
-        msg: '更新成功',
-        errorCode: 0
-    }
-
 })
 
 /**
@@ -89,27 +111,6 @@ router.get('/detail/:id', async (ctx) => {
         errorCode: 0,
         data
     }
-})
-
-
-/**
- * 删除文章
- */
-router.delete('/delete/:id', async (ctx) => {
-    // 通过验证器校验参数是否通过
-    const v = await new PositiveIdParamsValidator().validate(ctx);
-
-    // 获取文章ID参数
-    const id = v.get('path.id');
-
-    // 删除文章
-    await ArticleDao.deleteArticle(id);
-
-    ctx.body = {
-        msg: '删除成功',
-        errorCode: 0
-    }
-
 })
 
 /**

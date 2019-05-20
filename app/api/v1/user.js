@@ -2,13 +2,15 @@ const Router = require('koa-router')
 
 const {
     RegisterValidator,
-    UserLoginValidator
+    UserLoginValidator,
+    TokenNotEmptyValidator
 } = require('../../validators/user')
 
 const {LoginType} = require('../../lib/enum')
 const {WXManager} = require('../../service/wx')
-const {LoginManager} = require('../../service/login')
+const {userManager} = require('../../service/user')
 const {UserDao} = require('../../dao/user')
+const {Auth} = require('../../../middlewares/auth')
 
 const router = new Router({
     prefix: '/v1/user'
@@ -45,7 +47,7 @@ router.post('/login', async (ctx) => {
     switch (v.get('body.type')) {
         // 用户邮箱登录
         case LoginType.USER_EMAIL:
-            token = await LoginManager.email(v.get('body.account'), v.get('body.secret'));
+            token = await userManager.email(v.get('body.account'), v.get('body.secret'));
             break;
 
         // 管理员登录
@@ -65,6 +67,17 @@ router.post('/login', async (ctx) => {
         msg: '登录成功',
         token
     }
+})
+
+// 用户验证
+router.post('/verify', new Auth().m, async (ctx) => {
+    const id = ctx.auth.uid;
+
+    let result = await UserDao.getUserInfo(id);
+
+    // 返回结果
+    ctx.status = 200;
+    ctx.body = result;
 })
 
 module.exports = router

@@ -32,6 +32,28 @@ class UserDao {
         return user
     }
 
+    // 查询用户信息
+    static async getUserInfo(id) {
+        // 查询用户是否存在
+        const user = await User.findOne({
+            where: {
+                id
+            },
+            attributes: {
+                exclude: [
+                    'password',
+                    'delete_at'
+                ]
+            }
+        })
+
+        if (!user) {
+            throw new global.errs.AuthFailed('账号不存在')
+        }
+
+        return user
+    }
+
     // 查询是否存在 openid 的小程序用户
     static async getUserByOpenid(openid) {
         // 查询用户
