@@ -1,11 +1,11 @@
-const User = require('../models/user')
+const {User} = require('../models/user')
+const bcrypt = require('bcryptjs')
 
 // data access object
 class UserDao {
     // 创建用户
     static async createUser(params) {
-
-        return await User.createUser(params)
+        return await User.create(params)
     }
 
     // 验证密码

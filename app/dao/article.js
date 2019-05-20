@@ -1,5 +1,5 @@
 const {Article} = require('../models/article')
-const {Category} = require('./category')
+const {Category} = require('../models/category')
 
 // 定义文章模型
 class ArticleDao {
