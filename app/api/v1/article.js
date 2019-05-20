@@ -10,13 +10,13 @@ const {ArticleDao} = require('../../dao/article')
 const {Auth} = require('../../../middlewares/auth')
 
 const router = new Router({
-    prefix: '/v1/article'
+    prefix: '/v1'
 })
 
 /**
  * 创建文章
  */
-router.post('/create', new Auth().m, async (ctx) => {
+router.post('/article', new Auth().m, async (ctx) => {
 
     // 通过验证器校验参数是否通过
     const v = await new ArticleValidator().validate(ctx);
@@ -35,7 +35,7 @@ router.post('/create', new Auth().m, async (ctx) => {
 /**
  * 删除文章
  */
-router.delete('/delete/:id', new Auth().m, async (ctx) => {
+router.delete('/article/:id', new Auth().m, async (ctx) => {
     // 通过验证器校验参数是否通过
     const v = await new PositiveIdParamsValidator().validate(ctx);
 
@@ -55,7 +55,7 @@ router.delete('/delete/:id', new Auth().m, async (ctx) => {
 /**
  * 更新文章
  */
-router.put('/update/:id', new Auth().m, async (ctx) => {
+router.put('/article/:id', new Auth().m, async (ctx) => {
     // 通过验证器校验参数是否通过
     const v = await new PositiveIdParamsValidator().validate(ctx);
 
@@ -69,14 +69,13 @@ router.put('/update/:id', new Auth().m, async (ctx) => {
         msg: '更新成功',
         errorCode: 0
     }
-
 })
 
 
 /**
  * 获取文章列表
  */
-router.get('/list', async (ctx) => {
+router.get('/article', async (ctx) => {
 
     // 查询文章列表
     const data = await ArticleDao.getArticleList();
@@ -93,7 +92,7 @@ router.get('/list', async (ctx) => {
 /**
  * 查询文章详情
  */
-router.get('/detail/:id', async (ctx) => {
+router.get('/article/:id', async (ctx) => {
 
     // 通过验证器校验参数是否通过
     const v = await new PositiveIdParamsValidator().validate(ctx);
@@ -116,7 +115,7 @@ router.get('/detail/:id', async (ctx) => {
 /**
  * 搜索文章
  */
-router.get('/search', async (ctx) => {
+router.get('/article/search', async (ctx) => {
 
     // 通过验证器校验参数是否通过
     const v = await new ArticleSearchValidator().validate(ctx);

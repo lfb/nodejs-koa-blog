@@ -11,13 +11,13 @@ const {CategoryDao} = require('../../dao/category')
 const {Auth} = require('../../../middlewares/auth')
 
 const router = new Router({
-    prefix: '/v1/category'
+    prefix: '/v1'
 })
 
 /**
  * 创建分类
  */
-router.post('/create', new Auth().m, async (ctx) => {
+router.post('/category', new Auth().m, async (ctx) => {
 
     // 通过验证器校验参数是否通过
     const v = await new CategoryValidator().validate(ctx);
@@ -36,7 +36,7 @@ router.post('/create', new Auth().m, async (ctx) => {
 /**
  * 删除文章
  */
-router.delete('/delete/:id', new Auth().m, async (ctx) => {
+router.delete('/category/:id', new Auth().m, async (ctx) => {
     // 通过验证器校验参数是否通过
     const v = await new PositiveIdParamsValidator().validate(ctx);
 
@@ -58,7 +58,7 @@ router.delete('/delete/:id', new Auth().m, async (ctx) => {
 /**
  * 更新分类
  */
-router.put('/update/:id', new Auth().m, async (ctx) => {
+router.put('/category/:id', new Auth().m, async (ctx) => {
     // 通过验证器校验参数是否通过
     const v = await new PositiveIdParamsValidator().validate(ctx);
 
@@ -79,7 +79,7 @@ router.put('/update/:id', new Auth().m, async (ctx) => {
 /**
  * 获取分类下关联的文章
  */
-router.get('/list', async (ctx) => {
+router.get('/category', async (ctx) => {
 
     // 获取分类下关联的文章
     const data = await CategoryDao.getCategoryList();
@@ -95,9 +95,9 @@ router.get('/list', async (ctx) => {
 
 
 /**
- * 查询分类名称下的所有关联文章
+ * 查询分类为 ID 下的所有文章
  */
-router.get('/article/:id', async (ctx) => {
+router.get('/category/:id/article', async (ctx) => {
 
     // 通过验证器校验参数是否通过
     const v = await new PositiveKeyParamsValidator().validate(ctx);
