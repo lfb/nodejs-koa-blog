@@ -1,7 +1,7 @@
 const Router = require('koa-router')
 
 const {ArticleValidator, PositiveIdParamsValidator} = require('../../validators/article')
-const {Article} = require('../../models/article')
+const {ArticleDao} = require('../../dao/article')
 const {Auth} = require('../../../middlewares/auth')
 
 const router = new Router({
@@ -14,7 +14,7 @@ const router = new Router({
 router.post('/create', new Auth().m, async (ctx) => {
 
     // 通过验证器校验参数是否通过
-    const v = await new ArticleValidator().validate(ctx)
+    const v = await new ArticleValidator().validate(ctx);
 
     // 获取参数
     const article = {
@@ -27,7 +27,7 @@ router.post('/create', new Auth().m, async (ctx) => {
     }
 
     // 创建文章
-    await Article.createArticle(article)
+    await ArticleDao.createArticle(article);
 
     // 返回结果
     ctx.status = 200
@@ -40,10 +40,10 @@ router.post('/create', new Auth().m, async (ctx) => {
 router.get('/list', async (ctx) => {
 
     // 查询文章列表
-    const data = await Article.list()
+    const data = await ArticleDao.getArticleList();
 
     // 返回结果
-    ctx.status = 200
+    ctx.status = 200;
     ctx.body = {
         msg: 'success',
         errorCode: 0,
@@ -57,16 +57,16 @@ router.get('/list', async (ctx) => {
 router.get('/detail/:id', async (ctx) => {
 
     // 通过验证器校验参数是否通过
-    const v = await new PositiveIdParamsValidator().validate(ctx)
+    const v = await new PositiveIdParamsValidator().validate(ctx);
 
     // 获取文章ID参数
-    const id = v.get('path.id')
+    const id = v.get('path.id');
 
     // 查询文章
-    const data = await Article.detail(id)
+    const data = await ArticleDao.getArticleDetail(id);
 
     // 返回结果
-    ctx.status = 200
+    ctx.status = 200;
     ctx.body = {
         msg: 'success',
         errorCode: 0,

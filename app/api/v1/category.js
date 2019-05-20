@@ -3,7 +3,7 @@ const Router = require('koa-router')
 const {CategoryValidator, PositiveKeyParamsValidator} = require('../../validators/category')
 
 // 使用分类模型
-const {Category} = require('../../models/category')
+const {CategoryDao} = require('../../dao/category')
 const {Auth} = require('../../../middlewares/auth')
 
 const router = new Router({
@@ -16,7 +16,7 @@ const router = new Router({
 router.post('/create', new Auth().m, async (ctx) => {
 
     // 通过验证器校验参数是否通过
-    const v = await new CategoryValidator().validate(ctx)
+    const v = await new CategoryValidator().validate(ctx);
 
     // 获取参数
     const category = {
@@ -26,10 +26,10 @@ router.post('/create', new Auth().m, async (ctx) => {
     }
 
     // 创建分类
-    await Category.createCategory(category)
+    await CategoryDao.createCategory(category);
 
     // 返回结果
-    ctx.status = 200
+    ctx.status = 200;
     ctx.body = {
         msg: '创建分类成功',
         errorCode: 0,
@@ -42,10 +42,10 @@ router.post('/create', new Auth().m, async (ctx) => {
 router.get('/list', async (ctx) => {
 
     // 获取分类下关联的文章
-    const data = await Category.list()
+    const data = await CategoryDao.getCategoryList();
 
     // 返回结果
-    ctx.status = 200
+    ctx.status = 200;
     ctx.body = {
         msg: 'success',
         errorCode: 0,
@@ -59,16 +59,16 @@ router.get('/list', async (ctx) => {
 router.get('/:key/article', async (ctx) => {
 
     // 通过验证器校验参数是否通过
-    const v = await new PositiveKeyParamsValidator().validate(ctx)
+    const v = await new PositiveKeyParamsValidator().validate(ctx);
 
     // 获取参数
-    const key = v.get('path.key')
+    const key = v.get('path.key');
 
     // 查询
-    const data = await Category.article(key)
+    const data = await CategoryDao.getArticle(key);
 
     // 返回结果
-    ctx.status = 200
+    ctx.status = 200;
     ctx.body = {
         msg: 'success',
         errorCode: 0,

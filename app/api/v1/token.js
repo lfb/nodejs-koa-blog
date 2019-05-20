@@ -1,7 +1,7 @@
 const Router = require('koa-router')
 
 const {LoginType} = require('../../lib/enum')
-const {User} = require('../../models/user')
+const {UserDao} = require('../../dao/user')
 const {Auth} = require('../../../middlewares/auth')
 const {generateToken} = require('../../../core/util')
 const {WXManager} = require('../../service/wx')
@@ -13,12 +13,12 @@ const router = new Router({
 
 // 获取token
 router.post('/', async (ctx) => {
-    const v = await new TokenValidator().validate(ctx)
+    const v = await new TokenValidator().validate(ctx);
     let token;
     switch (v.get('body.type')) {
         // 用户邮箱登录
         case LoginType.USER_EMAIL:
-            token = await emailLogin(v.get('body.account'), v.get('body.secret'))
+            token = await emailLogin(v.get('body.account'), v.get('body.secret'));
             break;
 
         // 管理员登录
@@ -27,7 +27,7 @@ router.post('/', async (ctx) => {
 
         // 小程序登录
         case LoginType.USER_MINI_PROGRAM:
-            token = await WXManager.codeToToken(v.get('body.account'))
+            token = await WXManager.codeToToken(v.get('body.account'));
             break;
             
         default:
@@ -42,10 +42,10 @@ router.post('/', async (ctx) => {
 // 验证token
 router.post('/verify', async (ctx) => {
     // 验证必须带token参数
-    const v = await new NotEmptyValidator().validate(ctx)
+    const v = await new NotEmptyValidator().validate(ctx);
 
     // 验证结果
-    const result = Auth.verifyToken(v.get('body.token'))
+    const result = Auth.verifyToken(v.get('body.token'));
     ctx.status = 200
     ctx.body = {
         msg: 'success',
@@ -57,7 +57,7 @@ router.post('/verify', async (ctx) => {
 // 邮箱登录
 async function emailLogin(account, secret) {
     // 验证账号密码是否正确
-    const user = await User.verifyEmailPassword(account, secret)
+    const user = await UserDao.verifyEmailPassword(account, secret);
 
     // 发布令牌
     return generateToken(user.id, Auth.USER)

@@ -2,7 +2,7 @@ const Router = require('koa-router')
 
 const {RegisterValidator} = require('../../validators/user')
 
-const {User} = require('../../models/user')
+const {UserDao} = require('../../dao/user')
 
 const router = new Router({
     prefix: '/v1/user'
@@ -12,7 +12,7 @@ const router = new Router({
 router.post('/register', async (ctx) => {
 
     // 通过验证器校验参数是否通过
-    const v = await new RegisterValidator().validate(ctx)
+    const v = await new RegisterValidator().validate(ctx);
 
     // 获取参数
     const user = {
@@ -22,10 +22,10 @@ router.post('/register', async (ctx) => {
     }
 
     // 创建用户
-    await User.createUser(user)
+    await UserDao.createUser(user);
 
     // 返回结果
-    ctx.status = 200
+    ctx.status = 200;
     ctx.body = {
         msg: '注册成功',
         errorCode: 0
