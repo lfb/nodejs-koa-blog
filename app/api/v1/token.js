@@ -1,7 +1,9 @@
 const Router = require('koa-router')
 
+const {
+    TokenNotEmptyValidator
+} = require('../../validators/token')
 const {Auth} = require('../../../middlewares/auth')
-const {TokenNotEmptyValidator} = require('../../validators/token')
 
 const router = new Router({
     prefix: '/v1/token'
@@ -14,12 +16,9 @@ router.post('/verify', async (ctx) => {
 
     // 验证结果
     const result = Auth.verifyToken(v.get('body.token'));
+
     ctx.status = 200
-    ctx.body = {
-        msg: 'success',
-        result,
-        errorCode: 0
-    }
+    ctx.body = result
 })
 
 module.exports = router

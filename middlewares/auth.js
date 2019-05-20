@@ -18,7 +18,7 @@ class Auth {
         return async (ctx, next) => {
             const tokenToken = basicAuth(ctx.req);
 
-            let errMsg = "token不合法";
+            let errMsg = "无效的token";
 
             // 无带token
             if (!tokenToken || !tokenToken.name) {
@@ -55,12 +55,21 @@ class Auth {
     // 验证token是否有效
     static verifyToken(token) {
         try {
-            jwt.verify(token, global.config.security.secretKey)
+            jwt.verify(token, global.config.security.secretKey);
+            return {
+                msg: 'token有效',
+                verify: true
+            };
 
-            return true;
-        } catch (e) {
-            return false
+        } catch (error) {
+            let errMsg = error.name === 'TokenExpiredError' ? 'token已过期' : '无效的token';
+            return {
+                msg: errMsg,
+                verify: false
+            };
         }
+
+
     }
 
 }

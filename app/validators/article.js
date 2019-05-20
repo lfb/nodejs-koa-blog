@@ -37,7 +37,15 @@ class PositiveIdParamsValidator extends LinValidator {
     }
 }
 
+class ArticleSearchValidator extends LinValidator {
+    constructor() {
+        super();
+        this.keyword = new Rule('isLength', '必须传入搜索关键字');
+    }
+}
+
 module.exports = {
     ArticleValidator,
-    PositiveIdParamsValidator
+    PositiveIdParamsValidator,
+    ArticleSearchValidator
 }

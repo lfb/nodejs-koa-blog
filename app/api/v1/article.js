@@ -1,6 +1,11 @@
 const Router = require('koa-router')
 
-const {ArticleValidator, PositiveIdParamsValidator} = require('../../validators/article')
+const {
+    ArticleValidator,
+    PositiveIdParamsValidator,
+    ArticleSearchValidator
+} = require('../../validators/article')
+
 const {ArticleDao} = require('../../dao/article')
 const {Auth} = require('../../../middlewares/auth')
 
@@ -15,19 +20,8 @@ router.post('/create', new Auth().m, async (ctx) => {
 
     // 通过验证器校验参数是否通过
     const v = await new ArticleValidator().validate(ctx);
-
-    // 获取参数
-    const article = {
-        title: v.get('body.title'),
-        author: v.get('body.author'),
-        content: v.get('body.content'),
-        cover: v.get('body.cover'),
-        browse: v.get('body.browse'),
-        category_id: v.get('body.category_id')
-    }
-
     // 创建文章
-    await ArticleDao.createArticle(article);
+    await ArticleDao.createArticle(v);
 
     // 返回结果
     ctx.status = 200
@@ -37,6 +31,9 @@ router.post('/create', new Auth().m, async (ctx) => {
     }
 })
 
+/**
+ * 获取文章列表
+ */
 router.get('/list', async (ctx) => {
 
     // 查询文章列表
@@ -49,6 +46,26 @@ router.get('/list', async (ctx) => {
         errorCode: 0,
         data
     }
+})
+
+/**
+ * 更新文章
+ */
+router.put('/update/:id', async (ctx) => {
+    // 通过验证器校验参数是否通过
+    const v = await new PositiveIdParamsValidator().validate(ctx);
+
+    // 获取文章ID参数
+    const id = v.get('path.id');
+
+    // 更新文章
+    await ArticleDao.updateArticle(id, v);
+
+    ctx.body = {
+        msg: '更新成功',
+        errorCode: 0
+    }
+
 })
 
 /**
@@ -69,6 +86,50 @@ router.get('/detail/:id', async (ctx) => {
     ctx.status = 200;
     ctx.body = {
         msg: 'success',
+        errorCode: 0,
+        data
+    }
+})
+
+
+/**
+ * 删除文章
+ */
+router.delete('/delete/:id', async (ctx) => {
+    // 通过验证器校验参数是否通过
+    const v = await new PositiveIdParamsValidator().validate(ctx);
+
+    // 获取文章ID参数
+    const id = v.get('path.id');
+
+    // 删除文章
+    await ArticleDao.deleteArticle(id);
+
+    ctx.body = {
+        msg: '删除成功',
+        errorCode: 0
+    }
+
+})
+
+/**
+ * 搜索文章
+ */
+router.get('/search', async (ctx) => {
+
+    // 通过验证器校验参数是否通过
+    const v = await new ArticleSearchValidator().validate(ctx);
+
+    // 获取文章ID参数
+    const keyword = v.get('query.keyword');
+
+    // 查询文章
+    const data = await ArticleDao.getArticleByKeyword(keyword);
+
+    // 返回结果
+    ctx.status = 200;
+    ctx.body = {
+        msg: '查询成功',
         errorCode: 0,
         data
     }

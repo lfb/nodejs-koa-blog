@@ -25,6 +25,15 @@ class AuthFailed extends HttpException {
     }
 }
 
+class NotFound extends HttpException {
+    constructor(msg, errorCode) {
+        super()
+        this.code = 404
+        this.msg = msg || '404找不到'
+        this.errorCode = errorCode || 10005
+    }
+}
+
 class Forbidden extends HttpException {
     constructor(msg, errorCode) {
         super()
@@ -38,5 +47,6 @@ module.exports = {
     HttpException,
     ParameterException,
     AuthFailed,
+    NotFound,
     Forbidden
 }

@@ -14,13 +14,23 @@ class CategoryValidator extends LinValidator {
 class PositiveKeyParamsValidator extends LinValidator {
     constructor() {
         super();
-        this.key = [
+        this.id = [
             new Rule('isLength', '分类关键字不能为空', {min: 1})
+        ]
+    }
+}
+
+class PositiveIdParamsValidator extends LinValidator {
+    constructor() {
+        super();
+        this.id = [
+            new Rule('isInt', '分类ID需要正整数', {min: 1})
         ]
     }
 }
 
 module.exports = {
     CategoryValidator,
-    PositiveKeyParamsValidator
+    PositiveKeyParamsValidator,
+    PositiveIdParamsValidator
 }
