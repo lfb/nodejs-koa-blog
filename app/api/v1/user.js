@@ -33,7 +33,7 @@ router.post('/register', async (ctx) => {
     await UserDao.createUser(user);
 
     // 返回结果
-    ctx.status = 200;
+    ctx.response.status = 200;
     ctx.body = {
         msg: '注册成功',
         errorCode: 0
@@ -63,6 +63,8 @@ router.post('/login', async (ctx) => {
             throw new global.errs.ParameterException('没有相应的处理函数')
 
     }
+
+    ctx.response.status = 200;
     ctx.body = {
         msg: '登录成功',
         token
@@ -76,7 +78,7 @@ router.post('/verify', new Auth().m, async (ctx) => {
     let result = await UserDao.getUserInfo(id);
 
     // 返回结果
-    ctx.status = 200;
+    ctx.response.status = 200;
     ctx.body = result;
 })
 

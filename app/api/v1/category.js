@@ -25,7 +25,7 @@ router.post('/create', new Auth().m, async (ctx) => {
     await CategoryDao.createCategory(v);
 
     // 返回结果
-    ctx.status = 200;
+    ctx.response.status = 200;
     ctx.body = {
         msg: '创建分类成功',
         errorCode: 0,
@@ -46,6 +46,7 @@ router.delete('/delete/:id', new Auth().m, async (ctx) => {
     // 删除分类
     await CategoryDao.deleteCategory(id);
 
+    ctx.response.status = 200;
     ctx.body = {
         msg: '删除成功',
         errorCode: 0
@@ -67,6 +68,7 @@ router.put('/update/:id', new Auth().m, async (ctx) => {
     // 更新分类
     await CategoryDao.updateCategory(id, v);
 
+    ctx.response.status = 200;
     ctx.body = {
         msg: '更新成功',
         errorCode: 0
@@ -83,7 +85,7 @@ router.get('/list', async (ctx) => {
     const data = await CategoryDao.getCategoryList();
 
     // 返回结果
-    ctx.status = 200;
+    ctx.response.status = 200;
     ctx.body = {
         msg: 'success',
         errorCode: 0,
@@ -107,7 +109,7 @@ router.get('/article/:id', async (ctx) => {
     const data = await CategoryDao.getArticle(id);
 
     // 返回结果
-    ctx.status = 200;
+    ctx.response.status = 200;
     ctx.body = {
         msg: 'success',
         errorCode: 0,

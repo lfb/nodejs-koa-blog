@@ -14,28 +14,6 @@ class userManager {
 
         return generateToken(user.id, Auth.USER)
     }
-
-    // 验证token是否有效
-    static async verifyToken(token) {
-        try {
-            let result = await jwt.verify(token, global.config.security.secretKey);
-            return {
-                id: result.id,
-                nickname: result.nickname,
-                email: result.email,
-                verify: true
-            };
-
-        } catch (error) {
-            let errMsg = error.name === 'TokenExpiredError' ? 'token已过期' : '无效的token';
-            return {
-                msg: errMsg,
-                verify: false
-            };
-        }
-
-
-    }
 }
 
 module.exports = {
