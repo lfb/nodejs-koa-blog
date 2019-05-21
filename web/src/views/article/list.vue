@@ -11,11 +11,11 @@
           <div class="article-content">
             <h1 class="article-title">{{item.title}}</h1>
             <div class="article-info">
-              <p class="article-category" v-if="item.category">
-                {{item.category.name}}
+              <p class="article-category" v-if="item.Category">
+                {{item.Category.name}}
               </p>
               <p class="article-author"> by {{item.author}}</p>
-              <p class="article-browser">阅读 {{item.browser}} 次
+              <p class="article-browse">阅读 {{item.browse}} 次
               </p>
               <p class="article-author">{{item.createdAt}}</p>
             </div>
@@ -47,10 +47,10 @@
     },
     data() {
       return {
+        list: [],
         categoryActiveIndex: 0,
         // 是否分类固定
         isCategoryFixed: false,
-        categoryList: [],
         // 搜索关键字
         keyword: this.$route.query.keyword,
         // 页码
@@ -63,21 +63,18 @@
     },
     computed: {
       ...mapState({
-        list: state => state.article.articleList,
+        // list: state => state.article.articleList,
         pagination: state => state.article.pagination
       }),
     },
     created() {
-      this._getCategoryList();
 
       if (this.page) {
-        console.log("啊啊啊")
         this._getArticleList(this.page);
 
       } else {
         this._getArticleList();
       }
-
 
       // 存在关键字就自动搜索
       if (this.keyword) {
@@ -87,19 +84,12 @@
     methods: {
       ...mapActions({
         getArticleList: 'article/getArticleList',
-        getCategoryList: 'category/getCategoryList',
         getCategoryArticle: 'category/getCategoryArticle',
         searchArticle: 'article/searchArticle'
       }),
       async _getArticleList(page) {
-        await this.getArticleList({page});
-      },
-      // 获取分类
-      async _getCategoryList() {
-        const ret = await this.getCategoryList({
-          include: 'tree'
-        });
-        this.categoryList = ret.data.data;
+        let res = await this.getArticleList({page});
+        this.list = res.data.data;
       },
       // 搜索
       async search() {

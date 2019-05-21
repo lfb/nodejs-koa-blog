@@ -3,36 +3,38 @@
     <h1 class="category-title">分类</h1>
     <ul class="category-box">
       <li v-for="(cate, index) in category"
-          @click="toPath(`/article?category=${cate.key}`, index)"
+          @click="getCategoryArticle(cate.id)"
           :class="categoryIndex === index ? 'category-item category-item--active' : 'category-item'"
           :key="index">
-        {{cate.name}}（{{cate.article_num}}）
+        {{cate.name}}（{{cate.Articles.length}}）
       </li>
     </ul>
   </div>
 </template>
 
 <script>
+  import {mapState, mapActions} from 'vuex'
+
   export default {
     data() {
       return {
         categoryIndex: 0,
-        category: [
-          {name: 'JavaScript', article_num: 32, key: 'JavaScript'},
-          {name: 'HTML/CSS', article_num: 2, key: 'html-css'},
-          {name: 'Vue.js', article_num: 12, key: 'vuejs'},
-          {name: 'Node.js', article_num: 12, key: 'nodejs'},
-          {name: 'HTTP', article_num: 2, key: 'http'},
-          {name: 'Webpack', article_num: 23, key: 'webpack'},
-          {name: '数据结构', article_num: 3, key: 'data-structure'},
-          {name: '算法', article_num: 3, key: 'arithmetic'}
-        ]
+        category: []
       }
     },
     created() {
       this.checkCategoryParams()
+      this.getCategory();
     },
     methods: {
+      ...mapActions({
+        getCategoryList: 'category/getCategoryList',
+        getCategoryArticle: 'category/getCategoryArticle'
+      }),
+      async getCategory() {
+        const res = await this.getCategoryList();
+        this.category = res.data.data;
+      },
       // 检测分类
       checkCategoryParams() {
         const category = this.$route.query.category

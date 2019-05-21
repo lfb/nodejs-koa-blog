@@ -34,12 +34,7 @@ const actions = {
    * @returns {Promise<void>}
    */
   async getArticleList({state, commit}, params) {
-    let ret = await article.list(params);
-
-    commit('SET_ARTICLE_LIST', ret.data.data.data);
-
-    commit('SET_PAGINATION', ret.data.data.meta);
-    return ret.data.data;
+    return await article.list(params);
   },
 
   /**

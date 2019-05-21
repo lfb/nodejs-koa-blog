@@ -16,18 +16,14 @@ const mutations = {
 const actions = {
 
   /**
-   * 获取文章列表
+   * 获取分类列表
    * @param state
    * @param commit
    * @param params
    * @returns {Promise<void>}
    */
   async getCategoryList({state, commit}, params) {
-    let ret = await category.list(params);
-
-    commit('SET_CATEGORY_LIST', ret);
-
-    return ret;
+    return await category.list(params);
   },
 
   /**
@@ -37,8 +33,8 @@ const actions = {
    * @param params
    * @returns {Promise<void>}
    */
-  async getCategoryArticle({state, commit}, params) {
-    return  await category.article(params);
+  async getCategoryArticle({state, commit}, id) {
+    return await category.article(id);
 
   }
 };

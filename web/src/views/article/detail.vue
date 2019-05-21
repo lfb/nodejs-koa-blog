@@ -9,7 +9,7 @@
             {{detail.category.name}}
           </p>
           <p class="article-author"> by {{detail.author}}</p>
-          <p class="article-browser">阅读 {{detail.browser}} 次
+          <p class="article-browser">阅读 {{detail.browse}} 次
           </p>
           <p class="article-author">{{detail.createdAt}}</p>
         </div>
