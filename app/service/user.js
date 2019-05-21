@@ -7,7 +7,7 @@ const {Auth} = require('../../middlewares/auth')
 
 
 class userManager {
-    // 邮箱登录
+    // 普通用户
     static async email(account, secret) {
         // 验证账号密码是否正确
         const user = await UserDao.verifyEmailPassword(account, secret);

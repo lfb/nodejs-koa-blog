@@ -6,8 +6,8 @@ const catchError = async (ctx, next) => {
 
     } catch (error) {
         // 开发环境
-        const isHttpException = error instanceof HttpException
-        const isDev = global.config.environment === 'dev'
+        const isHttpException = error instanceof HttpException;
+        const isDev = global.config.environment === 'dev';
 
         if (isDev && !isHttpException) {
             throw error
@@ -20,7 +20,7 @@ const catchError = async (ctx, next) => {
                 error_code: error.errorCode,
                 request: `${ctx.method} ${ctx.path}`
             }
-            ctx.status = error.code
+            ctx.response.status = error.code
 
         } else {
             ctx.body = {
@@ -28,7 +28,7 @@ const catchError = async (ctx, next) => {
                 error_code: 9999,
                 request: `${ctx.method} ${ctx.path}`
             }
-            ctx.status = 500
+            ctx.response.status = 500
         }
     }
 }

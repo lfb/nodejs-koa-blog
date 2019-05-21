@@ -7,21 +7,24 @@ const {Category} = require('../models/category')
 
 class ArticleValidator extends LinValidator {
     constructor() {
-        super()
-        this.title = [new Rule("isLength", "文章标题不能为空", {min: 1})]
-        this.author = [new Rule("isLength", "文章作者不能为空", {min: 1})]
-        this.content = [new Rule("isLength", "文章内容不能为空", {min: 1})]
-        this.cover = [new Rule("isLength", "文章封面不能为空", {min: 1})]
-        this.category_id = [new Rule("isLength", "文章分类不能为空", {min: 1})]
+        super();
+
+        this.title = [new Rule("isLength", "title不能为空", {min: 1})];
+        this.author = [new Rule("isLength", "author不能为空", {min: 1})];
+        this.cover = [new Rule("isLength", "cover不能为空", {min: 1})];
+        this.content = [new Rule("isLength", "content不能为空", {min: 1})];
+        this.category_id = [new Rule("isLength", "category_id不能为空", {min: 1})];
     }
 
     async validateCategoryId(vals) {
-        const categoryId = vals.body.category_id
+        const categoryId = vals.body.category_id;
+
         const category = await Category.findOne({
             where: {
                 id: categoryId
             }
-        })
+        });
+
         if (!category) {
             throw new Error('暂无此分类ID')
         }
@@ -40,7 +43,9 @@ class PositiveIdParamsValidator extends LinValidator {
 class ArticleSearchValidator extends LinValidator {
     constructor() {
         super();
-        this.keyword = new Rule('isLength', '必须传入搜索关键字');
+        this.keyword = [
+            new Rule('isLength', '必须传入搜索关键字', {min: 1})
+        ]
     }
 }
 

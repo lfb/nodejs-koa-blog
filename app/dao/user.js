@@ -4,8 +4,24 @@ const bcrypt = require('bcryptjs')
 // data access object
 class UserDao {
     // 创建用户
-    static async createUser(params) {
-        return await User.create(params)
+    static async createUser(v) {
+        const hasUser = await User.findOne({
+            where: {
+                email: v.get('body.email'),
+                delete_at: null
+            }
+        });
+
+        if (hasUser) {
+            throw new global.errs.Forbidden('用户已存在');
+        }
+
+        const user = new User();
+        user.email = v.get('body.email');
+        user.password2 = v.get('body.password2');
+        user.nickname = v.get('body.nickname');
+
+        user.save();
     }
 
     // 验证密码

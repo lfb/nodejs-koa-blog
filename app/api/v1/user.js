@@ -5,11 +5,14 @@ const {
     UserLoginValidator
 } = require('../../validators/user')
 
-const {LoginType} = require('../../lib/enum')
-const {WXManager} = require('../../service/wx')
-const {userManager} = require('../../service/user')
-const {UserDao} = require('../../dao/user')
-const {Auth} = require('../../../middlewares/auth')
+const {LoginType} = require('../../lib/enum');
+const {WXManager} = require('../../service/wx');
+const {userManager} = require('../../service/user');
+const {UserDao} = require('../../dao/user');
+const {Auth} = require('../../../middlewares/auth');
+
+const {Resolve} = require('../../lib/helper');
+const res = new Resolve();
 
 const router = new Router({
     prefix: '/v1/user'
@@ -21,27 +24,19 @@ router.post('/register', async (ctx) => {
     // 通过验证器校验参数是否通过
     const v = await new RegisterValidator().validate(ctx);
 
-    // 获取参数
-    const user = {
-        email: v.get('body.email'),
-        password: v.get('body.password2'),
-        nickname: v.get('body.nickname')
-    }
-
     // 创建用户
-    await UserDao.createUser(user);
+    await UserDao.createUser(v);
 
     // 返回结果
     ctx.response.status = 200;
-    ctx.body = {
-        msg: '注册成功',
-        errorCode: 0
-    }
+    ctx.body = res.success('注册成功');
 })
 
 // 用户登录
 router.post('/login', async (ctx) => {
+
     const v = await new UserLoginValidator().validate(ctx);
+
     let token;
     switch (v.get('body.type')) {
         // 用户邮箱登录
@@ -60,7 +55,6 @@ router.post('/login', async (ctx) => {
 
         default:
             throw new global.errs.ParameterException('没有相应的处理函数')
-
     }
 
     ctx.response.status = 200;
@@ -70,15 +64,19 @@ router.post('/login', async (ctx) => {
     }
 })
 
-// 用户验证
-router.post('/verify', new Auth().m, async (ctx) => {
+
+// 获取用户信息
+router.post('/info', new Auth().m, async (ctx) => {
+
+    // 获取用户ID
     const id = ctx.auth.uid;
 
-    let result = await UserDao.getUserInfo(id);
+    // 查询用户信息
+    let userInfo = await UserDao.getUserInfo(id);
 
     // 返回结果
     ctx.response.status = 200;
-    ctx.body = result;
+    ctx.body = res.json(userInfo)
 })
 
 module.exports = router

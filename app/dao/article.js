@@ -25,15 +25,20 @@ class ArticleDao {
         art.cover = v.get('body.cover');
         art.browse = v.get('body.browse');
         art.category_id = v.get('body.category_id');
+
         art.save();
     }
 
     // 文章列表
     static async getArticleList() {
-        return await Article.findAll({
+        const articleList = await Article.findAll({
             where: {
                 delete_at: null
             },
+            // 把文章关联的分类也查询出来
+            include: [{
+                model: Category
+            }],
             // 过滤文章内容
             attributes: {
                 exclude: [
@@ -42,6 +47,8 @@ class ArticleDao {
                 ]
             }
         })
+
+        return articleList;
     }
 
     // 删除文章
@@ -56,7 +63,7 @@ class ArticleDao {
             throw new global.errs.NotFound('没有找到相关文章');
 
         }
-        return article.destroy()
+        article.destroy()
     }
 
     // 更新文章
@@ -75,9 +82,20 @@ class ArticleDao {
         article.save();
     }
 
+    // 更新文章浏览次数
+    static async updateArticleBrowse(id, browse) {
+        const article = await Article.findByPk(id);
+        if (!article) {
+            throw new global.errs.NotFound('没有找到相关文章');
+        }
+        article.browse = browse;
+
+        article.save();
+    }
+
     // 文章详情
     static async getArticleDetail(id) {
-        return await Article.findOne({
+        const article = await Article.findOne({
             where: {
                 id
             },
@@ -86,11 +104,18 @@ class ArticleDao {
                 model: Category
             }]
         })
+
+        if (!article) {
+            throw new global.errs.NotFound('没有找到相关文章');
+        }
+
+        return article
+
     }
 
     // 搜索文章
     static async getArticleByKeyword(keyword) {
-        const article = await Article.findAll({
+        return await Article.findAll({
             where: {
                 title: {
                     [Sequelize.Op.like]: `%${keyword}%`
@@ -98,7 +123,6 @@ class ArticleDao {
                 delete_at: null
             }
         });
-        return article;
     }
 
 }

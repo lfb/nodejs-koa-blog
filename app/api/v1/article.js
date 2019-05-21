@@ -1,13 +1,16 @@
-const Router = require('koa-router')
+const Router = require('koa-router');
 
 const {
     ArticleValidator,
     PositiveIdParamsValidator,
     ArticleSearchValidator
-} = require('../../validators/article')
+} = require('../../validators/article');
 
-const {ArticleDao} = require('../../dao/article')
-const {Auth} = require('../../../middlewares/auth')
+const {Auth} = require('../../../middlewares/auth');
+const {ArticleDao} = require('../../dao/article');
+
+const {Resolve} = require('../../lib/helper');
+const res = new Resolve();
 
 const router = new Router({
     prefix: '/v1'
@@ -24,11 +27,8 @@ router.post('/article', new Auth().m, async (ctx) => {
     await ArticleDao.createArticle(v);
 
     // 返回结果
-    ctx.status = 200
-    ctx.body = {
-        msg: '创建文章成功',
-        errorCode: 0
-    }
+    ctx.response.status = 200;
+    ctx.body = res.success('创建文章成功');
 })
 
 
@@ -36,6 +36,7 @@ router.post('/article', new Auth().m, async (ctx) => {
  * 删除文章
  */
 router.delete('/article/:id', new Auth().m, async (ctx) => {
+
     // 通过验证器校验参数是否通过
     const v = await new PositiveIdParamsValidator().validate(ctx);
 
@@ -45,17 +46,15 @@ router.delete('/article/:id', new Auth().m, async (ctx) => {
     // 删除文章
     await ArticleDao.deleteArticle(id);
 
-    ctx.body = {
-        msg: '删除成功',
-        errorCode: 0
-    }
-
+    ctx.response.status = 200;
+    ctx.body = res.success('删除文章成功');
 })
 
 /**
  * 更新文章
  */
 router.put('/article/:id', new Auth().m, async (ctx) => {
+
     // 通过验证器校验参数是否通过
     const v = await new PositiveIdParamsValidator().validate(ctx);
 
@@ -65,10 +64,8 @@ router.put('/article/:id', new Auth().m, async (ctx) => {
     // 更新文章
     await ArticleDao.updateArticle(id, v);
 
-    ctx.body = {
-        msg: '更新成功',
-        errorCode: 0
-    }
+    ctx.response.status = 200;
+    ctx.body = res.success('更新文章成功');
 })
 
 
@@ -78,15 +75,11 @@ router.put('/article/:id', new Auth().m, async (ctx) => {
 router.get('/article', async (ctx) => {
 
     // 查询文章列表
-    const data = await ArticleDao.getArticleList();
+    const articleList = await ArticleDao.getArticleList();
 
     // 返回结果
-    ctx.status = 200;
-    ctx.body = {
-        msg: 'success',
-        errorCode: 0,
-        data
-    }
+    ctx.response.status = 200;
+    ctx.body = res.json(articleList);
 })
 
 /**
@@ -101,38 +94,38 @@ router.get('/article/:id', async (ctx) => {
     const id = v.get('path.id');
 
     // 查询文章
-    const data = await ArticleDao.getArticleDetail(id);
+    const article = await ArticleDao.getArticleDetail(id);
+
+    // 更新文章浏览
+    await ArticleDao.updateArticleBrowse(id, ++article.browse);
 
     // 返回结果
-    ctx.status = 200;
-    ctx.body = {
-        msg: 'success',
-        errorCode: 0,
-        data
-    }
+    ctx.response.status = 200;
+    ctx.body = res.json(article);
+
 })
+
 
 /**
  * 搜索文章
  */
-router.get('/article/search', async (ctx) => {
+router.get('/search/article', async (ctx) => {
 
     // 通过验证器校验参数是否通过
     const v = await new ArticleSearchValidator().validate(ctx);
 
-    // 获取文章ID参数
+    console.log(v.get('query.keyword'));
+    // 获取查询文章关键字
     const keyword = v.get('query.keyword');
 
     // 查询文章
-    const data = await ArticleDao.getArticleByKeyword(keyword);
+    const article = await ArticleDao.getArticleByKeyword(keyword);
 
     // 返回结果
-    ctx.status = 200;
-    ctx.body = {
-        msg: '查询成功',
-        errorCode: 0,
-        data
-    }
+    ctx.response.status = 200;
+    ctx.body = res.json(article);
+
 })
+
 
 module.exports = router

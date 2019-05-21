@@ -20,6 +20,7 @@ class CategoryDao {
         cate.name = v.get('body.name');
         cate.key = v.get('body.key');
         cate.parent_id = v.get('body.parent_id');
+
         cate.save();
     }
 
@@ -35,7 +36,22 @@ class CategoryDao {
             throw new global.errs.NotFound('没有找到相关分类');
 
         }
-        return category.destroy()
+        category.destroy()
+    }
+
+    // 获取分类详情
+    static async getCategory(id) {
+        const category = await Category.findOne({
+            where: {
+                id,
+                delete_at: null
+            }
+        });
+        if (!category) {
+            throw new global.errs.NotFound('没有找到相关分类');
+        }
+
+        return category
     }
 
     // 更新分类
@@ -54,15 +70,12 @@ class CategoryDao {
 
     // 分类列表
     static async getCategoryList() {
-        return await Category.findAndCountAll({
+        return await Category.findAll({
             where: {
                 delete_at: null
             },
             include: [{
                 model: Article,
-                where: {
-                    delete_at: null
-                },
                 // 过滤文章的字段，只返回文章的id和标题即可
                 attributes: {
                     exclude: [
