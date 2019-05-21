@@ -2,9 +2,9 @@
   <div class="category">
     <h1 class="category-title">分类</h1>
     <ul class="category-box">
-      <li v-for="(cate, index) in category"
-          @click="getCategoryArticle(cate.id)"
-          :class="categoryIndex === index ? 'category-item category-item--active' : 'category-item'"
+      <li v-for="(cate, index) in list"
+          @click="getArticle(cate.id)"
+          class="category-item"
           :key="index">
         {{cate.name}}（{{cate.Articles.length}}）
       </li>
@@ -13,17 +13,19 @@
 </template>
 
 <script>
+  import merge from 'webpack-merge'
   import {mapState, mapActions} from 'vuex'
 
   export default {
     data() {
-      return {
-        categoryIndex: 0,
-        category: []
-      }
+      return {}
+    },
+    computed: {
+      ...mapState({
+        list: state => state.category.categoryList
+      })
     },
     created() {
-      this.checkCategoryParams()
       this.getCategory();
     },
     methods: {
@@ -31,18 +33,32 @@
         getCategoryList: 'category/getCategoryList',
         getCategoryArticle: 'category/getCategoryArticle'
       }),
+
+      /**
+       * 获取分类
+       * @returns 分类列表
+       */
       async getCategory() {
-        const res = await this.getCategoryList();
-        this.category = res.data.data;
+        await this.getCategoryList();
       },
-      // 检测分类
-      checkCategoryParams() {
-        const category = this.$route.query.category
-        this.categoryIndex = this.category.findIndex(item => item.key === category)
+
+      /**
+       * 获取分类下的文章
+       * @param categoryId 分类ID
+       * @returns 文章列表
+       */
+      async getArticle(categoryId) {
+
+        if (this.$route.query.hasOwnProperty('keyword')) {
+          this.$router.replace('/');
+        }
+
+        let res = await this.getCategoryArticle(categoryId);
+        this.$store.commit('article/SET_ARTICLE_LIST', res.data.data);
       },
+
       // 路由跳转
-      toPath(path, index) {
-        this.categoryIndex = index
+      toPath(path) {
         this.$router.push(path)
       }
     }
@@ -79,10 +95,6 @@
       &:hover {
         color: #2d8cf0;
       }
-    }
-
-    & .category-item--active {
-      color: #2d8cf0;
     }
   }
 </style>

@@ -8,8 +8,8 @@ const state = {
 
 const mutations = {
   // 设置分类列表
-  SET_CATEGORY_LIST(state, data) {
-    state.categoryList = data
+  SET_CATEGORY_LIST(state, list) {
+    state.categoryList = list
   }
 };
 
@@ -23,7 +23,10 @@ const actions = {
    * @returns {Promise<void>}
    */
   async getCategoryList({state, commit}, params) {
-    return await category.list(params);
+    let res = await category.list(params);
+    commit('SET_CATEGORY_LIST', res.data.data);
+
+    return res;
   },
 
   /**

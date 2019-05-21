@@ -17,7 +17,7 @@ export default new Router({
   routes: [
     {
       // 文章列表
-      path: '/article',
+      path: '/',
       component(resolve) {
         require(['../views/article/list.vue'], resolve);
       }

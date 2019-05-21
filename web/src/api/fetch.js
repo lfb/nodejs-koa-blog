@@ -44,44 +44,8 @@ Util.ajax.interceptors.response.use(response => {
   return response;
 
 }, error => {
-  let res = error.response;
-  let {code} = res.data;
-
-  switch (code) {
-    case 401:
-      // 处理401错误
-      alert("权限不足");
-      break;
-
-    case 404:
-      alert("404不存在");
-      break;
-
-    case 412:
-      alert(res.data.message)
-      break;
-
-    case 422:
-      let errors = "";
-      if (res.data.errors) {
-        let arr = [];
-        for (let key in res.data.errors) {
-          res.data.errors[key].forEach((item) => {
-            arr.push(item)
-          })
-        }
-        errors = arr.length > 0 ? arr.join('，') : arr;
-      }
-      alert(errors)
-      break;
-
-    case 500:
-      alert(res.data.message)
-      break;
-
-    default:
-      alert(res.data.message)
-  }
+  let errMsg = error.response.data.msg;
+  alert(errMsg);
 
   // 关闭loading
   closeLoading()

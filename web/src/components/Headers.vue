@@ -1,7 +1,7 @@
 <template>
-  <section :class="headerFixed ? 'header header-fixed' : 'header'">
+  <section class="header">
     <header class="header-box">
-      <div class="logo" @click="toPath('/article', index)">
+      <div class="logo" @click="toPath('/')">
         <img src="http://images.boblog.com/BOBLOG-03.png?imageView2/1/w/400/h/200" alt="LOGO">
       </div>
       <div class="nav">
@@ -16,7 +16,12 @@
         </ul>
       </div>
       <div class="search">
-        <input class="search-input" placeholder="请输入想搜索的文章" type="text">
+        <input
+          class="search-input"
+          v-model="keyword"
+          @keyup.enter="getSearchArticle"
+          placeholder="请输入想搜索的文章"
+          type="text">
         <div class="iconfont iconicon-test4 search-icon"></div>
       </div>
     </header>
@@ -24,48 +29,68 @@
 </template>
 
 <script>
+  import {mapActions} from 'vuex'
+  import merge from 'webpack-merge'
+
   export default {
     data() {
       return {
+        keyword: '',
         navIndex: 0,
         nav: [
-          {name: '前端开发', path: '/article'},
-          {name: '诗与远方', path: '/life'},
-          {name: '学习资料', path: '/learning'},
-          {name: 'Coding Monkey', path: '/about'},
-        ],
-        headerFixed: false
+          {name: '首页', path: '/'},
+          {name: '关于', path: '/about'},
+        ]
       }
     },
     created() {
-      this.checkParams()
-    },
-    mounted() {
-      // 监听滚动条
-      window.addEventListener('scroll', this.handleScroll)
-    },
-    destroyed() {
-      // 移除滚动条
-      window.removeEventListener('scroll', this.handleScroll)
+      this.checkRouter()
     },
     methods: {
-
-      // 检测分类
-      checkParams() {
-        const path = this.$route.path
-        console.log(path)
+      ...mapActions({
+        searchArticle: 'article/searchArticle'
+      }),
+      /**
+       * 检测路由
+       */
+      checkRouter() {
+        const path = this.$route.path;
         this.navIndex = this.nav.findIndex(item => item.path === path)
       },
-      // 路由调整
-      toPath(path, index) {
-        this.navIndex = index;
-        this.$router.push(path)
+      /**
+       * 搜索文章
+       * @returns 文章列表
+       */
+      async getSearchArticle() {
+        const keyword = this.keyword;
+        if (!keyword) return false;
+
+        const path = this.$route.path;
+        let articlePath = '/';
+
+        if (path !== articlePath) {
+          articlePath += `?keyword=${keyword}`;
+          this.toPath(articlePath)
+
+        } else {
+          this.$router.replace({
+            query: merge(this.$route.query, {
+              keyword
+            })
+          });
+
+          await this.searchArticle({
+            keyword
+          });
+        }
+
       },
-      // 处理滚动条
-      handleScroll() {
-        let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
-        let offsetTop = document.querySelector('#article').offsetTop;
-        this.headerFixed = !!(scrollTop > offsetTop)
+      /**
+       * 路由调整
+       * @param path 路由地址
+       */
+      toPath(path) {
+        this.$router.push(path)
       }
     }
   }
@@ -77,14 +102,6 @@
     height: 96px;
     background: #fff;
     box-shadow: 4px 4px 4px rgba(0, 0, 0, .03);
-  }
-
-  .header-fixed {
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 9999;
-    width: 100%;
   }
 
   .header-box {
@@ -167,6 +184,4 @@
       }
     }
   }
-
-
 </style>

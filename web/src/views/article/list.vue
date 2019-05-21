@@ -22,9 +22,6 @@
           </div>
 
         </li>
-        <div class="page">
-          <pagination :page="pagination" @on-change="_getArticleList"/>
-        </div>
       </ul>
       <ul class="article-empty" v-else>暂无文章</ul>
     </article>
@@ -36,93 +33,60 @@
   </section>
 </template>
 <script>
-  import Pagination from '../../components/Pagination'
   import VCategory from '../../components/Category'
   import {mapState, mapActions} from 'vuex'
 
   export default {
     components: {
-      Pagination,
       VCategory
     },
     data() {
       return {
-        list: [],
-        categoryActiveIndex: 0,
-        // 是否分类固定
-        isCategoryFixed: false,
         // 搜索关键字
-        keyword: this.$route.query.keyword,
-        // 页码
-        page: this.$route.query.page
+        keyword: this.$route.query.keyword
       }
-    },
-    mounted() {
-    },
-    destroyed() {
     },
     computed: {
       ...mapState({
-        // list: state => state.article.articleList,
-        pagination: state => state.article.pagination
+        list: state => state.article.articleList
       }),
     },
     created() {
-
-      if (this.page) {
-        this._getArticleList(this.page);
-
-      } else {
-        this._getArticleList();
-      }
+      // 获取文章
+      this.getArticle();
 
       // 存在关键字就自动搜索
       if (this.keyword) {
-        this.search();
+        this.getSearchArticle();
       }
     },
     methods: {
       ...mapActions({
         getArticleList: 'article/getArticleList',
-        getCategoryArticle: 'category/getCategoryArticle',
         searchArticle: 'article/searchArticle'
       }),
-      async _getArticleList(page) {
-        let res = await this.getArticleList({page});
-        this.list = res.data.data;
+      /**
+       * 获取文章
+       *
+       * @returns 文章列表
+       */
+      async getArticle() {
+        await this.getArticleList();
       },
-      // 搜索
-      async search() {
+      /**
+       * 搜索文章
+       * @returns 文章列表
+       */
+      async getSearchArticle() {
         await this.searchArticle({
           keyword: this.keyword
         });
       },
 
-      // 分类下取文章
-      async _getCategoryArticle(id) {
-        let res = await this.getCategoryArticle({id});
-
-        let arr = []
-        res.data.data.forEach(item => {
-          arr = item.articles.map(children => {
-            return children;
-          })
-        })
-
-        this.$store.commit('article/SET_ARTICLE_LIST', arr)
-      },
-      // 处理滚动条
-      handleScroll() {
-        let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
-        let offsetTop = document.querySelector('#article').offsetTop;
-        this.isCategoryFixed = !!(scrollTop > offsetTop)
-      },
-      // 改变分类索引
-      changCategory(id, index) {
-        this.categoryActiveIndex = index;
-        this._getCategoryArticle(id);
-      },
-      // 路由跳转
+      /**
+       * 路由跳转
+       * @param path 路由地址
+       */
       toPath(path) {
         this.$router.push(path)
       },

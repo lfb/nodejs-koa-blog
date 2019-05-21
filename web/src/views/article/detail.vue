@@ -48,59 +48,40 @@
         </section>
 
       </section>
-
-      <div class="sidebar">
-        <v-category/>
-      </div>
-
     </section>
   </section>
 </template>
 <script>
   import {mapState, mapActions} from 'vuex'
-  import VCategory from '../../components/Category'
 
   export default {
-    components: {
-      VCategory
-    },
+    components: {},
     data() {
       return {
-        // 是否侧边栏
-        sidebarFixed: false,
         // 文章ID
         id: this.$route.params.id,
         // 文章详情
         detail: null
       }
     },
-    computed: {},
     created() {
-      this._getArticleDetail();
+      this.getArticle();
     },
-    mounted() {
-      // 监听滚动条
-      window.addEventListener('scroll', this.handleScroll)
-    },
-    destroyed() {
-      // 移除滚动条
-      window.removeEventListener('scroll', this.handleScroll)
-    },
+
     methods: {
       ...mapActions({
-        getArticleDetail: 'article/getArticleDetail',
-        getCategoryArticle: 'category/getCategoryArticle'
+        getArticleDetail: 'article/getArticleDetail'
       }),
-      // 获取文章详情
-      async _getArticleDetail() {
+      /**
+       * 获取文章详情
+       * @returns 文章详情
+       */
+      async getArticle() {
+        if (!this.id) {
+          this.$router.push('/article');
+        }
         let ret = await this.getArticleDetail(this.id);
         this.detail = ret.data.data;
-      },
-      // 处理滚动条
-      handleScroll() {
-        let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
-        let offsetTop = document.querySelector('#article-detail').offsetTop;
-        this.sidebarFixed = !!(scrollTop > offsetTop)
       }
     }
   }
@@ -188,12 +169,6 @@
     & .margin-right-300 {
       margin-right: 316px;
     }
-  }
-
-  .sidebar {
-    box-sizing: border-box;
-    width: 320px;
-    margin-left: 24px;
   }
 
   .article-comments {
