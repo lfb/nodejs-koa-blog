@@ -24,6 +24,10 @@
           type="text">
         <div class="iconfont iconicon-test4 search-icon"></div>
       </div>
+
+      <div class="login-register">
+        <button>登录/注册</button>
+      </div>
     </header>
   </section>
 </template>
@@ -122,8 +126,7 @@
   }
 
   .nav {
-    flex: 1;
-    padding: 0 64px;
+    padding: 0 32px;
 
     & .nav-box {
       display: flex;
@@ -163,6 +166,7 @@
       box-sizing: border-box;
       color: #404040;
       height: 36px;
+      line-height: 36px;
       width: 360px;
       font-size: 16px;
       padding-right: 32px;
@@ -182,6 +186,24 @@
       &:focus .search-icon {
         color: #2d8cf0;
       }
+    }
+  }
+
+  .login-register {
+    flex: 1;
+    text-align: right;
+
+    & button {
+      cursor: pointer;
+      height: 36px;
+      line-height: 36px;
+      text-align: center;
+      border: 0;
+      outline: 0;
+      color: #fff;
+      border-radius: 5px;
+      padding: 0 10px;
+      background: #2d8cf0;
     }
   }
 </style>

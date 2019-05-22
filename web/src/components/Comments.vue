@@ -96,12 +96,16 @@
   }
 
   .article-comments {
-    margin: 32px 0 16px;
-    border-top: 1px solid #e8eaec;
+    margin: 32px 0;
+
+    .comments-inner {
+      width: 100%;
+    }
 
     & .comments-content {
+      margin-right: 24px;
       & textarea {
-        width: 50%;
+        width: 100%;
         font-size: 18px;
         padding: 5px 10px;
         border-radius: 4px;
