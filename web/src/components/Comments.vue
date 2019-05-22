@@ -1,0 +1,130 @@
+<template>
+  <div class="comments">
+
+    <section class="article-comments">
+      <h1 class="comments-title">欢迎评论</h1>
+      <article class="comments-inner">
+        <div class="comments-content">
+          <textarea name="comments" id="comments" cols="30" rows="10" placeholder="评论内容.."></textarea>
+        </div>
+        <button class="submit-comments">提交评论</button>
+      </article>
+    </section>
+
+
+    <h1 class="comments-title">评论列表</h1>
+    <ul class="comments-box" v-if="list">
+      <li v-for="(item, index) in list"
+          class="comments-item"
+          :key="index">
+        <h3 class="comments-item-username">
+          {{item.User.nickname}}：
+        </h3>
+        <p class="comments-item-content"> {{item.content}}</p>
+      </li>
+    </ul>
+  </div>
+</template>
+
+<script>
+  import {mapState, mapActions} from 'vuex'
+
+  export default {
+    props: ['id'],
+    data() {
+      return {
+        list: []
+      }
+    },
+    computed: {
+      ...mapState({})
+    },
+    created() {
+      if (this.id) {
+        this.getComments();
+      }
+    },
+    methods: {
+      ...mapActions({
+        getCommentsList: 'comments/getCommentsList',
+      }),
+      /**
+       * 获取评论列表
+       * @returns 评论列表
+       */
+      async getComments() {
+        const res = await this.getCommentsList(this.id);
+        this.list = res.data.data;
+      }
+    }
+  }
+</script>
+
+<style scoped lang="scss">
+  .comments {
+    background: #fff;
+
+    & .comments-item {
+      cursor: pointer;
+      line-height: 42px;
+      font-size: 16px;
+      color: #657180;
+      transition: left 1s ease-in;
+      display: flex;
+
+      &:hover {
+        color: #2d8cf0;
+      }
+    }
+  }
+
+  .comments-title {
+    padding: 16px 0;
+    color: #2d8cf0;
+    font-size: 32px;
+    font-weight: 400;
+  }
+
+  .comments-item-username {
+    font-size: 20px;
+    color: #464c5b;
+  }
+
+  .comments-item-content {
+    font-size: 18px;
+    color: #666;
+  }
+
+  .article-comments {
+    margin: 32px 0 16px;
+    border-top: 1px solid #e8eaec;
+
+    & .comments-content {
+      & textarea {
+        width: 50%;
+        font-size: 18px;
+        padding: 5px 10px;
+        border-radius: 4px;
+        border: 1px solid #dcdee2;
+      }
+    }
+
+    & .submit-comments {
+      cursor: pointer;
+      padding: 10px 20px;
+      border: none;
+      color: #fff;
+      border-radius: 4px;
+      margin-top: 16px;
+      font-size: 18px;
+      background-image: linear-gradient(to right, #5cadff 0, #2d8cf0 100%);
+      background-repeat: repeat-x;
+
+      &:hover {
+        background-image: linear-gradient(to right, #2d8cf0 0, #2b85e4 100%);
+        background-repeat: repeat-x;
+      }
+    }
+  }
+
+</style>

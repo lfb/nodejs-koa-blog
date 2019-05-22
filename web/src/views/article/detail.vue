@@ -26,36 +26,20 @@
           </mavon-editor>
         </div>
 
-        <section class="article-comments">
-          <h1 class="comments-title">评论：</h1>
-          <article class="comments-inner">
-            <div class="user-info">
-              <p class="user-info-item">
-                <label for="username">姓名：</label>
-                <input type="text" id="username" placeholder="姓名">
-              </p>
-              <p class="user-info-item">
-                <label for="email">邮箱：</label>
-                <input type="email" id="email" placeholder="邮箱">
-              </p>
-            </div>
-            <div class="comments-content">
-              <p class="comments-content-title">评论内容：</p>
-              <textarea name="comments" id="comments" cols="30" rows="10" placeholder="评论内容.."></textarea>
-            </div>
-            <button class="submit-comments">提交评论</button>
-          </article>
-        </section>
 
+        <v-comments :id="id"></v-comments>
       </section>
     </section>
   </section>
 </template>
 <script>
   import {mapState, mapActions} from 'vuex'
+  import VComments from '../../components/Comments'
 
   export default {
-    components: {},
+    components: {
+      VComments
+    },
     data() {
       return {
         // 文章ID
@@ -65,24 +49,29 @@
       }
     },
     created() {
-      this.getArticle();
+      if (!this.id) {
+        this.$router.push('/article');
+      } else {
+        this.getArticle();
+      }
     },
 
     methods: {
       ...mapActions({
-        getArticleDetail: 'article/getArticleDetail'
+        getArticleDetail: 'article/getArticleDetail',
+
+        createComments: 'comments/createComments'
       }),
       /**
        * 获取文章详情
        * @returns 文章详情
        */
       async getArticle() {
-        if (!this.id) {
-          this.$router.push('/article');
-        }
-        let ret = await this.getArticleDetail(this.id);
-        this.detail = ret.data.data;
+
+        let res = await this.getArticleDetail(this.id);
+        this.detail = res.data.data;
       }
+
     }
   }
 </script>
@@ -171,87 +160,6 @@
     }
   }
 
-  .article-comments {
-    margin: 32px 0 16px;
-    border-top: 1px solid #e8eaec;
-
-    & .comments-title {
-      padding: 16px 0;
-      color: #2d8cf0;
-      font-size: 32px;
-    }
-
-    & .comments-inner {
-      padding-left: 16px;
-    }
-
-    & .recommend-empty {
-      text-align: center;
-      padding: 32px 0;
-      font-size: 16px;
-      color: #989898;
-    }
-
-    & .user-info {
-      padding-bottom: 16px;
-
-      & .user-info-item {
-        font-size: 18px;
-        margin-bottom: 16px;
-        color: #464c5b;
-
-        &:last-child {
-          margin-bottom: 0;
-        }
-
-        & label {
-          font-weight: 800;
-        }
-
-        & input {
-          width: 375px;
-          font-size: 18px;
-          padding: 5px 10px;
-          border-radius: 4px;
-          border: 1px solid #dcdee2;
-        }
-      }
-    }
-
-    & .comments-content {
-      & .comments-content-title {
-        padding-bottom: 16px;
-        font-size: 18px;
-        color: #464c5b;
-        font-weight: 800;
-      }
-
-      & textarea {
-        width: 600px;
-        font-size: 18px;
-        padding: 5px 10px;
-        border-radius: 4px;
-        border: 1px solid #dcdee2;
-      }
-    }
-
-    & .submit-comments {
-      cursor: pointer;
-      padding: 10px 20px;
-      border: none;
-      color: #fff;
-      border-radius: 4px;
-      margin-top: 16px;
-      font-size: 18px;
-      background-image: linear-gradient(to right, #5cadff 0, #2d8cf0 100%);
-      background-repeat: repeat-x;
-
-      &:hover {
-        background-image: linear-gradient(to right, #2d8cf0 0, #2b85e4 100%);
-        background-repeat: repeat-x;
-      }
-    }
-  }
 
 
 </style>
