@@ -2,6 +2,8 @@ const {Sequelize, Model} = require('sequelize')
 
 const {sequelize} = require('../../core/db')
 
+const {User} = require('./user')
+
 class Comments extends Model {
 
 }
@@ -14,8 +16,6 @@ Comments.init({
     },
     // 评论内容
     content: Sequelize.STRING,
-    // 用户ID
-    uid: Sequelize.STRING,
     // 文章ID
     article_id: Sequelize.STRING,
     // 评论父级ID
@@ -27,6 +27,9 @@ Comments.init({
     sequelize,
     tableName: 'comments'
 })
+
+Comments.belongsTo(User, {foreignKey: 'user_id'});
+User.hasMany(Comments);
 
 
 module.exports = {

@@ -23,6 +23,7 @@ router.post('/article', new Auth().m, async (ctx) => {
 
     // 通过验证器校验参数是否通过
     const v = await new ArticleValidator().validate(ctx);
+
     // 创建文章
     await ArticleDao.createArticle(v);
 
@@ -42,7 +43,6 @@ router.delete('/article/:id', new Auth().m, async (ctx) => {
 
     // 获取文章ID参数
     const id = v.get('path.id');
-
     // 删除文章
     await ArticleDao.destroyArticle(id);
 
@@ -60,7 +60,6 @@ router.put('/article/:id', new Auth().m, async (ctx) => {
 
     // 获取文章ID参数
     const id = v.get('path.id');
-
     // 更新文章
     await ArticleDao.updateArticle(id, v);
 
@@ -92,7 +91,6 @@ router.get('/article/:id', async (ctx) => {
 
     // 获取文章ID参数
     const id = v.get('path.id');
-
     // 查询文章
     const article = await ArticleDao.getArticleDetail(id);
 
@@ -114,10 +112,8 @@ router.get('/search/article', async (ctx) => {
     // 通过验证器校验参数是否通过
     const v = await new ArticleSearchValidator().validate(ctx);
 
-    console.log(v.get('query.keyword'));
     // 获取查询文章关键字
     const keyword = v.get('query.keyword');
-
     // 查询文章
     const article = await ArticleDao.getArticleByKeyword(keyword);
 

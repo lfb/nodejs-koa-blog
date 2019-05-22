@@ -1,17 +1,37 @@
 const {Comments} = require('../models/comments')
+const {User} = require('../models/user')
+
 
 class CommentsDao {
     // 创建评论
     static async createComments(v) {
         const comments = new Comments();
 
-        console.log(v.get('body.uid'))
-        comments.uid = v.get('body.uid');
+        const user = await User.findOne({
+            where: {
+                id: v.get('body.user_id'),
+                delete_at: null
+            },
+            attributes: {
+                exclude: [
+                    'password',
+                    'delete_at',
+                    'update_at',
+                    'create_at'
+                ]
+            }
+        })
+
+        if (!user) {
+            throw new global.errs.NotFound('没有找到相关用户');
+        }
+
+        comments.user_id = v.get('body.user_id');
         comments.content = v.get('body.content');
         comments.article_id = v.get('body.article_id');
         comments.parent_id = v.get('body.parent_id');
 
-        comments.save();
+        return comments.save();
     }
 
     // 删除评论
@@ -74,7 +94,27 @@ class CommentsDao {
             where: {
                 article_id: articleId,
                 delete_at: null
-            }
+            },
+            attributes: {
+                exclude: [
+                    'UserId'
+                ]
+            },
+            // 把文章关联的分类也查询出来
+            include: [{
+                model: User,
+                where: {
+                    delete_at: null
+                },
+                attributes: {
+                    exclude: [
+                        'password',
+                        'delete_at',
+                        'update_at',
+                        'create_at'
+                    ]
+                }
+            }]
         })
     }
 }

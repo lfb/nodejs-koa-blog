@@ -62,11 +62,10 @@ router.post('/login', async (ctx) => {
         msg: '登录成功',
         token
     }
-})
-
+});
 
 // 获取用户信息
-router.post('/info', new Auth().m, async (ctx) => {
+router.get('/info', new Auth().m, async (ctx) => {
 
     // 获取用户ID
     const id = ctx.auth.uid;

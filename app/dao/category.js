@@ -4,6 +4,7 @@ const {Article} = require('../models/article')
 class CategoryDao {
     // 创建分类
     static async createCategory(v) {
+        // 查询是否存在重复的分类
         const hasCategory = await Category.findOne({
             where: {
                 name: v.get('body.name'),
@@ -15,17 +16,17 @@ class CategoryDao {
             throw new global.errs.Forbidden('分类已存在');
         }
 
-        const cate = new Category();
-        console.log(v.get('body.name'))
-        cate.name = v.get('body.name');
-        cate.key = v.get('body.key');
-        cate.parent_id = v.get('body.parent_id');
+        const category = new Category();
+        category.name = v.get('body.name');
+        category.key = v.get('body.key');
+        category.parent_id = v.get('body.parent_id');
 
-        cate.save();
+        category.save();
     }
 
     // 删除分类
     static async destroyCategory(id) {
+        // 查询分类
         const category = await Category.findOne({
             where: {
                 id,

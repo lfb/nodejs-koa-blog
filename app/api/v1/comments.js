@@ -49,7 +49,6 @@ router.put('/comments/:id', new Auth().m, async (ctx) => {
 
     // 获取分类ID参数
     const id = v.get('path.id');
-
     await CommentsDao.updateComments(id, v);
 
     // 返回结果
@@ -75,7 +74,6 @@ router.get('/comments/:id', async (ctx) => {
 
     // 获取分类ID参数
     const id = v.get('path.id');
-
     let comments = await CommentsDao.getComments(id)
 
     // 返回结果
@@ -92,8 +90,7 @@ router.get('/article/comments/:id', async (ctx) => {
 
     // 获取分类ID参数
     const id = v.get('path.id');
-
-    const commentsList = await CommentsDao.getArticleComments(id)
+    const commentsList = await CommentsDao.getArticleComments(id);
 
     // 返回结果
     ctx.response.status = 200;

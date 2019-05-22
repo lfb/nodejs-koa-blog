@@ -41,7 +41,6 @@ router.delete('/category/:id', new Auth().m, async (ctx) => {
 
     // 获取分类ID参数
     const id = v.get('path.id');
-
     // 删除分类
     await CategoryDao.destroyCategory(id);
 
@@ -60,7 +59,6 @@ router.put('/category/:id', new Auth().m, async (ctx) => {
 
     // 获取分类ID参数
     const id = v.get('path.id');
-
     // 更新分类
     await CategoryDao.updateCategory(id, v);
 
@@ -92,7 +90,6 @@ router.get('/category/:id', async (ctx) => {
 
     // 获取参数
     const id = v.get('path.id');
-
     // 获取分类
     const category = await CategoryDao.getCategory(id);
 
@@ -112,7 +109,6 @@ router.get('/category/:id/article', async (ctx) => {
 
     // 获取参数
     const id = v.get('path.id');
-
     // 查询文章
     const article = await CategoryDao.getArticle(id);
 

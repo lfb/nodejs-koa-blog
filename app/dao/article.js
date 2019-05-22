@@ -5,8 +5,11 @@ const {Category} = require('../models/category')
 
 // 定义文章模型
 class ArticleDao {
+
     // 创建文章
     static async createArticle(v) {
+
+        // 检测是否存在文章
         const hasArticle = await Article.findOne({
             where: {
                 title: v.get('body.title'),
@@ -14,24 +17,27 @@ class ArticleDao {
             }
         });
 
+        // 如果存在，抛出存在信息
         if (hasArticle) {
             throw new global.errs.Forbidden('文章已存在');
         }
 
-        const art = new Article();
-        art.title = v.get('body.title');
-        art.author = v.get('body.author');
-        art.content = v.get('body.content');
-        art.cover = v.get('body.cover');
-        art.browse = v.get('body.browse');
-        art.category_id = v.get('body.category_id');
+        // 创建文章
+        const article = new Article();
 
-        art.save();
+        article.title = v.get('body.title');
+        article.author = v.get('body.author');
+        article.content = v.get('body.content');
+        article.cover = v.get('body.cover');
+        article.browse = v.get('body.browse');
+        article.category_id = v.get('body.category_id');
+
+        article.save();
     }
 
-    // 文章列表
+    // 获取文章列表
     static async getArticleList() {
-        const articleList = await Article.findAll({
+        return await Article.findAll({
             where: {
                 delete_at: null
             },
@@ -47,31 +53,36 @@ class ArticleDao {
                 ]
             }
         })
-
-        return articleList;
     }
 
     // 删除文章
     static async destroyArticle(id) {
+        // 检测是否存在文章
         const article = await Article.findOne({
             where: {
                 id,
                 delete_at: null
             }
         });
+        // 不存在抛出错误
         if (!article) {
             throw new global.errs.NotFound('没有找到相关文章');
 
         }
+
+        // 软删除文章
         article.destroy()
     }
 
     // 更新文章
     static async updateArticle(id, v) {
+        // 查询文章
         const article = await Article.findByPk(id);
         if (!article) {
             throw new global.errs.NotFound('没有找到相关文章');
         }
+
+        // 更新文章
         article.title = v.get('body.title');
         article.author = v.get('body.author');
         article.content = v.get('body.content');
@@ -84,10 +95,12 @@ class ArticleDao {
 
     // 更新文章浏览次数
     static async updateArticleBrowse(id, browse) {
+        // 查询文章
         const article = await Article.findByPk(id);
         if (!article) {
             throw new global.errs.NotFound('没有找到相关文章');
         }
+        // 更新文章浏览
         article.browse = browse;
 
         article.save();
@@ -103,7 +116,7 @@ class ArticleDao {
             include: [{
                 model: Category
             }]
-        })
+        });
 
         if (!article) {
             throw new global.errs.NotFound('没有找到相关文章');
