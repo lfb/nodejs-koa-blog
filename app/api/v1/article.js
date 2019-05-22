@@ -44,7 +44,7 @@ router.delete('/article/:id', new Auth().m, async (ctx) => {
     const id = v.get('path.id');
 
     // 删除文章
-    await ArticleDao.deleteArticle(id);
+    await ArticleDao.destroyArticle(id);
 
     ctx.response.status = 200;
     ctx.body = res.success('删除文章成功');

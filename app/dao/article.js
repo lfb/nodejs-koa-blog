@@ -52,7 +52,7 @@ class ArticleDao {
     }
 
     // 删除文章
-    static async deleteArticle(id) {
+    static async destroyArticle(id) {
         const article = await Article.findOne({
             where: {
                 id,

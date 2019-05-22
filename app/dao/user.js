@@ -18,7 +18,7 @@ class UserDao {
 
         const user = new User();
         user.email = v.get('body.email');
-        user.password2 = v.get('body.password2');
+        user.password = v.get('body.password2');
         user.nickname = v.get('body.nickname');
 
         user.save();
@@ -39,7 +39,7 @@ class UserDao {
         }
 
         // 验证密码是否正确
-        const correct = bcrypt.compareSync(plainPassword, user.password)
+        const correct = bcrypt.compareSync(plainPassword, user.password);
 
         if (!correct) {
             throw new global.errs.AuthFailed('密码不正确')

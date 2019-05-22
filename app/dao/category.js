@@ -25,7 +25,7 @@ class CategoryDao {
     }
 
     // 删除分类
-    static async deleteCategory(id) {
+    static async destroyCategory(id) {
         const category = await Category.findOne({
             where: {
                 id,

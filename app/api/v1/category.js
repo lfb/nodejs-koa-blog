@@ -43,7 +43,7 @@ router.delete('/category/:id', new Auth().m, async (ctx) => {
     const id = v.get('path.id');
 
     // 删除分类
-    await CategoryDao.deleteCategory(id);
+    await CategoryDao.destroyCategory(id);
 
     ctx.response.status = 200;
     ctx.body = res.success('删除分类成功');
