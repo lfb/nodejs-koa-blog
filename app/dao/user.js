@@ -1,4 +1,4 @@
-const {User} = require('../models/user')
+const {User: User} = require('../models/user')
 const bcrypt = require('bcryptjs')
 
 // data access object

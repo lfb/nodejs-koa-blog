@@ -11,6 +11,8 @@ const {Auth} = require('../../../middlewares/auth');
 const {Resolve} = require('../../lib/helper');
 const res = new Resolve();
 
+const AUTH_ADMIN = 16;
+
 const router = new Router({
     prefix: '/v1'
 })
@@ -18,7 +20,7 @@ const router = new Router({
 /**
  * 创建分类
  */
-router.post('/category', new Auth().m, async (ctx) => {
+router.post('/category', new Auth(AUTH_ADMIN).m, async (ctx) => {
 
     // 通过验证器校验参数是否通过
     const v = await new CategoryValidator().validate(ctx);
@@ -34,7 +36,7 @@ router.post('/category', new Auth().m, async (ctx) => {
 /**
  * 删除文章
  */
-router.delete('/category/:id', new Auth().m, async (ctx) => {
+router.delete('/category/:id', new Auth(AUTH_ADMIN).m, async (ctx) => {
 
     // 通过验证器校验参数是否通过
     const v = await new PositiveIdParamsValidator().validate(ctx);
@@ -52,7 +54,7 @@ router.delete('/category/:id', new Auth().m, async (ctx) => {
 /**
  * 更新分类
  */
-router.put('/category/:id', new Auth().m, async (ctx) => {
+router.put('/category/:id', new Auth(AUTH_ADMIN).m, async (ctx) => {
 
     // 通过验证器校验参数是否通过
     const v = await new PositiveIdParamsValidator().validate(ctx);

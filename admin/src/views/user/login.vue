@@ -7,12 +7,12 @@
       <Form ref="formInline" :model="formInline" :rules="ruleInline">
         <FormItem prop="username">
           <Input type="text" v-model="formInline.username" placeholder="Username">
-          <Icon type="ios-person-outline" slot="prepend"></Icon>
+            <Icon type="ios-person-outline" slot="prepend"></Icon>
           </Input>
         </FormItem>
         <FormItem prop="password">
           <Input type="password" v-model="formInline.password" placeholder="Password">
-          <Icon type="ios-lock-outline" slot="prepend"></Icon>
+            <Icon type="ios-lock-outline" slot="prepend"></Icon>
           </Input>
         </FormItem>
         <FormItem>
@@ -89,6 +89,7 @@
   .login-logo {
     height: 240px;
     margin-bottom: 32px;
+
     & img {
       width: 100%;
     }

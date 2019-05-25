@@ -5,9 +5,7 @@ const {
     UserLoginValidator
 } = require('../../validators/user')
 
-const {LoginType} = require('../../lib/enum');
-const {WXManager} = require('../../service/wx');
-const {userManager} = require('../../service/user');
+const {LoginManager} = require('../../service/login');
 const {UserDao} = require('../../dao/user');
 const {Auth} = require('../../../middlewares/auth');
 
@@ -37,25 +35,7 @@ router.post('/login', async (ctx) => {
 
     const v = await new UserLoginValidator().validate(ctx);
 
-    let token;
-    switch (v.get('body.type')) {
-        // 用户邮箱登录
-        case LoginType.USER_EMAIL:
-            token = await userManager.email(v.get('body.account'), v.get('body.secret'));
-            break;
-
-        // 管理员登录
-        case LoginType.ADMIN_EMAIL:
-            break;
-
-        // 小程序登录
-        case LoginType.USER_MINI_PROGRAM:
-            token = await WXManager.codeToToken(v.get('body.account'));
-            break;
-
-        default:
-            throw new global.errs.ParameterException('没有相应的处理函数')
-    }
+    let token = await LoginManager.userLogin(v.get('body.account'), v.get('body.secret'));
 
     ctx.response.status = 200;
     ctx.body = {

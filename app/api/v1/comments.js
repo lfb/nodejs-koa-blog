@@ -7,6 +7,7 @@ const {Auth} = require('../../../middlewares/auth');
 const {Resolve} = require('../../lib/helper');
 const res = new Resolve();
 
+const AUTH_ADMIN = 16;
 
 const router = new Router({
     prefix: '/v1'
@@ -27,7 +28,7 @@ router.post('/comments', new Auth().m, async (ctx) => {
 })
 
 // 删除评论
-router.delete('/comments/:id', new Auth().m, async (ctx) => {
+router.delete('/comments/:id', new Auth(AUTH_ADMIN).m, async (ctx) => {
 
     // 通过验证器校验参数是否通过
     const v = await new PositiveArticleIdParamsValidator().validate(ctx);
@@ -42,7 +43,7 @@ router.delete('/comments/:id', new Auth().m, async (ctx) => {
 })
 
 // 修改评论
-router.put('/comments/:id', new Auth().m, async (ctx) => {
+router.put('/comments/:id', new Auth(AUTH_ADMIN).m, async (ctx) => {
 
     // 通过验证器校验参数是否通过
     const v = await new PositiveArticleIdParamsValidator().validate(ctx);

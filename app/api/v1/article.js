@@ -12,6 +12,8 @@ const {ArticleDao} = require('../../dao/article');
 const {Resolve} = require('../../lib/helper');
 const res = new Resolve();
 
+const AUTH_ADMIN = 16;
+
 const router = new Router({
     prefix: '/v1'
 })
@@ -19,7 +21,7 @@ const router = new Router({
 /**
  * 创建文章
  */
-router.post('/article', new Auth().m, async (ctx) => {
+router.post('/article', new Auth(AUTH_ADMIN).m, async (ctx) => {
 
     // 通过验证器校验参数是否通过
     const v = await new ArticleValidator().validate(ctx);
@@ -36,7 +38,7 @@ router.post('/article', new Auth().m, async (ctx) => {
 /**
  * 删除文章
  */
-router.delete('/article/:id', new Auth().m, async (ctx) => {
+router.delete('/article/:id', new Auth(AUTH_ADMIN).m, async (ctx) => {
 
     // 通过验证器校验参数是否通过
     const v = await new PositiveIdParamsValidator().validate(ctx);
@@ -53,7 +55,7 @@ router.delete('/article/:id', new Auth().m, async (ctx) => {
 /**
  * 更新文章
  */
-router.put('/article/:id', new Auth().m, async (ctx) => {
+router.put('/article/:id', new Auth(AUTH_ADMIN).m, async (ctx) => {
 
     // 通过验证器校验参数是否通过
     const v = await new PositiveIdParamsValidator().validate(ctx);

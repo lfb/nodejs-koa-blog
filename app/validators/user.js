@@ -73,16 +73,16 @@ class UserLoginValidator extends LinValidator {
         ]
     }
 
-    validateLoginType(vals) {
-        if (!vals.body.type) {
-            throw new Error('type是必须参数')
-        }
-
-        if (!LoginType.isThisType(vals.body.type)) {
-            throw new Error('type参数不合法')
-        }
-
-    }
+    // validateLoginType(vals) {
+    //     if (!vals.body.type) {
+    //         throw new Error('type是必须参数')
+    //     }
+    //
+    //     if (!LoginType.isThisType(vals.body.type)) {
+    //         throw new Error('type参数不合法')
+    //     }
+    //
+    // }
 }
 
 class TokenNotEmptyValidator extends LinValidator {
