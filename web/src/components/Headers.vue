@@ -16,17 +16,26 @@
         </ul>
       </div>
       <div class="search">
-        <input
-          class="search-input"
-          v-model="keyword"
-          @keyup.enter="getSearchArticle"
-          placeholder="请输入想搜索的文章"
-          type="text">
-        <div class="iconfont iconicon-test4 search-icon"></div>
+        <el-input
+          placeholder="请输入内容"
+          size="small"
+          clearable
+          maxlength="32"
+          prefix-icon="el-icon-search"
+          @keyup.enter.native="getSearchArticle"
+          v-model="keyword">
+        </el-input>
+        <!--        <input-->
+        <!--          class="search-input"-->
+        <!--          v-model="keyword"-->
+        <!--          @keyup.enter="getSearchArticle"-->
+        <!--          placeholder="请输入想搜索的文章"-->
+        <!--          type="text">-->
+        <!--        <div class="iconfont iconicon-test4 search-icon"></div>-->
       </div>
 
       <div class="login-register">
-        <button>登录/注册</button>
+        <el-button size="small" @click="showUserManagerModel" type="primary">登录/注册</el-button>
       </div>
     </header>
   </section>
@@ -52,7 +61,8 @@
     },
     methods: {
       ...mapActions({
-        searchArticle: 'article/searchArticle'
+        searchArticle: 'article/searchArticle',
+        showUserManager: 'user/showUserManager'
       }),
       /**
        * 检测路由
@@ -61,11 +71,18 @@
         const path = this.$route.path;
         this.navIndex = this.nav.findIndex(item => item.path === path)
       },
+
+      // 显示用户登录注册
+      showUserManagerModel() {
+        const SHOW = true
+        this.showUserManager(SHOW)
+      },
       /**
        * 搜索文章
        * @returns 文章列表
        */
       async getSearchArticle() {
+        console.log(11)
         const keyword = this.keyword;
         if (!keyword) return false;
 
@@ -154,6 +171,7 @@
 
   .search {
     position: relative;
+    flex: 1;
 
     .search-icon {
       position: absolute;
@@ -192,18 +210,5 @@
   .login-register {
     flex: 1;
     text-align: right;
-
-    & button {
-      cursor: pointer;
-      height: 36px;
-      line-height: 36px;
-      text-align: center;
-      border: 0;
-      outline: 0;
-      color: #fff;
-      border-radius: 5px;
-      padding: 0 10px;
-      background: #2d8cf0;
-    }
   }
 </style>

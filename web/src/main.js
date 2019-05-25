@@ -6,7 +6,27 @@ import VueLocalStorage from 'vue-ls';
 import 'lib-flexible/flexible';
 import VueLazyLoad from 'vue-lazyload'
 import mavonEditor from 'mavon-editor'
-import 'mavon-editor/dist/css/index.css'
+
+import {
+  Button,
+  Input,
+  Form,
+  FormItem,
+  Message,
+  Tabs,
+  TabPane,
+  Dialog
+} from 'element-ui';
+
+Vue.use(Button);
+Vue.use(Input);
+Vue.use(Form);
+Vue.use(FormItem);
+Vue.use(Tabs);
+Vue.use(TabPane);
+Vue.use(Dialog);
+
+Vue.prototype.$message = Message;
 
 Vue.config.productionTip = false
 Vue.use(mavonEditor)

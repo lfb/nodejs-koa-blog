@@ -1,6 +1,14 @@
 <template>
   <div id="app">
     <v-loading :text="loadingText" v-if="isLoading"/>
+    <el-dialog
+      width="40%"
+      :visible="showUserManagerModel"
+      :show-close=true
+      @close="_showUserManager"
+      center>
+      <v-user-manager/>
+    </el-dialog>
     <v-headers/>
     <router-view/>
     <main-footer/>
@@ -11,20 +19,40 @@
   import VLoading from './components/Loading'
   import VHeaders from './components/Headers'
   import MainFooter from './components/MainFooter'
-  import {mapGetters} from 'vuex';
+  import VUserManager from './components/UserManager'
+  import {mapState, mapGetters, mapActions} from 'vuex';
 
   export default {
     components: {
       VLoading,
       VHeaders,
-      MainFooter
+      MainFooter,
+      VUserManager
+    },
+    data() {
+      return {
+        centerDialogVisible: true,
+        showClose: true
+      }
     },
     computed: {
       ...mapGetters('loading', [
         'isLoading',
         'loadingText'
       ]),
+      ...mapState({
+        showUserManagerModel: state => state.user.showUserManagerModel
+      })
     },
+    methods: {
+      ...mapActions({
+        showUserManager: 'user/showUserManager'
+      }),
+      _showUserManager() {
+        const SHOW = false
+        this.showUserManager(SHOW)
+      }
+    }
   }
 </script>
 

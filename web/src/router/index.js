@@ -30,6 +30,13 @@ export default new Router({
       }
     },
     {
+      // 登录注册
+      path: '/user/index',
+      component(resolve) {
+        require(['../views/user/index.vue'], resolve);
+      }
+    },
+    {
       // 关于我
       path: '/about',
       component(resolve) {
