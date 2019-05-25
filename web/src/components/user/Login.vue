@@ -10,7 +10,7 @@
           <el-input type="password" placeholder="请输入密码" v-model="ruleForm.secret" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="submitForm('ruleForm')">注册</el-button>
+          <el-button type="primary" @click="submitForm('ruleForm')">登录</el-button>
           <el-button @click="resetForm('ruleForm')">重置</el-button>
         </el-form-item>
       </el-form>
@@ -36,7 +36,11 @@
       };
       var validateSecret = (rule, value, callback) => {
         if (value === '') {
-          callback(new Error('请再次输入密码'));
+          callback(new Error('请输入密码'));
+
+        } else if (value.length < 6) {
+          callback(new Error('密码最低为6位'));
+
         } else {
           callback();
         }

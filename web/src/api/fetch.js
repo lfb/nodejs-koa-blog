@@ -45,7 +45,11 @@ Util.ajax.interceptors.response.use(response => {
 
 }, error => {
   let errMsg = error.response.data.msg;
-  alert(errMsg);
+
+  Vue.prototype.$message({
+    message: errMsg,
+    type: 'error'
+  });
 
   // 关闭loading
   closeLoading()
