@@ -1,11 +1,11 @@
 <template>
   <section class="wrap">
     <article class="content">
-      <el-tabs v-model="activeName" @tab-click="handleClick">
-        <el-tab-pane label="登录" name="login">
+      <el-tabs v-model="activeName"  @tab-click="handleClick">
+        <el-tab-pane label="用户登录" name="login">
           <v-user-login/>
         </el-tab-pane>
-        <el-tab-pane label="注册" name="register">
+        <el-tab-pane label="用户注册" name="register">
           <v-user-register/>
         </el-tab-pane>
       </el-tabs>

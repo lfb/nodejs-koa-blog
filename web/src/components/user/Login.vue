@@ -23,8 +23,13 @@
   export default {
     data() {
       var validateAccount = (rule, value, callback) => {
+        const reg = /^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
+
         if (value === '') {
           callback(new Error('请输入邮箱'));
+
+        } else if (!reg.test(value)) {
+          callback(new Error('请输入正确的邮箱'));
         } else {
           callback();
         }
