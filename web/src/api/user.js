@@ -12,7 +12,7 @@ export default {
   },
 
   // 用户信息
-  info() {
-    return fetch.get('/user/info')
+  info(params) {
+    return fetch.get('/user/info', params)
   }
 }

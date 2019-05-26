@@ -1,12 +1,12 @@
 <template>
   <section class="wrap">
     <article class="content">
-      <el-tabs v-model="activeName"  @tab-click="handleClick">
+      <el-tabs v-model="activeName" @tab-click="handleClick">
         <el-tab-pane label="用户登录" name="login">
           <v-user-login/>
         </el-tab-pane>
         <el-tab-pane label="用户注册" name="register">
-          <v-user-register/>
+          <v-user-register @changeTabs="changeTabs"/>
         </el-tab-pane>
       </el-tabs>
     </article>
@@ -29,6 +29,9 @@
     methods: {
       handleClick(tab, event) {
         console.log(tab, event);
+      },
+      changeTabs(type) {
+        this.activeName = type
       }
     }
   };

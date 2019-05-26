@@ -2,12 +2,15 @@
   <div class="comments">
 
     <section class="article-comments">
-      <h1 class="comments-title">欢迎评论</h1>
+      <h1 v-if="userInfo" class="comments-title">
+        您好，{{userInfo.nickname}}，欢迎您的评论：
+      </h1>
+      <h1 v-else class="comments-title">欢迎评论</h1>
       <article class="comments-inner">
         <div class="comments-content">
-          <textarea name="comments" id="comments" cols="30" rows="10" placeholder="评论内容.."></textarea>
+          <textarea name="comments" v-model="content" id="comments" cols="30" rows="10" placeholder="评论内容.."></textarea>
         </div>
-        <button class="submit-comments">提交评论</button>
+        <button class="submit-comments" @click="createArticleComments">提交评论</button>
       </article>
     </section>
 
@@ -27,17 +30,21 @@
 </template>
 
 <script>
+  import Vue from 'vue'
   import {mapState, mapActions} from 'vuex'
 
   export default {
     props: ['id'],
     data() {
       return {
-        list: []
+        list: [],
+        content: ''
       }
     },
     computed: {
-      ...mapState({})
+      ...mapState({
+        userInfo: state => state.user.userInfo
+      })
     },
     created() {
       if (this.id) {
@@ -47,6 +54,7 @@
     methods: {
       ...mapActions({
         getCommentsList: 'comments/getCommentsList',
+        createComments: 'comments/createComments'
       }),
       /**
        * 获取评论列表
@@ -55,6 +63,37 @@
       async getComments() {
         const res = await this.getCommentsList(this.id);
         this.list = res.data.data;
+      },
+      // 创建评论
+      async createArticleComments() {
+        if (!this.userInfo) {
+          this.$store.commit('user/SHOW_USER_MANAGER_MODEL', true);
+
+        } else if (!this.content) {
+          this.$message({
+            message: '请输入内容',
+            type: 'error'
+          });
+
+        } else {
+          let token = Vue.ls.get('BOBLOG_FE_TOKEN');
+          await this.createComments({
+            user_id: this.userInfo.id,
+            content: this.content,
+            article_id: this.id,
+            username: token
+          })
+
+          this.$message({
+            message: '评论成功',
+            type: 'success'
+          });
+          this.content = '';
+
+          this.getComments();
+
+        }
+
       }
     }
   }
@@ -104,6 +143,7 @@
 
     & .comments-content {
       margin-right: 24px;
+
       & textarea {
         width: 100%;
         font-size: 18px;

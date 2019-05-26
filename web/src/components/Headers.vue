@@ -35,15 +35,25 @@
       </div>
 
       <div class="login-register">
-        <el-button size="small" @click="showUserManagerModel" type="primary">登录/注册</el-button>
+
+        <el-dropdown v-if="userInfo">
+          <el-button type="primary">
+            {{userInfo.nickname}}<i class="el-icon-arrow-down el-icon--right"></i>
+          </el-button>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item @click.native="logout">退出</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+        <el-button v-else size="small" @click="showUserManagerModel" type="primary">登录/注册</el-button>
       </div>
     </header>
   </section>
 </template>
 
 <script>
-  import {mapActions} from 'vuex'
+  import {mapState, mapActions} from 'vuex'
   import merge from 'webpack-merge'
+  import Vue from 'vue';
 
   export default {
     data() {
@@ -58,6 +68,11 @@
     },
     created() {
       this.checkRouter()
+    },
+    computed: {
+      ...mapState({
+        userInfo: state => state.user.userInfo
+      })
     },
     methods: {
       ...mapActions({
@@ -77,12 +92,17 @@
         const SHOW = true
         this.showUserManager(SHOW)
       },
+
+      // 退出
+      logout() {
+        this.$store.commit('user/SET_USER_INFO', null);
+        Vue.ls.remove('BOBLOG_FE_TOKEN');
+      },
       /**
        * 搜索文章
        * @returns 文章列表
        */
       async getSearchArticle() {
-        console.log(11)
         const keyword = this.keyword;
         if (!keyword) return false;
 

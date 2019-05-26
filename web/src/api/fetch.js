@@ -18,7 +18,6 @@ Util.ajax.interceptors.request.use(config => {
   }
 
   // 获取token
-  config.headers.common['Authorization'] = 'Bearer ' + Vue.ls.get("web-token");
   return config
 
 }, error => {
@@ -28,22 +27,19 @@ Util.ajax.interceptors.request.use(config => {
 
 Util.ajax.interceptors.response.use(response => {
 
-  /**
-   * 在这里做loading 关闭
-   */
-
-    // 如果后端有新的token则重新缓存
-  let newToken = response.headers['new-token'];
-
-  if (newToken) {
-    Vue.ls.set("web-token", newToken);
-  }
   // 关闭loading
   closeLoading()
 
   return response;
 
 }, error => {
+
+  if (error.response.status === 403) {
+    store.commit('user/SET_USER_INFO', null);
+    store.commit('user/SHOW_USER_MANAGER_MODEL', true);
+    Vue.ls.remove('BOBLOG_FE_TOKEN');
+  }
+
   let errMsg = error.response.data.msg;
 
   Vue.prototype.$message({
@@ -53,18 +49,23 @@ Util.ajax.interceptors.response.use(response => {
 
   // 关闭loading
   closeLoading()
-  return Promise.reject(res)
+  return Promise.reject(error)
 
 });
 
 export default {
   post(url, params = {}) {
-    let {isLoading = true} = params;
+    const {username} = params;
+    const {isLoading = true} = params;
+
     return Util.ajax({
       method: 'post',
       url: url,
       data: qs.stringify(params),
       timeout: 30000,
+      auth: {
+        username
+      },
       isLoading,
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
@@ -73,11 +74,16 @@ export default {
   },
 
   get(url, params = {}) {
-    let {isLoading = true} = params;
+    const {username} = params;
+    const {isLoading = true} = params;
+
     return Util.ajax({
       method: 'get',
       url: url,
       params,
+      auth: {
+        username
+      },
       isLoading
     })
   },

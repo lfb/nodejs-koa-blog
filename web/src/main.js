@@ -15,7 +15,10 @@ import {
   Message,
   Tabs,
   TabPane,
-  Dialog
+  Dialog,
+  Dropdown,
+  DropdownMenu,
+  DropdownItem
 } from 'element-ui';
 
 Vue.use(Button);
@@ -25,6 +28,9 @@ Vue.use(FormItem);
 Vue.use(Tabs);
 Vue.use(TabPane);
 Vue.use(Dialog);
+Vue.use(Dropdown);
+Vue.use(DropdownMenu);
+Vue.use(DropdownItem);
 
 Vue.prototype.$message = Message;
 
@@ -36,8 +42,25 @@ Vue.use(VueLazyLoad, {
   loading: '../static/lazyloading.svg'
 })
 
-router.beforeEach((to, from, next) => {
-  next()
+router.beforeEach(async (to, from, next) => {
+
+  // 获取用户信息
+  const BOBLOG_FE_TOKEN = Vue.ls.get('BOBLOG_FE_TOKEN');
+  if (BOBLOG_FE_TOKEN) {
+
+    const auth = {
+      username: BOBLOG_FE_TOKEN
+    }
+
+    await store.dispatch('user/getUserInfo', auth);
+
+    await next()
+
+  } else {
+    await next()
+  }
+
+
 });
 
 router.afterEach(() => {

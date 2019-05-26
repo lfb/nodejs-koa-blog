@@ -18,6 +18,7 @@
   </section>
 </template>
 <script>
+  import Vue from 'vue'
   import {mapActions} from 'vuex'
 
   export default {
@@ -68,13 +69,18 @@
       submitForm(formName) {
         this.$refs[formName].validate(async (valid) => {
           if (valid) {
-            await this.userLogin(this.ruleForm);
+            const res = await this.userLogin(this.ruleForm);
             this.showMessage('登录成功！');
 
-            setTimeout(() => {
-              this.resetForm('ruleForm');
-              this.$router.push('/');
-            }, 1000)
+            // 关联模态框
+            Vue.ls.set('BOBLOG_FE_TOKEN', res.data.token);
+            this.$store.commit('user/SHOW_USER_MANAGER_MODEL', false);
+
+            // 登录
+            const BOBLOG_FE_TOKEN = Vue.ls.get('BOBLOG_FE_TOKEN');
+            await this.$store.dispatch('user/getUserInfo', {
+              username: BOBLOG_FE_TOKEN
+            });
 
           } else {
             this.showMessage('请完善表单', 'error');

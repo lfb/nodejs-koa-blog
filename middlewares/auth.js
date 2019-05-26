@@ -38,10 +38,6 @@ class Auth {
                 throw new global.errs.Forbidden(errMsg);
             }
 
-            console.log("decode.scope");
-            console.log("decode.scope");
-            console.log(decode.scope);
-            console.log(this.level);
             if (decode.scope < this.level) {
                 errMsg = "权限不足"
                 throw new global.errs.Forbidden(errMsg);

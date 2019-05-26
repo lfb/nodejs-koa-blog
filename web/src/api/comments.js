@@ -8,6 +8,6 @@ export default {
 
   // 新增评论
   create(params) {
-    return fetch.get('/comments', params);
+    return fetch.post('/comments', params);
   }
 }

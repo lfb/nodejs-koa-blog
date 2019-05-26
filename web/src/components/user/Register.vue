@@ -54,8 +54,8 @@
           callback(new Error('密码最低为6位'));
 
         } else {
-          if (this.ruleForm.checkPass !== '') {
-            this.$refs.ruleForm.validateField('checkPass');
+          if (this.ruleForm.password2 !== '') {
+            this.$refs.ruleForm.validateField('password2');
           }
           callback();
         }
@@ -105,7 +105,7 @@
 
             setTimeout(() => {
               this.resetForm('ruleForm');
-              this.$router.push('/user/login');
+              this.changeTabs();
             }, 1000)
 
           } else {
@@ -124,6 +124,10 @@
           message,
           type
         });
+      },
+      // 父组件方法
+      changeTabs() {
+        this.$emit('changeTabs', 'login')
       }
     }
   }

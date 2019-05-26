@@ -7,7 +7,7 @@ class CommentsValidator extends LinValidator {
     constructor() {
         super()
         this.content = [new Rule("isLength", "评论内容名字不能为空", {min: 1})]
-        this.uid = [new Rule("isLength", "用户ID不能为空", {min: 1})]
+        this.user_id = [new Rule("isLength", "用户ID不能为空", {min: 1})]
         this.article_id = [new Rule("isLength", "文章ID不能为空", {min: 1})]
     }
 }
