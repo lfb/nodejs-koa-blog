@@ -43,7 +43,21 @@
     data() {
       return {
         // 搜索关键字
-        keyword: this.$route.query.keyword
+        keyword: this.$route.query.keyword,
+        banner: [
+          {
+            title: 'nodejs',
+            img: 'https://upload.jianshu.io/admin_banners/web_images/4660/224da83c76e01d5deff07e163615921233af5c82.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/1250/h/540'
+          },
+          {
+            title: 'node',
+            img: 'https://upload.jianshu.io/admin_banners/web_images/4592/22f5cfa984d47eaf3def6a48510cc87c157bf293.png?imageMogr2/auto-orient/strip|imageView2/1/w/1250/h/540'
+          },
+          {
+            title: 'css',
+            img: 'https://upload.jianshu.io/admin_banners/web_images/4668/77e4329017294a607d78e74789afc6a22f4a6ebe.png?imageMogr2/auto-orient/strip|imageView2/1/w/1250/h/540'
+          }
+        ]
       }
     },
     computed: {
@@ -99,7 +113,8 @@
   .container {
     display: flex;
     width: 1280px;
-    margin: 24px auto;
+    min-height: 66vh;
+    margin: 0 auto;
     border-radius: 5px;
   }
 
@@ -132,8 +147,9 @@
 
 
     .article-content {
+      position: relative;
       flex: 1;
-      margin-left: 32px;
+      margin-left: 24px;
     }
 
     & .article-title {
@@ -146,15 +162,16 @@
     }
 
     & .article-info {
+      position: absolute;
+      bottom: 0;
       width: 100%;
-      margin-top: 24px;
       display: flex;
       align-items: center;
 
       & p {
         display: inline-block;
         margin-right: 24px;
-        font-size: 14px;
+        font-size: 16px;
         color: #9ea7b4;
       }
 
@@ -162,7 +179,7 @@
         height: 28px;
         line-height: 28px;
         padding: 0 16px;
-        font-size: 14px;
+        font-size: 16px;
         color: #2d8cf0;
         border-radius: 24px;
         background: rgba(51, 119, 255, .1);
@@ -172,7 +189,7 @@
 
   .article-empty {
     text-align: center;
-    padding: 32px 0;
+    padding: 24px 0;
     font-size: 16px;
     color: #989898;
   }

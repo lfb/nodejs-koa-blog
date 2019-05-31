@@ -10,7 +10,7 @@
       <v-user-manager/>
     </el-dialog>
     <v-headers/>
-    <router-view/>
+    <router-view class="router-views"/>
     <main-footer/>
   </div>
 </template>
@@ -57,7 +57,6 @@
 </script>
 
 <style>
-  @import "assets/fonts/iconfont.css";
 
   html, body {
     box-sizing: border-box;
@@ -69,10 +68,10 @@
   }
 
   body {
-    background: #f8f8f8;
   }
 
   #app {
+    margin-top: 128px;
     height: 100%;
   }
 
@@ -84,4 +83,5 @@
   li {
     list-style: none;
   }
+
 </style>

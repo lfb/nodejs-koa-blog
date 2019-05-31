@@ -10,8 +10,8 @@
           <el-input type="password" placeholder="请输入密码" v-model="ruleForm.secret" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="submitForm('ruleForm')">登录</el-button>
           <el-button @click="resetForm('ruleForm')">重置</el-button>
+          <el-button type="primary" @click="submitForm('ruleForm')">登录</el-button>
         </el-form-item>
       </el-form>
     </article>

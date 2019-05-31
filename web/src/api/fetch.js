@@ -36,8 +36,11 @@ Util.ajax.interceptors.response.use(response => {
 
   if (error.response.status === 403) {
     store.commit('user/SET_USER_INFO', null);
-    store.commit('user/SHOW_USER_MANAGER_MODEL', true);
     Vue.ls.remove('BOBLOG_FE_TOKEN');
+
+    if (error.response.data.request !== 'GET /v1/user/info') {
+      store.commit('user/SHOW_USER_MANAGER_MODEL', true);
+    }
   }
 
   let errMsg = error.response.data.msg;

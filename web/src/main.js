@@ -18,7 +18,9 @@ import {
   Dialog,
   Dropdown,
   DropdownMenu,
-  DropdownItem
+  DropdownItem,
+  carousel,
+  carouselItem
 } from 'element-ui';
 
 Vue.use(Button);
@@ -30,7 +32,8 @@ Vue.use(TabPane);
 Vue.use(Dialog);
 Vue.use(Dropdown);
 Vue.use(DropdownMenu);
-Vue.use(DropdownItem);
+Vue.use(carousel);
+Vue.use(carouselItem);
 
 Vue.prototype.$message = Message;
 
@@ -52,7 +55,13 @@ router.beforeEach(async (to, from, next) => {
       username: BOBLOG_FE_TOKEN
     }
 
-    await store.dispatch('user/getUserInfo', auth);
+    try {
+      await store.dispatch('user/getUserInfo', auth);
+      await next()
+
+    } catch (e) {
+      await next()
+    }
 
     await next()
 

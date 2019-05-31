@@ -2,7 +2,7 @@
   <section class="header">
     <header class="header-box">
       <div class="logo" @click="toPath('/')">
-        <img src="http://images.boblog.com/BOBLOG-03.png?imageView2/1/w/400/h/200" alt="LOGO">
+        <img src="http://images.boblog.com/BOBLOG-03.png?imageView2/1/w/560/h/280" alt="logo">
       </div>
       <div class="nav">
         <ul class="nav-box">
@@ -25,26 +25,20 @@
           @keyup.enter.native="getSearchArticle"
           v-model="keyword">
         </el-input>
-        <!--        <input-->
-        <!--          class="search-input"-->
-        <!--          v-model="keyword"-->
-        <!--          @keyup.enter="getSearchArticle"-->
-        <!--          placeholder="请输入想搜索的文章"-->
-        <!--          type="text">-->
-        <!--        <div class="iconfont iconicon-test4 search-icon"></div>-->
       </div>
 
       <div class="login-register">
-
         <el-dropdown v-if="userInfo">
-          <el-button type="primary">
+          <el-button type="primary" icon="el-icon-user-solid" size="small">
             {{userInfo.nickname}}<i class="el-icon-arrow-down el-icon--right"></i>
           </el-button>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item @click.native="logout">退出</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
-        <el-button v-else size="small" @click="showUserManagerModel" type="primary">登录/注册</el-button>
+
+        <el-button v-else size="small" icon="el-icon-user-solid" @click="showUserManagerModel" type="primary">登录/注册
+        </el-button>
       </div>
     </header>
   </section>
@@ -61,8 +55,13 @@
         keyword: '',
         navIndex: 0,
         nav: [
-          {name: '首页', path: '/'},
-          {name: '关于', path: '/about'},
+          {name: '前端', path: '/'},
+          {name: '图书', path: '/fd'},
+          {name: '电影', path: '/domains'},
+          {name: '音乐', path: '/domains'},
+          {name: '域名', path: '/domains'},
+          {name: 'API', path: '/domains'},
+          {name: 'FUN', path: '/about'},
         ]
       }
     },
@@ -139,14 +138,20 @@
 
 <style lang="scss" scoped>
   .header {
+    position: fixed;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 96px;
+    z-index: 5000;
     background: #fff;
     box-shadow: 4px 4px 4px rgba(0, 0, 0, .03);
+    border-bottom: 1px solid #f0f0f0;
   }
 
   .header-box {
-    width: 1280px;
+    box-sizing: border-box;
+    padding: 0 24px;
     margin: 0 auto;
     height: 96px;
     display: flex;
@@ -163,19 +168,20 @@
   }
 
   .nav {
-    padding: 0 32px;
+    margin: 0 48px;
 
     & .nav-box {
       display: flex;
       width: 100%;
 
       & .nav-item {
+        display: flex;
+        align-items: center;
+        padding: 0 24px;
         height: 96px;
         line-height: 96px;
-        display: block;
         color: #404040;
-        font-size: 20px;
-        padding-right: 32px;
+        font-size: 24px;
         text-decoration: none;
 
         &:hover {
