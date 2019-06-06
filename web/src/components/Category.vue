@@ -1,12 +1,15 @@
 <template>
   <div class="category">
-    <h1 class="category-title">分类</h1>
+    <h1 class="category-title">
+      <i class="icon el-icon-collection-tag"></i> 分类
+    </h1>
     <ul class="category-box">
+      <li class="category-item">全部文章</li>
       <li v-for="(cate, index) in list"
           @click="getArticle(cate.id)"
           class="category-item"
           :key="index">
-        {{cate.name}}（{{cate.Articles.length}}）
+        {{cate.name}}（ {{cate.Articles.length}} ）
       </li>
     </ul>
   </div>
@@ -18,12 +21,12 @@
 
   export default {
     data() {
-      return {}
+      return {
+        list: []
+      }
     },
     computed: {
-      ...mapState({
-        list: state => state.category.categoryList
-      })
+      ...mapState({})
     },
     created() {
       this.getCategory();
@@ -39,7 +42,8 @@
        * @returns 分类列表
        */
       async getCategory() {
-        await this.getCategoryList();
+        const res = await this.getCategoryList();
+        this.list = res.data.data;
       },
 
       /**
@@ -68,32 +72,36 @@
 <style scoped lang="scss">
   .category {
     padding: 0 24px;
+    margin-bottom: 24px;
     background: #fff;
+    border-radius: 5px;
 
     & .category-title {
       display: flex;
       align-items: center;
       color: #464c5b;
-      font-size: 26px;
+      font-size: 24px;
       padding: 10px 0;
       border-bottom: 1px solid #f0f0f0;
     }
 
-    & .category-box {
-      padding: 10px 0;
+    & .icon {
+      margin-right: 8px;
+    }
 
+    & .category-box {
+      padding: 16px 0;
     }
 
     & .category-item {
+      position: relative;
       cursor: pointer;
-      height: 42px;
-      line-height: 42px;
+      margin-bottom: 16px;
       font-size: 16px;
       color: #657180;
-      transition: left 1s ease-in;
 
       &:hover {
-        color: #2d8cf0;
+        color: #409EFF;
       }
     }
   }

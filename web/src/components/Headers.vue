@@ -1,17 +1,16 @@
 <template>
   <section class="header">
     <header class="header-box">
-      <div class="logo" @click="toPath('/')">
-        <img src="http://images.boblog.com/BOBLOG-03.png?imageView2/1/w/560/h/280" alt="logo">
+      <div class="logo">
+        <a href="/"><img src="../assets/images/LOGO.png" alt="LOGO"></a>
       </div>
       <div class="nav">
         <ul class="nav-box">
-          <li v-for="(item, index) in nav" :key="index">
-            <router-link
+          <li v-for="(item, index) in nav"
+              @click="changeNav(item.path, index)"
               :class="navIndex === index ? 'nav-item nav-item--active' : 'nav-item'"
-              :to="{path: item.path}">
-              {{item.name}}
-            </router-link>
+              :key="index">
+            <i :class="`icon ${item.icon}`"></i> {{item.name}}
           </li>
         </ul>
       </div>
@@ -55,18 +54,13 @@
         keyword: '',
         navIndex: 0,
         nav: [
-          {name: '前端', path: '/'},
-          {name: '图书', path: '/fd'},
-          {name: '电影', path: '/domains'},
-          {name: '音乐', path: '/domains'},
-          {name: '域名', path: '/domains'},
-          {name: 'API', path: '/domains'},
-          {name: 'FUN', path: '/about'},
+          {name: '文章', path: '/', icon: 'el-icon-house'},
+          // {name: '专栏', path: '/book', icon: 'el-icon-reading\n'},
+          {name: '关于', path: '/about', icon: 'el-icon-chat-round'},
         ]
       }
     },
-    created() {
-      this.checkRouter()
+    mounted() {
     },
     computed: {
       ...mapState({
@@ -78,12 +72,13 @@
         searchArticle: 'article/searchArticle',
         showUserManager: 'user/showUserManager'
       }),
+
       /**
-       * 检测路由
+       * 切换导航栏
        */
-      checkRouter() {
-        const path = this.$route.path;
-        this.navIndex = this.nav.findIndex(item => item.path === path)
+      changeNav(path, index) {
+        this.navIndex = index;
+        this.toPath(path)
       },
 
       // 显示用户登录注册
@@ -130,7 +125,7 @@
        * @param path 路由地址
        */
       toPath(path) {
-        this.$router.push(path)
+        this.$router.push(path);
       }
     }
   }
@@ -150,8 +145,8 @@
   }
 
   .header-box {
+    width: 1280px;
     box-sizing: border-box;
-    padding: 0 24px;
     margin: 0 auto;
     height: 96px;
     display: flex;
@@ -168,29 +163,35 @@
   }
 
   .nav {
-    margin: 0 48px;
+    margin: 0 24px;
 
     & .nav-box {
       display: flex;
       width: 100%;
 
       & .nav-item {
+        cursor: pointer;
         display: flex;
         align-items: center;
+        justify-items: center;
         padding: 0 24px;
         height: 96px;
         line-height: 96px;
         color: #404040;
-        font-size: 24px;
+        font-size: 20px;
         text-decoration: none;
 
         &:hover {
-          color: #2d8cf0;
+          color: #409EFF;
         }
       }
 
+      & .icon {
+        margin-right: 8px;
+      }
+
       & .nav-item--active {
-        color: #2d8cf0;
+        color: #409EFF;
       }
     }
   }
@@ -219,7 +220,7 @@
       border: 1px solid #ccc;
 
       &:focus {
-        border-color: #2d8cf0;
+        border-color: #409EFF;
       }
 
       &::placeholder {
@@ -228,7 +229,7 @@
       }
 
       &:focus .search-icon {
-        color: #2d8cf0;
+        color: #409EFF;
       }
     }
   }

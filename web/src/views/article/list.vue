@@ -1,15 +1,24 @@
 <template>
   <section class="container">
     <article class="article" id="article">
+      <nav class="article-nav">
+        <ul class="article-nav-box">
+          <li v-for="(item, index) in nav"
+              @click="updateArticleType(index)"
+              :class="index === navIndex ? 'article-nav-item article-nav-item--active' : 'article-nav-item'"
+              :key="index">
+            <i :class="item.icon"></i> {{item.name}}
+          </li>
+        </ul>
+      </nav>
       <ul class="article-box" v-if="list.length > 0">
         <li class="article-item" v-for="(item, index) in list"
             :key="index"
             @click="toPath('/article/detail/' + item.id)">
-          <div class="article-img">
-            <img v-lazy="item.cover + '?imageView2/1/w/150/h/150'" alt="img">
-          </div>
           <div class="article-content">
-            <h1 class="article-title">{{item.title}}</h1>
+            <h1 class="article-title">
+              {{item.title}}
+            </h1>
             <div class="article-info">
               <p class="article-category" v-if="item.Category">
                 {{item.Category.name}}
@@ -20,28 +29,49 @@
               <p class="article-author">{{item.createdAt}}</p>
             </div>
           </div>
-
+          <div class="article-img">
+            <div class="article-img-inner">
+              <img v-lazy="item.cover + '?imageView2/1/w/150/h/150'" alt="img">
+            </div>
+          </div>
         </li>
+
+        <section class="page">
+          <el-pagination
+            background
+            layout="prev, pager, next"
+            :total="32">
+          </el-pagination>
+        </section>
       </ul>
       <ul class="article-empty" v-else>暂无文章</ul>
     </article>
 
     <div class="sidebar">
       <v-category/>
+      <v-author/>
     </div>
 
   </section>
 </template>
 <script>
   import VCategory from '../../components/Category'
+  import VAuthor from '../../components/Author'
   import {mapState, mapActions} from 'vuex'
 
   export default {
     components: {
+      VAuthor,
       VCategory
+
     },
     data() {
       return {
+        nav: [
+          {name: '最新', icon: 'el-icon-news'},
+          {name: '最热', icon: 'el-icon-box'}
+        ],
+        navIndex: 0,
         // 搜索关键字
         keyword: this.$route.query.keyword,
         banner: [
@@ -98,6 +128,12 @@
       },
 
       /**
+       * 更新文章
+       */
+      updateArticleType(index) {
+        this.navIndex = index;
+      },
+      /**
        * 路由跳转
        * @param path 路由地址
        */
@@ -114,42 +150,86 @@
     display: flex;
     width: 1280px;
     min-height: 66vh;
-    margin: 0 auto;
-    border-radius: 5px;
+    margin: 0 auto 24px;
+    overflow: hidden;
   }
 
   .article {
     flex: 9;
+    border-radius: 8px;
     background: #fff;
+
+    & .article-nav {
+      padding: 16px 0;
+      border-bottom: 1px solid #efefef;
+    }
+
+    & .article-nav-box {
+      display: flex;
+      align-items: center;
+    }
+
+    & .article-nav-item {
+      cursor: pointer;
+      padding: 0 24px;
+      position: relative;
+      font-size: 18px;
+      color: #404040;
+
+      &:after {
+        display: block;
+        content: "";
+        width: 1px;
+        height: 16px;
+        position: absolute;
+        top: 5px;
+        right: 0;
+        border-right: 1px solid #efefef;
+      }
+
+      &:last-child:after {
+        display: none;
+      }
+
+      &:hover {
+        color: #409EFF;
+      }
+    }
+
+    & .article-nav-item--active {
+      color: #409EFF;
+    }
 
     & .article-item {
       cursor: pointer;
       padding: 24px;
       display: flex;
-      border-bottom: 1px solid #f0f0f0;
-      transition: 0.1s ease-in;
+      border-bottom: 1px solid #f8f8f8;
 
       &:hover {
         background: #f0f0f0;
       }
+
+      &:hover .article-title {
+        color: #409EFF;
+      }
     }
 
     & .article-img {
-      width: 120px;
-      height: 120px;
+      .article-img-inner {
+        width: 96px;
 
-      & img {
-        width: 100%;
-        height: 100%;
-        border-radius: 5px;
+        & img {
+          width: 100%;
+          border-radius: 5px;
+        }
       }
     }
 
 
     .article-content {
-      position: relative;
       flex: 1;
-      margin-left: 24px;
+      margin-right: 24px;
     }
 
     & .article-title {
@@ -162,9 +242,7 @@
     }
 
     & .article-info {
-      position: absolute;
-      bottom: 0;
-      width: 100%;
+      margin-top: 24px;
       display: flex;
       align-items: center;
 
@@ -180,7 +258,7 @@
         line-height: 28px;
         padding: 0 16px;
         font-size: 16px;
-        color: #2d8cf0;
+        color: #409EFF;
         border-radius: 24px;
         background: rgba(51, 119, 255, .1);
       }
@@ -198,5 +276,10 @@
     box-sizing: border-box;
     width: 320px;
     margin-left: 24px;
+  }
+
+  .page {
+    padding: 32px 0;
+    text-align: center;
   }
 </style>

@@ -18,9 +18,9 @@ import {
   Dialog,
   Dropdown,
   DropdownMenu,
-  DropdownItem,
-  carousel,
-  carouselItem
+  Pagination,
+  Tag,
+  Icon
 } from 'element-ui';
 
 Vue.use(Button);
@@ -32,8 +32,9 @@ Vue.use(TabPane);
 Vue.use(Dialog);
 Vue.use(Dropdown);
 Vue.use(DropdownMenu);
-Vue.use(carousel);
-Vue.use(carouselItem);
+Vue.use(Pagination);
+Vue.use(Tag);
+Vue.use(Icon);
 
 Vue.prototype.$message = Message;
 
@@ -41,8 +42,8 @@ Vue.config.productionTip = false
 Vue.use(mavonEditor)
 Vue.use(VueLocalStorage);
 Vue.use(VueLazyLoad, {
-  error: '../static/lazyloading.svg',
-  loading: '../static/lazyloading.svg'
+  error: '../static/boblog.png',
+  loading: '../static/boblog.png'
 })
 
 router.beforeEach(async (to, from, next) => {

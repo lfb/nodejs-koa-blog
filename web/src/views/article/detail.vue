@@ -115,7 +115,7 @@
           line-height: 28px;
           padding: 0 16px;
           font-size: 14px;
-          color: #2d8cf0;
+          color: #409EFF;
           border-radius: 24px;
           background: rgba(51, 119, 255, .1);
         }
