@@ -68,7 +68,6 @@ class CategoryDao {
         category.save();
     }
 
-
     // 分类列表
     static async getCategoryList() {
         return await Category.scope('bh').findAll({

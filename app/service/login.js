@@ -1,4 +1,3 @@
-const {UserDao} = require('../dao/user')
 const {AdminDao} = require('../dao/admin')
 const {generateToken} = require('../../core/util')
 const {Auth} = require('../../middlewares/auth')

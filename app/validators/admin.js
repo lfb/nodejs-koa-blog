@@ -3,7 +3,7 @@ const {
     LinValidator
 } = require('../../core/lin-validator-v2')
 
-const {User} = require('../models/user')
+const {Admin} = require('../models/admin')
 const {LoginType} = require('../lib/enum')
 
 class RegisterValidator extends LinValidator {
@@ -43,19 +43,19 @@ class RegisterValidator extends LinValidator {
 
     async validateEmail(vals) {
         const email = vals.body.email
-        const user = await User.findOne({
+        const admin = await Admin.findOne({
             where: {
                 email: email
             }
         })
-        if (user) {
+        if (admin) {
             throw new Error('邮箱已被注册，请重新输入邮箱')
         }
     }
 }
 
 
-class UserLoginValidator extends LinValidator {
+class AdminLoginValidator extends LinValidator {
     constructor() {
         super();
         this.email = [
@@ -88,6 +88,6 @@ class TokenNotEmptyValidator extends LinValidator {
 
 module.exports = {
     RegisterValidator,
-    UserLoginValidator,
+    AdminLoginValidator,
     TokenNotEmptyValidator
 }

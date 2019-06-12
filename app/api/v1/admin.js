@@ -2,8 +2,8 @@ const Router = require('koa-router')
 
 const {
     RegisterValidator,
-    UserLoginValidator
-} = require('../../validators/user')
+    AdminLoginValidator
+} = require('../../validators/admin')
 
 const {AdminDao} = require('../../dao/admin');
 const {Auth} = require('../../../middlewares/auth');
@@ -35,7 +35,7 @@ router.post('/register', async (ctx) => {
 // 管理登录
 router.post('/login', async (ctx) => {
 
-    const v = await new UserLoginValidator().validate(ctx);
+    const v = await new AdminLoginValidator().validate(ctx);
 
     let token = await LoginManager.adminLogin(v.get('body.email'), v.get('body.password'));
 

@@ -207,7 +207,8 @@
       border-bottom: 1px solid #f8f8f8;
 
       &:hover {
-        background: #f0f0f0;
+        box-shadow: 4px 4px 4px rgba(0, 0, 0, .05);
+        background: #fff;
       }
 
       &:hover .article-title {
