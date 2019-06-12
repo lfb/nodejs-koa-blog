@@ -47,22 +47,16 @@ class ArticleDao {
         });
 
         for (let item of article) {
+            // 查询对应的分类
             const cateogry = await CategoryDao.getCategory(item.getDataValue('category_id'));
             item.setDataValue('cateogry', cateogry);
 
+            // 查询对应的评论
             const comments = await CommentsDao.getArticleComments(item.getDataValue('id'));
             item.setDataValue('comments', comments.length);
         }
 
         return article;
-    }
-
-    static async getArticleCategory(id) {
-        return Category.scope('bh').findOne({
-            where: {
-                id
-            }
-        });
     }
 
     // 删除文章
