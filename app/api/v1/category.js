@@ -100,24 +100,4 @@ router.get('/category/:id', async (ctx) => {
     ctx.body = res.json(category);
 })
 
-
-/**
- * 查询分类为 ID 下的所有文章
- */
-router.get('/category/:id/article', async (ctx) => {
-
-    // 通过验证器校验参数是否通过
-    const v = await new PositiveIdParamsValidator().validate(ctx);
-
-    // 获取参数
-    const id = v.get('path.id');
-    // 查询文章
-    const article = await CategoryDao.getArticle(id);
-
-    // 返回结果
-    ctx.response.status = 200;
-    ctx.body = res.json(article);
-})
-
-
 module.exports = router

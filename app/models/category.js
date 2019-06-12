@@ -14,8 +14,11 @@ Category.init({
         primaryKey: true,
         autoIncrement: true
     },
+    // 分类名
     name: Sequelize.STRING,
+    // 分类键
     key: Sequelize.STRING,
+    // 分类父级ID，默认为0
     parent_id: {
         type: Sequelize.INTEGER,
         defaultValue: 0
@@ -24,7 +27,6 @@ Category.init({
     sequelize,
     tableName: 'category'
 })
-
 
 module.exports = {
     Category

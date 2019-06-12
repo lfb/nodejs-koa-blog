@@ -19,11 +19,24 @@ const sequelize = new Sequelize(dbName, user, password, {
         timestamps: true,
         // delete_time
         paranoid: true,
-        createdAt: 'create_at',
-        updatedAt: 'update_at',
-        deletedAt: 'delete_at',
+        createdAt: 'created_at',
+        updatedAt: 'updated_at',
+        deletedAt: 'deleted_at',
         // 把驼峰命名转换为下划线
-        underscored: true
+        underscored: true,
+        scopes: {
+            bh: {
+                attributes: {
+                    exclude: ['password', 'updated_at', 'deleted_at', 'created_at']
+                }
+            },
+            iv: {
+                attributes: {
+                    exclude: ['password', 'updated_at', 'deleted_at']
+                }
+            },
+
+        }
     }
 })
 

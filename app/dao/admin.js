@@ -8,7 +8,7 @@ class AdminDao {
         const hasAdmin = await Admin.findOne({
             where: {
                 email: v.get('body.email'),
-                delete_at: null
+                deleted_at: null
             }
         });
 
@@ -50,16 +50,11 @@ class AdminDao {
 
     // 查询管理员信息
     static async getAdminInfo(id) {
+        const scope = 'bh';
         // 查询管理员是否存在
-        const admin = await Admin.findOne({
+        const admin = await Admin.scope(scope).findOne({
             where: {
                 id
-            },
-            attributes: {
-                exclude: [
-                    'password',
-                    'delete_at'
-                ]
             }
         })
 

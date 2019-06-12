@@ -1,32 +1,20 @@
 const {Comments} = require('../models/comments')
-const {User} = require('../models/user')
-
+const {Article} = require('../models/article')
 
 class CommentsDao {
     // 创建评论
     static async createComments(v) {
-        const comments = new Comments();
 
-        const user = await User.findOne({
-            where: {
-                id: v.get('body.user_id'),
-                delete_at: null
-            },
-            attributes: {
-                exclude: [
-                    'password',
-                    'delete_at',
-                    'update_at',
-                    'create_at'
-                ]
-            }
-        })
-
-        if (!user) {
-            throw new global.errs.NotFound('没有找到相关用户');
+        // 查询文章
+        const article = await Article.findByPk(v.get('body.article_id'));
+        if (!article) {
+            throw new global.errs.NotFound('没有找到相关文章');
         }
 
-        comments.user_id = v.get('body.user_id');
+        const comments = new Comments();
+
+        comments.nickname = v.get('body.nickname');
+        comments.email = v.get('body.email');
         comments.content = v.get('body.content');
         comments.article_id = v.get('body.article_id');
         comments.parent_id = v.get('body.parent_id');
@@ -39,7 +27,7 @@ class CommentsDao {
         const comments = await Comments.findOne({
             where: {
                 id,
-                delete_at: null
+                deleted_at: null
             }
         });
         if (!comments) {
@@ -51,26 +39,27 @@ class CommentsDao {
 
     // 获取评论详情
     static async getComments(id) {
-        const comments = await Comments.findOne({
+        const comments = await Comments.scope('iv').findOne({
             where: {
                 id,
-                delete_at: null
+                deleted_at: null
             }
         });
         if (!comments) {
-            throw new global.errs.NotFound('没有找到相关评论');
+            throw new global.errs.NotFound('没有找到相关评论信息');
         }
 
         return comments
     }
 
-    // 更新分类
+    // 更新评论
     static async updateComments(id, v) {
         const comments = await Comments.findByPk(id);
         if (!comments) {
-            throw new global.errs.NotFound('没有找到相关分类');
+            throw new global.errs.NotFound('没有找到相关评论信息');
         }
-        comments.uid = v.get('body.uid');
+        comments.nickname = v.get('body.nickname');
+        comments.email = v.get('body.email');
         comments.content = v.get('body.content');
         comments.article_id = v.get('body.article_id');
         comments.parent_id = v.get('body.parent_id');
@@ -81,40 +70,20 @@ class CommentsDao {
 
     // 评论列表
     static async getCommentsList() {
-        return await Comments.findAll({
+        return await Comments.scope('bh').findAll({
             where: {
-                delete_at: null
+                deleted_at: null
             }
         })
     }
 
     // 文章下的评论
     static async getArticleComments(articleId) {
-        return await Comments.findAll({
+        return await Comments.scope('iv').findAll({
             where: {
                 article_id: articleId,
-                delete_at: null
-            },
-            attributes: {
-                exclude: [
-                    'UserId'
-                ]
-            },
-            // 把文章关联的分类也查询出来
-            include: [{
-                model: User,
-                where: {
-                    delete_at: null
-                },
-                attributes: {
-                    exclude: [
-                        'password',
-                        'delete_at',
-                        'update_at',
-                        'create_at'
-                    ]
-                }
-            }]
+                deleted_at: null
+            }
         })
     }
 }

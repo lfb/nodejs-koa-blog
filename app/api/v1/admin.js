@@ -37,7 +37,7 @@ router.post('/login', async (ctx) => {
 
     const v = await new UserLoginValidator().validate(ctx);
 
-    let token = await LoginManager.adminLogin(v.get('body.account'), v.get('body.secret'));
+    let token = await LoginManager.adminLogin(v.get('body.email'), v.get('body.password'));
 
     ctx.response.status = 200;
     ctx.body = {
@@ -53,7 +53,7 @@ router.get('/info', new Auth(AUTH_ADMIN).m, async (ctx) => {
     const id = ctx.auth.uid;
 
     // 查询用户信息
-    let userInfo = await UserDao.getUserInfo(id);
+    let userInfo = await AdminDao.getAdminInfo(id);
 
     // 返回结果
     ctx.response.status = 200;

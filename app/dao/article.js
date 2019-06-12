@@ -1,7 +1,7 @@
 const {Sequelize} = require('sequelize')
 
 const {Article} = require('../models/article')
-const {Category} = require('../models/category')
+
 
 // 定义文章模型
 class ArticleDao {
@@ -13,7 +13,7 @@ class ArticleDao {
         const hasArticle = await Article.findOne({
             where: {
                 title: v.get('body.title'),
-                delete_at: null
+                deleted_at: null
             }
         });
 
@@ -37,20 +37,9 @@ class ArticleDao {
 
     // 获取文章列表
     static async getArticleList() {
-        return await Article.findAll({
+        return await Article.scope('iv').findAll({
             where: {
-                delete_at: null
-            },
-            // 把文章关联的分类也查询出来
-            include: [{
-                model: Category
-            }],
-            // 过滤文章内容
-            attributes: {
-                exclude: [
-                    'content',
-                    'CategoryId'
-                ]
+                deleted_at: null
             }
         })
     }
@@ -61,7 +50,7 @@ class ArticleDao {
         const article = await Article.findOne({
             where: {
                 id,
-                delete_at: null
+                deleted_at: null
             }
         });
         // 不存在抛出错误
@@ -108,22 +97,17 @@ class ArticleDao {
 
     // 文章详情
     static async getArticleDetail(id) {
-        const article = await Article.findOne({
+        const article = await Article.scope('iv').findOne({
             where: {
                 id
-            },
-            // 把文章关联的分类也查询出来
-            include: [{
-                model: Category
-            }]
+            }
         });
 
         if (!article) {
             throw new global.errs.NotFound('没有找到相关文章');
         }
 
-        return article
-
+        return article;
     }
 
     // 搜索文章
@@ -133,7 +117,7 @@ class ArticleDao {
                 title: {
                     [Sequelize.Op.like]: `%${keyword}%`
                 },
-                delete_at: null
+                deleted_at: null
             }
         });
     }

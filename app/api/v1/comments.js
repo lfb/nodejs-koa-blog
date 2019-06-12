@@ -54,7 +54,7 @@ router.put('/comments/:id', new Auth(AUTH_ADMIN).m, async (ctx) => {
 
     // 返回结果
     ctx.response.status = 200;
-    ctx.body = res.success('更新分类成功')
+    ctx.body = res.success('更新评论成功')
 })
 
 // 获取评论列表
@@ -68,7 +68,7 @@ router.get('/comments', async (ctx) => {
 
 })
 
-// 获取评论列表
+// 获取评论详情
 router.get('/comments/:id', async (ctx) => {
     // 通过验证器校验参数是否通过
     const v = await new PositiveArticleIdParamsValidator().validate(ctx);
@@ -84,7 +84,7 @@ router.get('/comments/:id', async (ctx) => {
 })
 
 // 获取文章下的评论
-router.get('/article/comments/:id', async (ctx) => {
+router.get('/article/:id/comments', async (ctx) => {
 
     // 通过验证器校验参数是否通过
     const v = await new PositiveArticleIdParamsValidator().validate(ctx);

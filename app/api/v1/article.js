@@ -8,6 +8,8 @@ const {
 
 const {Auth} = require('../../../middlewares/auth');
 const {ArticleDao} = require('../../dao/article');
+const {CategoryDao} = require('../../dao/category');
+const {CommentsDao} = require('../../dao/comments');
 
 const {Resolve} = require('../../lib/helper');
 const res = new Resolve();
@@ -32,8 +34,7 @@ router.post('/article', new Auth(AUTH_ADMIN).m, async (ctx) => {
     // 返回结果
     ctx.response.status = 200;
     ctx.body = res.success('创建文章成功');
-})
-
+});
 
 /**
  * 删除文章
@@ -74,14 +75,13 @@ router.put('/article/:id', new Auth(AUTH_ADMIN).m, async (ctx) => {
  * 获取文章列表
  */
 router.get('/article', async (ctx) => {
-
     // 查询文章列表
     const articleList = await ArticleDao.getArticleList();
 
     // 返回结果
     ctx.response.status = 200;
     ctx.body = res.json(articleList);
-})
+});
 
 /**
  * 查询文章详情
@@ -96,8 +96,16 @@ router.get('/article/:id', async (ctx) => {
     // 查询文章
     const article = await ArticleDao.getArticleDetail(id);
 
+    // 获取关联此文章的分类详情
+    const category = await CategoryDao.getCategory(article.getDataValue('category_id'));
+    // 获取关联此文章的评论列表
+    const commentsList = await CommentsDao.getArticleComments(id);
+
     // 更新文章浏览
     await ArticleDao.updateArticleBrowse(id, ++article.browse);
+
+    await article.setDataValue('category', category);
+    await article.setDataValue('comments_list', commentsList);
 
     // 返回结果
     ctx.response.status = 200;

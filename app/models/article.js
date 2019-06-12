@@ -1,6 +1,5 @@
 const {sequelize} = require('../../core/db')
 const {Sequelize, Model} = require('sequelize')
-const {Category} = require('./category')
 
 // 定义文章模型
 class Article extends Model {
@@ -14,10 +13,17 @@ Article.init({
         primaryKey: true,
         autoIncrement: true
     },
+    // 文章标题
     title: Sequelize.STRING,
+    // 文章作者
     author: Sequelize.STRING(64),
+    // 文章内容
     content: Sequelize.STRING(),
+    // 文章封面
     cover: Sequelize.STRING,
+    // 文章分类ID
+    category_id: Sequelize.STRING,
+    // 文章浏览次数
     browse: {
         type: Sequelize.INTEGER,
         defaultValue: 0
@@ -26,11 +32,6 @@ Article.init({
     sequelize,
     tableName: 'article'
 })
-
-// 一篇文章关联一个分类
-Article.belongsTo(Category, {foreignKey: 'category_id'});
-// 一个分类下关联多篇文章
-Category.hasMany(Article);
 
 module.exports = {
     Article

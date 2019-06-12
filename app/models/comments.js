@@ -1,8 +1,5 @@
 const {Sequelize, Model} = require('sequelize')
-
 const {sequelize} = require('../../core/db')
-
-const {User} = require('./user')
 
 class Comments extends Model {
 
@@ -14,11 +11,15 @@ Comments.init({
         primaryKey: true,
         autoIncrement: true
     },
+    // 评论人的名字
+    nickname: Sequelize.STRING,
+    // 评论人的邮箱
+    email: Sequelize.STRING,
     // 评论内容
     content: Sequelize.STRING,
     // 文章ID
     article_id: Sequelize.STRING,
-    // 评论父级ID
+    // 评论父级ID，默认为0
     parent_id: {
         type: Sequelize.INTEGER,
         defaultValue: 0
@@ -27,10 +28,6 @@ Comments.init({
     sequelize,
     tableName: 'comments'
 })
-
-Comments.belongsTo(User, {foreignKey: 'user_id'});
-User.hasMany(Comments);
-
 
 module.exports = {
     Comments
