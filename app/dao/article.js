@@ -1,6 +1,9 @@
-const {Sequelize} = require('sequelize')
+const {Sequelize, Op} = require('sequelize')
+
 
 const {Article} = require('../models/article')
+const {CategoryDao} = require('../dao/category')
+const {CommentsDao} = require('../dao/comments')
 
 
 // 定义文章模型
@@ -37,11 +40,29 @@ class ArticleDao {
 
     // 获取文章列表
     static async getArticleList() {
-        return await Article.scope('iv').findAll({
+        const article = await Article.scope('iv').findAll({
             where: {
                 deleted_at: null
             }
-        })
+        });
+
+        for (let item of article) {
+            const cateogry = await CategoryDao.getCategory(item.getDataValue('category_id'));
+            item.setDataValue('cateogry', cateogry);
+
+            const comments = await CommentsDao.getArticleComments(item.getDataValue('id'));
+            item.setDataValue('comments', comments.length);
+        }
+
+        return article;
+    }
+
+    static async getArticleCategory(id) {
+        return Category.scope('bh').findOne({
+            where: {
+                id
+            }
+        });
     }
 
     // 删除文章
