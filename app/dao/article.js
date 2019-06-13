@@ -53,18 +53,30 @@ class ArticleDao {
             ]
         });
 
-        for (let item of article.rows) {
-            // 查询对应文章的分类详情
-            const cateogry = await CategoryDao.getCategory(item.getDataValue('category_id'));
-            item.setDataValue('cateogry', cateogry);
+        const categoryIds = [];
+        const articleIds = [];
 
-            // 查询对应的文章评论总数
-            const comments_nums = await ArticleDao._getArticleComments(item.getDataValue('id'));
-            item.setDataValue('comments_nums', comments_nums);
-        }
+        const r = article.rows;
+        r.forEach(article => {
+            articleIds.push(article.id);
+            categoryIds.push(article.category_id);
+        });
+
+
+        // // 获取每篇文章评论
+        const comments = await ArticleDao._getArticleComments(articleIds);
+        r.forEach(article => {
+            ArticleDao._setArticleComments(article, comments)
+        });
+
+        // 获取每篇文章分类详情
+        const category = await this._getArticleCategoryDetail(categoryIds);
+        r.forEach(article => {
+            ArticleDao._setArticleCategoryDetail(article, category)
+        });
 
         return {
-            data: article.rows,
+            data: r,
             // 分页
             meta: {
                 current_page: parseInt(page),
@@ -76,16 +88,33 @@ class ArticleDao {
         };
     }
 
-    // 查询对应的文章评论总数
-    static async _getArticleComments(article_id) {
-        return await Comments.count({
+    // 获取每篇文章评论
+    static async _getArticleComments(articleIds) {
+        return await Comments.scope('bh').findAll({
             where: {
-                article_id
-            }
+                article_id: {
+                    [Op.in]: articleIds
+                }
+            },
+            group: ['article_id'],
+            attributes: ['article_id', [Sequelize.fn('COUNT', '*'), 'count']]
         })
     }
 
-    // 获取分类详情
+    // 设置每章文章评论总数
+    static _setArticleComments(article, comments) {
+        let count = 0;
+        comments.forEach(item => {
+            if (parseInt(article.id) === parseInt(item.article_id)) {
+                count = item.get('count')
+            }
+        })
+        article.setDataValue('comments_nums', count);
+
+        return article
+    }
+
+    // 获取每篇文章分类详情
     static async _getArticleCategoryDetail(categoryIds) {
         return await Category.scope('bh').findAll({
             where: {
@@ -95,6 +124,18 @@ class ArticleDao {
             }
         })
     }
+
+    // 设置每章文章分类详情
+    static _setArticleCategoryDetail(article, category) {
+        category.forEach(item => {
+            if (parseInt(article.category_id) === parseInt(item.id)) {
+                article.setDataValue('category_detail', item);
+            }
+        })
+
+        return article
+    }
+
 
     // 删除文章
     static async destroyArticle(id) {
@@ -180,19 +221,30 @@ class ArticleDao {
             ]
         });
 
+        const categoryIds = [];
+        const articleIds = [];
 
-        for (let item of article.rows) {
-            // 查询对应文章的分类详情
-            const cateogry = await CategoryDao.getCategory(item.getDataValue('category_id'));
-            item.setDataValue('cateogry', cateogry);
+        const r = article.rows;
+        r.forEach(article => {
+            articleIds.push(article.id);
+            categoryIds.push(article.category_id);
+        });
 
-            // 查询对应的文章评论总数
-            const comments = await this._getArticleComments(item.getDataValue('id'));
-            item.setDataValue('comments', comments);
-        }
+
+        // // 获取每篇文章评论
+        const comments = await ArticleDao._getArticleComments(articleIds);
+        r.forEach(article => {
+            ArticleDao._setArticleComments(article, comments)
+        });
+
+        // 获取每篇文章分类详情
+        const category = await this._getArticleCategoryDetail(categoryIds);
+        r.forEach(article => {
+            ArticleDao._setArticleCategoryDetail(article, category)
+        });
 
         return {
-            data: article.rows,
+            data: r,
             // 分页
             meta: {
                 current_page: parseInt(page),
