@@ -59,8 +59,8 @@ router.put('/comments/:id', new Auth(AUTH_ADMIN).m, async (ctx) => {
 
 // 获取评论列表
 router.get('/comments', async (ctx) => {
-
-    let commentsList = await CommentsDao.getCommentsList()
+    const page = ctx.query.page;
+    let commentsList = await CommentsDao.getCommentsList(page);
 
     // 返回结果
     ctx.response.status = 200;
@@ -91,7 +91,8 @@ router.get('/article/:id/comments', async (ctx) => {
 
     // 获取分类ID参数
     const id = v.get('path.id');
-    const commentsList = await CommentsDao.getArticleComments(id);
+    const page = ctx.query.page;
+    const commentsList = await CommentsDao.getArticleComments(id, page);
 
     // 返回结果
     ctx.response.status = 200;

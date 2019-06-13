@@ -2,6 +2,8 @@ const {Sequelize, Op} = require('sequelize')
 
 
 const {Article} = require('../models/article')
+const {Category} = require('../models/category')
+const {Comments} = require('../models/comments')
 const {CategoryDao} = require('../dao/category')
 const {CommentsDao} = require('../dao/comments')
 
@@ -39,24 +41,62 @@ class ArticleDao {
     }
 
     // 获取文章列表
-    static async getArticleList() {
-        const article = await Article.scope('iv').findAll({
+    static async getArticleList(page = 1) {
+        const pageSize = 10;
+
+        const article = await Article.scope('iv').findAndCountAll({
+            limit: pageSize,//每页10条
+            offset: (page - 1) * pageSize,
             where: {
                 deleted_at: null
-            }
+            },
+            order: [
+                ['created_at', 'DESC']
+            ]
         });
 
-        for (let item of article) {
-            // 查询对应的分类
+
+        for (let item of article.rows) {
+            // 查询对应文章的分类详情
             const cateogry = await CategoryDao.getCategory(item.getDataValue('category_id'));
             item.setDataValue('cateogry', cateogry);
 
-            // 查询对应的评论
-            const comments = await CommentsDao.getArticleComments(item.getDataValue('id'));
-            item.setDataValue('comments', comments.length);
+            // 查询对应的文章评论总数
+            const comments = await ArticleDao._getArticleComments(item.getDataValue('id'));
+            item.setDataValue('comments', comments);
         }
 
-        return article;
+        return {
+            data: article.rows,
+            // 分页
+            meta: {
+                current_page: parseInt(page),
+                per_page: 10,
+                count: article.count,
+                total: article.count,
+                total_pages: Math.ceil(article.count / 10),
+            }
+        };
+    }
+
+    // 查询对应的文章评论总数
+    static async _getArticleComments(article_id) {
+        return await Comments.count({
+            where: {
+                article_id
+            }
+        })
+    }
+
+    // 获取分类详情
+    static async _getArticleCategoryDetail(categoryIds) {
+        return await Category.scope('bh').findAll({
+            where: {
+                id: {
+                    [Op.in]: categoryIds
+                }
+            }
+        })
     }
 
     // 删除文章
@@ -126,15 +166,45 @@ class ArticleDao {
     }
 
     // 搜索文章
-    static async getArticleByKeyword(keyword) {
-        return await Article.findAll({
+    static async getArticleByKeyword(keyword, page = 1) {
+        const pageSize = 10;
+
+        const article = await Article.findAndCountAll({
             where: {
                 title: {
-                    [Sequelize.Op.like]: `%${keyword}%`
+                    [Op.like]: `%${keyword}%`
                 },
                 deleted_at: null
-            }
+            },
+            limit: pageSize,//每页10条
+            offset: (page - 1) * pageSize,
+            order: [
+                ['created_at', 'DESC']
+            ]
         });
+
+
+        for (let item of article.rows) {
+            // 查询对应文章的分类详情
+            const cateogry = await CategoryDao.getCategory(item.getDataValue('category_id'));
+            item.setDataValue('cateogry', cateogry);
+
+            // 查询对应的文章评论总数
+            const comments = await this._getArticleComments(item.getDataValue('id'));
+            item.setDataValue('comments', comments);
+        }
+
+        return {
+            data: article.rows,
+            // 分页
+            meta: {
+                current_page: parseInt(page),
+                per_page: 10,
+                count: article.count,
+                total: article.count,
+                total_pages: Math.ceil(article.count / 10),
+            }
+        };
     }
 
 }

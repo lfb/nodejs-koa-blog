@@ -69,22 +69,57 @@ class CommentsDao {
 
 
     // 评论列表
-    static async getCommentsList() {
-        return await Comments.scope('bh').findAll({
+    static async getCommentsList(page = 1) {
+        const pageSize = 10;
+        const comments = await Comments.scope('bh').findAndCountAll({
+            limit: pageSize,//每页10条
+            offset: (page - 1) * pageSize,
             where: {
                 deleted_at: null
-            }
+            },
+            order: [
+                ['created_at', 'DESC']
+            ]
         })
+
+        return {
+            data: comments.rows,
+            meta: {
+                current_page: parseInt(page),
+                per_page: 10,
+                count: comments.count,
+                total: comments.count,
+                total_pages: Math.ceil(comments.count / 10),
+            }
+        };
     }
 
     // 文章下的评论
-    static async getArticleComments(articleId) {
-        return await Comments.scope('iv').findAll({
+    static async getArticleComments(article_id, page = 1) {
+        const pageSize = 10;
+
+        const comments = await Comments.scope('iv').findAndCountAll({
             where: {
-                article_id: articleId,
+                article_id,
                 deleted_at: null
+            },
+            limit: pageSize,//每页10条
+            offset: (page - 1) * pageSize,
+            order: [
+                ['created_at', 'DESC']
+            ]
+        });
+        return {
+            data: comments.rows,
+            // 分页
+            meta: {
+                current_page: parseInt(page),
+                per_page: 10,
+                count: comments.count,
+                total: comments.count,
+                total_pages: Math.ceil(comments.count / 10),
             }
-        })
+        };
     }
 }
 
