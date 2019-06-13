@@ -91,7 +91,6 @@
       position: relative;
       background: #fff;
       flex: 1;
-      animation: contentAnimation 0.36s 0.18s ease both;
 
       & .article-title {
         font-size: 48px;
@@ -127,37 +126,6 @@
         color: #657180;
         line-height: 48px;
       }
-    }
-
-    @keyframes contentAnimation {
-      0% {
-        opacity: 0;
-        top: 64px;
-        filter: alpha(opacity=0);
-      }
-
-      25% {
-        opacity: 0.25;
-        filter: alpha(opacity=25);
-      }
-      50% {
-        opacity: 0.5;
-        filter: alpha(opacity=50);
-      }
-      75% {
-        opacity: 0.75;
-        filter: alpha(opacity=75);
-      }
-
-      100% {
-        opacity: 1;
-        filter: alpha(opacity=100);
-        top: 0;
-      }
-    }
-
-    & .margin-right-300 {
-      margin-right: 316px;
     }
   }
 
