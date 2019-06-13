@@ -98,7 +98,7 @@ const actions = {
    */
   async searchArticle({state, commit}, params) {
     let ret = await article.search(params);
-    return ret.data.data;
+    return ret.data.data.data;
   },
 
   /**
