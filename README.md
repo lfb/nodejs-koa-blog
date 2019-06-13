@@ -46,3 +46,8 @@ Koa服务端编程、异步编程、面向对象编程。
 - Sequelize ORM 管理 MySQL
 - JWT 权限控制中间件 
 - Validator 与 LinValidator 验证器
+
+## 项目参考资料
+- [《纯正商业级应用－Node.js Koa2开发微信小程序服务端》](https://s.imooc.com/SHHXs2R), by 慕课网：7七月老师
+- [开源：lin-cms-koa](https://github.com/TaleLin/lin-cms-koa), by TaleLin Team
+
