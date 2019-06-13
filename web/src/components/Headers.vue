@@ -25,20 +25,6 @@
           v-model="keyword">
         </el-input>
       </div>
-
-      <div class="login-register">
-        <el-dropdown v-if="userInfo">
-          <el-button type="primary" icon="el-icon-user-solid" size="small">
-            {{userInfo.nickname}}<i class="el-icon-arrow-down el-icon--right"></i>
-          </el-button>
-          <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item @click.native="logout">退出</el-dropdown-item>
-          </el-dropdown-menu>
-        </el-dropdown>
-
-        <el-button v-else size="small" icon="el-icon-user-solid" @click="showUserManagerModel" type="primary">登录/注册
-        </el-button>
-      </div>
     </header>
   </section>
 </template>
@@ -63,9 +49,7 @@
     mounted() {
     },
     computed: {
-      ...mapState({
-        userInfo: state => state.user.userInfo
-      })
+      ...mapState({})
     },
     methods: {
       ...mapActions({
@@ -79,18 +63,6 @@
       changeNav(path, index) {
         this.navIndex = index;
         this.toPath(path)
-      },
-
-      // 显示用户登录注册
-      showUserManagerModel() {
-        const SHOW = true
-        this.showUserManager(SHOW)
-      },
-
-      // 退出
-      logout() {
-        this.$store.commit('user/SET_USER_INFO', null);
-        Vue.ls.remove('BOBLOG_FE_TOKEN');
       },
       /**
        * 搜索文章
@@ -114,9 +86,10 @@
             })
           });
 
-          await this.searchArticle({
+          const res = await this.searchArticle({
             keyword
           });
+          this.$store.commit('article/SET_ARTICLE_LIST', res.data.data.data);
         }
 
       },
@@ -198,7 +171,7 @@
 
   .search {
     position: relative;
-    flex: 1;
+    width: 480px;
 
     .search-icon {
       position: absolute;
@@ -232,10 +205,5 @@
         color: #409EFF;
       }
     }
-  }
-
-  .login-register {
-    flex: 1;
-    text-align: right;
   }
 </style>

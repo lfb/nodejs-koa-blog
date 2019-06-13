@@ -1,37 +1,54 @@
 <template>
-  <div class="comments">
-
-    <section class="article-comments">
+  <section class="comments">
+    <section class="comments-create">
       <h1 class="comments-title">欢迎评论</h1>
-      <div>
-        <input type="text" placeholder="昵称">
+      <div class="comments-input-item">
+        <el-input
+          size="small"
+          placeholder="请输入昵称"
+          v-model="params.nickname"
+          clearable>
+        </el-input>
       </div>
-      <div>
-        <input type="email" placeholder="邮箱">
+      <div class="comments-input-item">
+        <el-input
+          size="small"
+          placeholder="请输入邮箱"
+          v-model="params.email"
+          clearable>
+        </el-input>
+      </div>
+      <div class="comments-input-item">
+        <el-input
+          size="small"
+          type="textarea"
+          :autosize="{ minRows: 4, maxRows: 8}"
+          v-model="params.content"
+          placeholder="请输入评论内容">
+        </el-input>
+
       </div>
 
-      <article class="comments-inner">
-        <div class="comments-content">
-          <textarea name="comments" v-model="content" id="comments" cols="30" rows="10" placeholder="评论内容.."></textarea>
-        </div>
-        <button class="submit-comments" @click="createArticleComments">提交评论</button>
-      </article>
+      <div class="comments-input-item">
+        <el-button type="primary" @click.native="createArticleComments">提交评论</el-button>
+      </div>
     </section>
 
-
-    <h1 class="comments-title">评论列表</h1>
-    <ul class="comments-box" v-if="commentsList">
-      <li v-for="(item, index) in commentsList.data"
-          class="comments-item"
-          :key="index">
-        <h3 class="comments-item-username">
-          {{item.nickname}}：
-        </h3>
-        <p class="comments-item-content"> {{item.content}}</p>
-        <p class="comments-item-content"> ，{{item.created_at}}</p>
-      </li>
-    </ul>
-  </div>
+    <section class="comments-list">
+      <h1 class="comments-title">评论列表</h1>
+      <ul class="comments-box" v-if="commentsList">
+        <li v-for="(item, index) in commentsList.data"
+            class="comments-item"
+            :key="index">
+          <h3 class="comments-item-username">
+            {{item.nickname}}：
+          </h3>
+          <p class="comments-item-content"> {{item.content}}</p>
+          <p class="comments-item-content"> ，{{item.created_at}}</p>
+        </li>
+      </ul>
+    </section>
+  </section>
 </template>
 
 <script>
@@ -39,11 +56,15 @@
   import {mapState, mapActions} from 'vuex'
 
   export default {
-    props: ['commentsList'],
+    props: ['id', 'commentsList'],
     data() {
       return {
         list: [],
-        params: ''
+        params: {
+          nickname: '',
+          email: '',
+          content: ''
+        }
       }
     },
     computed: {
@@ -62,44 +83,50 @@
 
       // 创建评论
       async createArticleComments() {
-        if (!this.userInfo) {
-          this.$store.commit('user/SHOW_USER_MANAGER_MODEL', true);
+        let {content, nickname, email} = this.params;
 
-        } else if (!this.content) {
+        if (!content || !nickname || !email) {
           this.$message({
-            message: '请输入内容',
+            message: '请输完成表单',
             type: 'error'
           });
 
-        } else {
-          let token = Vue.ls.get('BOBLOG_FE_TOKEN');
-          await this.createComments({
-            user_id: this.userInfo.id,
-            content: this.content,
-            article_id: this.id,
-            username: token
-          })
-
-          this.$message({
-            message: '评论成功',
-            type: 'success'
-          });
-          this.content = '';
-
-          this.getComments();
-
+          return false;
         }
 
+        await this.createComments({
+          email,
+          nickname,
+          content,
+          article_id: this.id,
+        })
+
+        this.$message({
+          message: '评论成功',
+          type: 'success'
+        });
       }
     }
   }
 </script>
 
 <style scoped lang="scss">
-  .comments {
-    background: #fff;
+  .comments-title {
+    padding: 16px 0;
+    color: #2d8cf0;
+    font-size: 32px;
+  }
 
-    & .comments-item {
+  .comments-create {
+    width: 50%;
+
+    .comments-input-item {
+      margin-bottom: 16px;
+    }
+  }
+
+  .comments-list {
+    .comments-item {
       cursor: pointer;
       line-height: 42px;
       font-size: 16px;
@@ -112,59 +139,4 @@
       }
     }
   }
-
-  .comments-title {
-    padding: 16px 0;
-    color: #2d8cf0;
-    font-size: 32px;
-    font-weight: 400;
-  }
-
-  .comments-item-username {
-    font-size: 20px;
-    color: #464c5b;
-  }
-
-  .comments-item-content {
-    font-size: 18px;
-    color: #666;
-  }
-
-  .article-comments {
-    margin: 32px 0;
-
-    .comments-inner {
-      width: 100%;
-    }
-
-    & .comments-content {
-      margin-right: 24px;
-
-      & textarea {
-        width: 100%;
-        font-size: 18px;
-        padding: 5px 10px;
-        border-radius: 4px;
-        border: 1px solid #dcdee2;
-      }
-    }
-
-    & .submit-comments {
-      cursor: pointer;
-      padding: 10px 20px;
-      border: none;
-      color: #fff;
-      border-radius: 4px;
-      margin-top: 16px;
-      font-size: 18px;
-      background-image: linear-gradient(to right, #5cadff 0, #2d8cf0 100%);
-      background-repeat: repeat-x;
-
-      &:hover {
-        background-image: linear-gradient(to right, #2d8cf0 0, #2b85e4 100%);
-        background-repeat: repeat-x;
-      }
-    }
-  }
-
 </style>

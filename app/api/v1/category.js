@@ -100,4 +100,24 @@ router.get('/category/:id', async (ctx) => {
     ctx.body = res.json(category);
 })
 
+/**
+ * 获取一个分类下的文章
+ */
+router.get('/category/:id/article', async (ctx) => {
+
+    // 通过验证器校验参数是否通过
+    const v = await new PositiveIdParamsValidator().validate(ctx);
+
+    // 分类ID
+    const category_id = v.get('path.id');
+    // 页面
+    const page = v.get('query.page');
+    // 获取分类
+    const category = await CategoryDao.getCategoryArticle(category_id, page);
+
+    // 返回结果
+    ctx.response.status = 200;
+    ctx.body = res.json(category);
+})
+
 module.exports = router

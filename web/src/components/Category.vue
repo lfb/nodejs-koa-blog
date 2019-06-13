@@ -3,13 +3,13 @@
     <h1 class="category-title">
       <i class="icon el-icon-collection-tag"></i> 分类
     </h1>
-    <ul class="category-box">
+    <ul class="category-box" v-if="list.length > 0">
       <li class="category-item">全部文章</li>
-      <li v-for="(cate, index) in list"
-          @click="getArticle(cate.id)"
+      <li v-for="(category, index) in list"
+          @click="getArticle(category.id)"
           class="category-item"
           :key="index">
-        {{cate.name}}（ {{cate.Articles.length}} ）
+        {{category.name}}（ {{category.article_nums}} ）
       </li>
     </ul>
   </div>
@@ -29,7 +29,7 @@
       ...mapState({})
     },
     created() {
-      // this.getCategory();
+      this.getCategory();
     },
     methods: {
       ...mapActions({
@@ -43,7 +43,7 @@
        */
       async getCategory() {
         const res = await this.getCategoryList();
-        this.list = res.data;
+        this.list = res.data.data;
       },
 
       /**
@@ -58,7 +58,7 @@
         }
 
         let res = await this.getCategoryArticle(categoryId);
-        this.$store.commit('article/SET_ARTICLE_LIST', res.data.data);
+        this.$store.commit('article/SET_ARTICLE_LIST', res.data.data.data);
       },
 
       // 路由跳转

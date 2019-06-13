@@ -1,14 +1,6 @@
 <template>
   <div id="app">
     <v-loading :text="loadingText" v-if="isLoading"/>
-    <el-dialog
-      width="40%"
-      :visible="showUserManagerModel"
-      :show-close=true
-      @close="_showUserManager"
-      center>
-      <v-user-manager/>
-    </el-dialog>
     <v-headers/>
     <router-view class="router-views"/>
     <main-footer/>
@@ -18,16 +10,12 @@
 <script>
   import VLoading from './components/Loading'
   import VHeaders from './components/Headers'
-  import MainFooter from './components/MainFooter'
-  import VUserManager from './components/UserManager'
   import {mapState, mapGetters, mapActions} from 'vuex';
 
   export default {
     components: {
       VLoading,
-      VHeaders,
-      MainFooter,
-      VUserManager
+      VHeaders
     },
     data() {
       return {

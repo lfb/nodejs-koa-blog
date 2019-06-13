@@ -4,7 +4,6 @@ const {Sequelize, Op} = require('sequelize')
 const {Article} = require('../models/article')
 const {Category} = require('../models/category')
 const {Comments} = require('../models/comments')
-const {CategoryDao} = require('../dao/category')
 
 // 定义文章模型
 class ArticleDao {
@@ -70,7 +69,7 @@ class ArticleDao {
         });
 
         // 获取每篇文章分类详情
-        const category = await this._getArticleCategoryDetail(categoryIds);
+        const category = await ArticleDao._getArticleCategoryDetail(categoryIds);
         r.forEach(article => {
             ArticleDao._setArticleCategoryDetail(article, category)
         });
@@ -238,7 +237,7 @@ class ArticleDao {
         });
 
         // 获取每篇文章分类详情
-        const category = await this._getArticleCategoryDetail(categoryIds);
+        const category = await ArticleDao._getArticleCategoryDetail(categoryIds);
         r.forEach(article => {
             ArticleDao._setArticleCategoryDetail(article, category)
         });

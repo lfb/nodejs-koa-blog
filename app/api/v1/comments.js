@@ -14,7 +14,7 @@ const router = new Router({
 })
 
 // 创建评论
-router.post('/comments', new Auth().m, async (ctx) => {
+router.post('/comments', async (ctx) => {
 
     // 通过验证器校验参数是否通过
     const v = await new CommentsValidator().validate(ctx);

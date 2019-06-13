@@ -4,7 +4,7 @@
       <nav class="article-nav">
         <ul class="article-nav-box">
           <li v-for="(item, index) in nav"
-              @click="updateArticleType(index)"
+              @click="updateArticleDesc(item.desc, index)"
               :class="index === navIndex ? 'article-nav-item article-nav-item--active' : 'article-nav-item'"
               :key="index">
             <i :class="item.icon"></i> {{item.name}}
@@ -31,7 +31,8 @@
           </div>
           <div class="article-img">
             <div class="article-img-inner">
-              <img v-lazy="item.cover + '?imageView2/1/w/150/h/150'" alt="img">
+              <img v-lazy="item.cover" alt="img">
+              <!--              <img v-lazy="item.cover + '?imageView2/1/w/150/h/150'" alt="img">-->
             </div>
           </div>
         </li>
@@ -68,8 +69,8 @@
     data() {
       return {
         nav: [
-          {name: '最新', icon: 'el-icon-news'},
-          {name: '最热', icon: 'el-icon-box'}
+          {name: '最新', icon: 'el-icon-news', desc: 'created_at'},
+          {name: '最热', icon: 'el-icon-box', desc: 'browse'}
         ],
         navIndex: 0,
         // 搜索关键字
@@ -130,8 +131,11 @@
       /**
        * 更新文章
        */
-      updateArticleType(index) {
+      async updateArticleDesc(desc, index) {
         this.navIndex = index;
+        await this.getArticleList({
+          desc
+        });
       },
       /**
        * 路由跳转
@@ -207,8 +211,7 @@
       border-bottom: 1px solid #f8f8f8;
 
       &:hover {
-        box-shadow: 4px 4px 4px rgba(0, 0, 0, .05);
-        background: #fff;
+        background: #f4f4f4;
       }
 
       &:hover .article-title {
