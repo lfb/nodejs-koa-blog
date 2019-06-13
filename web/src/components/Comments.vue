@@ -2,10 +2,14 @@
   <div class="comments">
 
     <section class="article-comments">
-      <h1 v-if="userInfo" class="comments-title">
-        您好，{{userInfo.nickname}}，欢迎您的评论：
-      </h1>
-      <h1 v-else class="comments-title">欢迎评论</h1>
+      <h1 class="comments-title">欢迎评论</h1>
+      <div>
+        <input type="text" placeholder="昵称">
+      </div>
+      <div>
+        <input type="email" placeholder="邮箱">
+      </div>
+
       <article class="comments-inner">
         <div class="comments-content">
           <textarea name="comments" v-model="content" id="comments" cols="30" rows="10" placeholder="评论内容.."></textarea>
@@ -16,14 +20,15 @@
 
 
     <h1 class="comments-title">评论列表</h1>
-    <ul class="comments-box" v-if="list">
-      <li v-for="(item, index) in list"
+    <ul class="comments-box" v-if="commentsList">
+      <li v-for="(item, index) in commentsList.data"
           class="comments-item"
           :key="index">
         <h3 class="comments-item-username">
-          {{item.User.nickname}}：
+          {{item.nickname}}：
         </h3>
         <p class="comments-item-content"> {{item.content}}</p>
+        <p class="comments-item-content"> ，{{item.created_at}}</p>
       </li>
     </ul>
   </div>
@@ -34,11 +39,11 @@
   import {mapState, mapActions} from 'vuex'
 
   export default {
-    props: ['id'],
+    props: ['commentsList'],
     data() {
       return {
         list: [],
-        content: ''
+        params: ''
       }
     },
     computed: {
@@ -47,23 +52,14 @@
       })
     },
     created() {
-      if (this.id) {
-        this.getComments();
-      }
+
     },
     methods: {
       ...mapActions({
         getCommentsList: 'comments/getCommentsList',
         createComments: 'comments/createComments'
       }),
-      /**
-       * 获取评论列表
-       * @returns 评论列表
-       */
-      async getComments() {
-        const res = await this.getCommentsList(this.id);
-        this.list = res.data.data;
-      },
+
       // 创建评论
       async createArticleComments() {
         if (!this.userInfo) {

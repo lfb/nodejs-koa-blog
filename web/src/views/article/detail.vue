@@ -5,13 +5,14 @@
         <h1 class="article-title">{{detail.title}}</h1>
 
         <div class="article-info">
-          <p class="article-category" v-if="detail.category">
-            {{detail.category.name}}
+          <p class="article-category" v-if="detail.category_detail">
+            {{detail.category_detail.name}}
           </p>
           <p class="article-author"> by {{detail.author}}</p>
           <p class="article-browser">阅读 {{detail.browse}} 次
+          <p class="article-browser">评论 {{detail.comments_list.data.length}} 次
           </p>
-          <p class="article-author">{{detail.createdAt}}</p>
+          <p class="article-author">{{detail.created_at}}</p>
         </div>
 
         <div class="article-detail" id="article-detail">
@@ -27,7 +28,7 @@
         </div>
 
 
-        <v-comments :id="id"></v-comments>
+        <v-comments :commentsList=detail.comments_list :id="id"></v-comments>
       </section>
     </section>
   </section>
@@ -159,7 +160,6 @@
       margin-right: 316px;
     }
   }
-
 
 
 </style>

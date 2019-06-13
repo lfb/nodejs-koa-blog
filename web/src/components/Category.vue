@@ -29,7 +29,7 @@
       ...mapState({})
     },
     created() {
-      this.getCategory();
+      // this.getCategory();
     },
     methods: {
       ...mapActions({
@@ -43,7 +43,7 @@
        */
       async getCategory() {
         const res = await this.getCategoryList();
-        this.list = res.data.data;
+        this.list = res.data;
       },
 
       /**

@@ -35,7 +35,9 @@ const actions = {
    */
   async getArticleList({state, commit}, params) {
     let res = await article.list(params);
-    commit('SET_ARTICLE_LIST', res.data.data);
+    commit('SET_ARTICLE_LIST', res.data.data.data);
+
+    console.log(res.data.data.data);
 
     return res;
   },

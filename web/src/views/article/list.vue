@@ -20,13 +20,13 @@
               {{item.title}}
             </h1>
             <div class="article-info">
-              <p class="article-category" v-if="item.Category">
-                {{item.Category.name}}
+              <p class="article-category" v-if="item.category_detail">
+                {{item.category_detail.name}}
               </p>
               <p class="article-author"> by {{item.author}}</p>
-              <p class="article-browse">阅读 {{item.browse}} 次
-              </p>
-              <p class="article-author">{{item.createdAt}}</p>
+              <p class="article-browse">阅读 {{item.browse}} 次</p>
+              <p class="article-browse">评论 {{item.comments_nums}} 次</p>
+              <p class="article-author">{{item.created_at}}</p>
             </div>
           </div>
           <div class="article-img">
