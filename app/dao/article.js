@@ -5,8 +5,6 @@ const {Article} = require('../models/article')
 const {Category} = require('../models/category')
 const {Comments} = require('../models/comments')
 const {CategoryDao} = require('../dao/category')
-const {CommentsDao} = require('../dao/comments')
-
 
 // 定义文章模型
 class ArticleDao {
@@ -41,7 +39,7 @@ class ArticleDao {
     }
 
     // 获取文章列表
-    static async getArticleList(page = 1) {
+    static async getArticleList(page = 1, desc = 'created_at') {
         const pageSize = 10;
 
         const article = await Article.scope('iv').findAndCountAll({
@@ -51,10 +49,9 @@ class ArticleDao {
                 deleted_at: null
             },
             order: [
-                ['created_at', 'DESC']
+                [desc, 'DESC']
             ]
         });
-
 
         for (let item of article.rows) {
             // 查询对应文章的分类详情
@@ -62,8 +59,8 @@ class ArticleDao {
             item.setDataValue('cateogry', cateogry);
 
             // 查询对应的文章评论总数
-            const comments = await ArticleDao._getArticleComments(item.getDataValue('id'));
-            item.setDataValue('comments', comments);
+            const comments_nums = await ArticleDao._getArticleComments(item.getDataValue('id'));
+            item.setDataValue('comments_nums', comments_nums);
         }
 
         return {
@@ -166,7 +163,7 @@ class ArticleDao {
     }
 
     // 搜索文章
-    static async getArticleByKeyword(keyword, page = 1) {
+    static async getArticleByKeyword(keyword, page = 1, desc = 'created_at') {
         const pageSize = 10;
 
         const article = await Article.findAndCountAll({
@@ -179,7 +176,7 @@ class ArticleDao {
             limit: pageSize,//每页10条
             offset: (page - 1) * pageSize,
             order: [
-                ['created_at', 'DESC']
+                [desc, 'DESC']
             ]
         });
 

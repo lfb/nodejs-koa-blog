@@ -75,9 +75,12 @@ router.put('/article/:id', new Auth(AUTH_ADMIN).m, async (ctx) => {
  * 获取文章列表
  */
 router.get('/article', async (ctx) => {
+    // 页码
     const page = ctx.query.page;
+    // 排序
+    const desc = ctx.query.desc;
     // 查询文章列表
-    const articleList = await ArticleDao.getArticleList(page);
+    const articleList = await ArticleDao.getArticleList(page, desc);
 
     // 返回结果
     ctx.response.status = 200;
@@ -125,10 +128,13 @@ router.get('/search/article', async (ctx) => {
 
     // 获取查询文章关键字
     const keyword = v.get('query.keyword');
-    const page = ctx.query.page;
+    // 页码
+    const page = v.get('query.page');
+    // 排序
+    const desc = v.get('query.desc');
 
     // 查询文章
-    const article = await ArticleDao.getArticleByKeyword(keyword, page);
+    const article = await ArticleDao.getArticleByKeyword(keyword, page, desc);
 
     // 返回结果
     ctx.response.status = 200;

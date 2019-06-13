@@ -38,6 +38,8 @@ const actions = {
     let ret = await article.list(params);
     commit("SET_ARTICLE_LIST", ret.data.data);
 
+    console.log(ret.data.data);
+
     return ret.data.data;
   },
 
