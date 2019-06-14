@@ -41,13 +41,14 @@ router.post('/login', async (ctx) => {
 
     ctx.response.status = 200;
     ctx.body = {
+        code: 200,
         msg: '登录成功',
         token
     }
 });
 
 // 获取用户信息
-router.get('/info', new Auth(AUTH_ADMIN).m, async (ctx) => {
+router.get('/auth', new Auth(AUTH_ADMIN).m, async (ctx) => {
 
     // 获取用户ID
     const id = ctx.auth.uid;

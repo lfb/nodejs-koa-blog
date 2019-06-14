@@ -108,7 +108,7 @@ router.get('/article/:id', async (ctx) => {
     // 更新文章浏览
     await ArticleDao.updateArticleBrowse(id, ++article.browse);
 
-    await article.setDataValue('category', category);
+    await article.setDataValue('category_detail', category);
     await article.setDataValue('comments_list', commentsList);
 
     // 返回结果
