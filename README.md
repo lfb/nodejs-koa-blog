@@ -50,6 +50,8 @@ Koa服务端编程、异步编程、面向对象编程。
 ## 接口说明
 - [管理员接口文档说明](./doc/admin.md)
 - [文章接口文档说明](./doc/article.md)
+- [分类接口文档说明](./doc/category.md)
+- [评论接口文档说明](./doc/comments.md)
 
 ## 项目参考资料
 - [《纯正商业级应用－Node.js Koa2开发微信小程序服务端》](https://s.imooc.com/SHHXs2R), by 慕课网：7七月老师

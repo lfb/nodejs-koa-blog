@@ -121,7 +121,7 @@ class CategoryDao {
     }
 
     // 获取一个分类下的文章
-    static async getCategoryArticle(category_id, page = 1) {
+    static async getCategoryArticle(category_id, page = 1, desc = 'created_at') {
         const pageSize = 10;
 
         const article = await Article.scope('iv').findAndCountAll({
@@ -132,7 +132,7 @@ class CategoryDao {
                 category_id
             },
             order: [
-                ['created_at', 'DESC']
+                [desc, 'DESC']
             ]
         });
 

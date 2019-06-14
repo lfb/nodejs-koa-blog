@@ -89,7 +89,7 @@ GET    /article
 参数 | 说明 | 是否必填
 ---|---|:---:
 page | 分页 | 否
-desc | 排序，最新：created_at，浏览次数：browse | 否
+desc | 排序，默认最新：created_at，浏览次数：browse | 否
 
 ### 成功操作返回
 字段 | 说明
@@ -188,7 +188,7 @@ GET    /search/article
 ---|---|:---:
 keyword | 文章标题关键字 | 是
 page | 页码 | 否
-desc | 排序，最新：created_at，浏览次数：browse | 否
+desc | 排序，默认最新：created_at，浏览次数：browse | 否
 
 ### 成功操作返回
 

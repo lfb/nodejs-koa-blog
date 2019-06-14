@@ -91,8 +91,11 @@ router.get('/article/:id/comments', async (ctx) => {
 
     // 获取分类ID参数
     const id = v.get('path.id');
+    // 页面
     const page = ctx.query.page;
-    const commentsList = await CommentsDao.getArticleComments(id, page);
+    // 排序
+    const desc = ctx.query.desc;
+    const commentsList = await CommentsDao.getArticleComments(id, page, desc);
 
     // 返回结果
     ctx.response.status = 200;

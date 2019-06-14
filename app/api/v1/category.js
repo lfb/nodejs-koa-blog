@@ -112,8 +112,10 @@ router.get('/category/:id/article', async (ctx) => {
     const category_id = v.get('path.id');
     // 页面
     const page = v.get('query.page');
+    // 排序
+    const desc = v.get('query.desc');
     // 获取分类
-    const category = await CategoryDao.getCategoryArticle(category_id, page);
+    const category = await CategoryDao.getCategoryArticle(category_id, page, desc);
 
     // 返回结果
     ctx.response.status = 200;

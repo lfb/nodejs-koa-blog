@@ -95,7 +95,7 @@ class CommentsDao {
     }
 
     // 文章下的评论
-    static async getArticleComments(article_id, page = 1) {
+    static async getArticleComments(article_id, page = 1, desc = 'created_at') {
         const pageSize = 10;
 
         const comments = await Comments.scope('iv').findAndCountAll({
@@ -106,7 +106,7 @@ class CommentsDao {
             limit: pageSize,//每页10条
             offset: (page - 1) * pageSize,
             order: [
-                ['created_at', 'DESC']
+                [desc, 'DESC']
             ]
         });
         return {
