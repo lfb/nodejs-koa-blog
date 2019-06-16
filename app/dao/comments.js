@@ -98,7 +98,7 @@ class CommentsDao {
     static async getArticleComments(article_id, page = 1, desc = 'created_at') {
         const pageSize = 10;
 
-        const comments = await Comments.scope('iv').findAndCountAll({
+        const comments = await Comments.findAndCountAll({
             where: {
                 article_id,
                 deleted_at: null
@@ -107,7 +107,10 @@ class CommentsDao {
             offset: (page - 1) * pageSize,
             order: [
                 [desc, 'DESC']
-            ]
+            ],
+            attributes: {
+                exclude: ['email']
+            }
         });
         return {
             data: comments.rows,

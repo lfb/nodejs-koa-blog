@@ -19,12 +19,20 @@ router.post('/comments', async (ctx) => {
     // 通过验证器校验参数是否通过
     const v = await new CommentsValidator().validate(ctx);
 
-    await CommentsDao.createComments(v);
+    const r = await CommentsDao.createComments(v);
+
+    const data = {
+        id: r.getDataValue('id'),
+        article_id: r.getDataValue('article_id'),
+        parent_id: r.getDataValue('parent_id'),
+        nickname: r.getDataValue('nickname'),
+        content: r.getDataValue('content'),
+        created_at: r.getDataValue('created_at')
+    };
 
     // 返回结果
     ctx.response.status = 200;
-    ctx.body = res.success('创建评论成功')
-
+    ctx.body = res.json(data);
 })
 
 // 删除评论
@@ -84,18 +92,16 @@ router.get('/comments/:id', async (ctx) => {
 })
 
 // 获取文章下的评论
-router.get('/article/:id/comments', async (ctx) => {
+router.get('/article/:article_id/comments', async (ctx) => {
 
     // 通过验证器校验参数是否通过
     const v = await new PositiveArticleIdParamsValidator().validate(ctx);
 
     // 获取分类ID参数
-    const id = v.get('path.id');
-    // 页面
-    const page = ctx.query.page;
-    // 排序
-    const desc = ctx.query.desc;
-    const commentsList = await CommentsDao.getArticleComments(id, page, desc);
+    const article_id = v.get('path.article_id');
+    // 页面, 排序
+    const {page, desc} = ctx.query;
+    const commentsList = await CommentsDao.getArticleComments(article_id, page, desc);
 
     // 返回结果
     ctx.response.status = 200;

@@ -76,7 +76,6 @@ GET    /category
             {
                 "id": 10,
                 "nickname": "梁凤波",
-                "email": "itbo@163.com",
                 "content": "今夜一起学习Node.js，9点Github不见不散！",
                 "article_id": "6",
                 "parent_id": 0
@@ -84,7 +83,6 @@ GET    /category
             {
                 "id": 9,
                 "nickname": "bobobo",
-                "email": "bobobo@163.com",
                 "content": "koa2框架入门",
                 "article_id": "3",
                 "parent_id": 0
@@ -92,7 +90,6 @@ GET    /category
             {
                 "id": 8,
                 "nickname": "lynn",
-                "email": "lynn@gmail.com",
                 "content": "一起学习nodejs啊",
                 "article_id": "3",
                 "parent_id": 0
@@ -156,13 +153,13 @@ DELETE    /comments/:id
 
 ## 获取文章下的评论
 ```
-GET    /article/:id/comments
+GET    /article/:article_id/comments
 ```
 
 ### 参数说明
 参数 | 说明 | 是否必填
 ---|---|:---:
-:id | 文章ID | 是
+:article_id | 文章ID | 是
 page | 页码 | 否
 desc | 排序，默认最新：created_at，浏览次数：browse | 否
 
@@ -177,7 +174,6 @@ desc | 排序，默认最新：created_at，浏览次数：browse | 否
             {
                 "id": 10,
                 "nickname": "梁凤波",
-                "email": "itbo@163.com",
                 "content": "今夜一起学习Node.js，9点Github不见不散！",
                 "article_id": "6",
                 "parent_id": 0,
