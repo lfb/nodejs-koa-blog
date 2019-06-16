@@ -28,7 +28,12 @@
         </div>
 
 
-        <v-comments :commentsList=detail.comments_list @updateComments="getArticle" :id="id"></v-comments>
+        <v-comments
+          :commentsList=detail.comments_list
+          @changeCommentsPage="changeCommentsPage"
+          @updateComments="updateComments"
+          :id="id">
+        </v-comments>
       </section>
     </section>
   </section>
@@ -60,9 +65,23 @@
     methods: {
       ...mapActions({
         getArticleDetail: 'article/getArticleDetail',
-
+        getCommentsList: 'comments/getCommentsList',
         createComments: 'comments/createComments'
       }),
+
+      // 更新评论
+      updateComments(newComments) {
+        this.detail.comments_list.data.unshift(newComments);
+      },
+      // 切换评论页面
+      async changeCommentsPage(page) {
+        const res = await this.getCommentsList({
+          article_id: this.id,
+          page
+        });
+
+        this.detail.comments_list = res.data.data;
+      },
       /**
        * 获取文章详情
        * @returns 文章详情

@@ -78,21 +78,7 @@
         ],
         navIndex: 0,
         // 搜索关键字
-        keyword: this.$route.query.keyword,
-        banner: [
-          {
-            title: 'nodejs',
-            img: 'https://upload.jianshu.io/admin_banners/web_images/4660/224da83c76e01d5deff07e163615921233af5c82.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/1250/h/540'
-          },
-          {
-            title: 'node',
-            img: 'https://upload.jianshu.io/admin_banners/web_images/4592/22f5cfa984d47eaf3def6a48510cc87c157bf293.png?imageMogr2/auto-orient/strip|imageView2/1/w/1250/h/540'
-          },
-          {
-            title: 'css',
-            img: 'https://upload.jianshu.io/admin_banners/web_images/4668/77e4329017294a607d78e74789afc6a22f4a6ebe.png?imageMogr2/auto-orient/strip|imageView2/1/w/1250/h/540'
-          }
-        ]
+        keyword: this.$route.query.keyword
       }
     },
     computed: {
