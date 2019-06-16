@@ -42,7 +42,7 @@ const routers = [
       {
         path: 'category/create',
         name: 'category/create',
-        meta: {module: "/category", group: "category", title: '分类 - 创建'},
+        meta: {module: "/category/create", group: "category", title: '分类 - 创建'},
         component: (resolve) => require(['../views/category/create.vue'], resolve),
       },
       {
@@ -61,7 +61,7 @@ const routers = [
       {
         path: 'article/create',
         name: 'article/create',
-        meta: {module: "/article", group: "article", title: '文章 - 创建'},
+        meta: {module: "/article/create", group: "article", title: '文章 - 创建'},
         component: (resolve) => require(['../views/article/create.vue'], resolve),
       },
       {

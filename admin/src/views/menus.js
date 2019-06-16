@@ -46,12 +46,12 @@ const menus = [
       icon: "md-list-box",
       children: [
         {
-          name: "分类列表",
+          name: "文章列表",
           path: "/article",
           icon: "md-list"
         },
         {
-          name: "分类创建",
+          name: "文章创建",
           path: "/article/create",
           icon: "md-add-circle"
         }
