@@ -8,10 +8,10 @@
 </template>
 
 <script>
+  import {mapGetters} from 'vuex';
   import VLoading from './components/Loading'
   import VHeaders from './components/Headers'
   import MainFooter from './components/MainFooter'
-  import {mapState, mapGetters, mapActions} from 'vuex';
 
   export default {
     components: {
@@ -29,20 +29,9 @@
       ...mapGetters('loading', [
         'isLoading',
         'loadingText'
-      ]),
-      ...mapState({
-        showUserManagerModel: state => state.user.showUserManagerModel
-      })
+      ])
     },
-    methods: {
-      ...mapActions({
-        showUserManager: 'user/showUserManager'
-      }),
-      _showUserManager() {
-        const SHOW = false
-        this.showUserManager(SHOW)
-      }
-    }
+    methods: {}
   }
 </script>
 
@@ -57,7 +46,7 @@
   }
 
   body {
-    font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
+    font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
     background: #f8f8f8;
   }
 

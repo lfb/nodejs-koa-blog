@@ -65,14 +65,14 @@ ajax({
     console.log(res.data)
   },
   header: {
-    Authorization: this._encode()
+    Authorization: _encode()
   }
 })
 
 // 转码 token
 // 需要安装一下base64: npm install js-base64
 import { Base64 } from 'js-base64'
-_encode() {
+function _encode() {
     const token = localStorage.getItem("token")
     const base64 = Base64.encode(token + ':')
     return 'Basic ' + base64
