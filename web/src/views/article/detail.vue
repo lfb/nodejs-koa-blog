@@ -143,6 +143,7 @@
         font-size: 20px;
         color: #657180;
         line-height: 48px;
+        margin-top: 32px;
       }
     }
   }

@@ -12,7 +12,8 @@
           <el-input type="text" placeholder="请输入您的邮箱（不会被公开）" v-model="ruleForm.email" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="内容" prop="content">
-          <el-input type="text" placeholder="请输入内容.." v-model="ruleForm.content" autocomplete="off"></el-input>
+          <el-input type="textarea" placeholder="评论内容.." rows="4" v-model="ruleForm.content"
+                    autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button @click="resetForm('ruleForm')">重置</el-button>

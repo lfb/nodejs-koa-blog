@@ -13,7 +13,7 @@
     "axios": "^0.18.0",
     "element-ui": "^2.8.2",
     "lib-flexible": "^0.3.2",
-    "mavon-editor": "^2.7.4",
+    "mavon-editor": "^2.7.5",
     "node-sass": "^4.12.0",
     "px2rem-loader": "^0.1.9",
     "qs": "^6.7.0",

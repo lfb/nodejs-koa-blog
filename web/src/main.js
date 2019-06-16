@@ -6,6 +6,7 @@ import VueLocalStorage from 'vue-ls';
 import 'lib-flexible/flexible';
 import VueLazyLoad from 'vue-lazyload'
 import mavonEditor from 'mavon-editor'
+import 'mavon-editor/dist/css/index.css'
 
 import {
   Button,
