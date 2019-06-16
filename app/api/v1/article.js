@@ -75,12 +75,10 @@ router.put('/article/:id', new Auth(AUTH_ADMIN).m, async (ctx) => {
  * 获取文章列表
  */
 router.get('/article', async (ctx) => {
-    // 页码
-    const page = ctx.query.page;
-    // 排序
-    const desc = ctx.query.desc;
+    // 获取页码，排序方法，分类ID，搜索关键字
+    const {page, desc, category_id, keyword} = ctx.query;
     // 查询文章列表
-    const articleList = await ArticleDao.getArticleList(page, desc);
+    const articleList = await ArticleDao.getArticleList(page, desc, category_id, keyword);
 
     // 返回结果
     ctx.response.status = 200;

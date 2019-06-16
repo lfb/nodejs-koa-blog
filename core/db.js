@@ -32,10 +32,9 @@ const sequelize = new Sequelize(dbName, user, password, {
             },
             iv: {
                 attributes: {
-                    exclude: ['password', 'updated_at', 'deleted_at']
+                    exclude: ['content', 'password', 'updated_at', 'deleted_at']
                 }
-            },
-
+            }
         }
     }
 })

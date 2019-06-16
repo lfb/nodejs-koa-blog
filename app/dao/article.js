@@ -38,15 +38,29 @@ class ArticleDao {
     }
 
     // 获取文章列表
-    static async getArticleList(page = 1, desc = 'created_at') {
+    static async getArticleList(page = 1, desc = 'created_at', category_id, keyword) {
         const pageSize = 10;
 
+        // 筛选方式
+        let filter = {
+            deleted_at: null
+        };
+
+        // 筛选方式：存在分类ID
+        if (category_id) {
+            filter.category_id = category_id;
+        }
+
+        // 筛选方式：存在搜索关键字
+        if (keyword) {
+            filter.title = {
+                [Op.like]: `%${keyword}%`
+            };
+        }
         const article = await Article.scope('iv').findAndCountAll({
             limit: pageSize,//每页10条
             offset: (page - 1) * pageSize,
-            where: {
-                deleted_at: null
-            },
+            where: filter,
             order: [
                 [desc, 'DESC']
             ]
@@ -189,7 +203,7 @@ class ArticleDao {
 
     // 文章详情
     static async getArticleDetail(id) {
-        const article = await Article.scope('iv').findOne({
+        const article = await Article.findOne({
             where: {
                 id
             }
@@ -229,8 +243,7 @@ class ArticleDao {
             categoryIds.push(article.category_id);
         });
 
-
-        // // 获取每篇文章评论
+        // 获取每篇文章评论
         const comments = await ArticleDao._getArticleComments(articleIds);
         r.forEach(article => {
             ArticleDao._setArticleComments(article, comments)

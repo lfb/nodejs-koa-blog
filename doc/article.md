@@ -90,6 +90,8 @@ GET    /article
 ---|---|:---:
 page | 分页 | 否
 desc | 排序，默认最新：created_at，浏览次数：browse | 否
+category_id | 分类ID | 否
+keyword | 搜索关键字 | 否
 
 ### 成功操作返回
 字段 | 说明
