@@ -43,7 +43,7 @@ router.delete('/comments/:id', new Auth(AUTH_ADMIN).m, async (ctx) => {
 
     // 获取分类ID参数
     const id = v.get('path.id');
-    await CommentsDao.destroyComments(id)
+    await CommentsDao.destroyComments(id);
 
     // 返回结果
     ctx.response.status = 200;

@@ -78,12 +78,6 @@ const routers = [
         component: (resolve) => require(['../views/comments/list.vue'], resolve),
       },
       {
-        path: 'comments/update/:id',
-        name: 'comments/update',
-        meta: {edit: true, module: "/comments", group: "comments", title: '评论 - 更新'},
-        component: (resolve) => require(['../views/comments/update.vue'], resolve),
-      },
-      {
         //todo: 404
         path: '/403',
         name: '403',

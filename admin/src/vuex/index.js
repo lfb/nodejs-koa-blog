@@ -6,6 +6,7 @@ import upload from '../api/qiniu'
 import admin from './modules/admin'
 import qiniu from './modules/qiniu'
 import category from './modules/category'
+import comments from './modules/comments'
 import activity from './modules/activity'
 
 Vue.use(Vuex);
@@ -77,6 +78,7 @@ export default new Vuex.Store({
     qiniu,
     admin,
     activity,
+    comments,
     category
   },
 });

@@ -1,16 +1,12 @@
 import fetch from './fetch';
 
 export default {
-  // 获取文章下的评论列表
+  // 获取评论列表
   list(params) {
-    const {article_id} = params;
-    delete params.article_id;
-
-    return fetch.get('/article/' + article_id + '/comments', params);
+    return fetch.get('/comments', params);
   },
-
-  // 新增评论
-  create(params) {
-    return fetch.post('/comments', params);
+  // 删除评论
+  destroy(id) {
+    return fetch.delete('/comments/' + id);
   }
 }

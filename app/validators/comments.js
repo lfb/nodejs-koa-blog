@@ -25,8 +25,8 @@ class CommentsValidator extends LinValidator {
 class PositiveArticleIdParamsValidator extends LinValidator {
     constructor() {
         super();
-        this.article_id = [
-            new Rule('isInt', '文章ID需要正整数', {min: 1})
+        this.id = [
+            new Rule('isInt', '评论ID需要正整数', {min: 1})
         ]
     }
 }
