@@ -13,7 +13,7 @@ class AdminDao {
         });
 
         if (hasAdmin) {
-            throw new global.errs.Forbidden('管理员已存在');
+            throw new global.errs.Existing('管理员已存在');
         }
 
         const admin = new Admin();

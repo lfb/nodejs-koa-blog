@@ -43,10 +43,20 @@ class Forbidden extends HttpException {
     }
 }
 
+class Existing extends HttpException {
+    constructor(msg, errorCode) {
+        super()
+        this.code = 412
+        this.msg = msg || '已存在'
+        this.errorCode = errorCode || 10006
+    }
+}
+
 module.exports = {
     HttpException,
     ParameterException,
     AuthFailed,
     NotFound,
-    Forbidden
+    Forbidden,
+    Existing
 }

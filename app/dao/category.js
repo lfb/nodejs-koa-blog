@@ -9,13 +9,13 @@ class CategoryDao {
         // 查询是否存在重复的分类
         const hasCategory = await Category.findOne({
             where: {
-                name: v.get('body.name'),
+                key: v.get('body.key'),
                 deleted_at: null
             }
         });
 
         if (hasCategory) {
-            throw new global.errs.Forbidden('分类已存在');
+            throw new global.errs.Existing('分类已存在');
         }
         ;
 

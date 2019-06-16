@@ -21,7 +21,7 @@ class ArticleDao {
 
         // 如果存在，抛出存在信息
         if (hasArticle) {
-            throw new global.errs.Forbidden('文章已存在');
+            throw new global.errs.Existing('文章已存在');
         }
 
         // 创建文章
