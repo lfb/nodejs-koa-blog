@@ -48,7 +48,7 @@ const routers = [
       {
         path: 'category/update/:id',
         name: 'category/update',
-        meta: {edit: true, module: "/category", group: "category", title: '活动 - 更新'},
+        meta: {edit: true, module: "/category", group: "category", title: '分类 - 更新'},
         component: (resolve) => require(['../views/category/update.vue'], resolve),
       },
       //todo: 文章管理

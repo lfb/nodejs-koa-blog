@@ -33,6 +33,7 @@ Util.ajax.interceptors.response.use(response => {
     location.href = "/login";
 
   } else if (response.status === 403) {
+    Vue.prototype.$Message.error('Token无效，请重新登录！');
     Vue.ls.remove("token");
     location.href = "/login";
 
@@ -40,7 +41,7 @@ Util.ajax.interceptors.response.use(response => {
     Vue.prototype.$Message.error(response.data.msg.join(','))
 
   } else {
-    Vue.prototype.$Message.error('error')
+    Vue.prototype.$Message.error(response.data.msg)
   }
 
   store.commit(types.SET_MAIN_LOADING, false);
@@ -57,6 +58,7 @@ export default {
       data: qs.stringify(data),
       timeout: 30000,
       headers: {
+        Authorization: _encode(),
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
       }
     })
@@ -77,7 +79,10 @@ export default {
     return Util.ajax({
       method: 'delete',
       url: url,
-      params
+      params,
+      headers: {
+        Authorization: _encode()
+      }
     })
   },
 
@@ -88,6 +93,7 @@ export default {
       data: qs.stringify(data),
       timeout: 30000,
       headers: {
+        Authorization: _encode(),
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
       }
     })
