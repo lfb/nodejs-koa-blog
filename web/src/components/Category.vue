@@ -6,7 +6,7 @@
     <ul class="category-box" v-if="list.length > 0">
       <li class="category-item">全部文章</li>
       <li v-for="(category, index) in list"
-          @click="getArticle(category.id)"
+          @click="changeArticleCategory(category.id)"
           class="category-item"
           :key="index">
         {{category.name}}（ {{category.article_nums}} ）
@@ -34,7 +34,8 @@
     methods: {
       ...mapActions({
         getCategoryList: 'category/getCategoryList',
-        getCategoryArticle: 'category/getCategoryArticle'
+        getCategoryArticle: 'category/getCategoryArticle',
+        getArticleList: 'article/getArticleList'
       }),
 
       /**
@@ -48,17 +49,31 @@
 
       /**
        * 获取分类下的文章
-       * @param categoryId 分类ID
+       * @param category_id 分类ID
        * @returns 文章列表
        */
-      async getArticle(categoryId) {
+      async changeArticleCategory(category_id) {
+        this.$router.replace({
+          query: merge({}, {
+            category_id
+          })
+        });
+        this.getArticle();
+      },
 
-        if (this.$route.query.hasOwnProperty('keyword')) {
-          this.$router.replace('/');
-        }
+      /**
+       * 获取文章
+       *
+       * @returns 文章列表
+       */
+      async getArticle() {
+        const {page, desc, category_id} = this.$route.query;
 
-        let res = await this.getCategoryArticle(categoryId);
-        this.$store.commit('article/SET_ARTICLE_LIST', res.data.data.data);
+        await this.getArticleList({
+          page,
+          desc,
+          category_id
+        });
       },
 
       // 路由跳转

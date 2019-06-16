@@ -99,12 +99,17 @@
           nickname,
           content,
           article_id: this.id,
-        })
+        });
 
         this.$message({
           message: '评论成功',
           type: 'success'
         });
+
+        this.params.content = '';
+        this.params.nickname = '';
+        this.params.email = '';
+        this.$emit('updateComments')
       }
     }
   }

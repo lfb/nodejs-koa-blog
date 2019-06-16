@@ -32,7 +32,6 @@
 <script>
   import {mapState, mapActions} from 'vuex'
   import merge from 'webpack-merge'
-  import Vue from 'vue';
 
   export default {
     data() {
@@ -54,15 +53,20 @@
     methods: {
       ...mapActions({
         searchArticle: 'article/searchArticle',
-        showUserManager: 'user/showUserManager'
+        showUserManager: 'user/showUserManager',
+        getArticleList: 'article/getArticleList'
       }),
 
       /**
        * 切换导航栏
        */
       changeNav(path, index) {
+        this.$router.replace({
+          query: merge({})
+        });
         this.navIndex = index;
-        this.toPath(path)
+        this.toPath(path);
+        this.getArticle();
       },
       /**
        * 搜索文章
@@ -85,13 +89,23 @@
               keyword
             })
           });
-
-          const res = await this.searchArticle({
-            keyword
-          });
-          this.$store.commit('article/SET_ARTICLE_LIST', res.data.data.data);
+          this.getArticle();
         }
+      },
+      /**
+       * 获取文章
+       *
+       * @returns 文章列表
+       */
+      async getArticle() {
+        const {page, desc, category_id, keyword} = this.$route.query;
 
+        await this.getArticleList({
+          page,
+          desc,
+          keyword,
+          category_id
+        });
       },
       /**
        * 路由调整

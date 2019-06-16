@@ -10,12 +10,14 @@
 <script>
   import VLoading from './components/Loading'
   import VHeaders from './components/Headers'
+  import MainFooter from './components/MainFooter'
   import {mapState, mapGetters, mapActions} from 'vuex';
 
   export default {
     components: {
       VLoading,
-      VHeaders
+      VHeaders,
+      MainFooter
     },
     data() {
       return {

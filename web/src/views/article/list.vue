@@ -4,7 +4,7 @@
       <nav class="article-nav">
         <ul class="article-nav-box">
           <li v-for="(item, index) in nav"
-              @click="updateArticleDesc(item.desc, index)"
+              @click="changeArticleDesc(item.desc, index)"
               :class="index === navIndex ? 'article-nav-item article-nav-item--active' : 'article-nav-item'"
               :key="index">
             <i :class="item.icon"></i> {{item.name}}
@@ -37,11 +37,14 @@
           </div>
         </li>
 
-        <section class="page">
+        <section class="page" v-if="pagination">
           <el-pagination
             background
             layout="prev, pager, next"
-            :total="32">
+            :page-count="pagination.count"
+            :current-page="pagination.current_page"
+            @current-change="changePage"
+            :total="pagination.total">
           </el-pagination>
         </section>
       </ul>
@@ -59,6 +62,7 @@
   import VCategory from '../../components/Category'
   import VAuthor from '../../components/Author'
   import {mapState, mapActions} from 'vuex'
+  import merge from 'webpack-merge'
 
   export default {
     components: {
@@ -93,17 +97,13 @@
     },
     computed: {
       ...mapState({
-        list: state => state.article.articleList
+        list: state => state.article.articleList,
+        pagination: state => state.article.pagination
       }),
     },
     created() {
       // 获取文章
       this.getArticle();
-
-      // 存在关键字就自动搜索
-      if (this.keyword) {
-        this.getSearchArticle();
-      }
     },
     methods: {
       ...mapActions({
@@ -116,26 +116,41 @@
        * @returns 文章列表
        */
       async getArticle() {
-        await this.getArticleList();
+        const {page, desc, category_id, keyword} = this.$route.query;
+
+        await this.getArticleList({
+          page,
+          desc,
+          keyword,
+          category_id
+        });
       },
       /**
-       * 搜索文章
-       * @returns 文章列表
+       * 切换页码
+       * @page 页码
        */
-      async getSearchArticle() {
-        await this.searchArticle({
-          keyword: this.keyword
+      async changePage(page) {
+        this.$router.replace({
+          query: merge(this.$route.query, {
+            page
+          })
         });
+        this.getArticle();
       },
 
       /**
-       * 更新文章
+       * 切换文章排序方式
+       * @desc 排序方式 created_at || browse
+       * @index 排序索引
        */
-      async updateArticleDesc(desc, index) {
-        this.navIndex = index;
-        await this.getArticleList({
-          desc
+      async changeArticleDesc(desc, index) {
+        this.$router.replace({
+          query: merge(this.$route.query, {
+            desc
+          })
         });
+        this.navIndex = index;
+        this.getArticle();
       },
       /**
        * 路由跳转
@@ -153,7 +168,6 @@
   .container {
     display: flex;
     width: 1280px;
-    min-height: 66vh;
     margin: 0 auto 24px;
     overflow: hidden;
   }

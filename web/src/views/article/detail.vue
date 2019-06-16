@@ -28,7 +28,7 @@
         </div>
 
 
-        <v-comments :commentsList=detail.comments_list :id="id"></v-comments>
+        <v-comments :commentsList=detail.comments_list @updateComments="getArticle" :id="id"></v-comments>
       </section>
     </section>
   </section>
@@ -68,7 +68,6 @@
        * @returns 文章详情
        */
       async getArticle() {
-
         let res = await this.getArticleDetail(this.id);
         this.detail = res.data.data;
       }
