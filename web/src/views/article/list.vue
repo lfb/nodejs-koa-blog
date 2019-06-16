@@ -53,22 +53,21 @@
 
     <div class="sidebar">
       <v-category/>
-      <v-author/>
+      <v-links/>
     </div>
 
   </section>
 </template>
 <script>
   import VCategory from '../../components/Category'
-  import VAuthor from '../../components/Author'
+  import VLinks from '../../components/Links'
   import {mapState, mapActions} from 'vuex'
   import merge from 'webpack-merge'
 
   export default {
     components: {
-      VAuthor,
-      VCategory
-
+      VCategory,
+      VLinks
     },
     data() {
       return {
