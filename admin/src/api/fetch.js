@@ -29,23 +29,15 @@ Util.ajax.interceptors.response.use(response => {
   if (response.status === 401) {
     // 登录鉴权失败
     Vue.prototype.$Message.error('登录鉴权失败');
-    setTimeout(() => {
-      location.href = "/login";
-    }, 1500);
+    Vue.ls.remove("token");
+    location.href = "/login";
 
   } else if (response.status === 403) {
-    console.log(response)
-    // location.href = "/403";
+    Vue.ls.remove("token");
+    location.href = "/login";
 
   } else if (response.status === 400) {
     Vue.prototype.$Message.error(response.data.msg.join(','))
-
-    // 权限不足
-  } else if (response.status === 413) {
-
-    setTimeout(() => {
-      location.href = "/403";
-    }, 1500);
 
   } else {
     Vue.prototype.$Message.error('error')
