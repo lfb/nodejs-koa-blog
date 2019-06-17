@@ -1,3 +1,5 @@
+<p align="center"><a href="http://www.boblog.com" target="_blank" rel="noopener noreferrer"><img width="234" src="http://images.boblog.com/BOBLOG-03.png" alt="logo"></a></p>
+
 ## 这是个什么的项目？
 
 使用 Node.js + Koa2 + MySQL + Vue.js 实战开发一套完整个人博客项目网站。博客线上地址：[www.boblog.com](http://www.boblog.com)
