@@ -10,7 +10,7 @@ Util.ajax.defaults.headers.common = {
 }
 
 Util.ajax.interceptors.request.use(config => {
-  // config.headers['Authorization'] = 'Bearer ' + _encode();
+  config.headers['Authorization'] = _encode();
   return config
 
 }, error => {
@@ -58,7 +58,6 @@ export default {
       data: qs.stringify(data),
       timeout: 30000,
       headers: {
-        Authorization: _encode(),
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
       }
     })
@@ -68,10 +67,7 @@ export default {
     return Util.ajax({
       method: 'get',
       url: url,
-      params,
-      headers: {
-        Authorization: _encode()
-      }
+      params
     })
   },
 
@@ -79,10 +75,7 @@ export default {
     return Util.ajax({
       method: 'delete',
       url: url,
-      params,
-      headers: {
-        Authorization: _encode()
-      }
+      params
     })
   },
 
@@ -93,7 +86,6 @@ export default {
       data: qs.stringify(data),
       timeout: 30000,
       headers: {
-        Authorization: _encode(),
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
       }
     })

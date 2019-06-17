@@ -77,6 +77,9 @@ function _encode() {
     const base64 = Base64.encode(token + ':')
     return 'Basic ' + base64
 }
+
+// 在 Vue.js axios 携带token
+config.headers['Authorization'] = _encode();
 ```
 
 
