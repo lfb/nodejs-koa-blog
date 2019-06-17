@@ -11,7 +11,7 @@
       </Table>
 
       <section class="page">
-        <Page :total="page.total" :page-size="page.per_page" :current="page.current_page" size="small" show-total
+        <Page :total="page.total" :page-size="page.per_page" :current="page.current_page" show-total
               @on-change="handlePage"></Page>
       </section>
 
@@ -29,6 +29,7 @@
       return {
         list: [],
         page: {},
+        currentPage: 1,
         columns: [
           {
             title: 'ID',
@@ -73,10 +74,10 @@
       }),
       // 获取分类
       async _getCommentsList() {
-        const {page, desc} = this.$route.query;
+        // const {page, desc} = this.$route.query;
+
         const res = await this.getCommentsList({
-          page,
-          desc
+          page: this.currentPage
         });
 
         this.list = res.data.data.data;
@@ -89,6 +90,7 @@
             page
           })
         });
+        this.currentPage = page;
         this._getCommentsList();
       },
       // 删除分类
