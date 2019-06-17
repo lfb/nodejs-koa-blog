@@ -1,6 +1,6 @@
 ## 这是个什么的项目？
 
-使用 Node.js + Koa2 + MySQL + Vue.js 实战开发一套完整个人博客项目网站。博客线上地址：[www.boblog.com](www.boblog.com)
+使用 Node.js + Koa2 + MySQL + Vue.js 实战开发一套完整个人博客项目网站。博客线上地址：[www.boblog.com](http://www.www.boblog.com)
 
 ## 解决了什么问题？
 - 服务端：使用 Node.js 的 Koa2 框架二次开发 Restful API。
