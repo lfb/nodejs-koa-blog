@@ -35,12 +35,12 @@
         <li v-for="(item, index) in commentsList.data"
             class="comments-item"
             :key="index">
-          <h3 class="comments-item-username">
-            {{item.nickname}}：
-          </h3>
+          <p class="comments-item-username">
+            <i class="icon el-icon-chat-dot-round"></i> 来自「{{item.nickname}}」的评论：
+          </p>
           <p class="comments-item-content">
             <mavon-editor
-              style="min-height: 80px;"
+              style="min-height: 0;"
               :ishljs="true"
               v-model="item.content"
               :defaultOpen="'preview'"
@@ -49,7 +49,6 @@
               :toolbarsFlag="false">
             </mavon-editor>
           </p>
-          <p class="comments-item-content"> 时间：{{item.created_at}}</p>
         </li>
       </ul>
       <section class="page" v-if="commentsList && commentsList.meta">
@@ -190,11 +189,12 @@
 <style scoped lang="scss">
   .comments-title {
     padding: 16px 0;
-    color: #2d8cf0;
+    color: #409EFF;
     font-size: 36px;
   }
 
   .comments-create {
+    width: 1280px;
     .comments-input-item {
       margin-bottom: 16px;
     }
@@ -202,20 +202,26 @@
 
   .comments-list {
     .comments-item {
-      cursor: pointer;
-      line-height: 42px;
-      font-size: 16px;
-      color: #657180;
-      transition: left 1s ease-in;
+      padding: 24px 0;
+      border-bottom: 1px solid #f0f0f0;
 
-      &:hover {
-        color: #2d8cf0;
-      }
+    }
+
+    .comments-item-username {
+      font-size: 22px;
+      color: #409EFF;
+      font-weight: bold;
+    }
+
+    .comments-item-content {
+      padding: 24px 24px 0 24px;
+      font-size: 16px;
     }
   }
 
   .page {
     padding: 32px 0;
+    text-align: center;
   }
 
   .mavon-editor--box {
@@ -238,6 +244,14 @@
 
     & .v-note-wrapper .v-note-panel .v-note-show .v-show-content, .v-note-wrapper .v-note-panel .v-note-show .v-show-content-html {
       padding: 0 !important;
+    }
+
+    .markdown-body blockquote, .markdown-body dl, .markdown-body ol, .markdown-body p, .markdown-body pre, .markdown-body table, .markdown-body ul {
+      margin-bottom: 0 !important;
+    }
+
+    .markdown-body {
+      font-size: 18px!important;
     }
   }
 </style>
