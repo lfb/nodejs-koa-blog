@@ -18,7 +18,7 @@ Article.init({
     // 文章作者
     author: Sequelize.STRING(64),
     // 文章内容
-    content: Sequelize.STRING(),
+    content: Sequelize.TEXT,
     // 文章封面
     cover: Sequelize.STRING,
     // 文章分类ID
