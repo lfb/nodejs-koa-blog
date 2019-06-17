@@ -1,6 +1,6 @@
-<p align="center"><a href="http://www.boblog.com" target="_blank" rel="noopener noreferrer"><img width="234" src="http://images.boblog.com/BOBLOG-03.png?imageView2/1/w/600/h/248" alt="Vue logo"></a></p>
+![img](static/BOBLOG-03.png)
 
-## 这是个什么的项目？
+# 这是个什么的项目？
 
 
 
