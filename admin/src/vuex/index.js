@@ -8,6 +8,7 @@ import qiniu from './modules/qiniu'
 import category from './modules/category'
 import comments from './modules/comments'
 import activity from './modules/activity'
+import article from './modules/article'
 
 Vue.use(Vuex);
 
@@ -78,6 +79,7 @@ export default new Vuex.Store({
     qiniu,
     admin,
     activity,
+    article,
     comments,
     category
   },

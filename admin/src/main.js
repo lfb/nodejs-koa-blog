@@ -10,10 +10,13 @@ import VueLocalStorage from 'vue-ls';
 import iView from 'iview';
 import 'iview/dist/styles/iview.css';
 import './assets/style/admin.css';
+import mavonEditor from 'mavon-editor'
+import 'mavon-editor/dist/css/index.css'
 
 Vue.use(VueRouter);
 Vue.use(Vuex);
 Vue.use(iView);
+Vue.use(mavonEditor);
 
 Vue.use(VueLocalStorage, {
   namespace: 'boblog-'
