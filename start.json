@@ -1,0 +1,23 @@
+{
+  "name": "",
+  "script": "nodemon ./app.js",
+  "instances": 1,
+  "watch": [
+    "bin",
+    "routers"
+  ],
+  "ignore_watch": [
+    "node_modules",
+    "logs"
+  ],
+  "watch_options": {
+    "followSymlinks": false
+  },
+  "error_file": "./logs/app-err.log",
+  "out_file": "./logs/app-out.log",
+  "env": {
+    "HOST": "0.0.0.0",
+    "PORT": "8081",
+    "NODE_ENV": "production"
+  }
+}
