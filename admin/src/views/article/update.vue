@@ -22,7 +22,6 @@
           v-model="formValidate.content"
           :ishljs="true"
           ref=md>
-
         </mavon-editor>
 
       </FormItem>

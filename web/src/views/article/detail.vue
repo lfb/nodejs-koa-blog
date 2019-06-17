@@ -27,7 +27,6 @@
           </mavon-editor>
         </div>
 
-
         <v-comments
           :commentsList=detail.comments_list
           @changeCommentsPage="changeCommentsPage"
@@ -150,21 +149,25 @@
 
 
 </style>
-<style>
-  .v-note-wrapper .v-note-panel {
-    box-shadow: none !important;
+<style lang="scss">
+  #article-detail {
+    & .v-note-wrapper .v-note-panel {
+      box-shadow: none !important;
+    }
+
+    & .v-note-wrapper .v-note-panel .v-note-show .v-show-content, .v-note-wrapper .v-note-panel .v-note-show .v-show-content-html {
+      background: #fff !important;
+    }
+
+    & .v-note-wrapper .v-note-panel .v-note-edit.divarea-wrapper .content-input-wrapper {
+      padding: 0 !important;
+    }
+
+    & .v-note-wrapper .v-note-panel .v-note-show .v-show-content, .v-note-wrapper .v-note-panel .v-note-show .v-show-content-html {
+      padding: 0 !important;
+    }
   }
 
-  .v-note-wrapper .v-note-panel .v-note-show .v-show-content, .v-note-wrapper .v-note-panel .v-note-show .v-show-content-html {
-    background: #fff !important;
-  }
 
-  .v-note-wrapper .v-note-panel .v-note-edit.divarea-wrapper .content-input-wrapper {
-    padding: 0 !important;
-  }
-
-  .v-note-wrapper .v-note-panel .v-note-show .v-show-content, .v-note-wrapper .v-note-panel .v-note-show .v-show-content-html {
-    padding: 0 !important;
-  }
 </style>
 

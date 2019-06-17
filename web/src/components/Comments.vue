@@ -6,14 +6,21 @@
       <el-form :model="ruleForm" status-icon :rules="rules" label-position="left" ref="ruleForm" label-width="50px"
                class="demo-ruleForm">
         <el-form-item label="昵称" prop="nickname">
-          <el-input type="text" placeholder="请输入您的昵称" v-model="ruleForm.nickname" autocomplete="off"></el-input>
+          <el-input type="text" placeholder="请输入您的昵称" v-model="ruleForm.nickname"></el-input>
         </el-form-item>
         <el-form-item label="邮箱" prop="email">
-          <el-input type="text" placeholder="请输入您的邮箱（不会被公开）" v-model="ruleForm.email" autocomplete="off"></el-input>
+          <el-input type="text" placeholder="请输入您的邮箱（不会被公开）" v-model="ruleForm.email"></el-input>
         </el-form-item>
         <el-form-item label="内容" prop="content">
-          <el-input type="textarea" placeholder="评论内容.." rows="4" v-model="ruleForm.content"
-                    autocomplete="off"></el-input>
+          <!--          <el-input type="textarea" placeholder="评论内容.." rows="4" v-model="ruleForm.content"-->
+          <!--                    autocomplete="off"></el-input>-->
+          <mavon-editor
+            class="mavon-editor--box"
+            v-model="ruleForm.content"
+            :autofocus="false"
+            placeholder="请输入评论内容"
+            :ishljs="true">
+          </mavon-editor>
         </el-form-item>
         <el-form-item>
           <el-button @click="resetForm('ruleForm')">重置</el-button>
@@ -22,17 +29,27 @@
       </el-form>
     </section>
 
-    <section class="comments-list">
+    <section class="comments-list" v-if="commentsList && commentsList.data">
       <h1 class="comments-title">评论列表</h1>
-      <ul class="comments-box" v-if="commentsList">
+      <ul class="comments-box">
         <li v-for="(item, index) in commentsList.data"
             class="comments-item"
             :key="index">
           <h3 class="comments-item-username">
             {{item.nickname}}：
           </h3>
-          <p class="comments-item-content"> {{item.content}}</p>
-          <p class="comments-item-content"> ，{{item.created_at}}</p>
+          <p class="comments-item-content">
+            <mavon-editor
+              style="min-height: 80px;"
+              :ishljs="true"
+              v-model="item.content"
+              :defaultOpen="'preview'"
+              :editable="false"
+              :subfield="false"
+              :toolbarsFlag="false">
+            </mavon-editor>
+          </p>
+          <p class="comments-item-content"> 时间：{{item.created_at}}</p>
         </li>
       </ul>
       <section class="page" v-if="commentsList && commentsList.meta">
@@ -76,7 +93,7 @@
       };
       var validateContent = (rule, value, callback) => {
         if (value === '') {
-          callback(new Error('请输入昵称'));
+          callback(new Error('请输入评论内容'));
         } else {
           callback();
         }
@@ -174,12 +191,10 @@
   .comments-title {
     padding: 16px 0;
     color: #2d8cf0;
-    font-size: 32px;
+    font-size: 36px;
   }
 
   .comments-create {
-    width: 50%;
-
     .comments-input-item {
       margin-bottom: 16px;
     }
@@ -192,7 +207,6 @@
       font-size: 16px;
       color: #657180;
       transition: left 1s ease-in;
-      display: flex;
 
       &:hover {
         color: #2d8cf0;
@@ -202,5 +216,28 @@
 
   .page {
     padding: 32px 0;
+  }
+
+  .mavon-editor--box {
+  }
+</style>
+
+<style lang="scss">
+  .comments-item-content {
+    & .v-note-wrapper .v-note-panel {
+      box-shadow: none !important;
+    }
+
+    & .v-note-wrapper .v-note-panel .v-note-show .v-show-content, .v-note-wrapper .v-note-panel .v-note-show .v-show-content-html {
+      background: #fff !important;
+    }
+
+    & .v-note-wrapper .v-note-panel .v-note-edit.divarea-wrapper .content-input-wrapper {
+      padding: 0 !important;
+    }
+
+    & .v-note-wrapper .v-note-panel .v-note-show .v-show-content, .v-note-wrapper .v-note-panel .v-note-show .v-show-content-html {
+      padding: 0 !important;
+    }
   }
 </style>
