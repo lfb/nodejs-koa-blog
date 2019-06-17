@@ -1,6 +1,6 @@
 <template>
-  <section>
-    index
+  <section v-if="adminAuth">
+    <h1 style="text-align: center;margin-top: 100px">{{adminAuth.nickname}}，欢迎您！</h1>
   </section>
 
 </template>
@@ -17,9 +17,17 @@
     },
 
     computed: {
-      ...mapState({})
+      ...mapState({
+        adminAuth: state => state.admin.adminAuth
+      }),
     },
 
     methods: {}
   }
 </script>
+
+<style scoped>
+  h1 {
+    font-weight: normal;
+  }
+</style>

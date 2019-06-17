@@ -13,8 +13,25 @@
         </Select>
       </FormItem>
       <FormItem label="文章封面" prop="cover">
-        <div class="article-cover">
-          <img :src="formValidate.cover" alt="cover">
+        <div class="cover">
+          <div class="upload">
+            <Upload
+              multiple
+              type="drag"
+              action="http://up-z2.qiniu.com"
+              :show-upload-list="false"
+              :on-success="uploadSuccess"
+              :on-error="uploadError"
+              :data="{token}">
+              <div style="padding: 20px 0">
+                <Icon type="ios-cloud-upload" size="52" style="color: #3399ff"></Icon>
+                <p>点击或者拖拽上传</p>
+              </div>
+            </Upload>
+          </div>
+          <div class="article-cover">
+            <img :src="formValidate.cover" alt="cover">
+          </div>
         </div>
       </FormItem>
       <FormItem label="文章内容" prop="content">
@@ -34,10 +51,12 @@
 </template>
 <script>
   import {mapActions} from 'vuex';
+  import getUploadToken from '../../libs/upload-token'
 
   export default {
     data() {
       return {
+        token: '',
         id: this.$route.params.id,
         detail: null,
         categoryList: [],
@@ -67,6 +86,7 @@
     created() {
       this._getArticle();
       this._getCategoryList();
+      this._getUploadToken();
     },
     methods: {
       ...mapActions({
@@ -74,6 +94,27 @@
         updateArticle: 'article/updateArticle',
         getCategoryList: 'category/getCategoryList'
       }),
+      // 上传图片成功
+      uploadSuccess(response) {
+        const url = `http://cdn.boblog.com/${response.key}`;
+        this.formValidate.cover = url;
+        this.$Message.success('上传成功!');
+      },
+      // 上传图片失败
+      uploadError(response) {
+        this.$Message.success('上传失败!');
+        console.log(response)
+      },
+      // 获取上传token
+      async _getUploadToken() {
+        try {
+          const res = await getUploadToken();
+          this.token = res.token;
+
+        } catch (e) {
+          console.log(e)
+        }
+      },
       // 获取文章列表
       async _getArticle() {
         try {
@@ -134,5 +175,14 @@
 
   .article-cover img {
     width: 100%;
+  }
+
+  .cover {
+    display: flex;
+  }
+
+  .cover .upload {
+    width: 280px;
+    margin-right: 32px;
   }
 </style>
