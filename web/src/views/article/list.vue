@@ -55,11 +55,11 @@
       <v-category/>
       <v-links/>
     </div>
-
   </section>
 </template>
 <script>
   import VCategory from '../../components/Category'
+
   import VLinks from '../../components/Links'
   import {mapState, mapActions} from 'vuex'
   import merge from 'webpack-merge'
@@ -149,7 +149,6 @@
 </script>
 
 <style lang="scss" scoped>
-
   .container {
     display: flex;
     width: 70%;

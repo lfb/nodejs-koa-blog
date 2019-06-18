@@ -194,7 +194,7 @@
   }
 
   .comments-create {
-    width: 70%;
+    width: 100%;
 
     .comments-input-item {
       margin-bottom: 16px;
