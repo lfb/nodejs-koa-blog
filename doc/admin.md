@@ -5,6 +5,7 @@ http://localhost:3000/v1
 
 # 管理员
 ## 管理员注册
+> 部署线上建议屏蔽掉此注册接口
 ```
 POST    /admin/register
 ```
@@ -57,6 +58,15 @@ POST    /admin/auth
 在代码中需要在header上携带token：
 
 ```js
+// 转码 token
+// 需要安装一下base64: npm install js-base64
+import { Base64 } from 'js-base64'
+function _encode() {
+    const token = localStorage.getItem("token")
+    const base64 = Base64.encode(token + ':')
+    return 'Basic ' + base64
+}
+
 // 代码示例：重点看header携带 Authorization Basic + token
 ajax({
   url: 'http://localhost:3000/v1/admin/auth',
@@ -68,15 +78,6 @@ ajax({
     Authorization: _encode()
   }
 })
-
-// 转码 token
-// 需要安装一下base64: npm install js-base64
-import { Base64 } from 'js-base64'
-function _encode() {
-    const token = localStorage.getItem("token")
-    const base64 = Base64.encode(token + ':')
-    return 'Basic ' + base64
-}
 
 // 在 Vue.js axios 携带token
 config.headers['Authorization'] = _encode();

@@ -51,8 +51,6 @@
   }
 
   #app {
-    margin-top: 120px;
-    height: 100%;
   }
 
   section, article, header, nav, ul, li, h1, h2, h3, p {

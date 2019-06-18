@@ -1,22 +1,42 @@
 <template>
   <section class="header">
     <header class="header-box">
-      <div class="logo">
+      <section class="logo">
         <a href="/"><img src="../assets/images/LOGO.png" alt="LOGO"></a>
-      </div>
-      <div class="nav">
+      </section>
+
+      <ul class="nav-dropdown">
+        <li class="nav-item">
+          <el-dropdown trigger="click">
+                <span class="el-dropdown-link">
+                  首页<i class="el-icon-arrow-down el-icon--right"></i>
+                </span>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item
+                v-for="(item, index) in nav"
+                :key="index"
+                @click.native="changeNav(item.path, index)">
+                <i :class="`icon ${item.icon}`"></i> {{item.name}}
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </li>
+      </ul>
+
+      <div class="nav-list">
         <ul class="nav-box">
           <li v-for="(item, index) in nav"
-              @click="changeNav(item.path, index)"
               :class="navIndex === index ? 'nav-item nav-item--active' : 'nav-item'"
+              @click="changeNav(item.path, index)"
               :key="index">
             <i :class="`icon ${item.icon}`"></i> {{item.name}}
           </li>
         </ul>
       </div>
+
       <div class="search">
         <el-input
-          placeholder="请输入内容"
+          placeholder="请输入搜索内容"
           size="small"
           clearable
           maxlength="32"
@@ -120,9 +140,6 @@
 
 <style lang="scss" scoped>
   .header {
-    position: fixed;
-    top: 0;
-    left: 0;
     width: 100%;
     height: 96px;
     z-index: 5000;
@@ -132,7 +149,7 @@
   }
 
   .header-box {
-    width: 1280px;
+    width: 70%;
     box-sizing: border-box;
     margin: 0 auto;
     height: 96px;
@@ -149,7 +166,12 @@
     }
   }
 
-  .nav {
+  .nav-box-dropdown {
+    display: none;
+  }
+
+  .nav-list {
+    display: block;
     margin: 0 24px;
 
     & .nav-box {
@@ -218,6 +240,35 @@
       &:focus .search-icon {
         color: #409EFF;
       }
+    }
+  }
+
+  .nav-dropdown {
+    display: none;
+  }
+
+  @media screen and (min-width: 200px) and (max-width: 768px) {
+
+    .header {
+      box-sizing: border-box;
+      padding: 0 16px;
+    }
+    .header-box {
+      width: 100%;
+    }
+    .nav-dropdown {
+      display: block;
+      margin: 0 16px;
+    }
+
+    .nav-list {
+      display: none;
+      margin: 0 16px;
+    }
+
+    .search {
+      width: auto;
+      flex: 1;
     }
   }
 </style>

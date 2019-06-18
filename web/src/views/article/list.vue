@@ -26,7 +26,7 @@
               <p class="article-author"> by {{item.author}}</p>
               <p class="article-browse">阅读 {{item.browse}} 次</p>
               <p class="article-browse">评论 {{item.comments_nums}} 次</p>
-              <p class="article-author">{{item.created_at}}</p>
+              <p class="article-create-at">{{item.created_at}}</p>
             </div>
           </div>
           <div class="article-img">
@@ -152,8 +152,8 @@
 
   .container {
     display: flex;
-    width: 1280px;
-    margin: 0 auto 24px;
+    width: 70%;
+    margin: 24px auto;
     overflow: hidden;
   }
 
@@ -207,7 +207,7 @@
       cursor: pointer;
       padding: 24px;
       display: flex;
-      border-bottom: 1px solid #f8f8f8;
+      border-bottom: 1px solid #f4f4f4;
 
       &:hover {
         background: #f4f4f4;
@@ -284,5 +284,26 @@
   .page {
     padding: 32px 0;
     text-align: center;
+  }
+
+  @media screen and (min-width: 200px) and (max-width: 768px) {
+    .container {
+      box-sizing: border-box;
+      display: flex;
+      width: 100%;
+      overflow: hidden;
+      flex-direction: column;
+    }
+
+    .sidebar {
+      box-sizing: border-box;
+      width: auto;
+      flex: 1;
+      margin-left: 0;
+      margin-top: 24px;
+    }
+    .article-info p.article-create-at {
+      display: none;
+    }
   }
 </style>

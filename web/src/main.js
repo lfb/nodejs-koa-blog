@@ -19,6 +19,7 @@ import {
   Dialog,
   Dropdown,
   DropdownMenu,
+  DropdownItem,
   Pagination,
   Tag,
   Icon
@@ -33,6 +34,7 @@ Vue.use(TabPane);
 Vue.use(Dialog);
 Vue.use(Dropdown);
 Vue.use(DropdownMenu);
+Vue.use(DropdownItem);
 Vue.use(Pagination);
 Vue.use(Tag);
 Vue.use(Icon);

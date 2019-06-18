@@ -1,39 +1,42 @@
 <template>
-  <section id="article">
-    <section class="container" v-if="detail">
-      <section class="content">
-        <h1 class="article-title">{{detail.title}}</h1>
+  <section class="container" v-if="detail">
+    <section class="content">
+      <h1 class="article-title">{{detail.title}}</h1>
 
-        <div class="article-info">
-          <p class="article-category" v-if="detail.category_detail">
-            {{detail.category_detail.name}}
-          </p>
-          <p class="article-author"> by {{detail.author}}</p>
-          <p class="article-browser">阅读 {{detail.browse}} 次
-          <p class="article-browser">评论 {{detail.comments_list.data.length}} 次
-          </p>
-          <p class="article-author">{{detail.created_at}}</p>
-        </div>
+      <div class="article-info">
+        <p class="article-category" v-if="detail.category_detail">
+          {{detail.category_detail.name}}
+        </p>
+        <p class="article-author"> by {{detail.author}}</p>
+        <p class="article-browser">阅读 {{detail.browse}} 次
+        <p class="article-browser">评论 {{detail.comments_list.data.length}} 次</p>
+        <p class="article-created-at">{{detail.created_at}}</p>
+      </div>
 
-        <div class="article-detail" id="article-detail">
-          <mavon-editor
-            style="height: 100%"
-            :ishljs="true"
-            v-model="detail.content"
-            :defaultOpen="'preview'"
-            :editable="false"
-            :subfield="false"
-            :toolbarsFlag="false">
-          </mavon-editor>
-        </div>
+      <div class="article-timer">
+        <p class="article-created-at">{{detail.created_at}}</p>
+      </div>
 
+      <div class="article-detail" id="article-detail">
+        <mavon-editor
+          style="height: 100%"
+          :ishljs="true"
+          v-model="detail.content"
+          :defaultOpen="'preview'"
+          :editable="false"
+          :subfield="false"
+          :toolbarsFlag="false">
+        </mavon-editor>
+      </div>
+
+      <div class="v-comments">
         <v-comments
           :commentsList=detail.comments_list
           @changeCommentsPage="changeCommentsPage"
           @updateComments="updateComments"
           :id="id">
         </v-comments>
-      </section>
+      </div>
     </section>
   </section>
 </template>
@@ -97,20 +100,21 @@
 
 <style lang="scss" scoped>
   .container {
+    box-sizing: border-box;
     position: relative;
-    display: flex;
-    width: 1280px;
+    width: 70%;
     margin: 24px auto;
-    border-radius: 5px;
 
     & .content {
+      box-sizing: border-box;
       padding: 32px;
       position: relative;
+      width: 100%;
       background: #fff;
-      flex: 1;
+      border-radius: 8px;
 
       & .article-title {
-        font-size: 48px;
+        font-size: 54px;
         color: #404040;
       }
 
@@ -147,6 +151,30 @@
     }
   }
 
+  .article-timer {
+    display: none;
+  }
+
+  @media screen and (min-width: 200px) and (max-width: 768px) {
+    .container {
+      width: 100%;
+    }
+    .container .content .article-info p.article-created-at {
+      display: none;
+    }
+    .article-timer {
+      display: block;
+      width: 100%;
+      margin-top: 24px;
+
+      & p {
+        display: inline-block;
+        margin-right: 24px;
+        font-size: 14px;
+        color: #9ea7b4;
+      }
+    }
+  }
 
 </style>
 <style lang="scss">
@@ -167,7 +195,7 @@
       padding: 0 !important;
     }
   }
-
-
 </style>
+
+
 

@@ -1,5 +1,5 @@
 <template>
-  <section class="comments">
+  <section>
     <section class="comments-create">
       <h1 class="comments-title">欢迎评论</h1>
 
@@ -29,18 +29,18 @@
       </el-form>
     </section>
 
-    <section class="comments-list" v-if="commentsList && commentsList.data">
+    <section class="comments-list" v-if="commentsList && commentsList.data.length > 0">
       <h1 class="comments-title">评论列表</h1>
       <ul class="comments-box">
         <li v-for="(item, index) in commentsList.data"
             class="comments-item"
             :key="index">
-          <p class="comments-item-username">
+          <div class="comments-item-username">
             <i class="icon el-icon-chat-dot-round"></i> 来自「{{item.nickname}}」的评论：
-          </p>
-          <p class="comments-item-content">
+          </div>
+          <div class="comments-item-content">
             <mavon-editor
-              style="min-height: 0;"
+              style="min-height: 0;width: 100%"
               :ishljs="true"
               v-model="item.content"
               :defaultOpen="'preview'"
@@ -48,7 +48,7 @@
               :subfield="false"
               :toolbarsFlag="false">
             </mavon-editor>
-          </p>
+          </div>
         </li>
       </ul>
       <section class="page" v-if="commentsList && commentsList.meta">
@@ -194,13 +194,17 @@
   }
 
   .comments-create {
-    width: 1280px;
+    width: 70%;
+
     .comments-input-item {
       margin-bottom: 16px;
     }
   }
 
   .comments-list {
+    width: 100%;
+    box-sizing: border-box;
+
     .comments-item {
       padding: 24px 0;
       border-bottom: 1px solid #f0f0f0;
@@ -214,6 +218,7 @@
     }
 
     .comments-item-content {
+      box-sizing: border-box;
       padding: 24px 24px 0 24px;
       font-size: 16px;
     }
@@ -224,12 +229,19 @@
     text-align: center;
   }
 
-  .mavon-editor--box {
+  @media screen and (min-width: 200px) and (max-width: 768px) {
+    .comments-create {
+      width: 100%;
+    }
   }
+
 </style>
 
 <style lang="scss">
   .comments-item-content {
+    width: 100%;
+    box-sizing: border-box;
+
     & .v-note-wrapper .v-note-panel {
       box-shadow: none !important;
     }
@@ -251,7 +263,7 @@
     }
 
     .markdown-body {
-      font-size: 18px!important;
+      font-size: 18px !important;
     }
   }
 </style>

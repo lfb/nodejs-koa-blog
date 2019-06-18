@@ -4,7 +4,7 @@
       <i class="icon el-icon-collection-tag"></i> 分类
     </h1>
     <ul class="category-box" v-if="list.length > 0">
-      <li class="category-item">全部文章</li>
+      <li class="category-item" @click="allArticle">全部文章</li>
       <li v-for="(category, index) in list"
           @click="changeArticleCategory(category.id)"
           class="category-item"
@@ -57,6 +57,14 @@
           query: merge({}, {
             category_id
           })
+        });
+        this.getArticle();
+      },
+
+      // 全部文章
+      allArticle() {
+        this.$router.replace({
+          query: merge({})
         });
         this.getArticle();
       },

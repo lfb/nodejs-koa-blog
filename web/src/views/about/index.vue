@@ -67,4 +67,9 @@
     text-indent: 2em;
   }
 
+  @media screen and (min-width: 200px) and (max-width: 750px) {
+    .author {
+      width: 100%;
+    }
+  }
 </style>
