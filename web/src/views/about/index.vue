@@ -32,7 +32,7 @@
 <style scoped lang="scss">
   .author {
     box-sizing: border-box;
-    width: 1280px;
+    width: 70%;
     min-height: 80vh;
     margin: 24px auto;
     padding-bottom: 24px;
