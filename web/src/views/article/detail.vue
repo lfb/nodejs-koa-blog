@@ -91,6 +91,7 @@
       async getArticle() {
         let res = await this.getArticleDetail(this.id);
         this.detail = res.data.data;
+        document.title = this.detail.title;
       }
 
     }

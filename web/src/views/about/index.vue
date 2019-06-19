@@ -1,7 +1,9 @@
 <template>
   <section class="author">
     <article class="item">
-      <h1 class="title">关于 BOBLOG</h1>
+      <h1 class="logo">
+        <img src="../../assets/images/LOGO.png" alt="LOGO">
+      </h1>
     </article>
     <article class="text">
       <p>
@@ -20,16 +22,21 @@
 </template>
 
 <script>
-
+  export default {
+    created() {
+      document.title = `波博客 - boblog.com`
+    }
+  }
 </script>
 
 <style scoped lang="scss">
   .author {
     box-sizing: border-box;
     width: 1280px;
-    margin: 0 auto 24px;
+    min-height: 80vh;
+    margin: 24px auto;
     padding-bottom: 24px;
-    background: white;
+    background-color: white;
   }
 
   .item {
@@ -39,9 +46,13 @@
     background: white;
   }
 
-  .title {
-    color: #404040;
-    font-size: 42px;
+  .logo {
+    width: 360px;
+    margin: 0 auto;
+
+    & img {
+      width: 100%;
+    }
   }
 
   a {
