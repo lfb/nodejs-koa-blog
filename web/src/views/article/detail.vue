@@ -7,14 +7,10 @@
         <p class="article-category" v-if="detail.category_detail">
           {{detail.category_detail.name}}
         </p>
-        <p class="article-author"> by {{detail.author}}</p>
-        <p class="article-browser">阅读 {{detail.browse}} 次
-        <p class="article-browser">评论 {{detail.comments_list.data.length}} 次</p>
-        <p class="article-created-at">{{detail.created_at}}</p>
-      </div>
-
-      <div class="article-timer">
-        <p class="article-created-at">{{detail.created_at}}</p>
+        <p class="article-author"><i class="icon el-icon-user"></i> {{detail.author}}</p>
+        <p class="article-browse"><i class="icon el-icon-view"></i> {{detail.browse}}</p>
+        <p class="article-browse"><i class="icon el-icon-chat-dot-round"></i> {{detail.comments_list.data.length}}</p>
+        <p class="article-create-at"><i class="icon el-icon-time"></i> {{detail.created_at}}</p>
       </div>
 
       <div class="article-detail" id="article-detail">
@@ -121,24 +117,21 @@
 
       & .article-info {
         width: 100%;
-        margin-top: 24px;
-        display: flex;
-        align-items: center;
-
         & p {
           display: inline-block;
           margin-right: 24px;
-          font-size: 14px;
+          margin-top: 24px;
+          font-size: 16px;
           color: #9ea7b4;
         }
 
         & p.article-category {
-          height: 28px;
-          line-height: 28px;
-          padding: 0 16px;
-          font-size: 14px;
+          height: 32px;
+          line-height: 32px;
+          padding: 0 32px;
+          font-size: 16px;
           color: #409EFF;
-          border-radius: 24px;
+          border-radius: 32px;
           background: rgba(51, 119, 255, .1);
         }
       }
@@ -152,28 +145,12 @@
     }
   }
 
-  .article-timer {
-    display: none;
-  }
-
   @media screen and (min-width: 200px) and (max-width: 768px) {
     .container {
       width: 100%;
     }
     .container .content .article-info p.article-created-at {
       display: none;
-    }
-    .article-timer {
-      display: block;
-      width: 100%;
-      margin-top: 24px;
-
-      & p {
-        display: inline-block;
-        margin-right: 24px;
-        font-size: 14px;
-        color: #9ea7b4;
-      }
     }
   }
 

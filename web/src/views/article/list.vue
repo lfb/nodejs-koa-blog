@@ -23,10 +23,10 @@
               <p class="article-category" v-if="item.category_detail">
                 {{item.category_detail.name}}
               </p>
-              <p class="article-author"> by {{item.author}}</p>
-              <p class="article-browse">阅读 {{item.browse}} 次</p>
-              <p class="article-browse">评论 {{item.comments_nums}} 次</p>
-              <p class="article-create-at">{{item.created_at}}</p>
+              <p class="article-author"><i class="icon el-icon-user"></i> {{item.author}}</p>
+              <p class="article-browse"><i class="icon el-icon-view"></i> {{item.browse}}</p>
+              <p class="article-browse"><i class="icon el-icon-chat-dot-round"></i> {{item.comments_nums}}</p>
+              <p class="article-create-at"><i class="icon el-icon-time"></i> {{item.created_at}}</p>
             </div>
           </div>
           <div class="article-img">
@@ -245,24 +245,21 @@
     }
 
     & .article-info {
-      margin-top: 24px;
-      display: flex;
-      align-items: center;
-
       & p {
         display: inline-block;
         margin-right: 24px;
+        margin-top: 24px;
         font-size: 16px;
         color: #9ea7b4;
       }
 
       & p.article-category {
-        height: 28px;
-        line-height: 28px;
-        padding: 0 16px;
+        height: 32px;
+        line-height: 32px;
+        padding: 0 32px;
         font-size: 16px;
         color: #409EFF;
-        border-radius: 24px;
+        border-radius: 32px;
         background: rgba(51, 119, 255, .1);
       }
     }
@@ -301,9 +298,6 @@
       flex: 1;
       margin-left: 0;
       margin-top: 24px;
-    }
-    .article-info p.article-create-at {
-      display: none;
     }
   }
 </style>

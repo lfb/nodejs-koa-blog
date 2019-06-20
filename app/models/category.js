@@ -1,6 +1,7 @@
+const moment = require('moment');
+
 const {sequelize} = require('../../core/db')
 const {Sequelize, Model} = require('sequelize')
-
 
 // 定义文章模型
 class Category extends Model {
@@ -22,6 +23,12 @@ Category.init({
     parent_id: {
         type: Sequelize.INTEGER,
         defaultValue: 0
+    },
+    created_at: {
+        type: Sequelize.DATE,
+        get() {
+            return moment(this.getDataValue('created_at')).format('YYYY-MM-DD');
+        }
     }
 }, {
     sequelize,

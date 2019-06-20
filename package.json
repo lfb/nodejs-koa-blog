@@ -32,6 +32,7 @@
     "koa-router": "^7.4.0",
     "koa-static": "^5.0.0",
     "lodash": "^4.17.11",
+    "moment": "^2.24.0",
     "mysql2": "^1.6.5",
     "npm-check": "^5.9.0",
     "require-directory": "^2.1.1",

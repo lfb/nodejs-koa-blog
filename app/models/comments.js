@@ -1,3 +1,5 @@
+const moment = require('moment');
+
 const {Sequelize, Model} = require('sequelize')
 const {sequelize} = require('../../core/db')
 
@@ -23,6 +25,12 @@ Comments.init({
     parent_id: {
         type: Sequelize.INTEGER,
         defaultValue: 0
+    },
+    created_at: {
+        type: Sequelize.DATE,
+        get() {
+            return moment(this.getDataValue('created_at')).format('YYYY-MM-DD');
+        }
     }
 }, {
     sequelize,

@@ -1,3 +1,4 @@
+const moment = require('moment');
 const bcrypt = require('bcryptjs')
 const {sequelize} = require('../../core/db')
 const {Sequelize, Model} = require('sequelize')
@@ -30,6 +31,12 @@ Admin.init({
             // 生成加密密码
             const psw = bcrypt.hashSync(val, salt);
             this.setDataValue("password", psw);
+        }
+    },
+    created_at: {
+        type: Sequelize.DATE,
+        get() {
+            return moment(this.getDataValue('created_at')).format('YYYY-MM-DD');
         }
     }
 }, {
