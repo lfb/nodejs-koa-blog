@@ -159,6 +159,7 @@
 
   .logo {
     width: 200px;
+    height: 96px;
     margin-left: -20px;
 
     & img {
@@ -176,6 +177,7 @@
 
     & .nav-box {
       display: flex;
+      height: 96px;
       width: 100%;
 
       & .nav-item {
