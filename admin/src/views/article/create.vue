@@ -100,7 +100,7 @@
       },
       // 上传图片失败
       uploadError(response) {
-        this.$Message.success('上传失败!');
+        this.$Message.error('上传失败!');
         console.log(response)
       },
       // 获取上传token
