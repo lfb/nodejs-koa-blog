@@ -49,6 +49,9 @@ $ mysql -uroot -p密码
 $ CREATE DATABASE IF NOT EXISTS boblog DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 ```
 
+### 修改数据库配置
+请在 [|——config/config.js](https://github.com/liangfengbo/nodejs-koa-blog/blob/master/config/config.js) 文件下修改您本地的数据库名字（`boblog`）和数据库密码。
+
 ### 克隆项目
 首先使克隆项目，然后进入项目根目录使用命令安装包，最后命令启动项目，代码会根据模型自动创建数据库表的。
 
