@@ -95,7 +95,9 @@ router.get('/comments/:id', async (ctx) => {
 router.get('/article/:article_id/comments', async (ctx) => {
 
     // 通过验证器校验参数是否通过
-    const v = await new PositiveArticleIdParamsValidator().validate(ctx);
+    const v = await new PositiveArticleIdParamsValidator().validate(ctx, {
+        id: 'article_id'
+    });
 
     // 获取分类ID参数
     const article_id = v.get('path.article_id');
