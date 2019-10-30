@@ -36,7 +36,8 @@
 </script>
 
 <style>
-
+  @import "./assets/fonts.css";
+  
   html, body {
     box-sizing: border-box;
     width: 100%;
@@ -46,13 +47,16 @@
   }
 
   body {
-    font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
     background: #f8f8f8;
   }
 
-  #app {
+  #app * {
+    font-family: 'Alibaba-PuHuiTi-Regular' !important;
   }
 
+  #app [class*=" el-icon-"], #app [class^=el-icon-] {
+    font-family: element-icons!important
+  }
   section, article, header, nav, ul, li, h1, h2, h3, p {
     margin: 0;
     padding: 0;
