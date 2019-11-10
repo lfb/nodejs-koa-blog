@@ -27,101 +27,18 @@
       </div>
     </div>
     <Drawer title="今晚学习 Node.js 吗" width="300" placement="left" :closable="false" v-model="isChapter">
-      <div class="chapter-page">
-        <dl class="chapter-page-box">
-          <dt class="chapter-page-item">第一章</dt>
-          <dd class="chapter-page-item-name">
-            <h1>今晚学习 Node.js 吗</h1>
-            <span></span>
-          </dd>
-          <dd class="chapter-page-item-name">
-            <h1>今晚学习 Node.js 吗</h1>
-            <span></span>
-          </dd>
-          <dd class="chapter-page-item-name">
-            <h1>今晚学习 Node.js 吗</h1>
-            <span></span>
-          </dd>
-          <dd class="chapter-page-item-name">
-            <h1>今晚学习 Node.js 吗</h1>
-            <span></span>
-          </dd>
-          <dt class="chapter-page-item">第二章</dt>
-          <dd class="chapter-page-item-name">
-            <h1>今晚学习 Node.js 吗</h1>
-            <span></span>
-          </dd>
-          <dd class="chapter-page-item-name">
-            <h1>今晚学习 Node.js 吗</h1>
-            <span></span>
-          </dd>
-          <dd class="chapter-page-item-name">
-            <h1>今晚学习 Node.js 吗</h1>
-            <span></span>
-          </dd>
-          <dd class="chapter-page-item-name">
-            <h1>今晚学习 Node.js 吗</h1>
-            <span></span>
-          </dd>
-          <dt class="chapter-page-item">第三章</dt>
-          <dd class="chapter-page-item-name">
-            <h1>今晚学习 Node.js 吗</h1>
-            <span></span>
-          </dd>
-          <dd class="chapter-page-item-name">
-            <h1>今晚学习 Node.js 吗</h1>
-            <span></span>
-          </dd>
-          <dd class="chapter-page-item-name">
-            <h1>今晚学习 Node.js 吗</h1>
-            <span></span>
-          </dd>
-          <dd class="chapter-page-item-name">
-            <h1>今晚学习 Node.js 吗</h1>
-            <span></span>
-          </dd>
-          <dt class="chapter-page-item">第四章</dt>
-          <dd class="chapter-page-item-name">
-            <h1>今晚学习 Node.js 吗</h1>
-            <span></span>
-          </dd>
-          <dd class="chapter-page-item-name">
-            <h1>今晚学习 Node.js 吗</h1>
-            <span></span>
-          </dd>
-          <dd class="chapter-page-item-name">
-            <h1>今晚学习 Node.js 吗</h1>
-            <span></span>
-          </dd>
-          <dd class="chapter-page-item-name">
-            <h1>今晚学习 Node.js 吗</h1>
-            <span></span>
-          </dd>
-          <dt class="chapter-page-item">第五章</dt>
-          <dd class="chapter-page-item-name">
-            <h1>今晚学习 Node.js 吗</h1>
-            <span></span>
-          </dd>
-          <dd class="chapter-page-item-name">
-            <h1>今晚学习 Node.js 吗</h1>
-            <span></span>
-          </dd>
-          <dd class="chapter-page-item-name">
-            <h1>今晚学习 Node.js 吗</h1>
-            <span></span>
-          </dd>
-          <dd class="chapter-page-item-name">
-            <h1>今晚学习 Node.js 吗</h1>
-            <span></span>
-          </dd>
-        </dl>
-      </div>
+      <v-column-chapter/>
     </Drawer>
   </section>
 </template>
 
 <script>
+  import VColumnChapter from '@/components/ColumnChapter'
+
   export default {
+    components: {
+      VColumnChapter
+    },
     name: 'detail',
     data () {
       return {
@@ -149,31 +66,10 @@
     background: #fff;
   }
 
-  .chapter-page {
-    height: 100%;
-    box-sizing: border-box;
-    z-index: 1000;
-    justify-content: space-between;
-    transition: 0.32s ease;
-  }
-
-  .chapter-page-header {
-    margin-bottom: 24px;
-    font-size: 24px;
-    color: #17233d;
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-
-    & .icon {
-      margin-right: 6px;
-    }
-  }
-
   .chapter-icon {
     position: fixed;
     left: 0;
-    top: 110px;
+    top: 120px;
     background: transparent;
   }
 
@@ -189,42 +85,6 @@
     border: 1px solid #dcdee2;
     border-left: none;
     background: #fff;
-  }
-
-  .chapter-page-item {
-    font-size: 18px;
-    font-weight: 500;
-    color: #17233d;
-  }
-
-  .chapter-page-item-name {
-    padding: 16px;
-    cursor: pointer;
-    transition: 0.28s ease;
-    color: #515a6e;
-    display: flex;
-    justify-content: space-between;
-
-    &:hover {
-      color: #2d8cf0;
-      padding-left: 32px;
-      box-shadow: 1px 2px 3px #f0f0f0;
-    }
-
-    & h1 {
-      font-size: 16px;
-      font-weight: 400;
-    }
-
-    & span {
-      display: inline-block;
-      width: 12px;
-      height: 12px;
-      border-top: 1px solid #D9D9D9;
-      border-right: 1px solid #D9D9D9;
-      transform: rotate(45deg);
-      -webkit-transform: rotate(45deg);
-    }
   }
 
   .article-title {

@@ -4,14 +4,8 @@
     <article class="article-list">
       <!-- 专栏组件-->
       <v-column-item :isButton="isButton"/>
-      <div class="column-chapter">
-        <dl v-for="(item, index) in 2" :key="index">
-          <dt>Chapter {{index + 1}}：Node.js 基础</dt>
-          <dd v-for="(item2, index) in 3" :key="index" @click="toColumnChapterDetail">
-            <h1>今晚学习 Node.js 吗</h1>
-            <span></span>
-          </dd>
-        </dl>
+      <div class="chapter">
+        <v-column-chapter/>
       </div>
     </article>
 
@@ -77,10 +71,12 @@
 
 <script>
   import VColumnItem from '@/components/ColumnItem'
+  import VColumnChapter from '@/components/ColumnChapter'
 
   export default {
     components: {
-      VColumnItem
+      VColumnItem,
+      VColumnChapter
     },
     name: 'list',
     data () {
@@ -89,15 +85,7 @@
         list: []
       }
     },
-    methods: {
-      /**
-       * 路由跳转
-       * @param id
-       */
-      toColumnChapterDetail (id) {
-        this.$router.push(`/column/chapter/detail?id=1`)
-      }
-    }
+    methods: {}
   }
 </script>
 
@@ -117,44 +105,8 @@
     background: #fff;
   }
 
-  .column-chapter {
-    padding: 32px;
-  }
-
-  .column-chapter dt {
-    font-size: 18px;
-    font-weight: 500;
-    color: #17233d;
-  }
-
-  .column-chapter dd {
-    padding: 16px;
-    cursor: pointer;
-    transition: 0.28s ease;
-    color: #515a6e;
-    display: flex;
-    justify-content: space-between;
-
-    &:hover {
-      color: #2d8cf0;
-      padding-left: 32px;
-      box-shadow: 1px 2px 3px #f0f0f0;
-    }
-
-    & h1 {
-      font-size: 16px;
-      font-weight: 400;
-    }
-
-    & span {
-      display: inline-block;
-      width: 12px;
-      height: 12px;
-      border-top: 1px solid #D9D9D9;
-      border-right: 1px solid #D9D9D9;
-      transform: rotate(45deg);
-      -webkit-transform: rotate(45deg);
-    }
+  .chapter {
+    padding: 24px;
   }
 
   .articles-category {
