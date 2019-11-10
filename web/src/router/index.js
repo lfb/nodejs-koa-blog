@@ -12,7 +12,7 @@ const routes = [
   {
     path: '/articles',
     name: 'article-list',
-    component: () => import(/* webpackChunkName: "articleList" */ '../views/articles/list.vue')
+    component: () => import(/* webpackChunkName: "articlesList" */ '../views/articles/list.vue')
   },
   {
     path: '/article/detail',
@@ -23,6 +23,16 @@ const routes = [
     path: '/column',
     name: 'column-list',
     component: () => import(/* webpackChunkName: "columnList" */ '../views/column/list.vue')
+  },
+  {
+    path: '/column/chapter',
+    name: 'columnChapter',
+    component: () => import(/* webpackChunkName: "columnChapter" */ '../views/column/chapter.vue')
+  },
+  {
+    path: '/column/chapter/detail',
+    name: 'columnChapterDetail',
+    component: () => import(/* webpackChunkName: "columnChapterDetail" */ '../views/column/detail.vue')
   },
   {
     path: '/about',

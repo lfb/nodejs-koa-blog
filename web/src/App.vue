@@ -36,7 +36,7 @@
     font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
   }
 
-  ul, li, h1, div {
+  ul, li, h1, div, dl, dt, dd {
     margin: 0;
     padding: 0;
     list-style: none;

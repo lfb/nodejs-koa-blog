@@ -1,6 +1,6 @@
 <template>
   <section class="column-box">
-    <div class="column-item" v-for="(item, index) in 2" :key="index">
+    <div class="column-item">
       <div class="column-images">
         <img
           src="https://static001.infoq.cn/resource/image/c1/9f/c194d013ced0feb6d6dc73b6e1f2d39f.jpg?x-oss-process=image/crop,y_1,w_1780,h_916/resize,w_776,h_400"
@@ -20,7 +20,7 @@
               梁凤波
             </li>
           </ul>
-          <Button type="primary">立即学习</Button>
+          <Button v-if="isButton" type="primary" @click="toColumnChapter(1)">立即学习</Button>
         </div>
       </div>
     </div>
@@ -29,7 +29,18 @@
 
 <script>
   export default {
-    name: 'Column'
+    name: 'Column',
+    props: {
+      isButton: {
+        type: Boolean,
+        default: true
+      }
+    },
+    methods: {
+      toColumnChapter () {
+        this.$router.push('/column/chapter?id=1')
+      }
+    }
   }
 </script>
 

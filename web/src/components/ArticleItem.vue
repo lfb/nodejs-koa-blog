@@ -1,7 +1,7 @@
 <template>
   <section>
     <ul class="article-box">
-      <li class="articles-item" v-for="(item, index) in 10" :key="index">
+      <li class="articles-item" v-for="(item, index) in 10" @click="toArticleDetail(index)" :key="index">
         <div class="articles-item-info">
           <h1 class="articles-item-title">今晚学习 Node.js 吗？</h1>
           <div class="articles-item-description">
@@ -33,7 +33,12 @@
 
 <script>
   export default {
-    name: 'ArticleItem'
+    name: 'ArticleItem',
+    methods: {
+      toArticleDetail (id) {
+        this.$router.push('/article/detail?id=' + id)
+      }
+    }
   }
 </script>
 
