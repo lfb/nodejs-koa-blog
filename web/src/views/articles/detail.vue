@@ -34,16 +34,17 @@
   .article-detail {
     width: @window-Width;
     margin: 24px auto;
+    min-height: 80vh;
     border-radius: 6px;
     box-sizing: border-box;
-    padding: 24px;
+    padding: 32px;
     background: #fff;
   }
 
   .article-title {
     color: #17233d;
     text-align: center;
-    font-size: 28px;
+    font-size: 36px;
     font-weight: 500;
     margin-top: 16px;
   }
@@ -53,7 +54,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 24px 0;
+    margin: 32px 0;
   }
 
   .article-intro li {

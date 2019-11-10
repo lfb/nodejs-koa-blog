@@ -39,30 +39,15 @@
         <div class="box-header">
           <div class="box-header-title">
             <Icon type="ios-apps" class="icon" size="20"/>
-            分类
+            推荐
           </div>
         </div>
         <div class="articles-box-content">
           <ul>
-            <li>
-              <Icon class="icon" style="color: #e34c24;" type="logo-html5"/>
-              html（ 10 ）
+            <li class="articles-box-content-item" v-for="(item, index) in 5" :key="index">
+              <h1>数据结构与算法</h1>
+              <span></span>
             </li>
-            <li>
-              <Icon class="icon" style="color: #006fba;" type="logo-css3"/>
-              css（ 15 ）
-            </li>
-            <li>
-              <Icon class="icon" style="color: #f0da4e;" type="logo-javascript"/>
-              javascript（ 32 ）
-            </li>
-            <li>
-              <Icon class="icon" style="color: #8cc84b" type="logo-nodejs"/>
-              Node.js（ 93 ）
-            </li>
-            <li>Vue.js（ 1 ）</li>
-            <li>HTTP（ 1 ）</li>
-            <li>数据结构与算法</li>
           </ul>
         </div>
       </div>
@@ -75,14 +60,16 @@
         </div>
         <div class="articles-box-content">
           <ul>
-            <li>
-              <Icon class="icon" type="logo-github"/>
-              Github
+            <li class="articles-box-content-item">
+              <div>
+                <Icon class="icon" type="logo-github"/>
+                Github
+              </div>
             </li>
-            <li>
+            <li class="articles-box-content-item">
               慕课网
             </li>
-            <li>
+            <li class="articles-box-content-item">
               coding.net
             </li>
           </ul>
@@ -158,20 +145,35 @@
     padding: 24px 32px;
   }
 
-  .articles-box-content ul li {
+  .articles-box-content-item {
     cursor: pointer;
     margin-bottom: 24px;
-    font-size: 16px;
-    color: #657180;
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    color: #657180;
 
     &:hover {
-      color: #409EFF;
+      color: #2d8cf0;
     }
   }
 
-  .articles-box-content ul li:last-child {
+  .articles-box-content-item h1 {
+    font-size: 16px;
+    font-weight: 400;
+  }
+
+  .articles-box-content-item span {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-top: 1px solid #D9D9D9;
+    border-right: 1px solid #D9D9D9;
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+  }
+
+  .recommend:last-child {
     margin-bottom: 0;
   }
 

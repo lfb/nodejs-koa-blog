@@ -91,6 +91,7 @@
     width: @window-Width;
     display: flex;
     margin: 24px auto;
+    min-height: 80vh;
   }
 
   .article-list {

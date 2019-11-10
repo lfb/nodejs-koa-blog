@@ -90,6 +90,7 @@
   .articles {
     width: @window-Width;
     display: flex;
+    min-height: 80vh;
     margin: 24px auto;
   }
 
