@@ -1,51 +1,49 @@
-/**
- * loading
- */
-
 const state = {
   loadingList: [],
-  isLoading: true,
+  isLoading: true
 }
 
 const mutations = {
   // 开启loading
-  PUSH_LOADING(state, playload) {
-    state.loadingList.push({text: playload || '拼命加载中..'})
+  PUSH_LOADING (states, playload) {
+    states.loadingList.push({
+      text: playload || '加载中..'
+    })
   },
   // 递归删除loading
-  SHIFT_LOADING(state) {
-    state.loadingList.shift()
+  SHIFT_LOADING (states) {
+    states.loadingList.shift()
   },
   // 控制是否需要loading
-  SHOULD_LOADING(state, isShould) {
-    state.isLoading = isShould;
+  SHOULD_LOADING (states, isShould) {
+    states.isLoading = isShould
   }
 }
 const getters = {
-  isLoading(state) {
-    return state.loadingList.length > 0
+  isLoading (states) {
+    return states.loadingList.length > 0
   },
-  loadingText(state) {
-    return state.loadingList.length > 0 ? state.loadingList[0].text : null
-  },
+  loadingText (states) {
+    return states.loadingList.length > 0 ? states.loadingList[0].text : null
+  }
 }
 const actions = {
   /**
    * 开启loading
-   * @param state
+   * @param states
    * @param playload
    */
-  openLoading(state, playload) {
-    state.commit('PUSH_LOADING', playload)
+  openLoading (states, playload) {
+    states.commit('PUSH_LOADING', playload)
   },
 
   /**
    * 关闭loading
    * @param contaxt
    */
-  closeLoading(state) {
-    state.commit('SHIFT_LOADING')
-  },
+  closeLoading (states) {
+    states.commit('SHIFT_LOADING')
+  }
 }
 export default {
   namespaced: true,

@@ -5,16 +5,16 @@
   </section>
 </template>
 <script>
-  export default {
-    props: ['text'],
-    data() {
-      return {}
-    },
-    computed: {},
-    mounted() {
-    },
-    methods: {}
-  }
+export default {
+  props: ['text'],
+  data () {
+    return {}
+  },
+  computed: {},
+  mounted () {
+  },
+  methods: {}
+}
 </script>
 <style scoped>
   .loading-wrap {
@@ -32,7 +32,7 @@
   }
 
   .loading-box {
-    background: no-repeat center/40px url('../assets/spinner.svg');
+    background: no-repeat center/40px url('../assets/images/spinner.svg');
     margin-top: -20px;
     margin-left: -20px;
     width: 40px;

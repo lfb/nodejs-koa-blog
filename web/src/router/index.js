@@ -1,40 +1,35 @@
 import Vue from 'vue'
-import Router from 'vue-router'
+import VueRouter from 'vue-router'
 
-Vue.use(Router)
+Vue.use(VueRouter)
 
-export default new Router({
-  // 哈斯
-  mode: 'history',
-  scrollBehavior(to, from, savedPosition) {
-    // 兼容
-    if (savedPosition) {
-      return savedPosition
-    } else {
-      return {x: 0, y: 0}
-    }
+const routes = [
+  {
+    path: '/',
+    name: 'home',
+    component: () => import(/* webpackChunkName: "home" */ '../views/home.vue')
   },
-  routes: [
-    {
-      // 文章列表
-      path: '/',
-      component(resolve) {
-        require(['../views/article/list.vue'], resolve);
-      }
-    },
-    {
-      // 文章详情
-      path: '/article/detail/:id',
-      component(resolve) {
-        require(['../views/article/detail.vue'], resolve);
-      }
-    },
-    {
-      // 关于我
-      path: '/about',
-      component(resolve) {
-        require(['../views/about/index.vue'], resolve);
-      }
-    }
-  ]
+  {
+    path: '/articles',
+    name: 'article-list',
+    component: () => import(/* webpackChunkName: "articleList" */ '../views/articles/list.vue')
+  },
+  {
+    path: '/article/detail',
+    name: 'article-detail',
+    component: () => import(/* webpackChunkName: "articleDetail" */ '../views/articles/detail.vue')
+  },
+  {
+    path: '/column',
+    name: 'column-list',
+    component: () => import(/* webpackChunkName: "columnList" */ '../views/column/list.vue')
+  }
+]
+
+const router = new VueRouter({
+  mode: 'history',
+  base: process.env.BASE_URL,
+  routes
 })
+
+export default router

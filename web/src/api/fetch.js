@@ -1,113 +1,143 @@
-import Util from '../libs/util'
 import qs from 'qs'
 import Vue from 'vue'
+import utils from '../lib/utils'
 import store from '../store/index'
 
-Util.ajax.defaults.headers.common = {
+utils.ajax.defaults.headers.common = {
   'X-Requested-With': 'XMLHttpRequest'
-};
+}
 
-Util.ajax.interceptors.request.use(config => {
-  /**
-   * 在这里做loading ...
-   * @type {string}
-   */
-  if (config.isLoading) {
+utils.ajax.interceptors.request.use((config) => {
+  const isLoading = config.isLoading || config.isLoading === undefined
+  if (isLoading) {
     // 开启loading
     store.dispatch('loading/openLoading')
   }
 
   // 获取token
+  config.headers.common.Authorization = `Bearer ${Vue.ls.get('WATCH_CHECK_TOKEN')}`
   return config
+}, error => Promise.reject(error))
 
-}, error => {
-  return Promise.reject(error)
-
-});
-
-Util.ajax.interceptors.response.use(response => {
-
+utils.ajax.interceptors.response.use((response) => {
+  // 如果后端有新的token则重新缓存
+  const newToken = response.headers['new-token']
+  if (newToken) {
+    Vue.ls.set('WATCH_CHECK_TOKEN', newToken)
+  }
   // 关闭loading
   closeLoading()
 
-  return response;
+  return response
+}, (error) => {
+  const res = error.response
+  let extraErrors = []
 
-}, error => {
+  if (res && res.config && res.config.extraErrors) {
+    extraErrors = res.config.extraErrors
+  } else if (res & res.config && res.config.params && res.config.params.extraErrors) {
+    extraErrors = res.config.params.extraErrors
+  }
 
-  if (error.response.status === 403) {
-    store.commit('user/SET_USER_INFO', null);
-    Vue.ls.remove('BOBLOG_FE_TOKEN');
+  const { code } = res ? res.data : {}
 
-    if (error.response.data.request !== 'GET /v1/user/info') {
-      store.commit('user/SHOW_USER_MANAGER_MODEL', true);
+  // 错误代码如果不在'需要单独处理的错误代码数组'内的话
+  if (extraErrors.indexOf(code) === -1) {
+    switch (code) {
+      case 401:
+        Vue.ls.set('WATCH_CHECK_TOKEN', null)
+        window.location.href = `${process.env.VUE_APP_BASE_API}/wechat-server/code?target_url=${encodeURIComponent(document.URL)}`
+        break
+
+      case 404:
+        console.log('查询信息不存在')
+        break
+
+      case 413:
+        console.log(res.data.message)
+        break
+
+      case 418:
+        console.log(res.data.message)
+        break
+
+      case 422:
+        if (res.data.errors) {
+          let arr = []
+          for (const key in res.data.errors) {
+            res.data.errors[key].forEach((item) => {
+              arr.push(item)
+            })
+          }
+          const errors = arr.length > 0 ? arr.join('，') : arr
+          console.log(errors)
+        } else {
+          console.log(res.data.message)
+        }
+        break
+
+      case 500:
+        console.log(res.data.message || '服务器开了一会小差~', 'error')
+        break
+
+      default:
+        console.log(res.data.message)
     }
   }
 
-  let errMsg = error.response.data.msg;
-
-  Vue.prototype.$message({
-    message: errMsg,
-    type: 'error'
-  });
-
   // 关闭loading
   closeLoading()
-  return Promise.reject(error)
 
-});
+  return Promise.reject(error)
+})
 
 export default {
-  post(url, params = {}) {
-    const {username} = params;
-    const {isLoading = true} = params;
+  post (url, params = {}) {
+    const { isLoading = true, extraErrors = [] } = params
 
-    return Util.ajax({
+    return utils.ajax({
       method: 'post',
-      url: url,
+      url,
       data: qs.stringify(params),
       timeout: 30000,
-      auth: {
-        username
-      },
       isLoading,
+      extraErrors,
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
       }
     })
   },
 
-  get(url, params = {}) {
-    const {username} = params;
-    const {isLoading = true} = params;
-
-    return Util.ajax({
+  get (url, params = {}) {
+    const { isLoading = true, extraErrors = [] } = params
+    return utils.ajax({
       method: 'get',
-      url: url,
+      url,
       params,
-      auth: {
-        username
-      },
-      isLoading
+      paramsSerializer: query => qs.stringify(query),
+      isLoading,
+      extraErrors
     })
   },
 
-  delete(url, params = {}) {
-    let {isLoading = true} = params;
-    return Util.ajax({
+  delete (url, params = {}) {
+    const { isLoading = true, extraErrors = [] } = params
+    return utils.ajax({
       method: 'delete',
-      url: url,
+      url,
       params,
-      isLoading
+      isLoading,
+      extraErrors
     })
   },
-
-  put(url, params = {}) {
-    let {isLoading = true} = params;
-    return Util.ajax({
+  put (url, params = {}) {
+    const { isLoading = true, extraErrors = [] } = params
+    return utils.ajax({
       method: 'put',
-      url: url,
+      url,
       data: qs.stringify(params),
       isLoading,
+      extraErrors,
       timeout: 30000,
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
@@ -119,7 +149,7 @@ export default {
 /**
  * 关闭loading
  */
-function closeLoading() {
+function closeLoading () {
   // 延迟100毫秒关闭
   setTimeout(() => {
     // 关闭loading
