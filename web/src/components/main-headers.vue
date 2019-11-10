@@ -9,7 +9,7 @@
       <div class="nav">
         <ul class="nav-box">
           <li v-for="(item, index) in nav"
-              @click="changeNav(item.router, index)"
+              @click="changeNav(item.router)"
               :class="index === navIndex ? 'nav-item nav-item-active' : 'nav-item'"
               :key="index">
             {{item.name}}
@@ -26,8 +26,15 @@
 </template>
 
 <script>
+  import { mapState } from 'vuex'
+
   export default {
     name: '',
+    computed: {
+      ...mapState({
+        navIndex: state => state.headers.navIndex
+      })
+    },
     data () {
       return {
         nav: [
@@ -47,14 +54,16 @@
             name: '关于',
             router: '/about'
           }
-        ],
-        navIndex: 0
+        ]
       }
     },
     methods: {
-      changeNav (router, index) {
-        this.navIndex = index
-        this.$router.push(router)
+      changeNav (router) {
+        try {
+          this.$router.push(router)
+        } catch (e) {
+          console.log(e)
+        }
       }
     }
   }

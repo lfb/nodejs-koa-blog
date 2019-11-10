@@ -21,6 +21,12 @@
     <div class="article-content">
       文章内容
     </div>
+    <!-- 评论列表-->
+    <v-comment-list/>
+    <!-- 新建评论-->
+    <v-comment-create/>
+
+    <!-- 抽屉滑动章节-->
     <div @click="changeChapterFix" class="chapter-icon">
       <div class="chapter-icon-item">
         <Icon type="md-list"/>
@@ -33,11 +39,15 @@
 </template>
 
 <script>
-  import VColumnChapter from '@/components/ColumnChapter'
+  import VColumnChapter from '../../components/column-chapter'
+  import VCommentList from '../../components/comment-ist'
+  import VCommentCreate from '../../components/comment-create'
 
   export default {
     components: {
-      VColumnChapter
+      VColumnChapter,
+      VCommentList,
+      VCommentCreate
     },
     name: 'detail',
     data () {

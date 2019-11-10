@@ -70,8 +70,8 @@
 </template>
 
 <script>
-  import VColumnItem from '@/components/ColumnItem'
-  import VColumnChapter from '@/components/ColumnChapter'
+  import VColumnItem from '../../components/column-item'
+  import VColumnChapter from '../../components/column-chapter'
 
   export default {
     components: {

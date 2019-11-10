@@ -67,7 +67,7 @@
 </template>
 
 <script>
-  import VArticleItem from '@/components/ArticleItem'
+  import VArticleItem from '../../components/article-item'
 
   export default {
     components: {

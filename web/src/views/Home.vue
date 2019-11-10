@@ -82,8 +82,8 @@
 </template>
 
 <script>
-  import VColumnItem from '@/components/ColumnItem'
-  import VArticleItem from '@/components/ArticleItem'
+  import VColumnItem from '../components/column-item'
+  import VArticleItem from '../components/article-item'
 
   export default {
     components: {

@@ -21,11 +21,23 @@
     <div class="article-content">
       文章内容
     </div>
+
+    <!-- 评论列表-->
+    <v-comment-list/>
+    <!-- 新建评论-->
+    <v-comment-create/>
   </section>
 </template>
 
 <script>
+  import VCommentList from '../../components/comment-ist'
+  import VCommentCreate from '../../components/comment-create'
+
   export default {
+    components: {
+      VCommentList,
+      VCommentCreate
+    },
     name: 'detail'
   }
 </script>

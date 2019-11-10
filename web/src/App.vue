@@ -10,9 +10,9 @@
 </template>
 <script>
   import { mapGetters } from 'vuex'
-  import VLoading from './components/Loading'
-  import VHeaders from './components/Headers'
-  import VFooter from './components/Footer'
+  import VLoading from './components/mian-loading'
+  import VHeaders from './components/main-headers'
+  import VFooter from './components/main-footer'
 
   export default {
     components: {

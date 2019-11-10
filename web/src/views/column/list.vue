@@ -67,7 +67,7 @@
 </template>
 
 <script>
-  import VColumnItem from '@/components/ColumnItem'
+  import VColumnItem from '../../components/column-item'
 
   export default {
     components: {
