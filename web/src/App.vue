@@ -5,17 +5,20 @@
     <div class="app-inner">
       <router-view/>
     </div>
+    <v-footer />
   </div>
 </template>
 <script>
   import { mapGetters } from 'vuex'
   import VLoading from './components/Loading'
   import VHeaders from './components/Headers'
+  import VFooter from './components/Footer'
 
   export default {
     components: {
       VLoading,
-      VHeaders
+      VHeaders,
+      VFooter
     },
     computed: {
       ...mapGetters('loading', [

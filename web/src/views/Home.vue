@@ -23,7 +23,7 @@
         <div class="box-header">
           <div class="box-header-title">
             <Icon type="md-list-box" class="icon" size="20"/>
-            文章列表
+            文章
           </div>
           <div class="box-header-more">
             更多
@@ -126,46 +126,6 @@
   .column-articles-list {
     flex: 1;
     margin-right: 32px;
-  }
-
-  .box-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 16px 32px;
-    border-bottom: 1px solid #f8f8f8;
-  }
-
-  .box-header .icon {
-    color: #2f8cf0;
-  }
-
-  .box-header-title {
-    color: #515a6e;
-    font-size: 26px;
-    font-weight: 500;
-  }
-
-  .box-header-more {
-    font-size: 18px;
-    color: #989898;
-    cursor: pointer;
-
-    &::after {
-      content: "";
-      display: inline-block;
-      width: 12px;
-      height: 12px;
-      border-top: 1px solid #D9D9D9;
-      border-right: 1px solid #D9D9D9;
-      transform: rotate(45deg);
-      -webkit-transform: rotate(45deg);
-    }
-
-    &:hover {
-      color: #2d8cf0;
-      text-decoration: underline;
-    }
   }
 
   .column {

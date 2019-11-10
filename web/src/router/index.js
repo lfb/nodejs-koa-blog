@@ -23,6 +23,11 @@ const routes = [
     path: '/column',
     name: 'column-list',
     component: () => import(/* webpackChunkName: "columnList" */ '../views/column/list.vue')
+  },
+  {
+    path: '/about',
+    name: 'about',
+    component: () => import(/* webpackChunkName: "about" */ '../views/about.vue')
   }
 ]
 
