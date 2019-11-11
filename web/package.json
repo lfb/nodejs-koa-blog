@@ -15,6 +15,7 @@
     "core-js": "^3.3.2",
     "fastclick": "^1.0.6",
     "lib-flexible": "^0.3.2",
+    "mavon-editor": "^2.7.7",
     "postcss-loader": "^3.0.0",
     "postcss-plugin-px2rem": "^0.8.1",
     "qs": "^6.9.0",

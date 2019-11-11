@@ -20,7 +20,14 @@
         </li>
       </ul>
       <div class="article-content">
-        文章内容
+        <mavon-editor
+          style="height: 100%"
+          :ishljs="true"
+          v-model="content"
+          :defaultOpen="'preview'"
+          :editable="false"
+          :subfield="false"
+          :toolbarsFlag="false" />
       </div>
 
       <!-- 新建评论-->
@@ -35,17 +42,25 @@
 </template>
 
 <script>
+  import { mavonEditor } from 'mavon-editor'
+  import 'mavon-editor/dist/css/index.css'
   import VCommentList from '../../components/comment-list'
   import VCommentCreate from '../../components/comment-create'
   import VMainSidebar from '../../components/main-sidebar'
 
   export default {
     components: {
+      mavonEditor,
       VCommentList,
       VCommentCreate,
       VMainSidebar
     },
-    name: 'detail'
+    name: 'detail',
+    data () {
+      return {
+        content: '内容'
+      }
+    }
   }
 </script>
 
@@ -102,5 +117,4 @@
     border-radius: 64px;
     background: rgba(51, 119, 255, .1);
   }
-
 </style>
