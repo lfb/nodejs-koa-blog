@@ -1,46 +1,44 @@
 <template>
-  <section class="article-detail">
-    <h1 class="article-title">
-      今天学习 Nodejs 吗
-    </h1>
-    <ul class="article-intro">
-      <li class="articles-item-category">node.js</li>
-      <li>
-        <Icon size="16" type="ios-person-outline"/>
-        梁凤波
-      </li>
-      <li>
-        <Icon size="16" type="ios-eye-outline"/>
-        100
-      </li>
-      <li>
-        <Icon size="16" type="ios-text-outline"/>
-        100
-      </li>
-    </ul>
-    <div class="article-content">
-      文章内容
-    </div>
-    <!-- 评论列表-->
-    <v-comment-list/>
-    <!-- 新建评论-->
-    <v-comment-create/>
-
-    <!-- 抽屉滑动章节-->
-    <div @click="changeChapterFix" class="chapter-icon">
-      <div class="chapter-icon-item">
-        <Icon type="md-list"/>
-      </div>
-    </div>
-    <Drawer title="今晚学习 Node.js 吗" width="300" placement="left" :closable="false" v-model="isChapter">
+  <section class="chapter-detail">
+    <div class="chapter-table">
+      <h1 class="chapter-table-title">
+        今天学习 Nodejs 吗
+      </h1>
       <v-column-chapter/>
-    </Drawer>
+    </div>
+    <div class="chapter-container">
+      <h1 class="chapter-title">
+        今天学习 Nodejs 吗
+      </h1>
+      <ul class="chapter-intro">
+        <li class="chapters-item-category">node.js</li>
+        <li>
+          <Icon size="16" type="ios-person-outline"/>
+          梁凤波
+        </li>
+        <li>
+          <Icon size="16" type="ios-eye-outline"/>
+          100
+        </li>
+        <li>
+          <Icon size="16" type="ios-text-outline"/>
+          100
+        </li>
+      </ul>
+      <div class="chapter-content">
+        文章内容
+      </div>
+      <!-- 新建评论-->
+      <v-comment-create/>
+      <!-- 评论列表-->
+      <v-comment-list/>
+    </div>
   </section>
 </template>
 
 <script>
   import VColumnChapter from '../../components/column-chapter'
-  import VCommentList from '../../components/comment-ist'
+  import VCommentList from '../../components/comment-list'
   import VCommentCreate from '../../components/comment-create'
 
   export default {
@@ -52,28 +50,55 @@
     name: 'detail',
     data () {
       return {
-        isChapter: false
-      }
-    },
-    methods: {
-      changeChapterFix () {
-        this.isChapter = !this.isChapter
       }
     }
   }
 </script>
 
 <style scoped lang="less">
-  .article-detail {
+  .chapter-detail {
     position: relative;
     width: @window-Width;
     overflow: hidden;
-    margin: 24px auto;
-    min-height: 80vh;
+    margin: 24px;
+    left: 20%;
+    height: 100%;
     border-radius: 6px;
     box-sizing: border-box;
     padding: 32px;
     background: #fff;
+  }
+
+  .chapter-table {
+    position: fixed;
+    height: 100%;
+    width: 20%;
+    top: 120px;
+    left: 0;
+    overflow: hidden;
+    overflow-y: auto;
+    box-sizing: border-box;
+    padding: 24px;
+    border-radius: 0 6px 6px 0;
+    background: #fff;
+  }
+
+  .chapter-table-title {
+    color: #17233d;
+    font-size: 24px;
+    padding-bottom: 24px;
+    font-weight: 500;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  .chapter-container {
+    flex: 1;
+    background: #fff;
+  }
+
+  .chapter-box {
+    width: 350px;
+    margin-right: 32px;
   }
 
   .chapter-icon {
@@ -83,21 +108,7 @@
     background: transparent;
   }
 
-  .chapter-icon-item {
-    width: 48px;
-    height: 42px;
-    font-size: 20px;
-    color: #808695;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 0 10px 10px 0;
-    border: 1px solid #dcdee2;
-    border-left: none;
-    background: #fff;
-  }
-
-  .article-title {
+  .chapter-title {
     color: #17233d;
     text-align: center;
     font-size: 36px;
@@ -105,7 +116,7 @@
     margin-top: 16px;
   }
 
-  .article-intro {
+  .chapter-intro {
     color: #515a6e;
     display: flex;
     align-items: center;
@@ -113,7 +124,7 @@
     margin: 32px 0;
   }
 
-  .article-intro li {
+  .chapter-intro li {
     display: inline-block;
     margin-right: 24px;
     font-size: 16px;
@@ -121,7 +132,7 @@
     white-space: nowrap;
   }
 
-  li.articles-item-category {
+  li.chapters-item-category {
     height: 28px;
     line-height: 28px;
     padding: 0 24px;

@@ -1,42 +1,49 @@
 <template>
   <section class="article-detail">
-    <h1 class="article-title">
-      今天学习 Nodejs 吗
-    </h1>
-    <ul class="article-intro">
-      <li class="articles-item-category">node.js</li>
-      <li>
-        <Icon size="16" type="ios-person-outline"/>
-        梁凤波
-      </li>
-      <li>
-        <Icon size="16" type="ios-eye-outline"/>
-        100
-      </li>
-      <li>
-        <Icon size="16" type="ios-text-outline"/>
-        100
-      </li>
-    </ul>
-    <div class="article-content">
-      文章内容
+    <div class="article-container">
+      <h1 class="article-title">
+        今天学习 Nodejs 吗
+      </h1>
+      <ul class="article-intro">
+        <li class="articles-item-category">node.js</li>
+        <li>
+          <Icon size="16" type="ios-person-outline"/>
+          梁凤波
+        </li>
+        <li>
+          <Icon size="16" type="ios-eye-outline"/>
+          100
+        </li>
+        <li>
+          <Icon size="16" type="ios-text-outline"/>
+          100
+        </li>
+      </ul>
+      <div class="article-content">
+        文章内容
+      </div>
+
+      <!-- 新建评论-->
+      <v-comment-create/>
+      <!-- 评论列表-->
+      <v-comment-list/>
     </div>
 
-    <!-- 评论列表-->
-    <v-comment-list/>
-    <!-- 新建评论-->
-    <v-comment-create/>
+    <!-- 侧边栏 -->
+    <v-main-sidebar/>
   </section>
 </template>
 
 <script>
-  import VCommentList from '../../components/comment-ist'
+  import VCommentList from '../../components/comment-list'
   import VCommentCreate from '../../components/comment-create'
+  import VMainSidebar from '../../components/main-sidebar'
 
   export default {
     components: {
       VCommentList,
-      VCommentCreate
+      VCommentCreate,
+      VMainSidebar
     },
     name: 'detail'
   }
@@ -49,7 +56,17 @@
     min-height: 80vh;
     border-radius: 6px;
     box-sizing: border-box;
+    display: flex;
+  }
+
+  .article-container {
+    box-sizing: border-box;
+    flex: 1;
     padding: 32px;
+    margin-right: 32px;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 1px 2px 3px #f0f0f0;
     background: #fff;
   }
 
@@ -58,7 +75,6 @@
     text-align: center;
     font-size: 36px;
     font-weight: 500;
-    margin-top: 16px;
   }
 
   .article-intro {

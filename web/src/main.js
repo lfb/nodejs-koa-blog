@@ -6,14 +6,13 @@ import Storage from 'vue-ls'
 import 'lib-flexible/flexible'
 import 'view-design/dist/styles/iview.css'
 
-import { Input, Icon, Button, Drawer, Timeline, TimelineItem, Form, FormItem } from 'view-design'
+import { Input, Icon, Button, Drawer, Avatar, Form, FormItem } from 'view-design'
 
 Vue.component('Input', Input)
 Vue.component('Icon', Icon)
 Vue.component('Button', Button)
 Vue.component('Drawer', Drawer)
-Vue.component('Timeline', Timeline)
-Vue.component('TimelineItem', TimelineItem)
+Vue.component('Avatar', Avatar)
 Vue.component('Form', Form)
 Vue.component('FormItem', FormItem)
 

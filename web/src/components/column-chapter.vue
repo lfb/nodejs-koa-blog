@@ -38,6 +38,7 @@
     font-size: 18px;
     font-weight: 500;
     color: #17233d;
+    padding-top: 24px;
   }
 
   .column-chapter dd {
