@@ -5,6 +5,7 @@
     <div class="app-inner">
       <router-view/>
     </div>
+    <BackTop />
     <v-footer />
   </div>
 </template>
@@ -41,5 +42,4 @@
     padding: 0;
     list-style: none;
   }
-
 </style>

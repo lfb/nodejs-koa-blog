@@ -4,6 +4,10 @@
     <article class="article-list">
       <!-- 专栏组件-->
       <v-column-item/>
+
+      <div class="page">
+        <Page :total="100" />
+      </div>
     </article>
 
     <!-- 侧边栏 -->
