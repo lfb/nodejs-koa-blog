@@ -2,35 +2,36 @@ const moment = require('moment');
 const {sequelize} = require('../../core/db')
 const {Sequelize, Model} = require('sequelize')
 
-// 定义文章模型
-class Article extends Model {
+// 定义专栏章节子项模型
+class ColumnChapterItem extends Model {
 
 }
 
 // 初始文章模型
-Article.init({
+ColumnChapterItem.init({
   id: {
     type: Sequelize.INTEGER,
     primaryKey: true,
     autoIncrement: true
   },
-  // 文章标题
+  // 专栏章节标题
   title: Sequelize.STRING,
-  // 文章作者
+  // 父章节ID
+  chapter_id: Sequelize.STRING,
+  // 专栏章节作者
   author: Sequelize.STRING(64),
-  // 文章简介
-  description: Sequelize.TEXT,
-  // 文章内容
+  // 专栏章节内容
   content: Sequelize.TEXT,
-  // 文章封面
+  // 专栏章节封面
   cover: Sequelize.STRING,
-  // 文章分类ID
+  // 专栏章节分类ID
   category_id: Sequelize.STRING,
-  // 文章浏览次数
+  // 专栏浏览次数
   browse: {
     type: Sequelize.INTEGER,
     defaultValue: 0
   },
+  // 创建时间
   created_at: {
     type: Sequelize.DATE,
     get() {
@@ -43,5 +44,5 @@ Article.init({
 })
 
 module.exports = {
-  Article
+  ColumnChapterItem
 }

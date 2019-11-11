@@ -8,8 +8,16 @@ const actions = {
   /**
    * 获取文章列表
    */
-  async getArticleList ({ state, commit }, params) {
+  async getArticleList({ state, commit }, params) {
     const res = await articles.list(params)
+    return res
+  },
+  /**
+   * 获取文章详情
+   *
+   */
+  async getArticleDetail({ state, commit }, parms) {
+    const res = await articles.detail(parms)
     return res
   }
 }

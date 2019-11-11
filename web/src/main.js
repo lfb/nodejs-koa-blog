@@ -6,7 +6,7 @@ import Storage from 'vue-ls'
 import 'lib-flexible/flexible'
 import 'view-design/dist/styles/iview.css'
 
-import { Input, Icon, Button, Drawer, Avatar, Page, BackTop, Form, FormItem } from 'view-design'
+import { Input, Icon, Button, Drawer, Avatar, Page, BackTop, Form, FormItem, Message, Modal } from 'view-design'
 
 Vue.component('Input', Input)
 Vue.component('Icon', Icon)
@@ -17,7 +17,9 @@ Vue.component('Page', Page)
 Vue.component('BackTop', BackTop)
 Vue.component('Form', Form)
 Vue.component('FormItem', FormItem)
+Vue.component('Modal', Modal)
 
+Vue.prototype.$Message = Message
 Vue.config.productionTip = false
 
 Vue.use(Storage, {
@@ -27,7 +29,6 @@ Vue.use(Storage, {
 })
 
 router.beforeEach(async (to, from, next) => {
-  console.log(to.meta.navIndex)
   store.commit('headers/SET_NAV_INDEX', to.meta.navIndex)
   next()
 })

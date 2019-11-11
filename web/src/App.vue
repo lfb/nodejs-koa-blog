@@ -1,16 +1,16 @@
 <template>
   <div id="app">
     <v-loading :text="loadingText" v-if="isLoading"/>
-    <v-headers />
+    <v-headers/>
     <div class="app-inner">
       <router-view/>
     </div>
-    <BackTop />
-    <v-footer />
+    <BackTop/>
+    <v-footer/>
   </div>
 </template>
 <script>
-  import { mapGetters } from 'vuex'
+  import {mapGetters} from 'vuex'
   import VLoading from './components/mian-loading'
   import VHeaders from './components/main-headers'
   import VFooter from './components/main-footer'
@@ -33,8 +33,8 @@
   html, body {
     margin: 0;
     padding: 0;
-    background: #f0f0f0!important;
-    font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
+    background: #f0f0f0 !important;
+    font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
   }
 
   ul, li, h1, div, dl, dt, dd {

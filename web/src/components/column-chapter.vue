@@ -15,7 +15,7 @@
 <script>
   export default {
     name: 'Chapter',
-    data () {
+    data() {
       return {
         isButton: false,
         list: []
@@ -26,7 +26,7 @@
        * 路由跳转
        * @param id
        */
-      toColumnChapterDetail (id) {
+      toColumnChapterDetail(id) {
         this.$router.push(`/column/chapter/detail?id=1`)
       }
     }

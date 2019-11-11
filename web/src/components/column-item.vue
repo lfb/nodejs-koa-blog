@@ -37,7 +37,7 @@
       }
     },
     methods: {
-      toColumnChapter () {
+      toColumnChapter() {
         this.$router.push('/column/chapter?id=1')
       }
     }

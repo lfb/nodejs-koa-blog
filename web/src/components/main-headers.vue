@@ -26,7 +26,7 @@
 </template>
 
 <script>
-  import { mapState } from 'vuex'
+  import {mapState} from 'vuex'
 
   export default {
     name: '',
@@ -35,7 +35,7 @@
         navIndex: state => state.headers.navIndex
       })
     },
-    data () {
+    data() {
       return {
         nav: [
           {
@@ -58,7 +58,7 @@
       }
     },
     methods: {
-      changeNav (router) {
+      changeNav(router) {
         try {
           this.$router.push(router)
         } catch (e) {

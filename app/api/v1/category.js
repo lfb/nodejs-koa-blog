@@ -1,8 +1,8 @@
 const Router = require('koa-router');
 
 const {
-    CategoryValidator,
-    PositiveIdParamsValidator
+  CategoryValidator,
+  PositiveIdParamsValidator
 } = require('../../validators/category');
 
 const {CategoryDao} = require('../../dao/category');
@@ -14,7 +14,7 @@ const res = new Resolve();
 const AUTH_ADMIN = 16;
 
 const router = new Router({
-    prefix: '/v1'
+  prefix: '/v1'
 })
 
 /**
@@ -22,14 +22,14 @@ const router = new Router({
  */
 router.post('/category', new Auth(AUTH_ADMIN).m, async (ctx) => {
 
-    // 通过验证器校验参数是否通过
-    const v = await new CategoryValidator().validate(ctx);
+  // 通过验证器校验参数是否通过
+  const v = await new CategoryValidator().validate(ctx);
 
-    await CategoryDao.createCategory(v);
+  await CategoryDao.createCategory(v);
 
-    // 返回结果
-    ctx.response.status = 200;
-    ctx.body = res.success('创建分类成功')
+  // 返回结果
+  ctx.response.status = 200;
+  ctx.body = res.success('创建分类成功')
 })
 
 
@@ -38,16 +38,16 @@ router.post('/category', new Auth(AUTH_ADMIN).m, async (ctx) => {
  */
 router.delete('/category/:id', new Auth(AUTH_ADMIN).m, async (ctx) => {
 
-    // 通过验证器校验参数是否通过
-    const v = await new PositiveIdParamsValidator().validate(ctx);
+  // 通过验证器校验参数是否通过
+  const v = await new PositiveIdParamsValidator().validate(ctx);
 
-    // 获取分类ID参数
-    const id = v.get('path.id');
-    // 删除分类
-    await CategoryDao.destroyCategory(id);
+  // 获取分类ID参数
+  const id = v.get('path.id');
+  // 删除分类
+  await CategoryDao.destroyCategory(id);
 
-    ctx.response.status = 200;
-    ctx.body = res.success('删除分类成功');
+  ctx.response.status = 200;
+  ctx.body = res.success('删除分类成功');
 })
 
 
@@ -56,17 +56,17 @@ router.delete('/category/:id', new Auth(AUTH_ADMIN).m, async (ctx) => {
  */
 router.put('/category/:id', new Auth(AUTH_ADMIN).m, async (ctx) => {
 
-    // 通过验证器校验参数是否通过
-    const v = await new PositiveIdParamsValidator().validate(ctx);
+  // 通过验证器校验参数是否通过
+  const v = await new PositiveIdParamsValidator().validate(ctx);
 
-    // 获取分类ID参数
-    const id = v.get('path.id');
-    // 更新分类
-    await CategoryDao.updateCategory(id, v);
+  // 获取分类ID参数
+  const id = v.get('path.id');
+  // 更新分类
+  await CategoryDao.updateCategory(id, v);
 
-    // 返回结果
-    ctx.response.status = 200;
-    ctx.body = res.success('更新分类成功');
+  // 返回结果
+  ctx.response.status = 200;
+  ctx.body = res.success('更新分类成功');
 })
 
 /**
@@ -74,12 +74,12 @@ router.put('/category/:id', new Auth(AUTH_ADMIN).m, async (ctx) => {
  */
 router.get('/category', async (ctx) => {
 
-    // 获取分类下关联的文章
-    const categoryList = await CategoryDao.getCategoryList();
+  // 获取分类下关联的文章
+  const categoryList = await CategoryDao.getCategoryList();
 
-    // 返回结果
-    ctx.response.status = 200;
-    ctx.body = res.json(categoryList);
+  // 返回结果
+  ctx.response.status = 200;
+  ctx.body = res.json(categoryList);
 })
 
 /**
@@ -87,17 +87,17 @@ router.get('/category', async (ctx) => {
  */
 router.get('/category/:id', async (ctx) => {
 
-    // 通过验证器校验参数是否通过
-    const v = await new PositiveIdParamsValidator().validate(ctx);
+  // 通过验证器校验参数是否通过
+  const v = await new PositiveIdParamsValidator().validate(ctx);
 
-    // 获取参数
-    const id = v.get('path.id');
-    // 获取分类
-    const category = await CategoryDao.getCategory(id);
+  // 获取参数
+  const id = v.get('path.id');
+  // 获取分类
+  const category = await CategoryDao.getCategory(id);
 
-    // 返回结果
-    ctx.response.status = 200;
-    ctx.body = res.json(category);
+  // 返回结果
+  ctx.response.status = 200;
+  ctx.body = res.json(category);
 })
 
 /**
@@ -105,21 +105,21 @@ router.get('/category/:id', async (ctx) => {
  */
 router.get('/category/:id/article', async (ctx) => {
 
-    // 通过验证器校验参数是否通过
-    const v = await new PositiveIdParamsValidator().validate(ctx);
+  // 通过验证器校验参数是否通过
+  const v = await new PositiveIdParamsValidator().validate(ctx);
 
-    // 分类ID
-    const category_id = v.get('path.id');
-    // 页面
-    const page = v.get('query.page');
-    // 排序
-    const desc = v.get('query.desc');
-    // 获取分类
-    const category = await CategoryDao.getCategoryArticle(category_id, page, desc);
+  // 分类ID
+  const category_id = v.get('path.id');
+  // 页面
+  const page = v.get('query.page');
+  // 排序
+  const desc = v.get('query.desc');
+  // 获取分类
+  const category = await CategoryDao.getCategoryArticle(category_id, page, desc);
 
-    // 返回结果
-    ctx.response.status = 200;
-    ctx.body = res.json(category);
+  // 返回结果
+  ctx.response.status = 200;
+  ctx.body = res.json(category);
 })
 
 module.exports = router

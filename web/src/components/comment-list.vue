@@ -1,39 +1,88 @@
 <template>
   <section class="comment">
     <div class="comment-header">评论列表</div>
-    <ul class="comment-box">
-      <li class="comment-item" v-for="(item, index) in 5" :key="index">
+    <ul class="comment-box" v-if="comments.length > 0">
+      <li class="comment-item" v-for="(item, index) in comments" :key="index">
         <div class="comment-avatar">
           <Avatar size="small" style="background-color: #2d8cf0" icon="ios-person"/>
         </div>
         <div class="comment-info">
-          <h1 class="comment-username">梁凤波</h1>
+          <h1 class="comment-username">{{item.nickname}}</h1>
           <p class="comment-content">
-            买买买~
+            {{item.content}}
           </p>
-          <div class="comment-reply">
+          <div class="comment-reply" v-if="item.replyList && item.replyList.length > 0">
             <ul class="comment-box">
-              <li class="comment-item" v-for="(item, index) in 2" :key="index">
+              <li class="comment-item" v-for="(reply, index2) in item.replyList" :key="index2">
                 <div class="comment-avatar">
                   <Avatar size="small" style="background-color: #2d8cf0" icon="ios-person"/>
                 </div>
                 <div class="comment-info">
-                  <h1 class="comment-username">回复 梁凤波</h1>
+                  <h1 class="comment-username">{{reply.nickname}} 回复 {{reply.reply_username}}</h1>
                   <p class="comment-content">
-                    买买买~
+                    {{reply.content}}
                   </p>
                 </div>
               </li>
             </ul>
           </div>
-          <p class="comment-reply-btn">回复</p>
+          <p class="comment-reply-btn" @click="reply(item.id, item.nickname)">回复</p>
         </div>
       </li>
     </ul>
+
+    <Modal
+      v-model="show"
+      :z-index="zIndex"
+      :title="replyNickname">
+      <v-comment-create @updateComments="updateComments" :comment_id="comment_id" :replyNickname="replyNickname"/>
+    </Modal>
   </section>
 </template>
 <script>
-  export default {}
+  import VCommentCreate from './comment-create'
+
+  export default {
+    components: {
+      VCommentCreate
+    },
+    props: {
+      comments: {
+        type: Array,
+        default() {
+          return []
+        }
+      },
+      article_id: {
+        type: Number,
+        default() {
+          return 0
+        }
+      }
+    },
+    data() {
+      return {
+        show: false,
+        // 评论父级id
+        comment_id: 0,
+        // 回复昵称
+        replyNickname: '',
+        zIndex: 9999,
+        replyArr: []
+      }
+    },
+    methods: {
+      reply(id, name) {
+        this.comment_id = id
+        this.replyNickname = name
+        this.show = !this.show
+      },
+      updateComments(newComment, type) {
+        this.show = !this.show
+        this.$emit('updateComments', newComment, type)
+      }
+    }
+  }
 </script>
 <style scoped lang="less">
   .comment-header {

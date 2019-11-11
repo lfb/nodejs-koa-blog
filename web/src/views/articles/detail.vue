@@ -1,39 +1,41 @@
 <template>
-  <section class="article-detail">
+  <section class="article-detail" v-if="article">
     <div class="article-container">
       <h1 class="article-title">
-        今天学习 Nodejs 吗
+        {{article.title}}
       </h1>
       <ul class="article-intro">
-        <li class="articles-item-category">node.js</li>
+        <li class="articles-item-category" v-if="article.category_detail">
+          {{article.category_detail.name}}
+        </li>
         <li>
           <Icon size="16" type="ios-person-outline"/>
-          梁凤波
+          {{article.author}}
         </li>
         <li>
           <Icon size="16" type="ios-eye-outline"/>
-          100
+          {{article.browse}}
         </li>
-        <li>
+        <li v-if="article.comments_list">
           <Icon size="16" type="ios-text-outline"/>
-          100
+          {{article.comments_list.data.length}}
         </li>
       </ul>
       <div class="article-content">
         <mavon-editor
           style="height: 100%"
           :ishljs="true"
-          v-model="content"
+          v-model="article.content"
           :defaultOpen="'preview'"
           :editable="false"
           :subfield="false"
-          :toolbarsFlag="false" />
+          :toolbarsFlag="false"/>
       </div>
 
       <!-- 新建评论-->
-      <v-comment-create/>
+      <v-comment-create :article_id="article.id" @updateComments="updateComments"/>
       <!-- 评论列表-->
-      <v-comment-list/>
+      <v-comment-list :comments="commentsList" :article_id="article.id" @updateComments="updateComments"/>
     </div>
 
     <!-- 侧边栏 -->
@@ -42,6 +44,7 @@
 </template>
 
 <script>
+  import { mapActions } from 'vuex'
   import { mavonEditor } from 'mavon-editor'
   import 'mavon-editor/dist/css/index.css'
   import VCommentList from '../../components/comment-list'
@@ -56,9 +59,48 @@
       VMainSidebar
     },
     name: 'detail',
-    data () {
+    data() {
       return {
-        content: '内容'
+        article: null,
+        id: this.$route.query.id,
+        commentsList: []
+      }
+    },
+    created() {
+      this.getArticle()
+    },
+    methods: {
+      ...mapActions({
+        getArticleDetail: 'articles/getArticleDetail'
+      }),
+      async getArticle() {
+        const r = await this.getArticleDetail({
+          id: this.id
+        })
+        this.article = r.data.data
+
+        const commentsList = r.data.data.comments_list.data
+        const replyList = r.data.data.reply_list
+
+        commentsList.forEach(comment => {
+          comment.replyList = []
+          replyList.forEach(reply => {
+            if (parseInt(comment.id) === parseInt(reply.comment_id)) {
+              comment.replyList.push(reply)
+            }
+          })
+        })
+        this.commentsList = commentsList
+      },
+      /**
+       * 更新评论
+       **/
+      updateComments(newComments, type) {
+        if (type === 'comment') {
+          this.commentsList.shift(newComments)
+        } else if (type === 'reply') {
+          this.getArticle()
+        }
       }
     }
   }

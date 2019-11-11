@@ -1,29 +1,26 @@
 const moment = require('moment');
-
 const {sequelize} = require('../../core/db')
 const {Sequelize, Model} = require('sequelize')
 
-// 定义文章模型
-class Category extends Model {
+// 定义专栏章节模型
+class ColumnChapter extends Model {
 
 }
 
-// 初始分类模型
-Category.init({
+// 初始文章模型
+ColumnChapter.init({
   id: {
     type: Sequelize.INTEGER,
     primaryKey: true,
     autoIncrement: true
   },
-  // 分类名
-  name: Sequelize.STRING,
-  // 分类键
-  key: Sequelize.STRING,
-  // 分类父级ID，默认为0
-  parent_id: {
-    type: Sequelize.INTEGER,
-    defaultValue: 0
-  },
+  // 专栏ID
+  column_id: Sequelize.STRING,
+  // 专栏索引
+  chapter_index: Sequelize.STRING,
+  // 专栏标题
+  chapter_title: Sequelize.STRING,
+  // 创建时间
   created_at: {
     type: Sequelize.DATE,
     get() {
@@ -32,9 +29,9 @@ Category.init({
   }
 }, {
   sequelize,
-  tableName: 'category'
+  tableName: 'article'
 })
 
 module.exports = {
-  Category
+  ColumnChapter
 }

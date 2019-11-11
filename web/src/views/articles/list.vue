@@ -3,10 +3,11 @@
 
     <article class="article-list">
       <!-- 文章组件-->
-      <v-article-item/>
+      <v-article-item :list="list"/>
 
-      <div class="page">
-        <Page :total="100" />
+      <div class="page" v-if="page && page.total_pages.length > 1">
+        <Page :total="page.total" :page-size="page.per_page" :current="page.current_page" show-total
+              @on-change="handlePage"></Page>
       </div>
     </article>
 
@@ -16,6 +17,8 @@
 </template>
 
 <script>
+  import { mapActions } from 'vuex'
+  import merge from 'webpack-merge'
   import VArticleItem from '../../components/article-item'
   import VMainSidebar from '../../components/main-sidebar'
 
@@ -25,14 +28,38 @@
       VMainSidebar
     },
     name: 'list',
+    data() {
+      return {
+        list: [],
+        page: null,
+        currentPage: 1
+      }
+    },
+    created() {
+      this.getArticle()
+    },
     methods: {
-      /**
-       * 路由跳转
-       * @param id
-       */
-      // toArticle(id) {
-      //   this.$router.push(`/article/detail?id=${id}`)
-      // }
+      ...mapActions({
+        getArticleList: 'articles/getArticleList'
+      }),
+      async getArticle() {
+        const params = {
+          page: this.currentPage
+        }
+        const r = await this.getArticleList(params)
+        this.list = r.data.data.data
+        this.page = r.data.data.meta
+      },
+      // 切换分页
+      handlePage(page) {
+        this.$router.replace({
+          query: merge(this.$route.query, {
+            page
+          })
+        })
+        this.currentPage = page
+        this.getArticle()
+      }
     }
   }
 </script>

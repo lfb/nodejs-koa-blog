@@ -3,7 +3,7 @@ const {
   LinValidator
 } = require('../../core/lin-validator-v2')
 
-class CommentsValidator extends LinValidator {
+class ReplyValidator extends LinValidator {
   constructor() {
     super()
 
@@ -16,8 +16,11 @@ class CommentsValidator extends LinValidator {
     this.content = [
       new Rule("isLength", "评论内容名字不能为空", {min: 1})
     ]
-    this.article_id = [
-      new Rule("isLength", "文章ID不能为空", {min: 1})
+    this.comment_id = [
+      new Rule("isLength", "评论ID不能为空", {min: 1})
+    ]
+    this.reply_username = [
+      new Rule("isLength", "回复用户名字不能为空", {min: 1})
     ]
   }
 }
@@ -32,6 +35,6 @@ class PositiveArticleIdParamsValidator extends LinValidator {
 }
 
 module.exports = {
-  CommentsValidator,
+  ReplyValidator,
   PositiveArticleIdParamsValidator
 }

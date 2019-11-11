@@ -2,30 +2,32 @@
 <template>
   <section>
     <ul class="article-box">
-      <li class="articles-item" v-for="(item, index) in 10" @click="toArticleDetail(index)" :key="index">
+      <li class="articles-item" v-for="(item, index) in list" @click="toArticleDetail(item.id)" :key="index">
         <div class="articles-item-info">
-          <h1 class="articles-item-title">今晚学习 Node.js 吗？</h1>
+          <h1 class="articles-item-title">{{item.title}}</h1>
           <div class="articles-item-description">
-            CMU 中国社区希望输出 CMU 在 AI 领域的影响力，关注 AI 领域的技术创新、产业应用，知识传播、创投趋势。
+            {{item.description}}
           </div>
           <ul class="articles-item-intro">
-            <li class="articles-item-category">node.js</li>
+            <li class="articles-item-category" v-if="item.category_detail">
+              {{item.category_detail.name}}
+            </li>
             <li class="articles-item-author">
               <Icon size="16" type="ios-person-outline"/>
-              梁凤波
+              {{item.author}}
             </li>
             <li class="articles-item-browse">
               <Icon size="16" type="ios-eye-outline"/>
-              100
+              {{item.browse}}
             </li>
             <li class="articles-item-comment">
               <Icon size="16" type="ios-text-outline"/>
-              100
+              {{item.comments_nums}}
             </li>
           </ul>
         </div>
         <div class="articles-images">
-          <img src="http://cdn.boblog.com/FmdNNoR1MRtgvmQD1KwaKzbkL_i7?imageView2/1/w/100/h/100" alt="articles">
+          <img :src="item.cover + '?imageView2/1/w/100/h/100'" alt="articles">
         </div>
       </li>
     </ul>
@@ -34,9 +36,17 @@
 
 <script>
   export default {
+    props: {
+      list: {
+        type: Array,
+        default() {
+          return []
+        }
+      }
+    },
     name: 'ArticleItem',
     methods: {
-      toArticleDetail (id) {
+      toArticleDetail(id) {
         this.$router.push('/article/detail?id=' + id)
       }
     }

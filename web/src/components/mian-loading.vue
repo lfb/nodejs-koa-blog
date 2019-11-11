@@ -5,16 +5,16 @@
   </section>
 </template>
 <script>
-export default {
-  props: ['text'],
-  data () {
-    return {}
-  },
-  computed: {},
-  mounted () {
-  },
-  methods: {}
-}
+  export default {
+    props: ['text'],
+    data() {
+      return {}
+    },
+    computed: {},
+    mounted() {
+    },
+    methods: {}
+  }
 </script>
 <style scoped>
   .loading-wrap {
