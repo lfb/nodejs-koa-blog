@@ -35,7 +35,7 @@
       v-model="show"
       :z-index="zIndex"
       :title="replyNickname">
-      <v-comment-create @updateComments="updateComments" :comment_id="comment_id" :replyNickname="replyNickname"/>
+      <v-comment-create @updateComments="updateComments" :comment_id="comment_id"/>
     </Modal>
   </section>
 </template>
@@ -74,7 +74,7 @@
     methods: {
       reply(id, name) {
         this.comment_id = id
-        this.replyNickname = name
+        this.replyNickname = `回复：${name}`
         this.show = !this.show
       },
       updateComments(newComment, type) {

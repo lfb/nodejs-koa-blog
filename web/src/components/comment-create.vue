@@ -35,12 +35,6 @@
           return 0
         }
       },
-      replyNickname: {
-        type: String,
-        default() {
-          return ''
-        }
-      },
       comment_id: {
         type: Number,
         default() {
@@ -87,7 +81,6 @@
                 this.$emit('updateComments', r.data.data, 'comment')
               } else {
                 this.formValidate.comment_id = this.comment_id
-                this.formValidate.reply_username = this.replyNickname
                 const r = await this.createReply(this.formValidate)
                 this.$emit('updateComments', r.data.data, 'reply')
               }
