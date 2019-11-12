@@ -1,7 +1,7 @@
 const Router = require('koa-router')
 
-const {CommentReplyDao} = require('../../dao/comment-reply')
-const {CommentsReplyValidator, PositiveArticleIdParamsValidator} = require('../../validators/comments-reply')
+const {AdvertiseDao} = require('../../dao/advertise')
+const {AdvertiseValidator, PositiveArticleIdParamsValidator} = require('../../validators/advertise')
 const {Auth} = require('../../../middlewares/auth');
 
 const {Resolve} = require('../../lib/helper');
@@ -14,30 +14,26 @@ const router = new Router({
 })
 
 // 创建评论
-router.post('/comments-reply', async (ctx) => {
+router.post('/advertise', async (ctx) => {
   // 通过验证器校验参数是否通过
-  const v = await new CommentsReplyValidator().validate(ctx);
+  const v = await new AdvertiseValidator().validate(ctx);
   // 创建回复
-  const r = await CommentReplyDao.createCommentReply(v.get('body.comment_id'), v.get('body.reply_id'));
-  const data = {
-    comment_id: r.getDataValue('comment_id'),
-    reply_id: r.getDataValue('reply_id')
-  };
+  const r = await AdvertiseDao.createAdvertise(v);
 
   // 返回结果
   ctx.response.status = 200;
-  ctx.body = res.json(data);
+  ctx.body = res.json(r);
 })
 
 // 删除评论
-router.delete('/comments-reply/:id', new Auth(AUTH_ADMIN).m, async (ctx) => {
+router.delete('/advertise/:id', new Auth(AUTH_ADMIN).m, async (ctx) => {
 
   // 通过验证器校验参数是否通过
   const v = await new PositiveArticleIdParamsValidator().validate(ctx);
 
-  // 获取分类ID参数
+  // 获取广告ID参数
   const id = v.get('path.id');
-  await CommentReplyDao.destroyCommentReply(id);
+  await AdvertiseDao.destroyAdvertise(id);
 
   // 返回结果
   ctx.response.status = 200;
@@ -45,24 +41,24 @@ router.delete('/comments-reply/:id', new Auth(AUTH_ADMIN).m, async (ctx) => {
 })
 
 // 修改评论
-router.put('/comments-reply/:id', new Auth(AUTH_ADMIN).m, async (ctx) => {
+router.put('/advertise/:id', new Auth(AUTH_ADMIN).m, async (ctx) => {
 
   // 通过验证器校验参数是否通过
   const v = await new PositiveArticleIdParamsValidator().validate(ctx);
 
-  // 获取分类ID参数
+  // 获取广告ID参数
   const id = v.get('path.id');
-  await CommentReplyDao.updateCommentsReply(id, v);
+  await AdvertiseDao.updateAdvertise(id, v);
 
   // 返回结果
   ctx.response.status = 200;
   ctx.body = res.success('更新评论成功')
 })
 
-// 获取评论列表
-router.get('/reply', async (ctx) => {
+// 获取广告列表
+router.get('/advertise', async (ctx) => {
   const page = ctx.query.page;
-  let CommentReplyList = await CommentReplyDao.getCommentsReplyList(page);
+  let CommentReplyList = await AdvertiseDao.getAdvertiseList(page);
 
   // 返回结果
   ctx.response.status = 200;
@@ -70,14 +66,14 @@ router.get('/reply', async (ctx) => {
 
 })
 
-// 获取评论详情
-router.get('/comments-reply/:id', async (ctx) => {
+// 获取广告详情
+router.get('/advertise/:id', async (ctx) => {
   // 通过验证器校验参数是否通过
   const v = await new PositiveArticleIdParamsValidator().validate(ctx);
 
-  // 获取分类ID参数
+  // 获取广告ID参数
   const id = v.get('path.id');
-  let commentReply = await CommentReplyDao.getCommentReply(id)
+  let commentReply = await AdvertiseDao.getAdvertise(id)
 
   // 返回结果
   ctx.response.status = 200;
