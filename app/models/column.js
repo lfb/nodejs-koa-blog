@@ -41,7 +41,8 @@ Column.init({
   }
 }, {
   sequelize,
-  tableName: 'article'
+  modelName: 'column',
+  tableName: 'column'
 })
 
 module.exports = {

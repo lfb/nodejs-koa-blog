@@ -40,7 +40,8 @@ ColumnChapterItem.init({
   }
 }, {
   sequelize,
-  tableName: 'article'
+  modelName: 'chapter_item',
+  tableName: 'chapter_item'
 })
 
 module.exports = {

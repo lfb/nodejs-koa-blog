@@ -1,9 +1,8 @@
-const {Sequelize, Op} = require('sequelize')
+const {Op} = require('sequelize')
 
 const {Article} = require('../models/article')
 const {Category} = require('../models/category')
 const {Comments} = require('../models/comments')
-const {Reply} = require('../models/reply')
 
 // 定义文章模型
 class ArticleDao {
@@ -64,34 +63,19 @@ class ArticleDao {
       where: filter,
       order: [
         [desc, 'DESC']
-      ]
-    });
-
-    const categoryIds = [];
-    const articleIds = [];
-    const commentIds = [];
-
-    const r = article.rows;
-    r.forEach(article => {
-      articleIds.push(article.id);
-      categoryIds.push(article.category_id);
-    });
-
-    // 获取每篇文章评论
-    const comments = await ArticleDao._getArticleComments(articleIds);
-
-    r.forEach(article => {
-      ArticleDao._setArticleComments(article, comments)
-    });
-
-    // 获取每篇文章分类详情
-    const category = await ArticleDao._getArticleCategoryDetail(categoryIds);
-    r.forEach(article => {
-      ArticleDao._setArticleCategoryDetail(article, category)
+      ],
+      // 查询每篇文章下关联的分类
+      include: [{
+        model: Category,
+        as: 'category',
+        attributes: {
+          exclude: ['deleted_at', 'updated_at']
+        }
+      }]
     });
 
     return {
-      data: r,
+      data: article.rows,
       // 分页
       meta: {
         current_page: parseInt(page),
@@ -102,67 +86,6 @@ class ArticleDao {
       }
     };
   }
-
-  // 获取每篇文章评论
-  static async _getArticleComments(articleIds) {
-    return await Comments.scope('bh').findAll({
-      where: {
-        article_id: {
-          [Op.in]: articleIds
-        }
-      },
-      group: ['article_id'],
-      attributes: ['article_id', [Sequelize.fn('COUNT', '*'), 'count']]
-    })
-  }
-
-  // 获取每篇文章评论回复
-  static async _getCommentsReply(commentIds) {
-    console.log(commentIds)
-    return await Reply.scope('bh').findAll({
-      where: {
-        comment_id: {
-          [Op.in]: commentIds
-        }
-      }
-    })
-  }
-
-  // 设置每章文章评论总数
-  static _setArticleComments(article, comments) {
-    let count = 0;
-    comments.forEach(item => {
-      if (parseInt(article.id) === parseInt(item.article_id)) {
-        count = item.get('count')
-      }
-    })
-    article.setDataValue('comments_nums', count);
-
-    return article
-  }
-
-  // 获取每篇文章分类详情
-  static async _getArticleCategoryDetail(categoryIds) {
-    return await Category.scope('bh').findAll({
-      where: {
-        id: {
-          [Op.in]: categoryIds
-        }
-      }
-    })
-  }
-
-  // 设置每章文章分类详情
-  static _setArticleCategoryDetail(article, category) {
-    category.forEach(item => {
-      if (parseInt(article.category_id) === parseInt(item.id)) {
-        article.setDataValue('category_detail', item);
-      }
-    })
-
-    return article
-  }
-
 
   // 删除文章
   static async destroyArticle(id) {
@@ -221,7 +144,15 @@ class ArticleDao {
     const article = await Article.findOne({
       where: {
         id
-      }
+      },
+      // 查询每篇文章下关联的分类
+      include: [{
+        model: Category,
+        as: 'category',
+        attributes: {
+          exclude: ['deleted_at', 'updated_at']
+        }
+      }]
     });
 
     if (!article) {
@@ -246,41 +177,18 @@ class ArticleDao {
       offset: (page - 1) * pageSize,
       order: [
         [desc, 'DESC']
-      ]
+      ],
+      include: [{
+        model: Category,
+        as: 'category',
+        attributes: {
+          exclude: ['deleted_at', 'updated_at']
+        }
+      }]
     });
-
-    const articleIds = [];
-    const categoryIds = [];
-
-    const r = article.rows;
-    r.forEach(article => {
-      articleIds.push(article.id);
-      categoryIds.push(article.category_id);
-    });
-
-    // 获取每篇文章评论
-    if (articleIds.length > 0) {
-      const comments = await ArticleDao._getArticleComments(articleIds);
-
-      if (comments && comments.length > 0) {
-        r.forEach(article => {
-          ArticleDao._setArticleComments(article, comments)
-        });
-      }
-    }
-
-    // 获取每篇文章分类详情
-    if (categoryIds.length > 0) {
-      const category = await ArticleDao._getArticleCategoryDetail(categoryIds);
-      if (category) {
-        r.forEach(article => {
-          ArticleDao._setArticleCategoryDetail(article, category)
-        });
-      }
-    }
 
     return {
-      data: r,
+      data: article.rows,
       // 分页
       meta: {
         current_page: parseInt(page),

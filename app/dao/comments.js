@@ -1,6 +1,6 @@
 const {Comments} = require('../models/comments')
 const {Article} = require('../models/article')
-const {handleTree} = require('../lib/utils')
+const {Reply} = require('../models/reply')
 
 class CommentsDao {
   // 创建评论
@@ -110,12 +110,24 @@ class CommentsDao {
         [desc, 'DESC']
       ],
       attributes: {
-        exclude: ['email']
-      }
+        exclude: ['email', 'updated_at']
+      },
+      include: [{
+        model: Reply,
+        as: 'reply',
+        through: {
+          attributes: {
+            exclude: ['updated_at', 'created_at']
+          }
+        },
+        attributes: {
+          exclude: ['email', 'updated_at', 'deleted_at']
+        }
+      }]
     })
 
     return {
-      data: handleTree(comments.rows),
+      data: comments.rows,
       // 分页
       meta: {
         current_page: parseInt(page),

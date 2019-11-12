@@ -1,6 +1,7 @@
 const moment = require('moment');
 const {sequelize} = require('../../core/db')
 const {Sequelize, Model} = require('sequelize')
+const {Category} = require('./category')
 
 // 定义文章模型
 class Article extends Model {
@@ -14,22 +15,37 @@ Article.init({
     primaryKey: true,
     autoIncrement: true
   },
-  // 文章标题
-  title: Sequelize.STRING,
-  // 文章作者
-  author: Sequelize.STRING(64),
-  // 文章简介
-  description: Sequelize.TEXT,
-  // 文章内容
-  content: Sequelize.TEXT,
-  // 文章封面
-  cover: Sequelize.STRING,
-  // 文章分类ID
-  category_id: Sequelize.STRING,
-  // 文章浏览次数
+  title: {
+    type: Sequelize.STRING(50),
+    allowNull: false,
+    comment: '文章标题'
+  },
+  author: {
+    type: Sequelize.STRING(30),
+    allowNull: true,
+    defaultValue: '梁凤波',
+    comment: '文章作者'
+  },
+  description: {
+    type: Sequelize.STRING,
+    allowNull: true,
+    comment: '文章简介'
+  },
+  content: {
+    type: Sequelize.TEXT,
+    allowNull: false,
+    comment: '文章内容'
+  },
+  cover: {
+    type: Sequelize.STRING(100),
+    allowNull: false,
+    comment: '文章封面'
+  },
   browse: {
     type: Sequelize.INTEGER,
-    defaultValue: 0
+    allowNull: true,
+    defaultValue: 0,
+    comment: '文章浏览次数'
   },
   created_at: {
     type: Sequelize.DATE,
@@ -39,7 +55,16 @@ Article.init({
   }
 }, {
   sequelize,
+  modelName: 'article',
   tableName: 'article'
+})
+
+// 文章关联分类
+Category.hasMany(Article, {
+  foreignKey: 'category_id', sourceKey: 'id', as: 'article'
+})
+Article.belongsTo(Category, {
+  foreignKey: 'category_id', targetKey: 'id', as: 'category'
 })
 
 module.exports = {

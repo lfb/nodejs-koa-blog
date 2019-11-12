@@ -97,28 +97,13 @@ router.get('/article/:id', async (ctx) => {
   // 查询文章
   const article = await ArticleDao.getArticleDetail(id);
 
-  // 获取关联此文章的分类详情
-  const category = await CategoryDao.getCategory(article.getDataValue('category_id'));
   // 获取关联此文章的评论列表
   const commentsList = await CommentsDao.getArticleComments(id);
-  // 获取关联评论回复
-  let commentIds = []
-  if (commentsList && commentsList.data.length > 0) {
-    commentsList.data.forEach(item => {
-      commentIds.push(item.id)
-    })
-  }
-  let replyList = []
-  if (commentIds.length > 0) {
-    replyList = await ReplyDao.getCommentReply(commentIds)
-  }
 
   // 更新文章浏览
   await ArticleDao.updateArticleBrowse(id, ++article.browse);
 
-  await article.setDataValue('category_detail', category);
-  await article.setDataValue('comments_list', commentsList);
-  await article.setDataValue('reply_list', replyList);
+  await article.setDataValue('comments', commentsList);
 
   // 返回结果
   ctx.response.status = 200;

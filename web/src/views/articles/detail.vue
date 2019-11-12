@@ -5,8 +5,8 @@
         {{article.title}}
       </h1>
       <ul class="article-intro">
-        <li class="articles-item-category" v-if="article.category_detail">
-          {{article.category_detail.name}}
+        <li class="articles-item-category" v-if="article.category">
+          {{article.category.name}}
         </li>
         <li>
           <Icon size="16" type="ios-person-outline"/>
@@ -97,7 +97,7 @@
        **/
       updateComments(newComments, type) {
         if (type === 'comment') {
-          this.commentsList.shift(newComments)
+          this.commentsList.unshift(newComments)
         } else if (type === 'reply') {
           this.getArticle()
         }

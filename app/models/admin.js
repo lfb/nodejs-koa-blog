@@ -41,6 +41,7 @@ Admin.init({
   }
 }, {
   sequelize,
+  modelName: 'admin',
   tableName: 'admin'
 })
 

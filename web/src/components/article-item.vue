@@ -9,8 +9,8 @@
             {{item.description}}
           </div>
           <ul class="articles-item-intro">
-            <li class="articles-item-category" v-if="item.category_detail">
-              {{item.category_detail.name}}
+            <li class="articles-item-category" v-if="item.category">
+              {{item.category.name}}
             </li>
             <li class="articles-item-author">
               <Icon size="16" type="ios-person-outline"/>
@@ -19,10 +19,6 @@
             <li class="articles-item-browse">
               <Icon size="16" type="ios-eye-outline"/>
               {{item.browse}}
-            </li>
-            <li class="articles-item-comment">
-              <Icon size="16" type="ios-text-outline"/>
-              {{item.comments_nums}}
             </li>
           </ul>
         </div>

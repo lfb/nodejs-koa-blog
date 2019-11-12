@@ -2,6 +2,7 @@ const moment = require('moment');
 
 const {Sequelize, Model} = require('sequelize')
 const {sequelize} = require('../../core/db')
+const {Comments} = require('../models/comments')
 
 class Reply extends Model {
 
@@ -13,16 +14,26 @@ Reply.init({
     primaryKey: true,
     autoIncrement: true
   },
-  // 评论人的名字
-  nickname: Sequelize.STRING,
-  // 评论人的邮箱
-  email: Sequelize.STRING,
-  // 回复内容
-  content: Sequelize.TEXT,
-  // 评论ID
-  comment_id: Sequelize.STRING,
-  // 回复用户名字
-  reply_username: Sequelize.STRING,
+  nickname: {
+    type: Sequelize.STRING(64),
+    allowNull: false,
+    comment: '评论人的名字'
+  },
+  email: {
+    type: Sequelize.STRING(64),
+    allowNull: false,
+    comment: '评论人的邮箱'
+  },
+  content: {
+    type: Sequelize.TEXT,
+    allowNull: false,
+    comment: '评论内容'
+  },
+  reply_username: {
+    type: Sequelize.STRING(64),
+    allowNull: false,
+    comment: '回复评论人名字'
+  },
   // 创建时间
   created_at: {
     type: Sequelize.DATE,
@@ -32,7 +43,21 @@ Reply.init({
   }
 }, {
   sequelize,
-  tableName: 'reply'
+  tableName: 'reply',
+  modelName: 'reply'
+})
+// 回复关联评论
+Comments.belongsToMany(Reply, {
+  foreignKey: 'comment_id',
+  sourceKey: 'id',
+  as: 'reply',
+  through: 'comment_reply'
+})
+Reply.belongsToMany(Comments, {
+  foreignKey: 'reply_id',
+  targetKey: 'id',
+  as: 'comment',
+  through: 'comment_reply'
 })
 
 module.exports = {
