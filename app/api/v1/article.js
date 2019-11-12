@@ -6,9 +6,7 @@ const {
 
 const {Auth} = require('../../../middlewares/auth');
 const {ArticleDao} = require('../../dao/article');
-const {CategoryDao} = require('../../dao/category');
 const {CommentsDao} = require('../../dao/comments');
-const {ReplyDao} = require('../../dao/reply');
 
 const {Resolve} = require('../../lib/helper');
 const res = new Resolve();

@@ -29,12 +29,6 @@ Comments.init({
     allowNull: false,
     comment: '评论内容'
   },
-  parent_id: {
-    type: Sequelize.INTEGER,
-    allowNull: true,
-    defaultValue: 0,
-    comment: '评论父级ID，默认为0'
-  },
   created_at: {
     type: Sequelize.DATE,
     get() {

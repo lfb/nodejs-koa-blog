@@ -36,7 +36,7 @@
     "mysql2": "^1.6.5",
     "npm-check": "^5.9.0",
     "require-directory": "^2.1.1",
-    "sequelize": "^5.6.1",
+    "sequelize": "^5.21.2",
     "validator": "^10.11.0"
   },
   "directories": {

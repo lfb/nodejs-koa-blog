@@ -18,7 +18,6 @@ class CommentsDao {
     comments.email = v.get('body.email');
     comments.content = v.get('body.content');
     comments.article_id = v.get('body.article_id');
-    comments.parent_id = v.get('body.parent_id');
 
     return comments.save();
   }
@@ -63,7 +62,6 @@ class CommentsDao {
     comments.email = v.get('body.email');
     comments.content = v.get('body.content');
     comments.article_id = v.get('body.article_id');
-    comments.parent_id = v.get('body.parent_id');
 
     comments.save();
   }

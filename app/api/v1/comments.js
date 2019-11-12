@@ -25,7 +25,6 @@ router.post('/comments', async (ctx) => {
     id: r.getDataValue('id'),
     article_id: r.getDataValue('article_id'),
     chapter_item_id: r.getDataValue('chapter_item_id'),
-    parent_id: r.getDataValue('parent_id'),
     nickname: r.getDataValue('nickname'),
     content: r.getDataValue('content'),
     created_at: r.getDataValue('created_at')

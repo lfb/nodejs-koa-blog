@@ -17,22 +17,17 @@ Reply.init({
   nickname: {
     type: Sequelize.STRING(64),
     allowNull: false,
-    comment: '评论人的名字'
+    comment: '回复人的名字'
   },
   email: {
     type: Sequelize.STRING(64),
     allowNull: false,
-    comment: '评论人的邮箱'
+    comment: '回复人的邮箱'
   },
   content: {
     type: Sequelize.TEXT,
     allowNull: false,
-    comment: '评论内容'
-  },
-  reply_username: {
-    type: Sequelize.STRING(64),
-    allowNull: false,
-    comment: '回复评论人名字'
+    comment: '回复内容'
   },
   // 创建时间
   created_at: {

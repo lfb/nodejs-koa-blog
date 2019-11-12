@@ -18,7 +18,6 @@ class ReplyDao {
     reply.email = v.get('body.email');
     reply.content = v.get('body.content');
     reply.comment_id = v.get('body.comment_id');
-    reply.reply_username = v.get('body.reply_username');
 
     return reply.save();
   }
@@ -62,7 +61,6 @@ class ReplyDao {
     reply.email = v.get('body.email');
     reply.content = v.get('body.content');
     reply.comment_id = v.get('body.comment_id');
-    reply.reply_username = v.get('body.reply_username');
 
     reply.save();
   }

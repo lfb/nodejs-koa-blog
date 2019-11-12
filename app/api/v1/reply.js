@@ -25,8 +25,7 @@ router.post('/reply', async (ctx) => {
     nickname: r.getDataValue('nickname'),
     content: r.getDataValue('content'),
     created_at: r.getDataValue('created_at'),
-    comment_id: r.getDataValue('comment_id'),
-    reply_username: r.getDataValue('reply_username')
+    comment_id: r.getDataValue('comment_id')
   };
 
   // 返回结果

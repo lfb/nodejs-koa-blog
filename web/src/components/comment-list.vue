@@ -1,8 +1,8 @@
 <template>
   <section class="comment">
     <div class="comment-header">评论列表</div>
-    <ul class="comment-box" v-if="comments.length > 0">
-      <li class="comment-item" v-for="(item, index) in comments" :key="index">
+    <ul class="comment-box" v-if="comments && comments.data.length > 0">
+      <li class="comment-item" v-for="(item, index) in comments.data" :key="index">
         <div class="comment-avatar">
           <Avatar size="small" style="background-color: #2d8cf0" icon="ios-person"/>
         </div>
@@ -11,9 +11,9 @@
           <p class="comment-content">
             {{item.content}}
           </p>
-          <div class="comment-reply" v-if="item.replyList && item.replyList.length > 0">
+          <div class="comment-reply" v-if="item.reply && item.reply.length > 0">
             <ul class="comment-box">
-              <li class="comment-item" v-for="(reply, index2) in item.replyList" :key="index2">
+              <li class="comment-item" v-for="(reply, index2) in item.reply" :key="index2">
                 <div class="comment-avatar">
                   <Avatar size="small" style="background-color: #2d8cf0" icon="ios-person"/>
                 </div>
@@ -48,9 +48,9 @@
     },
     props: {
       comments: {
-        type: Array,
+        type: Object,
         default() {
-          return []
+          return {}
         }
       },
       article_id: {

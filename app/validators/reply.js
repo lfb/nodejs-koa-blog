@@ -19,9 +19,6 @@ class ReplyValidator extends LinValidator {
     this.comment_id = [
       new Rule("isLength", "评论ID不能为空", {min: 1})
     ]
-    this.reply_username = [
-      new Rule("isLength", "回复用户名字不能为空", {min: 1})
-    ]
   }
 }
 

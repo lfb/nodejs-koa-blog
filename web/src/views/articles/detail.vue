@@ -35,7 +35,7 @@
       <!-- 新建评论-->
       <v-comment-create :article_id="article.id" @updateComments="updateComments"/>
       <!-- 评论列表-->
-      <v-comment-list :comments="commentsList" :article_id="article.id" @updateComments="updateComments"/>
+      <v-comment-list :comments="article.comments" :article_id="article.id" @updateComments="updateComments"/>
     </div>
 
     <!-- 侧边栏 -->
@@ -78,26 +78,13 @@
           id: this.id
         })
         this.article = r.data.data
-
-        const commentsList = r.data.data.comments_list.data
-        const replyList = r.data.data.reply_list
-
-        commentsList.forEach(comment => {
-          comment.replyList = []
-          replyList.forEach(reply => {
-            if (parseInt(comment.id) === parseInt(reply.comment_id)) {
-              comment.replyList.push(reply)
-            }
-          })
-        })
-        this.commentsList = commentsList
       },
       /**
        * 更新评论
        **/
       updateComments(newComments, type) {
         if (type === 'comment') {
-          this.commentsList.unshift(newComments)
+          this.article.comments.data.unshift(newComments)
         } else if (type === 'reply') {
           this.getArticle()
         }
