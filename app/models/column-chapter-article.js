@@ -3,13 +3,13 @@ const {sequelize} = require('../../core/db')
 const {Sequelize, Model} = require('sequelize')
 const {ColumnChapter} = require('../models/column-chapter')
 
-// 定义专栏章节子项模型
-class ColumnChapterItem extends Model {
+// 定义专栏文章模型
+class ColumnChapterArticle extends Model {
 
 }
 
-// 初始文章模型
-ColumnChapterItem.init({
+// 初始化专栏文章模型
+ColumnChapterArticle.init({
   id: {
     type: Sequelize.INTEGER,
     primaryKey: true,
@@ -50,18 +50,18 @@ ColumnChapterItem.init({
   }
 }, {
   sequelize,
-  modelName: 'column_chapter_item',
-  tableName: 'column_chapter_item'
+  modelName: 'column_chapter_article',
+  tableName: 'column_chapter_article'
 })
 
 // 专栏与专栏章节关联
-ColumnChapter.hasMany(ColumnChapterItem, {
-  foreignKey: 'column_chapter_id', sourceKey: 'id', as: 'columnChapterItem'
+ColumnChapter.hasMany(ColumnChapterArticle, {
+  foreignKey: 'column_chapter_id', sourceKey: 'id', as: 'columnChapterArticle'
 })
-ColumnChapterItem.belongsTo(ColumnChapter, {
+ColumnChapterArticle.belongsTo(ColumnChapter, {
   foreignKey: 'column_chapter_id', targetKey: 'id', as: 'columnChapter'
 })
 
 module.exports = {
-  ColumnChapterItem
+  ColumnChapterArticle
 }

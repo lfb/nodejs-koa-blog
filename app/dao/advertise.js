@@ -2,7 +2,7 @@ const {Advertise} = require('../models/advertise')
 
 class AdvertiseDao {
   // 新增评论回复表
-  static async createAdvertise(v) {
+  static async create(v) {
     // 检测是否存在广告
     const hasAdvertise = await AdvertiseDao.findOne({
       where: {
@@ -23,7 +23,7 @@ class AdvertiseDao {
   }
 
   // 删除评论
-  static async destroyAdvertise(id) {
+  static async destroy(id) {
     const advertise = await Advertise.findOne({
       where: {
         id,
@@ -37,7 +37,7 @@ class AdvertiseDao {
   }
 
   // 获取评论详情
-  static async getAdvertise(id) {
+  static async detail(id) {
     const reply = await Advertise.scope('iv').findOne({
       where: {
         id,
@@ -52,20 +52,20 @@ class AdvertiseDao {
   }
 
   // 更新评论
-  static async updateAdvertise(id, v) {
+  static async update(id, v) {
     const advertise = await Advertise.findByPk(id);
     if (!advertise) {
       throw new global.errs.NotFound('没有找到相关评论信息');
     }
-    advertise.comment_id = comment_id;
-    advertise.reply_id = reply_id;
+    advertise.comment_id = v.get('body.comment_id');
+    advertise.reply_id = v.get('body.reply_id');
 
     advertise.save();
   }
 
 
   // 评论列表
-  static async getAdvertiseList(page = 1) {
+  static async list(page = 1) {
     const pageSize = 10;
     const advertise = await Advertise.scope('bh').findAndCountAll({
       limit: pageSize,//每页10条

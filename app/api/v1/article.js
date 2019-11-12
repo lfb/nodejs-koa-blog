@@ -28,7 +28,7 @@ router.post('/article', new Auth(AUTH_ADMIN).m, async (ctx) => {
   const v = await new ArticleValidator().validate(ctx);
 
   // 创建文章
-  await ArticleDao.createArticle(v);
+  await ArticleDao.create(v);
 
   // 返回结果
   ctx.response.status = 200;
@@ -46,7 +46,7 @@ router.delete('/article/:id', new Auth(AUTH_ADMIN).m, async (ctx) => {
   // 获取文章ID参数
   const id = v.get('path.id');
   // 删除文章
-  await ArticleDao.destroyArticle(id);
+  await ArticleDao.destroy(id);
 
   ctx.response.status = 200;
   ctx.body = res.success('删除文章成功');
@@ -63,7 +63,7 @@ router.put('/article/:id', new Auth(AUTH_ADMIN).m, async (ctx) => {
   // 获取文章ID参数
   const id = v.get('path.id');
   // 更新文章
-  await ArticleDao.updateArticle(id, v);
+  await ArticleDao.update(id, v);
 
   ctx.response.status = 200;
   ctx.body = res.success('更新文章成功');
@@ -77,7 +77,7 @@ router.get('/article', async (ctx) => {
   // 获取页码，排序方法，分类ID，搜索关键字
   const {page, desc, category_id, keyword} = ctx.query;
   // 查询文章列表
-  const articleList = await ArticleDao.getArticleList(page, desc, category_id, keyword);
+  const articleList = await ArticleDao.list(page, desc, category_id, keyword);
 
   // 返回结果
   ctx.response.status = 200;
@@ -95,14 +95,13 @@ router.get('/article/:id', async (ctx) => {
   // 获取文章ID参数
   const id = v.get('path.id');
   // 查询文章
-  const article = await ArticleDao.getArticleDetail(id);
+  const article = await ArticleDao.detail(id);
 
   // 获取关联此文章的评论列表
   const commentsList = await CommentsDao.getArticleComments(id);
 
   // 更新文章浏览
-  await ArticleDao.updateArticleBrowse(id, ++article.browse);
-
+  await ArticleDao.updateBrowse(id, ++article.browse);
   await article.setDataValue('comments', commentsList);
 
   // 返回结果
@@ -127,7 +126,7 @@ router.get('/search/article', async (ctx) => {
   const desc = v.get('query.desc');
 
   // 查询文章
-  const article = await ArticleDao.getArticleByKeyword(keyword, page, desc);
+  const article = await ArticleDao.search(keyword, page, desc);
 
   // 返回结果
   ctx.response.status = 200;

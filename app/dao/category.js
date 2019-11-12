@@ -4,7 +4,7 @@ const {Sequelize, Op} = require('sequelize')
 
 class CategoryDao {
   // 创建分类
-  static async createCategory(v) {
+  static async create(v) {
     // 查询是否存在重复的分类
     const hasCategory = await Category.findOne({
       where: {
@@ -27,7 +27,7 @@ class CategoryDao {
   }
 
   // 删除分类
-  static async destroyCategory(id) {
+  static async destroy(id) {
     // 查询分类
     const category = await Category.findOne({
       where: {
@@ -43,7 +43,7 @@ class CategoryDao {
   }
 
   // 获取分类详情
-  static async getCategory(id) {
+  static async detail(id) {
     const category = await Category.scope('bh').findOne({
       where: {
         id,
@@ -58,7 +58,7 @@ class CategoryDao {
   }
 
   // 更新分类
-  static async updateCategory(id, v) {
+  static async update(id, v) {
     const category = await Category.findByPk(id);
     if (!category) {
       throw new global.errs.NotFound('没有找到相关分类');
@@ -71,7 +71,7 @@ class CategoryDao {
   }
 
   // 分类列表
-  static async getCategoryList() {
+  static async list() {
     const category = await Category.scope('bh').findAll({
       where: {
         deleted_at: null
@@ -120,7 +120,7 @@ class CategoryDao {
   }
 
   // 获取一个分类下的文章
-  static async getCategoryArticle(category_id, page = 1, desc = 'created_at') {
+  static async article(category_id, page = 1, desc = 'created_at') {
     const pageSize = 10;
 
     const article = await Article.scope('iv').findAndCountAll({

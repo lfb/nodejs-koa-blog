@@ -25,7 +25,7 @@ router.post('/category', new Auth(AUTH_ADMIN).m, async (ctx) => {
   // 通过验证器校验参数是否通过
   const v = await new CategoryValidator().validate(ctx);
 
-  await CategoryDao.createCategory(v);
+  await CategoryDao.create(v);
 
   // 返回结果
   ctx.response.status = 200;
@@ -44,7 +44,7 @@ router.delete('/category/:id', new Auth(AUTH_ADMIN).m, async (ctx) => {
   // 获取分类ID参数
   const id = v.get('path.id');
   // 删除分类
-  await CategoryDao.destroyCategory(id);
+  await CategoryDao.destroy(id);
 
   ctx.response.status = 200;
   ctx.body = res.success('删除分类成功');
@@ -62,7 +62,7 @@ router.put('/category/:id', new Auth(AUTH_ADMIN).m, async (ctx) => {
   // 获取分类ID参数
   const id = v.get('path.id');
   // 更新分类
-  await CategoryDao.updateCategory(id, v);
+  await CategoryDao.update(id, v);
 
   // 返回结果
   ctx.response.status = 200;
@@ -75,7 +75,7 @@ router.put('/category/:id', new Auth(AUTH_ADMIN).m, async (ctx) => {
 router.get('/category', async (ctx) => {
 
   // 获取分类下关联的文章
-  const categoryList = await CategoryDao.getCategoryList();
+  const categoryList = await CategoryDao.list();
 
   // 返回结果
   ctx.response.status = 200;
@@ -93,7 +93,7 @@ router.get('/category/:id', async (ctx) => {
   // 获取参数
   const id = v.get('path.id');
   // 获取分类
-  const category = await CategoryDao.getCategory(id);
+  const category = await CategoryDao.detail(id);
 
   // 返回结果
   ctx.response.status = 200;
@@ -115,7 +115,7 @@ router.get('/category/:id/article', async (ctx) => {
   // 排序
   const desc = v.get('query.desc');
   // 获取分类
-  const category = await CategoryDao.getCategoryArticle(category_id, page, desc);
+  const category = await CategoryDao.article(category_id, page, desc);
 
   // 返回结果
   ctx.response.status = 200;

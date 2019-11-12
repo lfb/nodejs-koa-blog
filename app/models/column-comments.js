@@ -2,13 +2,13 @@ const moment = require('moment');
 
 const {Sequelize, Model} = require('sequelize')
 const {sequelize} = require('../../core/db')
-const {Article} = require('../models/article')
+const {ColumnChapterArticle} = require('./column-chapter-article')
 
-class Comments extends Model {
+class ColumnComments extends Model {
 
 }
 
-Comments.init({
+ColumnComments.init({
   id: {
     type: Sequelize.INTEGER,
     primaryKey: true,
@@ -37,18 +37,19 @@ Comments.init({
   }
 }, {
   sequelize,
-  modelName: 'comments',
-  tableName: 'comments'
+  modelName: 'column_comments',
+  tableName: 'column_comments'
 })
 
-// 评论关联文章
-Article.hasMany(Comments, {
-  foreignKey: 'article_id', sourceKey: 'id', as: 'comment'
+
+// 评论关联专栏章节
+ColumnChapterArticle.hasMany(ColumnComments, {
+  foreignKey: 'column_chapter_article_id', sourceKey: 'id', as: 'columnComments'
 })
-Comments.belongsTo(Article, {
-  foreignKey: 'article_id', targetKey: 'id', as: 'article'
+ColumnComments.belongsTo(ColumnChapterArticle, {
+  foreignKey: 'column_chapter_article_id', targetKey: 'id', as: 'columnChapterArticle'
 })
 
 module.exports = {
-  Comments
+  ColumnComments
 }

@@ -7,7 +7,7 @@ const {Category} = require('../models/category')
 class ArticleDao {
 
   // 创建文章
-  static async createArticle(v) {
+  static async create(v) {
 
     // 检测是否存在文章
     const hasArticle = await Article.findOne({
@@ -37,7 +37,7 @@ class ArticleDao {
   }
 
   // 获取文章列表
-  static async getArticleList(page = 1, desc = 'created_at', category_id, keyword) {
+  static async list(page = 1, desc = 'created_at', category_id, keyword) {
     const pageSize = 10;
 
     // 筛选方式
@@ -87,7 +87,7 @@ class ArticleDao {
   }
 
   // 删除文章
-  static async destroyArticle(id) {
+  static async destroy(id) {
     // 检测是否存在文章
     const article = await Article.findOne({
       where: {
@@ -106,7 +106,7 @@ class ArticleDao {
   }
 
   // 更新文章
-  static async updateArticle(id, v) {
+  static async update(id, v) {
     // 查询文章
     const article = await Article.findByPk(id);
     if (!article) {
@@ -126,7 +126,7 @@ class ArticleDao {
   }
 
   // 更新文章浏览次数
-  static async updateArticleBrowse(id, browse) {
+  static async updateBrowse(id, browse) {
     // 查询文章
     const article = await Article.findByPk(id);
     if (!article) {
@@ -139,7 +139,7 @@ class ArticleDao {
   }
 
   // 文章详情
-  static async getArticleDetail(id) {
+  static async detail(id) {
     const article = await Article.findOne({
       where: {
         id
@@ -162,7 +162,7 @@ class ArticleDao {
   }
 
   // 搜索文章
-  static async getArticleByKeyword(keyword, page = 1, desc = 'created_at') {
+  static async search(keyword, page = 1, desc = 'created_at') {
     const pageSize = 10;
 
     const article = await Article.findAndCountAll({

@@ -1,24 +1,23 @@
-const {Comments} = require('../models/comments')
-const {Article} = require('../models/article')
-const {Reply} = require('../models/reply')
+const {ColumnComments} = require('../models/column-comments')
+const {ColumnChapterArticle} = require('../models/column-chapter-article')
+const {ColumnReply} = require('../models/column-reply')
 
-class CommentsDao {
+class ColumnCommentsDao {
   // 创建评论
   static async create(v) {
 
-    // 查询文章
-    if(v.get('body.article_id')){
-      const article = await Article.findByPk(v.get('body.article_id'));
-      if (!article) {
-        throw new global.errs.NotFound('没有找到相关文章');
+    // 查询章节
+    if(v.get('body.column_chapter_article_id')){
+      const columnChapterArticle = await ColumnChapterArticle.findByPk(v.get('body.column_chapter_article_id'));
+      if (!columnChapterArticle) {
+        throw new global.errs.NotFound('没有找到相关专栏文章');
       }
     }
 
-    const comments = new Comments();
+    const comments = new ColumnComments();
     comments.nickname = v.get('body.nickname');
     comments.email = v.get('body.email');
     comments.content = v.get('body.content');
-    comments.article_id = v.get('body.article_id');
     comments.column_chapter_article_id = v.get('body.column_chapter_article_id');
 
     return comments.save();
@@ -26,7 +25,7 @@ class CommentsDao {
 
   // 删除评论
   static async destroy(id) {
-    const comments = await Comments.findOne({
+    const comments = await ColumnComments.findOne({
       where: {
         id,
         deleted_at: null
@@ -41,7 +40,7 @@ class CommentsDao {
 
   // 获取评论详情
   static async detail(id) {
-    const comments = await Comments.scope('iv').findOne({
+    const comments = await ColumnComments.scope('iv').findOne({
       where: {
         id,
         deleted_at: null
@@ -56,7 +55,7 @@ class CommentsDao {
 
   // 更新评论
   static async update(id, v) {
-    const comments = await Comments.findByPk(id);
+    const comments = await ColumnComments.findByPk(id);
     if (!comments) {
       throw new global.errs.NotFound('没有找到相关评论信息');
     }
@@ -73,7 +72,7 @@ class CommentsDao {
   // 评论列表
   static async list(page = 1) {
     const pageSize = 10;
-    const comments = await Comments.scope('bh').findAndCountAll({
+    const comments = await ColumnComments.scope('bh').findAndCountAll({
       limit: pageSize,//每页10条
       offset: (page - 1) * pageSize,
       where: {
@@ -96,13 +95,13 @@ class CommentsDao {
     };
   }
 
-  // 文章下的评论
-  static async articleComments(article_id, page = 1, desc = 'created_at') {
+  // 获取专栏下文章的评论
+  static async articleComments(column_chapter_article_id, page = 1, desc = 'created_at') {
     const pageSize = 10;
 
-    const comments = await Comments.findAndCountAll({
+    const comments = await ColumnComments.findAndCountAll({
       where: {
-        article_id,
+        column_chapter_article_id,
         deleted_at: null
       },
       limit: pageSize,//每页10条
@@ -114,8 +113,8 @@ class CommentsDao {
         exclude: ['email', 'updated_at']
       },
       include: [{
-        model: Reply,
-        as: 'reply',
+        model: ColumnReply,
+        as: 'columnReply',
         through: {
           attributes: {
             exclude: ['updated_at', 'created_at']
@@ -142,5 +141,5 @@ class CommentsDao {
 }
 
 module.exports = {
-  CommentsDao
+  ColumnCommentsDao
 }

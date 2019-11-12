@@ -25,7 +25,7 @@ router.post('/register', async (ctx) => {
   const v = await new RegisterValidator().validate(ctx);
 
   // 创建管理员
-  await AdminDao.createAdmin(v);
+  await AdminDao.create(v);
 
   // 返回结果
   ctx.response.status = 200;
@@ -54,7 +54,7 @@ router.get('/auth', new Auth(AUTH_ADMIN).m, async (ctx) => {
   const id = ctx.auth.uid;
 
   // 查询用户信息
-  let userInfo = await AdminDao.getAdminInfo(id);
+  let userInfo = await AdminDao.detail(id);
 
   // 返回结果
   ctx.response.status = 200;

@@ -1,7 +1,8 @@
 const Router = require('koa-router')
 
-const {CommentReplyDao} = require('../../dao/comment-reply')
-const {CommentsReplyValidator, PositiveArticleIdParamsValidator} = require('../../validators/comments-reply')
+const {ColumnReplyDao} = require('../../dao/column-reply')
+const {ColumnCommentReplyDao} = require('../../dao/column_comment-reply')
+const {ColumnReplyValidator, PositiveArticleIdParamsValidator} = require('../../validators/column-reply')
 const {Auth} = require('../../../middlewares/auth');
 
 const {Resolve} = require('../../lib/helper');
@@ -14,18 +15,23 @@ const router = new Router({
 })
 
 // 创建评论
-router.post('/comments-reply', async (ctx) => {
+router.post('/column/reply', async (ctx) => {
   // 通过验证器校验参数是否通过
-  const v = await new CommentsReplyValidator().validate(ctx);
+  const v = await new ColumnReplyValidator().validate(ctx);
   // 创建回复
-  const params = {
-    comment_id: v.get('body.comment_id'),
-    reply_id:  v.get('body.reply_id')
-  }
-  const r = await CommentReplyDao.create(params);
+  const r = await ColumnReplyDao.create(v);
+
+  // 创建评论回复表
+  const column_comment_id = v.get('body.column_comment_id')
+  const column_reply_id = r.getDataValue('id')
+  await ColumnCommentReplyDao.create(column_comment_id, column_reply_id)
+
   const data = {
-    comment_id: r.getDataValue('comment_id'),
-    reply_id: r.getDataValue('reply_id')
+    id: reply_id,
+    nickname: r.getDataValue('nickname'),
+    content: r.getDataValue('content'),
+    created_at: r.getDataValue('created_at'),
+    comment_id: r.getDataValue('comment_id')
   };
 
   // 返回结果
@@ -34,14 +40,14 @@ router.post('/comments-reply', async (ctx) => {
 })
 
 // 删除评论
-router.delete('/comments-reply/:id', new Auth(AUTH_ADMIN).m, async (ctx) => {
+router.delete('/column/reply/:id', new Auth(AUTH_ADMIN).m, async (ctx) => {
 
   // 通过验证器校验参数是否通过
   const v = await new PositiveArticleIdParamsValidator().validate(ctx);
 
   // 获取分类ID参数
   const id = v.get('path.id');
-  await CommentReplyDao.destroy(id);
+  await ColumnReplyDao.destroy(id);
 
   // 返回结果
   ctx.response.status = 200;
@@ -49,14 +55,14 @@ router.delete('/comments-reply/:id', new Auth(AUTH_ADMIN).m, async (ctx) => {
 })
 
 // 修改评论
-router.put('/comments-reply/:id', new Auth(AUTH_ADMIN).m, async (ctx) => {
+router.put('/column/reply/:id', new Auth(AUTH_ADMIN).m, async (ctx) => {
 
   // 通过验证器校验参数是否通过
   const v = await new PositiveArticleIdParamsValidator().validate(ctx);
 
   // 获取分类ID参数
   const id = v.get('path.id');
-  await CommentReplyDao.update(id, v);
+  await ColumnReplyDao.update(id, v);
 
   // 返回结果
   ctx.response.status = 200;
@@ -64,28 +70,28 @@ router.put('/comments-reply/:id', new Auth(AUTH_ADMIN).m, async (ctx) => {
 })
 
 // 获取评论列表
-router.get('/reply', async (ctx) => {
+router.get('/column/reply', async (ctx) => {
   const page = ctx.query.page;
-  let CommentReplyList = await CommentReplyDao.list(page);
+  let replyList = await ColumnReplyDao.list(page);
 
   // 返回结果
   ctx.response.status = 200;
-  ctx.body = res.json(CommentReplyList);
+  ctx.body = res.json(replyList);
 
 })
 
 // 获取评论详情
-router.get('/comments-reply/:id', async (ctx) => {
+router.get('/column/reply/:id', async (ctx) => {
   // 通过验证器校验参数是否通过
   const v = await new PositiveArticleIdParamsValidator().validate(ctx);
 
   // 获取分类ID参数
   const id = v.get('path.id');
-  let commentReply = await CommentReplyDao.detail(id)
+  let reply = await ColumnReplyDao.detail(id)
 
   // 返回结果
   ctx.response.status = 200;
-  ctx.body = res.json(commentReply);
+  ctx.body = res.json(reply);
 
 })
 

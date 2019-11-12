@@ -26,7 +26,7 @@ router.post('/column/chapter', new Auth(AUTH_ADMIN).m, async (ctx) => {
   const v = await new ColumnChapterValidator().validate(ctx);
 
   // 创建专栏章节
-  await ColumnChapterDao.createColumnChapter(v);
+  await ColumnChapterDao.create(v);
 
   // 返回结果
   ctx.response.status = 200;
@@ -44,7 +44,7 @@ router.delete('/column/chapter/:id', new Auth(AUTH_ADMIN).m, async (ctx) => {
   // 获取专栏章节ID参数
   const id = v.get('path.id');
   // 删除专栏
-  await ColumnChapterDao.destroyColumnChapter(id);
+  await ColumnChapterDao.destroy(id);
 
   ctx.response.status = 200;
   ctx.body = res.success('删除专栏章节成功');
@@ -61,7 +61,7 @@ router.put('/column/chapter/:id', new Auth(AUTH_ADMIN).m, async (ctx) => {
   // 获取专栏ID参数
   const id = v.get('path.id');
   // 更新专栏章节
-  await ColumnChapterDao.updateColumnChapter(id, v);
+  await ColumnChapterDao.update(id, v);
 
   ctx.response.status = 200;
   ctx.body = res.success('更新专栏章节成功');
@@ -75,7 +75,7 @@ router.get('/column/chapter', async (ctx) => {
   // 获取页码，排序方法
   const {column_id} = ctx.query;
   // 查询专栏章节列表
-  const columnChapterList = await ColumnChapterDao.getColumnChapterList(column_id);
+  const columnChapterList = await ColumnChapterDao.list(column_id);
 
   // 返回结果
   ctx.response.status = 200;
@@ -93,7 +93,7 @@ router.get('/column/chapter/:id', async (ctx) => {
   // 获取专栏ID参数
   const id = v.get('path.id');
   // 查询专栏章节
-  const columnChapter = await ColumnChapterDao.getColumnChapterDetail(id);
+  const columnChapter = await ColumnChapterDao.detail(id);
 
   // 返回结果
   ctx.response.status = 200;

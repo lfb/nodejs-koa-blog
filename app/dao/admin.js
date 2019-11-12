@@ -4,7 +4,7 @@ const bcrypt = require('bcryptjs')
 // data access object
 class AdminDao {
   // 创建用管理员
-  static async createAdmin(v) {
+  static async create(v) {
     const hasAdmin = await Admin.findOne({
       where: {
         email: v.get('body.email'),
@@ -25,7 +25,7 @@ class AdminDao {
   }
 
   // 验证密码
-  static async verifyEmailPassword(email, plainPassword) {
+  static async verify(email, plainPassword) {
 
     // 查询用户是否存在
     const admin = await Admin.findOne({
@@ -49,7 +49,7 @@ class AdminDao {
   }
 
   // 查询管理员信息
-  static async getAdminInfo(id) {
+  static async detail(id) {
     const scope = 'bh';
     // 查询管理员是否存在
     const admin = await Admin.scope(scope).findOne({

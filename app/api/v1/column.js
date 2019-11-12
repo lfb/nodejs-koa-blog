@@ -26,7 +26,7 @@ router.post('/column', new Auth(AUTH_ADMIN).m, async (ctx) => {
   const v = await new ColumnValidator().validate(ctx);
 
   // 创建专栏
-  await ColumnDao.createColumn(v);
+  await ColumnDao.create(v);
 
   // 返回结果
   ctx.response.status = 200;
@@ -44,7 +44,7 @@ router.delete('/column/:id', new Auth(AUTH_ADMIN).m, async (ctx) => {
   // 获取专栏ID参数
   const id = v.get('path.id');
   // 删除专栏
-  await ColumnDao.destroyColumn(id);
+  await ColumnDao.destroy(id);
 
   ctx.response.status = 200;
   ctx.body = res.success('删除专栏成功');
@@ -61,7 +61,7 @@ router.put('/column/:id', new Auth(AUTH_ADMIN).m, async (ctx) => {
   // 获取专栏ID参数
   const id = v.get('path.id');
   // 更新专栏
-  await ColumnDao.updateColumn(id, v);
+  await ColumnDao.update(id, v);
 
   ctx.response.status = 200;
   ctx.body = res.success('更新专栏成功');
@@ -75,7 +75,7 @@ router.get('/column', async (ctx) => {
   // 获取页码，排序方法
   const {page, desc} = ctx.query;
   // 查询专栏列表
-  const columnList = await ColumnDao.getColumnList(page, desc);
+  const columnList = await ColumnDao.list(page, desc);
 
   // 返回结果
   ctx.response.status = 200;
@@ -93,7 +93,7 @@ router.get('/column/:id', async (ctx) => {
   // 获取专栏ID参数
   const id = v.get('path.id');
   // 查询专栏
-  const column = await ColumnDao.getColumnDetail(id);
+  const column = await ColumnDao.detail(id);
 
   // 返回结果
   ctx.response.status = 200;

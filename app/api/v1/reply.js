@@ -19,12 +19,12 @@ router.post('/reply', async (ctx) => {
   // 通过验证器校验参数是否通过
   const v = await new ReplyValidator().validate(ctx);
   // 创建回复
-  const r = await ReplyDao.createReply(v);
+  const r = await ReplyDao.create(v);
 
   // 创建评论回复表
   const comment_id = v.get('body.comment_id')
   const reply_id = r.getDataValue('id')
-  await CommentReplyDao.createCommentReply(comment_id, reply_id)
+  await CommentReplyDao.create(comment_id, reply_id)
 
   const data = {
     id: reply_id,
@@ -47,7 +47,7 @@ router.delete('/reply/:id', new Auth(AUTH_ADMIN).m, async (ctx) => {
 
   // 获取分类ID参数
   const id = v.get('path.id');
-  await ReplyDao.destroyReply(id);
+  await ReplyDao.destroy(id);
 
   // 返回结果
   ctx.response.status = 200;
@@ -62,7 +62,7 @@ router.put('/reply/:id', new Auth(AUTH_ADMIN).m, async (ctx) => {
 
   // 获取分类ID参数
   const id = v.get('path.id');
-  await ReplyDao.updateReply(id, v);
+  await ReplyDao.update(id, v);
 
   // 返回结果
   ctx.response.status = 200;
@@ -72,7 +72,7 @@ router.put('/reply/:id', new Auth(AUTH_ADMIN).m, async (ctx) => {
 // 获取评论列表
 router.get('/reply', async (ctx) => {
   const page = ctx.query.page;
-  let replyList = await ReplyDao.getReplyList(page);
+  let replyList = await ReplyDao.list(page);
 
   // 返回结果
   ctx.response.status = 200;
@@ -87,7 +87,7 @@ router.get('/reply/:id', async (ctx) => {
 
   // 获取分类ID参数
   const id = v.get('path.id');
-  let reply = await ReplyDao.getReply(id)
+  let reply = await ReplyDao.detail(id)
 
   // 返回结果
   ctx.response.status = 200;

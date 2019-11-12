@@ -1,18 +1,16 @@
-const {Op} = require('sequelize')
+const {ColumnComments} = require('../models/column-comments')
+const {CommentsReply} = require('../models/comments-reply')
 
-const {Reply} = require('../models/reply')
-const {Comments} = require('../models/comments')
-
-class ReplyDao {
+class ColumnReplyDao {
   // 创建评论
   static async create(v) {
     // 查询文章
-    const comment = await Comments.findByPk(v.get('body.comment_id'));
+    const comment = await ColumnComments.findByPk(v.get('body.column_comment_id'));
     if (!comment) {
       throw new global.errs.NotFound('没有找到相关评论');
     }
 
-    const reply = new Reply();
+    const reply = new CommentsReply();
     reply.nickname = v.get('body.nickname');
     reply.email = v.get('body.email');
     reply.content = v.get('body.content');
@@ -23,7 +21,7 @@ class ReplyDao {
 
   // 删除评论
   static async destroy(id) {
-    const reply = await Reply.findOne({
+    const reply = await CommentsReply.findOne({
       where: {
         id,
         deleted_at: null
@@ -37,7 +35,7 @@ class ReplyDao {
 
   // 获取评论详情
   static async detail(id) {
-    const reply = await Reply.scope('iv').findOne({
+    const reply = await CommentsReply.scope('iv').findOne({
       where: {
         id,
         deleted_at: null
@@ -52,7 +50,7 @@ class ReplyDao {
 
   // 更新评论
   static async update(id, v) {
-    const reply = await Reply.findByPk(id);
+    const reply = await CommentsReply.findByPk(id);
     if (!reply) {
       throw new global.errs.NotFound('没有找到相关评论信息');
     }
@@ -68,7 +66,7 @@ class ReplyDao {
   // 评论列表
   static async list(page = 1) {
     const pageSize = 10;
-    const reply = await Reply.scope('bh').findAndCountAll({
+    const reply = await CommentsReply.scope('bh').findAndCountAll({
       limit: pageSize,//每页10条
       offset: (page - 1) * pageSize,
       where: {
@@ -96,5 +94,5 @@ class ReplyDao {
 }
 
 module.exports = {
-  ReplyDao
+  ColumnReplyDao
 }

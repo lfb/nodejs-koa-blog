@@ -1,7 +1,7 @@
 const Router = require('koa-router')
 
-const {CommentsDao} = require('../../dao/comments')
-const {CommentsValidator, PositiveArticleIdParamsValidator} = require('../../validators/comments')
+const {ColumnCommentsDao} = require('../../dao/column-comments')
+const {CommentsValidator, PositiveArticleIdParamsValidator} = require('../../validators/column-comments')
 const {Auth} = require('../../../middlewares/auth');
 
 const {Resolve} = require('../../lib/helper');
@@ -14,16 +14,15 @@ const router = new Router({
 })
 
 // 创建评论
-router.post('/comments', async (ctx) => {
+router.post('/column/comments', async (ctx) => {
 
   // 通过验证器校验参数是否通过
   const v = await new CommentsValidator().validate(ctx);
 
-  const r = await CommentsDao.create(v);
+  const r = await ColumnCommentsDao.create(v);
 
   const data = {
     id: r.getDataValue('id'),
-    article_id: r.getDataValue('article_id'),
     column_chapter_article_id: r.getDataValue('column_chapter_article_id'),
     nickname: r.getDataValue('nickname'),
     content: r.getDataValue('content'),
@@ -43,7 +42,7 @@ router.delete('/comments/:id', new Auth(AUTH_ADMIN).m, async (ctx) => {
 
   // 获取分类ID参数
   const id = v.get('path.id');
-  await CommentsDao.destroy(id);
+  await ColumnCommentsDao.destroy(id);
 
   // 返回结果
   ctx.response.status = 200;
@@ -58,7 +57,7 @@ router.put('/comments/:id', new Auth(AUTH_ADMIN).m, async (ctx) => {
 
   // 获取分类ID参数
   const id = v.get('path.id');
-  await CommentsDao.updateComments(id, v);
+  await ColumnCommentsDao.update(id, v);
 
   // 返回结果
   ctx.response.status = 200;
@@ -68,7 +67,7 @@ router.put('/comments/:id', new Auth(AUTH_ADMIN).m, async (ctx) => {
 // 获取评论列表
 router.get('/comments', async (ctx) => {
   const page = ctx.query.page;
-  let commentsList = await CommentsDao.list(page);
+  let commentsList = await ColumnCommentsDao.list(page);
 
   // 返回结果
   ctx.response.status = 200;
@@ -83,7 +82,7 @@ router.get('/comments/:id', async (ctx) => {
 
   // 获取分类ID参数
   const id = v.get('path.id');
-  let comments = await CommentsDao.detail(id)
+  let comments = await ColumnCommentsDao.detail(id)
 
   // 返回结果
   ctx.response.status = 200;
@@ -91,7 +90,7 @@ router.get('/comments/:id', async (ctx) => {
 
 })
 
-// 获取文章下的评论
+// 获取专栏文章下的评论
 router.get('/article/:article_id/comments', async (ctx) => {
 
   // 通过验证器校验参数是否通过
@@ -103,7 +102,7 @@ router.get('/article/:article_id/comments', async (ctx) => {
   const article_id = v.get('path.article_id');
   // 页面, 排序
   const {page, desc} = ctx.query;
-  const commentsList = await CommentsDao.articleComments(article_id, page, desc);
+  const commentsList = await ColumnCommentsDao.articleComments(article_id, page, desc);
 
   // 返回结果
   ctx.response.status = 200;

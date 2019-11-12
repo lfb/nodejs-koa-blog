@@ -1,12 +1,12 @@
 const {Column} = require('../models/column')
 const {ColumnChapter} = require('../models/column-chapter')
-const {ColumnChapterItem} = require('../models/column-chapter-item')
+const {ColumnChapterArticle} = require('../models/column-chapter-article')
 
 // 定义专栏模型
 class ColumnDao {
 
   // 创建专栏
-  static async createColumn(v) {
+  static async create(v) {
     // 检测是否存在专栏
     const hasColumn = await Column.findOne({
       where: {
@@ -32,7 +32,7 @@ class ColumnDao {
   }
 
   // 获取专栏列表
-  static async getColumnList(page = 1, desc = 'created_at') {
+  static async list(page = 1, desc = 'created_at') {
     const pageSize = 10;
 
     // 筛选方式
@@ -64,7 +64,7 @@ class ColumnDao {
   }
 
   // 删除专栏
-  static async destroyColumn(id) {
+  static async destroy(id) {
     // 检测是否存在专栏
     const column = await Column.findOne({
       where: {
@@ -83,7 +83,7 @@ class ColumnDao {
   }
 
   // 更新专栏
-  static async updateColumn(id, v) {
+  static async update(id, v) {
     // 查询专栏
     const column = await Column.findByPk(id);
     if (!column) {
@@ -100,7 +100,7 @@ class ColumnDao {
   }
 
   // 文章详情
-  static async getColumnDetail(id) {
+  static async detail(id) {
     const column = await Column.findOne({
       where: {
         id
@@ -113,8 +113,8 @@ class ColumnDao {
           exclude: ['deleted_at', 'updated_at']
         },
         include: [{
-          model: ColumnChapterItem,
-          as: 'columnChapterItem',
+          model: ColumnChapterArticle,
+          as: 'ColumnChapterArticle',
           attributes: ['id', 'title'],
         }]
       }]

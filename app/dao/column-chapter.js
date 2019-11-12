@@ -4,7 +4,7 @@ const {ColumnChapter} = require('../models/column-chapter')
 class ColumnChapterDao {
 
   // 创建专栏章节
-  static async createColumnChapter(v) {
+  static async create(v) {
     // 检测是否存在专栏章节
     const hasColumnChapter = await ColumnChapter.findOne({
       where: {
@@ -29,7 +29,7 @@ class ColumnChapterDao {
   }
 
   // 获取专栏章节列表
-  static async getColumnChapterList(column_id) {
+  static async list(column_id) {
     return  await ColumnChapter.scope('iv').findAll({
       where: {
         column_id,
@@ -42,7 +42,7 @@ class ColumnChapterDao {
   }
 
   // 删除专栏
-  static async destroyColumnChapter(id) {
+  static async destroy(id) {
     // 检测是否存在专栏
     const columnChapter = await ColumnChapter.findOne({
       where: {
@@ -64,7 +64,7 @@ class ColumnChapterDao {
   }
 
   // 更新专栏
-  static async updateColumnChapter(id, v) {
+  static async update(id, v) {
     // 查询专栏
     const columnChapter = await ColumnChapter.findByPk(id);
     if (!columnChapter) {
@@ -80,7 +80,7 @@ class ColumnChapterDao {
   }
 
   // 专栏章节详情
-  static async getColumnChapterDetail(id) {
+  static async detail(id) {
     const columnChapter = await ColumnChapter.findOne({
       where: {
         id

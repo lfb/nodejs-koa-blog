@@ -18,7 +18,7 @@ router.post('/advertise', async (ctx) => {
   // 通过验证器校验参数是否通过
   const v = await new AdvertiseValidator().validate(ctx);
   // 创建回复
-  const r = await AdvertiseDao.createAdvertise(v);
+  const r = await AdvertiseDao.create(v);
 
   // 返回结果
   ctx.response.status = 200;
@@ -33,7 +33,7 @@ router.delete('/advertise/:id', new Auth(AUTH_ADMIN).m, async (ctx) => {
 
   // 获取广告ID参数
   const id = v.get('path.id');
-  await AdvertiseDao.destroyAdvertise(id);
+  await AdvertiseDao.destroy(id);
 
   // 返回结果
   ctx.response.status = 200;
@@ -48,7 +48,7 @@ router.put('/advertise/:id', new Auth(AUTH_ADMIN).m, async (ctx) => {
 
   // 获取广告ID参数
   const id = v.get('path.id');
-  await AdvertiseDao.updateAdvertise(id, v);
+  await AdvertiseDao.update(id, v);
 
   // 返回结果
   ctx.response.status = 200;
@@ -73,7 +73,7 @@ router.get('/advertise/:id', async (ctx) => {
 
   // 获取广告ID参数
   const id = v.get('path.id');
-  let commentReply = await AdvertiseDao.getAdvertise(id)
+  let commentReply = await AdvertiseDao.detail(id)
 
   // 返回结果
   ctx.response.status = 200;
