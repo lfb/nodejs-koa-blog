@@ -2,7 +2,6 @@ const {Op} = require('sequelize')
 
 const {Article} = require('../models/article')
 const {Category} = require('../models/category')
-const {Comments} = require('../models/comments')
 
 // 定义文章模型
 class ArticleDao {

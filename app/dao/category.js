@@ -1,6 +1,5 @@
 const {Category} = require('../models/category')
 const {Article} = require('../models/article')
-const {ArticleDao} = require('../dao/article')
 const {Sequelize, Op} = require('sequelize')
 
 class CategoryDao {
@@ -133,33 +132,19 @@ class CategoryDao {
       },
       order: [
         [desc, 'DESC']
-      ]
-    });
-
-    const categoryIds = [];
-    const articleIds = [];
-
-    const r = article.rows;
-    r.forEach(article => {
-      articleIds.push(article.id);
-      categoryIds.push(article.category_id);
-    });
-
-
-    // // 获取每篇文章评论
-    const comments = await ArticleDao._getArticleComments(articleIds);
-    r.forEach(article => {
-      ArticleDao._setArticleComments(article, comments)
-    });
-
-    // 获取每篇文章分类详情
-    const category = await ArticleDao._getArticleCategoryDetail(categoryIds);
-    r.forEach(article => {
-      ArticleDao._setArticleCategoryDetail(article, category)
+      ],
+      // 查询每篇文章下关联的分类
+      include: [{
+        model: Category,
+        as: 'category',
+        attributes: {
+          exclude: ['deleted_at', 'updated_at']
+        }
+      }]
     });
 
     return {
-      data: r,
+      data: article.rows,
       // 分页
       meta: {
         current_page: parseInt(page),
