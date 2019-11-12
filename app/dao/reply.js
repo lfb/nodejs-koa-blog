@@ -2,11 +2,11 @@ const {Op} = require('sequelize')
 
 const {Reply} = require('../models/reply')
 const {Comments} = require('../models/comments')
+const {CommentsReply} = require('../models/comments-reply')
 
 class ReplyDao {
   // 创建评论
   static async createReply(v) {
-
     // 查询文章
     const comment = await Comments.findByPk(v.get('body.comment_id'));
     if (!comment) {

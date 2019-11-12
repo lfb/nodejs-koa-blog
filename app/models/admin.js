@@ -15,14 +15,17 @@ Admin.init({
     primaryKey: true,
     autoIncrement: true
   },
-  // 管理员昵称
-  nickname: Sequelize.STRING,
-  // 管理员邮箱
+  nickname: {
+    type: Sequelize.STRING(64),
+    allowNull: false,
+    comment: '管理员昵称'
+  },
   email: {
     type: Sequelize.STRING(128),
-    unique: true
+    unique: true,
+    allowNull: false,
+    comment: '管理员邮箱'
   },
-  // 管理员密码
   password: {
     type: Sequelize.STRING,
     set(val) {
@@ -31,7 +34,9 @@ Admin.init({
       // 生成加密密码
       const psw = bcrypt.hashSync(val, salt);
       this.setDataValue("password", psw);
-    }
+    },
+    allowNull: false,
+    comment: '管理员密码'
   },
   created_at: {
     type: Sequelize.DATE,
