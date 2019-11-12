@@ -1,7 +1,9 @@
 const Router = require('koa-router');
 
 const {
-  ArticleValidator, PositiveIdParamsValidator, ArticleSearchValidator
+  ArticleValidator,
+  PositiveIdParamsValidator,
+  ArticleSearchValidator
 } = require('../../validators/article');
 
 const {Auth} = require('../../../middlewares/auth');
