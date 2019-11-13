@@ -4,7 +4,7 @@ class AdvertiseDao {
   // 新增评论回复表
   static async create(v) {
     // 检测是否存在广告
-    const hasAdvertise = await AdvertiseDao.findOne({
+    const hasAdvertise = await Advertise.findOne({
       where: {
         title: v.get('body.title'),
         deleted_at: null
@@ -18,6 +18,7 @@ class AdvertiseDao {
 
     const advertise = new Advertise();
     advertise.title = v.get('body.title')
+    advertise.link = v.get('body.link')
 
     return advertise.save();
   }
@@ -55,7 +56,7 @@ class AdvertiseDao {
   static async update(id, v) {
     const advertise = await Advertise.findByPk(id);
     if (!advertise) {
-      throw new global.errs.NotFound('没有找到相关评论信息');
+      throw new global.errs.NotFound('没有找到相关广告信息');
     }
     advertise.comment_id = v.get('body.comment_id');
     advertise.reply_id = v.get('body.reply_id');
