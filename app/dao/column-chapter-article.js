@@ -24,8 +24,6 @@ class ColumnChapterArticleDao {
     article.author = v.get('body.author');
     article.description = v.get('body.description');
     article.content = v.get('body.content');
-    article.cover = v.get('body.cover');
-    article.browse = v.get('body.browse');
     article.column_chapter_id = v.get('body.column_chapter_id');
 
     article.save();
@@ -75,8 +73,6 @@ class ColumnChapterArticleDao {
     article.author = v.get('body.author');
     article.description = v.get('body.description');
     article.content = v.get('body.content');
-    article.cover = v.get('body.cover');
-    article.browse = v.get('body.browse');
     article.column_chapter_id = v.get('body.column_chapter_id');
 
     article.save();

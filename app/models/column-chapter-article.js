@@ -31,16 +31,6 @@ ColumnChapterArticle.init({
     allowNull: false,
     comment: '专栏章节内容'
   },
-  cover: {
-    type: Sequelize.STRING(64),
-    allowNull: false,
-    comment: '专栏章节封面'
-  },
-  browse: {
-    type: Sequelize.INTEGER,
-    allowNull: true,
-    defaultValue: 0
-  },
   // 创建时间
   created_at: {
     type: Sequelize.DATE,

@@ -6,8 +6,8 @@ const {
 } = require('../../validators/column-chapter-article');
 
 const {Auth} = require('../../../middlewares/auth');
-const {ColumnChapterArticleDao} = require('../../dao/column-chapter-article');
 const {ColumnCommentsDao} = require('../../dao/column-comments');
+const {ColumnChapterArticleDao} = require('../../dao/column-chapter-article');
 
 const {Resolve} = require('../../lib/helper');
 const res = new Resolve();
