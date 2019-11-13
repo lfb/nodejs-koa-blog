@@ -8,16 +8,16 @@ class CommentsValidator extends LinValidator {
     super()
 
     this.nickname = [
-      new Rule("isLength", "评论人名字不能为空", {min: 1})
+      new Rule("isLength", "评论人名字 nickname 不能为空", {min: 1})
     ]
     this.email = [
-      new Rule('isEmail', '电子邮箱不符合规范，请输入正确的邮箱')
+      new Rule('isEmail', '电子邮箱 email 不符合规范，请输入正确的邮箱')
     ]
     this.content = [
-      new Rule("isLength", "评论内容名字不能为空", {min: 1})
+      new Rule("isLength", "评论内容 content 不能为空", {min: 1})
     ]
     this.column_chapter_article_id = [
-      new Rule("isLength", "专栏文章 ID 不能为空", {min: 1})
+      new Rule("isLength", "专栏文章 column_chapter_article_id 不能为空", {min: 1})
     ]
   }
 }

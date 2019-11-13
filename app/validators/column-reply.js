@@ -17,7 +17,7 @@ class ColumnReplyValidator extends LinValidator {
       new Rule("isLength", "评论内容名字不能为空", {min: 1})
     ]
     this.column_comment_id = [
-      new Rule("isLength", "专栏ID不能为空", {min: 1})
+      new Rule("isLength", "专评论 column_comment_id 不能为空", {min: 1})
     ]
   }
 }

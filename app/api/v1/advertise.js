@@ -58,7 +58,7 @@ router.put('/advertise/:id', new Auth(AUTH_ADMIN).m, async (ctx) => {
 // 获取广告列表
 router.get('/advertise', async (ctx) => {
   const page = ctx.query.page;
-  let CommentReplyList = await AdvertiseDao.getAdvertiseList(page);
+  let CommentReplyList = await AdvertiseDao.list(page);
 
   // 返回结果
   ctx.response.status = 200;

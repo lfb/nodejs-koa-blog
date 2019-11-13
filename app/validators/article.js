@@ -13,7 +13,7 @@ class ArticleValidator extends LinValidator {
     this.author = [new Rule("isLength", "文章作者 author 不能为空", {min: 1})];
     this.cover = [new Rule("isLength", "文章封面 cover 不能为空", {min: 1})];
     this.description = [new Rule("isLength", "文章简介 description 不能为空", {min: 1})];
-    this.content = [new Rule("isLength", "文章内容content 不能为空", {min: 1})];
+    this.content = [new Rule("isLength", "文章内容 content 不能为空", {min: 1})];
     this.category_id = [new Rule("isLength", "文章分类 category_id 不能为空", {min: 1})];
   }
 

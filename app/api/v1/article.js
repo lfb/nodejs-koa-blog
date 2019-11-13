@@ -98,7 +98,7 @@ router.get('/article/:id', async (ctx) => {
   const article = await ArticleDao.detail(id);
 
   // 获取关联此文章的评论列表
-  const commentsList = await CommentsDao.getArticleComments(id);
+  const commentsList = await CommentsDao.articleComments(id);
 
   // 更新文章浏览
   await ArticleDao.updateBrowse(id, ++article.browse);
