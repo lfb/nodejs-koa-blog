@@ -1,5 +1,3 @@
-const {Op} = require('sequelize')
-
 const {Reply} = require('../models/reply')
 const {Comments} = require('../models/comments')
 
@@ -69,7 +67,8 @@ class ReplyDao {
   static async list(page = 1) {
     const pageSize = 10;
     const reply = await Reply.scope('bh').findAndCountAll({
-      limit: pageSize,//每页10条
+      //每页10条
+      limit: pageSize,
       offset: (page - 1) * pageSize,
       where: {
         deleted_at: null

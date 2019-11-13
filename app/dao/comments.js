@@ -5,13 +5,10 @@ const {Reply} = require('../models/reply')
 class CommentsDao {
   // 创建评论
   static async create(v) {
-
     // 查询文章
-    if(v.get('body.article_id')){
-      const article = await Article.findByPk(v.get('body.article_id'));
-      if (!article) {
-        throw new global.errs.NotFound('没有找到相关文章');
-      }
+    const article = await Article.findByPk(v.get('body.article_id'));
+    if (!article) {
+      throw new global.errs.NotFound('没有找到相关文章');
     }
 
     const comments = new Comments();
@@ -19,7 +16,6 @@ class CommentsDao {
     comments.email = v.get('body.email');
     comments.content = v.get('body.content');
     comments.article_id = v.get('body.article_id');
-    comments.column_chapter_article_id = v.get('body.column_chapter_article_id');
 
     return comments.save();
   }
@@ -64,7 +60,6 @@ class CommentsDao {
     comments.email = v.get('body.email');
     comments.content = v.get('body.content');
     comments.article_id = v.get('body.article_id');
-    comments.column_chapter_article_id = v.get('body.column_chapter_article_id');
 
     comments.save();
   }

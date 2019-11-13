@@ -6,7 +6,7 @@ class ColumnChapterDao {
   // 创建专栏章节
   static async create(v) {
     // 检测是否存在专栏章节
-    const hasColumnChapter = await ColumnChapter.findOne({
+    const hasChapter = await ColumnChapter.findOne({
       where: {
         title: v.get('body.title'),
         deleted_at: null
@@ -14,23 +14,21 @@ class ColumnChapterDao {
     });
 
     // 如果存在，抛出存在信息
-    if (hasColumnChapter) {
+    if (hasChapter) {
       throw new global.errs.Existing('专栏章节已存在');
     }
 
     // 创建专栏章节
-    const columnChapter = new ColumnChapter();
-
-    columnChapter.title = v.get('body.title');
-    columnChapter.index = v.get('body.index');
-    columnChapter.column_id = v.get('body.column_id');
-
-    columnChapter.save();
+    const chapter = new ColumnChapter();
+    chapter.title = v.get('body.title');
+    chapter.index = v.get('body.index');
+    chapter.column_id = v.get('body.column_id');
+    chapter.save();
   }
 
   // 获取专栏章节列表
   static async list(column_id) {
-    return  await ColumnChapter.scope('iv').findAll({
+    return await ColumnChapter.scope('iv').findAll({
       where: {
         column_id,
         deleted_at: null
@@ -41,10 +39,10 @@ class ColumnChapterDao {
     });
   }
 
-  // 删除专栏
+  // 删除专栏章节
   static async destroy(id) {
-    // 检测是否存在专栏
-    const columnChapter = await ColumnChapter.findOne({
+    // 检测是否存在专栏章节
+    const hasChapter = await ColumnChapter.findOne({
       where: {
         id,
         deleted_at: null
@@ -54,44 +52,39 @@ class ColumnChapterDao {
       ],
     });
     // 不存在抛出错误
-    if (!columnChapter) {
+    if (!hasChapter) {
       throw new global.errs.NotFound('没有找到相关专栏章节');
-
     }
-
     // 软删除专栏
-    columnChapter.destroy()
+    hasChapter.destroy()
   }
 
-  // 更新专栏
+  // 更新专栏章节
   static async update(id, v) {
-    // 查询专栏
-    const columnChapter = await ColumnChapter.findByPk(id);
-    if (!columnChapter) {
+    // 查询专栏章节
+    const chapter = await ColumnChapter.findByPk(id);
+    if (!chapter) {
       throw new global.errs.NotFound('没有找到相关专栏章节');
     }
-
     // 更新章节
-    columnChapter.title = v.get('body.title');
-    columnChapter.index = v.get('body.index');
-    columnChapter.column_id = v.get('body.column_id');
-
-    columnChapter.save();
+    chapter.title = v.get('body.title');
+    chapter.index = v.get('body.index');
+    chapter.column_id = v.get('body.column_id');
+    chapter.save();
   }
 
   // 专栏章节详情
   static async detail(id) {
-    const columnChapter = await ColumnChapter.findOne({
+    const chapter = await ColumnChapter.findOne({
       where: {
         id
       }
     });
 
-    if (!columnChapter) {
+    if (!chapter) {
       throw new global.errs.NotFound('没有找到相关专栏章节');
     }
-
-    return columnChapter;
+    return chapter;
   }
 
 }

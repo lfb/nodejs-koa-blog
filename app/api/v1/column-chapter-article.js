@@ -21,7 +21,7 @@ const router = new Router({
 /**
  * 创建专栏文章
  */
-router.post('/column/chapter/c', new Auth(AUTH_ADMIN).m, async (ctx) => {
+router.post('/column/chapter/article', new Auth(AUTH_ADMIN).m, async (ctx) => {
 
   // 通过验证器校验参数是否通过
   const v = await new ColumnChapterArticleValidator().validate(ctx);

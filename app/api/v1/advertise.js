@@ -13,7 +13,7 @@ const router = new Router({
   prefix: '/v1'
 })
 
-// 创建评论
+// 创建广告
 router.post('/advertise', async (ctx) => {
   // 通过验证器校验参数是否通过
   const v = await new AdvertiseValidator().validate(ctx);
@@ -25,7 +25,7 @@ router.post('/advertise', async (ctx) => {
   ctx.body = res.json(r);
 })
 
-// 删除评论
+// 删除广告
 router.delete('/advertise/:id', new Auth(AUTH_ADMIN).m, async (ctx) => {
 
   // 通过验证器校验参数是否通过
@@ -40,7 +40,7 @@ router.delete('/advertise/:id', new Auth(AUTH_ADMIN).m, async (ctx) => {
   ctx.body = res.success('删除回复评论成功')
 })
 
-// 修改评论
+// 修改广告
 router.put('/advertise/:id', new Auth(AUTH_ADMIN).m, async (ctx) => {
 
   // 通过验证器校验参数是否通过

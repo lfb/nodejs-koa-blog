@@ -1,24 +1,24 @@
-const {ColumnComments} = require('../models/column-comments')
 const {ColumnChapterArticle} = require('../models/column-chapter-article')
+const {ColumnComments} = require('../models/column-comments')
 const {ColumnReply} = require('../models/column-reply')
 
 class ColumnCommentsDao {
   // 创建评论
   static async create(v) {
 
-    // 查询章节
-    if(v.get('body.column_chapter_article_id')){
-      const columnChapterArticle = await ColumnChapterArticle.findByPk(v.get('body.column_chapter_article_id'));
-      if (!columnChapterArticle) {
-        throw new global.errs.NotFound('没有找到相关专栏文章');
-      }
+    // 查询是否存在专栏文章
+    const articleId = v.get('body.column_chapter_article_id')
+    const article = await ColumnChapterArticle.findByPk(articleId);
+    if (!article) {
+      throw new global.errs.NotFound('没有找到相关专栏文章');
     }
 
+    // 创建评论
     const comments = new ColumnComments();
     comments.nickname = v.get('body.nickname');
     comments.email = v.get('body.email');
     comments.content = v.get('body.content');
-    comments.column_chapter_article_id = v.get('body.column_chapter_article_id');
+    comments.column_chapter_article_id = articleId;
 
     return comments.save();
   }

@@ -22,7 +22,6 @@ class ColumnDao {
 
     // 创建专栏
     const column = new Column();
-
     column.title = v.get('body.title');
     column.author = v.get('body.author');
     column.description = v.get('body.description');
@@ -99,7 +98,7 @@ class ColumnDao {
     column.save();
   }
 
-  // 文章详情
+  // 专栏详情
   static async detail(id) {
     const column = await Column.findOne({
       where: {
@@ -122,9 +121,10 @@ class ColumnDao {
 
     if (!column) {
       throw new global.errs.NotFound('没有找到相关专栏');
-    }
 
-    return column;
+    } else {
+      return column;
+    }
   }
 
 }

@@ -1,19 +1,18 @@
 const {CommentsReply} = require('../models/comments-reply')
 
 class CommentReplyDao {
-  // 新增评论回复表
+  // 新增评论回复
   static async create(params = {}) {
     const {comment_id, reply_id } = params
 
     const commentsReply = new CommentsReply();
-
     commentsReply.comment_id = comment_id
     commentsReply.reply_id = reply_id;
 
     return commentsReply.save();
   }
 
-  // 删除评论
+  // 删除评论回复
   static async destroy(id) {
     const commentsReply = await CommentsReply.findOne({
       where: {
@@ -27,7 +26,7 @@ class CommentReplyDao {
     commentsReply.destroy()
   }
 
-  // 获取评论详情
+  // 获取评论回复详情
   static async detail(id) {
     const reply = await CommentsReply.scope('iv').findOne({
       where: {
@@ -42,7 +41,7 @@ class CommentReplyDao {
     return reply
   }
 
-  // 更新评论
+  // 更新评论回复
   static async update(id, v) {
     const commentsReply = await CommentsReply.findByPk(id);
     if (!commentsReply) {
@@ -55,7 +54,7 @@ class CommentReplyDao {
   }
 
 
-  // 评论列表
+  // 评论回复列表
   static async list(page = 1) {
     const pageSize = 10;
     const commentsReply = await CommentsReply.scope('bh').findAndCountAll({

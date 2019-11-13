@@ -1,7 +1,7 @@
 const Router = require('koa-router')
 
 const {ColumnReplyDao} = require('../../dao/column-reply')
-const {ColumnCommentReplyDao} = require('../../dao/column_comment-reply')
+const {ColumnCommentReplyDao} = require('../../dao/column-comment-reply')
 const {ColumnReplyValidator, PositiveArticleIdParamsValidator} = require('../../validators/column-reply')
 const {Auth} = require('../../../middlewares/auth');
 

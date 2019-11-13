@@ -1,56 +1,57 @@
 const {ColumnComments} = require('../models/column-comments')
-const {CommentsReply} = require('../models/comments-reply')
+const {ColumnReply} = require('../models/column-reply')
 
 class ColumnReplyDao {
-  // 创建评论
+  // 创建回复评论
   static async create(v) {
-    // 查询文章
-    const comment = await ColumnComments.findByPk(v.get('body.column_comment_id'));
+    // 查询是否存在回复的评论
+    const commentId = v.get('body.column_comment_id')
+    const comment = await ColumnComments.findByPk(commentId);
     if (!comment) {
       throw new global.errs.NotFound('没有找到相关评论');
     }
 
-    const reply = new CommentsReply();
+    const reply = new ColumnReply();
     reply.nickname = v.get('body.nickname');
     reply.email = v.get('body.email');
     reply.content = v.get('body.content');
-    reply.comment_id = v.get('body.comment_id');
+    reply.comment_id = commentId;
 
     return reply.save();
   }
 
-  // 删除评论
+  // 删除回复评论
   static async destroy(id) {
-    const reply = await CommentsReply.findOne({
+    const reply = await ColumnReply.findOne({
       where: {
         id,
         deleted_at: null
       }
     });
     if (!reply) {
-      throw new global.errs.NotFound('没有找到相关评论');
+      throw new global.errs.NotFound('没有找到相关回复评论');
     }
     reply.destroy()
   }
 
-  // 获取评论详情
+  // 获取回复评论详情
   static async detail(id) {
-    const reply = await CommentsReply.scope('iv').findOne({
+    const reply = await ColumnReply.scope('iv').findOne({
       where: {
         id,
         deleted_at: null
       }
     });
     if (!reply) {
-      throw new global.errs.NotFound('没有找到相关评论信息');
+      throw new global.errs.NotFound('没有找到相关回复评论信息');
     }
 
     return reply
   }
 
-  // 更新评论
+  // 更新回复评论
   static async update(id, v) {
-    const reply = await CommentsReply.findByPk(id);
+    const reply = await ColumnReply.findByPk(id);
     if (!reply) {
       throw new global.errs.NotFound('没有找到相关评论信息');
     }
@@ -66,7 +67,7 @@ class ColumnReplyDao {
   // 评论列表
   static async list(page = 1) {
     const pageSize = 10;
-    const reply = await CommentsReply.scope('bh').findAndCountAll({
+    const reply = await ColumnReply.scope('bh').findAndCountAll({
       limit: pageSize,//每页10条
       offset: (page - 1) * pageSize,
       where: {

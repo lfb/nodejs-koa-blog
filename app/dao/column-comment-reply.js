@@ -1,7 +1,7 @@
 const {ColumnCommentsReply} = require('../models/column-comments-reply')
 
 class ColumnCommentReplyDao {
-  // 新增评论回复表
+  // 新增专栏评论回复
   static async create(params = {}) {
     const {column_comment_id, column_reply_id} = params
 
@@ -12,7 +12,7 @@ class ColumnCommentReplyDao {
     return commentsReply.save();
   }
 
-  // 删除评论
+  // 删除专栏评论回复
   static async destroy(id) {
     const commentsReply = await ColumnCommentsReply.findOne({
       where: {
@@ -26,26 +26,26 @@ class ColumnCommentReplyDao {
     commentsReply.destroy()
   }
 
-  // 获取评论详情
+  // 获取专栏评论回复详情
   static async detail(id) {
-    const reply = await ColumnCommentsReply.scope('iv').findOne({
+    const commentsReply = await ColumnCommentsReply.scope('iv').findOne({
       where: {
         id,
         deleted_at: null
       }
     });
-    if (!reply) {
+    if (!commentsReply) {
       throw new global.errs.NotFound('没有找到相关评论信息');
     }
 
-    return reply
+    return commentsReply
   }
 
-  // 更新评论
+  // 更新专栏评论回复
   static async update(id, v) {
     const commentsReply = await ColumnCommentsReply.findByPk(id);
     if (!commentsReply) {
-      throw new global.errs.NotFound('没有找到相关评论信息');
+      throw new global.errs.NotFound('没有找到相关评论回复信息');
     }
     commentsReply.comment_id = v.get('body.comment_id');
     commentsReply.reply_id = v.get('body.reply_id');
@@ -55,11 +55,12 @@ class ColumnCommentReplyDao {
   }
 
 
-  // 评论列表
+  // 专栏评论回复列表
   static async list(page = 1) {
     const pageSize = 10;
     const commentsReply = await ColumnCommentsReply.scope('bh').findAndCountAll({
-      limit: pageSize,//每页10条
+      //每页10条
+      limit: pageSize,
       offset: (page - 1) * pageSize,
       where: {
         deleted_at: null
