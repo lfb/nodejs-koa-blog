@@ -41,7 +41,7 @@ ColumnChapter.init({
 
 // 专栏与专栏章节关联
 Column.hasMany(ColumnChapter, {
-  foreignKey: 'column_id', sourceKey: 'id', as: 'columnChapter'
+  foreignKey: 'column_id', sourceKey: 'id', as: 'column_chapter'
 })
 ColumnChapter.belongsTo(Column, {
   foreignKey: 'column_id', targetKey: 'id', as: 'column'

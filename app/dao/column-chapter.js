@@ -36,7 +36,12 @@ class ColumnChapterDao {
       },
       order: [
         ['created_at', 'DESC']
-      ]
+      ],
+      include: [{
+        model: ColumnChapterArticle,
+        as: 'column_chapter_article',
+        attributes: ['id', 'title']
+      }]
     });
   }
 
@@ -52,7 +57,7 @@ class ColumnChapterDao {
       ],
       include: [{
         model: ColumnChapterArticle,
-        as: 'columnChapterArticle',
+        as: 'column_chapter_article',
         attributes: ['id', 'title']
       }]
     });
@@ -100,7 +105,7 @@ class ColumnChapterDao {
       },
       include: [{
         model: ColumnChapterArticle,
-        as: 'columnChapterArticle',
+        as: 'column_chapter_article',
         attributes: ['id', 'title']
       }]
     });

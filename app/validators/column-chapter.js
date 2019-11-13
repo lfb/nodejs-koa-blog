@@ -16,11 +16,10 @@ class PositiveIdParamsValidator extends LinValidator {
   constructor() {
     super();
     this.id = [
-      new Rule('isInt', 'ID需要正整数', {min: 1})
+      new Rule('isInt', 'id需要正整数', {min: 1})
     ]
   }
 }
-
 
 module.exports = {
   ColumnChapterValidator,

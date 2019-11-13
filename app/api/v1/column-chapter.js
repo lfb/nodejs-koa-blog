@@ -7,6 +7,7 @@ const {
 
 const {Auth} = require('../../../middlewares/auth');
 const {ColumnChapterDao} = require('../../dao/column-chapter');
+const {ColumnDao} = require('../../dao/column');
 
 const {Resolve} = require('../../lib/helper');
 const res = new Resolve();
@@ -69,17 +70,25 @@ router.put('/column/chapter/:id', new Auth(AUTH_ADMIN).m, async (ctx) => {
 
 
 /**
- * 获取专栏列表
+ * 获取专栏章节列表
  */
-router.get('/column/chapter', async (ctx) => {
-  // 获取页码，排序方法
-  const {column_id = 0} = ctx.query;
+router.get('/column/chapter/list/:column_id', async (ctx) => {
+  // 获取专栏
+  // 通过验证器校验参数是否通过
+  const v = await new PositiveIdParamsValidator().validate(ctx, {
+    id: 'column_id'
+  });
+  const column_id = v.get('path.column_id');
+  // 查询当前ID的专栏
+  const column = await ColumnDao.title(column_id);
   // 查询专栏章节列表
-  const columnChapterList = await ColumnChapterDao.list(column_id);
+  const chapterList = await ColumnChapterDao.list(column_id);
 
+  // 带上专栏名称
+  column.setDataValue('chapter_list', chapterList)
   // 返回结果
   ctx.response.status = 200;
-  ctx.body = res.json(columnChapterList);
+  ctx.body = res.json(column);
 });
 
 /**

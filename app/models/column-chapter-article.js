@@ -56,10 +56,10 @@ ColumnChapterArticle.init({
 
 // 专栏与专栏章节关联
 ColumnChapter.hasMany(ColumnChapterArticle, {
-  foreignKey: 'column_chapter_id', sourceKey: 'id', as: 'columnChapterArticle'
+  foreignKey: 'column_chapter_id', sourceKey: 'id', as: 'column_chapter_article'
 })
 ColumnChapterArticle.belongsTo(ColumnChapter, {
-  foreignKey: 'column_chapter_id', targetKey: 'id', as: 'columnChapter'
+  foreignKey: 'column_chapter_id', targetKey: 'id', as: 'column_chapter'
 })
 
 module.exports = {

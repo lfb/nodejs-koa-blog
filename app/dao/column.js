@@ -107,16 +107,33 @@ class ColumnDao {
       // 查询每篇专栏下关联的章节
       include: [{
         model: ColumnChapter,
-        as: 'columnChapter',
+        as: 'column_chapter',
         attributes: {
           exclude: ['deleted_at', 'updated_at']
         },
         include: [{
           model: ColumnChapterArticle,
-          as: 'columnChapterArticle',
+          as: 'column_chapter_article',
           attributes: ['id', 'title']
         }]
       }]
+    });
+
+    if (!column) {
+      throw new global.errs.NotFound('没有找到相关专栏');
+
+    } else {
+      return column;
+    }
+  }
+
+  // 专栏标题
+  static async title(id) {
+    const column = await Column.findOne({
+      where: {
+        id
+      },
+      attributes: ['id', 'title']
     });
 
     if (!column) {
