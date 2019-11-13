@@ -53,8 +53,8 @@
           return {}
         }
       },
-      article_id: {
-        type: Number,
+      articles_id: {
+        type: String,
         default() {
           return 0
         }

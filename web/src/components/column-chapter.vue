@@ -1,12 +1,16 @@
 <template>
   <section>
-    <div class="column-chapter">
-      <dl v-for="(item, index) in 2" :key="index">
-        <dt>Chapter {{index + 1}}：Node.js 基础</dt>
-        <dd v-for="(item2, index) in 3" :key="index" @click="toColumnChapterDetail">
-          <h1>今晚学习 Node.js 吗</h1>
-          <span></span>
-        </dd>
+    <div class="column-chapter" v-if="chapter.length > 0">
+      <dl v-for="(item, index) in chapter" :key="index">
+        <dt>Chapter {{index + 1}}：{{item.title}}</dt>
+        <div v-if="item.column_chapter_article">
+          <dd v-for="(article, index2) in item.column_chapter_article"
+              :key="index2"
+              @click="getArticle(article.id)">
+            <h1>{{article.title}}</h1>
+            <span></span>
+          </dd>
+        </div>
       </dl>
     </div>
   </section>
@@ -14,20 +18,35 @@
 
 <script>
   export default {
+    props: {
+      chapter: {
+        type: Array,
+        default() {
+          return []
+        }
+      },
+      columnId: {
+        type: String,
+        default() {
+          return '0'
+        }
+      }
+    },
     name: 'Chapter',
     data() {
       return {
         isButton: false,
-        list: []
+        list: [],
+        id: -1
       }
     },
     methods: {
-      /**
-       * 路由跳转
-       * @param id
-       */
-      toColumnChapterDetail(id) {
-        this.$router.push(`/column/chapter/detail?id=1`)
+      // 获取专栏文章详情
+      getArticle(id) {
+        if (this.id !== id) {
+          this.id = id
+          this.$emit('getArticle', id)
+        }
       }
     }
   }

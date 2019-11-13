@@ -1,26 +1,23 @@
 <template>
-  <section class="column-box">
-    <div class="column-item">
+  <section class="column-box" v-if="list.length > 0">
+    <div class="column-item" v-for="(item, index) in list" :key="index">
       <div class="column-images">
-        <img
-          src="https://static001.infoq.cn/resource/image/c1/9f/c194d013ced0feb6d6dc73b6e1f2d39f.jpg?x-oss-process=image/crop,y_1,w_1780,h_916/resize,w_776,h_400"
-          alt="articles">
+        <img :src="item.cover + '?imageView2/1/w/320/h/180'" alt="column">
       </div>
       <div class="column-info">
-        <h1 class="column-title">今晚学习 Node.js 吗？</h1>
+        <h1 class="column-title">{{item.title}}</h1>
         <div class="column-desc">
-          CMU 中国社区希望输出 CMU 在 AI 领域的影响力，关注 AI 领域的技术创新、产业应用，知识传播、创投趋势。
+          {{item.description}}
         </div>
 
         <div class="column-intro-btn">
           <ul class="column-intro">
-            <li class="column-category">node.js</li>
             <li class="column-author">
               <Icon size="16" type="ios-person-outline"/>
-              梁凤波
+              {{item.author}}
             </li>
           </ul>
-          <Button v-if="isButton" type="primary" @click="toColumnChapter(1)">立即学习</Button>
+          <Button v-if="isButton" type="primary" @click="toColumnChapter(item.id)">立即学习</Button>
         </div>
       </div>
     </div>
@@ -34,11 +31,17 @@
       isButton: {
         type: Boolean,
         default: true
+      },
+      list: {
+        type: Array,
+        default() {
+          return []
+        }
       }
     },
     methods: {
-      toColumnChapter() {
-        this.$router.push('/column/chapter?id=1')
+      toColumnChapter(id) {
+        this.$router.push(`/column/chapter?id=${id}`)
       }
     }
   }
@@ -102,15 +105,4 @@
     color: #9ea7b4;
     white-space: nowrap;
   }
-
-  .column-intro .column-category {
-    height: 28px;
-    line-height: 28px;
-    padding: 0 32px;
-    font-size: 16px;
-    color: #409EFF;
-    border-radius: 64px;
-    background: rgba(51, 119, 255, .1);
-  }
-
 </style>

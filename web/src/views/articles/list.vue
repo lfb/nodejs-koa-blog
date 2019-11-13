@@ -40,7 +40,7 @@
     },
     methods: {
       ...mapActions({
-        getArticleList: 'articles/getArticleList'
+        getArticleList: 'articles/list'
       }),
       async getArticle() {
         const params = {

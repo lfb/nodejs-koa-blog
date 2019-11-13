@@ -1,4 +1,4 @@
-import articles from '../../api/articles'
+import column from '../../api/column'
 
 const state = {}
 
@@ -6,18 +6,18 @@ const mutations = {}
 
 const actions = {
   /**
-   * 获取文章列表
+   * 获取专栏列表
    */
   async list({ state, commit }, params) {
-    const res = await articles.list(params)
+    const res = await column.list(params)
     return res
   },
   /**
-   * 获取文章详情
+   * 获取专栏详情
    *
    */
-  async detail({ state, commit }, params) {
-    const res = await articles.detail(params)
+  async detail({ state, commit }, parms) {
+    const res = await column.detail(parms)
     return res
   }
 }

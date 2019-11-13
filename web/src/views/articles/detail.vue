@@ -71,7 +71,7 @@
     },
     methods: {
       ...mapActions({
-        getArticleDetail: 'articles/getArticleDetail'
+        getArticleDetail: 'articles/detail'
       }),
       async getArticle() {
         const r = await this.getArticleDetail({

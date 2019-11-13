@@ -1,49 +1,43 @@
 <template>
   <section class="chapter-detail">
-    <div class="chapter-table">
+    <div class="chapter-table" v-if="chapter.length > 0">
       <h1 class="chapter-table-title">
-        今天学习 Nodejs 吗
+        {{columnTitle}}
       </h1>
-      <v-column-chapter/>
+      <v-column-chapter @getArticle="getArticle" :chapter="chapter"/>
     </div>
-    <div class="chapter-container">
+    <article class="chapter-container" v-if="article">
       <h1 class="chapter-title">
-        今天学习 Nodejs 吗
+        {{article.title}}
       </h1>
       <ul class="chapter-intro">
-        <li class="chapters-item-category">node.js</li>
         <li>
           <Icon size="16" type="ios-person-outline"/>
-          梁凤波
-        </li>
-        <li>
-          <Icon size="16" type="ios-eye-outline"/>
-          100
-        </li>
-        <li>
-          <Icon size="16" type="ios-text-outline"/>
-          100
+          {{article.author}}
         </li>
       </ul>
       <div class="chapter-content">
         <mavon-editor
           style="height: 100%"
           :ishljs="true"
-          v-model="content"
+          v-model="article.content"
           :defaultOpen="'preview'"
           :editable="false"
           :subfield="false"
-          :toolbarsFlag="false" />
+          :toolbarsFlag="false"/>
       </div>
       <!-- 新建评论-->
       <v-comment-create/>
       <!-- 评论列表-->
-      <v-comment-list/>
-    </div>
+      <div v-if="comments">
+        <v-comment-list :comments="comments" :articles_id="articleId"/>
+      </div>
+    </article>
   </section>
 </template>
 
 <script>
+  import { mapState, mapActions } from 'vuex'
   import { mavonEditor } from 'mavon-editor'
   import 'mavon-editor/dist/css/index.css'
   import VColumnChapter from '../../components/column-chapter'
@@ -57,10 +51,44 @@
       VCommentList,
       VCommentCreate
     },
-    name: 'detail',
-    data () {
+    name: 'columnChapterArticle',
+    computed: {
+      ...mapState({
+        article: state => state['column-chapter-article'].article,
+        comments: state => state['column-chapter-article'].comments
+      })
+    },
+    data() {
       return {
-        content: '呢绒'
+        content: '呢绒',
+        articleId: this.$route.query.articleId,
+        columnId: this.$route.query.columnId,
+        chapter: [],
+        columnTitle: ''
+      }
+    },
+    created() {
+      this.fetchData()
+      this.getArticle()
+    },
+    methods: {
+      ...mapActions({
+        getColumnChapter: 'column-chapter/list',
+        getColumnChapterArticle: 'column-chapter-article/detail'
+      }),
+      // 获取数据
+      async fetchData() {
+        const r = await this.getColumnChapter({
+          column_id: this.columnId
+        })
+        this.columnTitle = r.data.data.title
+        this.chapter = r.data.data.chapter_list
+      },
+      // 获取专栏文章详情
+      async getArticle(id) {
+        await this.getColumnChapterArticle({
+          id: id || this.articleId
+        })
       }
     }
   }
@@ -142,15 +170,4 @@
     color: #9ea7b4;
     white-space: nowrap;
   }
-
-  li.chapters-item-category {
-    height: 28px;
-    line-height: 28px;
-    padding: 0 24px;
-    font-size: 16px;
-    color: #409EFF;
-    border-radius: 64px;
-    background: rgba(51, 119, 255, .1);
-  }
-
 </style>

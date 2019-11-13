@@ -3,9 +3,9 @@
 
     <article class="article-list">
       <!-- 专栏组件-->
-      <v-column-item :isButton="isButton"/>
+      <v-column-item :isButton="isButton" :list="column"/>
       <div class="chapter">
-        <v-column-chapter/>
+        <v-column-chapter :chapter="chapter" :columnId="id"/>
       </div>
     </article>
 
@@ -15,6 +15,7 @@
 </template>
 
 <script>
+  import { mapActions } from 'vuex'
   import VColumnItem from '../../components/column-item'
   import VColumnChapter from '../../components/column-chapter'
   import VMainSidebar from '../../components/main-sidebar'
@@ -29,10 +30,28 @@
     data () {
       return {
         isButton: false,
-        list: []
+        id: this.$route.query.id,
+        column: [],
+        chapter: [],
+        columnId: ''
       }
     },
-    methods: {}
+    created() {
+      this.fetchData()
+    },
+    methods: {
+      ...mapActions({
+        getColumnDetail: 'column/detail'
+      }),
+      async fetchData() {
+        this.column = []
+        const r = await this.getColumnDetail({
+          id: this.id
+        })
+        this.column.push(r.data.data)
+        this.chapter = r.data.data.column_chapter
+      }
+    }
   }
 </script>
 
