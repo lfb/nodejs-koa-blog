@@ -7,6 +7,7 @@ const {
 
 const {Auth} = require('../../../middlewares/auth');
 const {ColumnDao} = require('../../dao/column');
+const {ColumnChapterDao} = require('../../dao/column-chapter');
 
 const {Resolve} = require('../../lib/helper');
 const res = new Resolve();
@@ -94,6 +95,10 @@ router.get('/column/:id', async (ctx) => {
   const id = v.get('path.id');
   // 查询专栏
   const column = await ColumnDao.detail(id);
+
+  // 查询专栏章节
+  const chapterArticle = await ColumnChapterDao.articleList(id)
+  await column.setDataValue('chapter_article', chapterArticle);
 
   // 返回结果
   ctx.response.status = 200;

@@ -1,4 +1,5 @@
 const {ColumnChapter} = require('../models/column-chapter')
+const {ColumnChapterArticle} = require('../models/column-chapter-article')
 
 // 定义专栏模型
 class ColumnChapterDao {
@@ -36,6 +37,24 @@ class ColumnChapterDao {
       order: [
         ['created_at', 'DESC']
       ]
+    });
+  }
+
+  // 获取专栏章节下的文章列表
+  static async articleList(column_id) {
+    return await ColumnChapter.scope('iv').findAll({
+      where: {
+        column_id,
+        deleted_at: null
+      },
+      order: [
+        ['created_at', 'DESC']
+      ],
+      include: [{
+        model: ColumnChapterArticle,
+        as: 'columnChapterArticle',
+        attributes: ['id', 'title']
+      }]
     });
   }
 
@@ -78,7 +97,12 @@ class ColumnChapterDao {
     const chapter = await ColumnChapter.findOne({
       where: {
         id
-      }
+      },
+      include: [{
+        model: ColumnChapterArticle,
+        as: 'columnChapterArticle',
+        attributes: ['id', 'title']
+      }]
     });
 
     if (!chapter) {
@@ -86,7 +110,6 @@ class ColumnChapterDao {
     }
     return chapter;
   }
-
 }
 
 module.exports = {
