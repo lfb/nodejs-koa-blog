@@ -35,7 +35,7 @@ router.post('/column/comments', async (ctx) => {
 })
 
 // 删除评论
-router.delete('/comments/:id', new Auth(AUTH_ADMIN).m, async (ctx) => {
+router.delete('/column/comments/:id', new Auth(AUTH_ADMIN).m, async (ctx) => {
 
   // 通过验证器校验参数是否通过
   const v = await new PositiveArticleIdParamsValidator().validate(ctx);
@@ -50,7 +50,7 @@ router.delete('/comments/:id', new Auth(AUTH_ADMIN).m, async (ctx) => {
 })
 
 // 修改评论
-router.put('/comments/:id', new Auth(AUTH_ADMIN).m, async (ctx) => {
+router.put('/column/comments/:id', new Auth(AUTH_ADMIN).m, async (ctx) => {
 
   // 通过验证器校验参数是否通过
   const v = await new PositiveArticleIdParamsValidator().validate(ctx);
@@ -65,7 +65,7 @@ router.put('/comments/:id', new Auth(AUTH_ADMIN).m, async (ctx) => {
 })
 
 // 获取评论列表
-router.get('/comments', async (ctx) => {
+router.get('/column/comments', async (ctx) => {
   const page = ctx.query.page;
   let commentsList = await ColumnCommentsDao.list(page);
 
@@ -76,7 +76,7 @@ router.get('/comments', async (ctx) => {
 })
 
 // 获取评论详情
-router.get('/comments/:id', async (ctx) => {
+router.get('/column/comments/:id', async (ctx) => {
   // 通过验证器校验参数是否通过
   const v = await new PositiveArticleIdParamsValidator().validate(ctx);
 
@@ -89,25 +89,5 @@ router.get('/comments/:id', async (ctx) => {
   ctx.body = res.json(comments);
 
 })
-
-// 获取专栏文章下的评论
-router.get('/article/:article_id/comments', async (ctx) => {
-
-  // 通过验证器校验参数是否通过
-  const v = await new PositiveArticleIdParamsValidator().validate(ctx, {
-    id: 'article_id'
-  });
-
-  // 获取分类ID参数
-  const article_id = v.get('path.article_id');
-  // 页面, 排序
-  const {page, desc} = ctx.query;
-  const commentsList = await ColumnCommentsDao.articleComments(article_id, page, desc);
-
-  // 返回结果
-  ctx.response.status = 200;
-  ctx.body = res.json(commentsList);
-})
-
 
 module.exports = router

@@ -57,7 +57,7 @@ router.put('/comments/:id', new Auth(AUTH_ADMIN).m, async (ctx) => {
 
   // 获取分类ID参数
   const id = v.get('path.id');
-  await CommentsDao.updateComments(id, v);
+  await CommentsDao.update(id, v);
 
   // 返回结果
   ctx.response.status = 200;
@@ -88,25 +88,6 @@ router.get('/comments/:id', async (ctx) => {
   ctx.response.status = 200;
   ctx.body = res.json(comments);
 
-})
-
-// 获取文章下的评论
-router.get('/article/:article_id/comments', async (ctx) => {
-
-  // 通过验证器校验参数是否通过
-  const v = await new PositiveArticleIdParamsValidator().validate(ctx, {
-    id: 'article_id'
-  });
-
-  // 获取分类ID参数
-  const article_id = v.get('path.article_id');
-  // 页面, 排序
-  const {page, desc} = ctx.query;
-  const commentsList = await CommentsDao.articleComments(article_id, page, desc);
-
-  // 返回结果
-  ctx.response.status = 200;
-  ctx.body = res.json(commentsList);
 })
 
 

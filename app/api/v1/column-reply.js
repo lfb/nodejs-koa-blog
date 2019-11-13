@@ -22,12 +22,13 @@ router.post('/column/reply', async (ctx) => {
   const r = await ColumnReplyDao.create(v);
 
   // 创建评论回复表
-  const column_comment_id = v.get('body.column_comment_id')
-  const column_reply_id = r.getDataValue('id')
-  await ColumnCommentReplyDao.create(column_comment_id, column_reply_id)
+  await ColumnCommentReplyDao.create({
+    column_comment_id: v.get('body.column_comment_id'),
+    column_reply_id: r.getDataValue('id')
+  })
 
   const data = {
-    id: reply_id,
+    id: r.getDataValue('id'),
     nickname: r.getDataValue('nickname'),
     content: r.getDataValue('content'),
     created_at: r.getDataValue('created_at'),

@@ -74,7 +74,7 @@ router.put('/column/chapter/article/:id', new Auth(AUTH_ADMIN).m, async (ctx) =>
  */
 router.get('/column/chapter/article', async (ctx) => {
   // 获取页码，排序方法
-  const {column_chapter_id} = ctx.query;
+  const {column_chapter_id = 0} = ctx.query;
   // 查询专栏章节列表
   const columnChapterArticleList = await ColumnChapterArticleDao.list(column_chapter_id);
 
@@ -94,7 +94,7 @@ router.get('/column/chapter/article/:id', async (ctx) => {
   // 获取专栏ID参数
   const id = v.get('path.id');
   // 查询专栏文章
-  const columnChapterArticle = await ColumnChapterArticleDao.destroy(id);
+  const columnChapterArticle = await ColumnChapterArticleDao.detail(id);
 
   // 获取关联此文章的评论列表
   const commentsList = await ColumnCommentsDao.articleComments(id);

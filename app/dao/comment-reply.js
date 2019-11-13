@@ -4,8 +4,11 @@ class CommentReplyDao {
   // 新增评论回复
   static async create(params = {}) {
     const {comment_id, reply_id } = params
-
+    console.log(comment_id, reply_id)
+    console.log(comment_id, reply_id)
+    console.log(comment_id, reply_id)
     const commentsReply = new CommentsReply();
+
     commentsReply.comment_id = comment_id
     commentsReply.reply_id = reply_id;
 

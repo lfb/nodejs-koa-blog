@@ -35,7 +35,7 @@ class ColumnChapterDao {
       },
       order: [
         ['created_at', 'DESC']
-      ],
+      ]
     });
   }
 

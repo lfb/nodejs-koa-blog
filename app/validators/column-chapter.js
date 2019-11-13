@@ -16,7 +16,7 @@ class PositiveIdParamsValidator extends LinValidator {
   constructor() {
     super();
     this.id = [
-      new Rule('isInt', '专栏章节ID需要正整数', {min: 1})
+      new Rule('isInt', 'ID需要正整数', {min: 1})
     ]
   }
 }

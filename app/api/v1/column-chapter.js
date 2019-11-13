@@ -73,7 +73,7 @@ router.put('/column/chapter/:id', new Auth(AUTH_ADMIN).m, async (ctx) => {
  */
 router.get('/column/chapter', async (ctx) => {
   // 获取页码，排序方法
-  const {column_id} = ctx.query;
+  const {column_id = 0} = ctx.query;
   // 查询专栏章节列表
   const columnChapterList = await ColumnChapterDao.list(column_id);
 

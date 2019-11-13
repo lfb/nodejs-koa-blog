@@ -40,6 +40,9 @@ class ColumnReplyDao {
       where: {
         id,
         deleted_at: null
+      },
+      attributes: {
+        exclude: ['email', 'updated_at']
       }
     });
     if (!reply) {

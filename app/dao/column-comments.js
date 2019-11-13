@@ -44,7 +44,22 @@ class ColumnCommentsDao {
       where: {
         id,
         deleted_at: null
-      }
+      },
+      attributes: {
+        exclude: ['email', 'updated_at', 'created_at']
+      },
+      include: [{
+        model: ColumnReply,
+        as: 'columnReply',
+        through: {
+          attributes: {
+            exclude: ['email', 'updated_at', 'created_at']
+          }
+        },
+        attributes: {
+          exclude: ['email', 'updated_at', 'deleted_at']
+        }
+      }]
     });
     if (!comments) {
       throw new global.errs.NotFound('没有找到相关评论信息');
@@ -77,6 +92,9 @@ class ColumnCommentsDao {
       offset: (page - 1) * pageSize,
       where: {
         deleted_at: null
+      },
+      attributes: {
+        exclude: ['email', 'updated_at', 'created_at']
       },
       order: [
         ['created_at', 'DESC']

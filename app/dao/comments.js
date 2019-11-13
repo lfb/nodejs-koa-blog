@@ -41,7 +41,22 @@ class CommentsDao {
       where: {
         id,
         deleted_at: null
+      },
+      attributes: {
+        exclude: ['email', 'updated_at']
+      },
+      include: [{
+      model: Reply,
+      as: 'reply',
+      through: {
+        attributes: {
+          exclude: ['updated_at', 'created_at']
+        }
+      },
+      attributes: {
+        exclude: ['email', 'updated_at', 'deleted_at']
       }
+    }]
     });
     if (!comments) {
       throw new global.errs.NotFound('没有找到相关评论信息');
@@ -76,7 +91,10 @@ class CommentsDao {
       },
       order: [
         ['created_at', 'DESC']
-      ]
+      ],
+      attributes: {
+        exclude: ['email', 'updated_at']
+      },
     })
 
     return {
