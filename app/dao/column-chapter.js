@@ -22,7 +22,6 @@ class ColumnChapterDao {
     // 创建专栏章节
     const chapter = new ColumnChapter();
     chapter.title = v.get('body.title');
-    chapter.index = v.get('body.index');
     chapter.column_id = v.get('body.column_id');
     chapter.save();
   }
@@ -92,7 +91,6 @@ class ColumnChapterDao {
     }
     // 更新章节
     chapter.title = v.get('body.title');
-    chapter.index = v.get('body.index');
     chapter.column_id = v.get('body.column_id');
     chapter.save();
   }

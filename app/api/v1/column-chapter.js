@@ -2,6 +2,7 @@ const Router = require('koa-router');
 
 const {
   ColumnChapterValidator,
+  PositiveColumnIdParamsValidator,
   PositiveIdParamsValidator
 } = require('../../validators/column-chapter');
 
@@ -72,12 +73,10 @@ router.put('/column/chapter/:id', new Auth(AUTH_ADMIN).m, async (ctx) => {
 /**
  * 获取专栏章节列表
  */
-router.get('/column/chapter/list/:column_id', async (ctx) => {
+router.get('/column/chapter-list/:column_id', async (ctx) => {
   // 获取专栏
   // 通过验证器校验参数是否通过
-  const v = await new PositiveIdParamsValidator().validate(ctx, {
-    id: 'column_id'
-  });
+  const v = await new PositiveColumnIdParamsValidator().validate(ctx);
   const column_id = v.get('path.column_id');
   // 查询当前ID的专栏
   const column = await ColumnDao.title(column_id);

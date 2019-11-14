@@ -3,12 +3,12 @@ const {sequelize} = require('../../core/db')
 const {Sequelize, Model} = require('sequelize')
 const {ColumnChapter} = require('../models/column-chapter')
 
-// 定义章节目
+// 定义专栏文章
 class ChapterSection extends Model {
 
 }
 
-// 初始化章节目
+// 初始化专栏文章
 ChapterSection.init({
   id: {
     type: Sequelize.INTEGER,
@@ -45,7 +45,7 @@ ChapterSection.init({
   tableName: 'chapter_section'
 })
 
-// 一对多：章节表下拥有多个章节目
+// 一对多：章节表下拥有多个专栏文章
 ColumnChapter.hasMany(ChapterSection, {
   foreignKey: 'column_chapter_id', sourceKey: 'id', as: 'chapter_section'
 })

@@ -20,12 +20,6 @@ ColumnChapter.init({
     allowNull: false,
     comment: '专栏章节标题'
   },
-  index: {
-    type: Sequelize.INTEGER,
-    allowNull: true,
-    defaultValue: 1,
-    comment: '专栏章节索引'
-  },
   // 创建时间
   created_at: {
     type: Sequelize.DATE,

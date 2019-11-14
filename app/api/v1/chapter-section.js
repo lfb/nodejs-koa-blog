@@ -2,6 +2,7 @@ const Router = require('koa-router');
 
 const {
   ChapterSectionValidator,
+  PositiveChapterIdParamsValidator,
   PositiveIdParamsValidator
 } = require('../../validators/chapter-section');
 
@@ -71,13 +72,11 @@ router.put('/chapter/section/:id', new Auth(AUTH_ADMIN).m, async (ctx) => {
 /**
  * 获取专栏文章列表
  */
-router.get('/chapter/section', async (ctx) => {
+router.get('/chapter/section-list/:column_chapter_id', async (ctx) => {
   // 通过验证器校验参数是否通过
-  const v = await new PositiveIdParamsValidator().validate(ctx, {
-    id: column_chapter_id
-  });
+  const v = await new PositiveChapterIdParamsValidator().validate(ctx);
   // 查询专栏章节列表
-  const chapterSectionList = await ChapterSectionDao.list(v.get('query.column_chapter_id'));
+  const chapterSectionList = await ChapterSectionDao.list(v.get('path.column_chapter_id'));
 
   // 返回结果
   ctx.response.status = 200;
