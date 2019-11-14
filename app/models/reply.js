@@ -2,8 +2,8 @@ const moment = require('moment');
 
 const {Sequelize, Model} = require('sequelize')
 const {sequelize} = require('../../core/db')
-const {Comments} = require('../models/comments')
-const {CommentsReply} = require('./comments-reply')
+const {Comment} = require('../models/comment')
+const {CommentReply} = require('./comment-reply')
 
 class Reply extends Model {
 
@@ -44,17 +44,17 @@ Reply.init({
 })
 
 // 回复关联评论
-Comments.belongsToMany(Reply, {
+Comment.belongsToMany(Reply, {
   foreignKey: 'comment_id',
   sourceKey: 'id',
   as: 'reply',
-  through: CommentsReply
+  through: CommentReply
 })
-Reply.belongsToMany(Comments, {
+Reply.belongsToMany(Comment, {
   foreignKey: 'reply_id',
   targetKey: 'id',
   as: 'comment',
-  through: CommentsReply
+  through: CommentReply
 })
 
 module.exports = {

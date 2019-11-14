@@ -16,8 +16,11 @@ class CommentsValidator extends LinValidator {
     this.content = [
       new Rule("isLength", "评论内容 content 不能为空", {min: 1})
     ]
-    this.column_chapter_article_id = [
-      new Rule("isLength", "专栏文章 column_chapter_article_id 不能为空", {min: 1})
+    this.target_id = [
+      new Rule("isLength", "目标 target_id 不能为空", {min: 1})
+    ]
+    this.target_type = [
+      new Rule("isLength", "目标 target_type 不能为空", {min: 1})
     ]
   }
 }

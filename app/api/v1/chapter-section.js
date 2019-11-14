@@ -1,13 +1,13 @@
 const Router = require('koa-router');
 
 const {
-  ColumnChapterArticleValidator,
+  ChapterSectionValidator,
   PositiveIdParamsValidator
-} = require('../../validators/column-chapter-article');
+} = require('../../validators/chapter-section');
 
 const {Auth} = require('../../../middlewares/auth');
-const {ColumnCommentsDao} = require('../../dao/column-comments');
-const {ColumnChapterArticleDao} = require('../../dao/column-chapter-article');
+const {CommentDao} = require('../../dao/comment');
+const {ChapterSectionDao} = require('../../dao/chapter-section');
 
 const {Resolve} = require('../../lib/helper');
 const res = new Resolve();
@@ -21,13 +21,13 @@ const router = new Router({
 /**
  * 创建专栏文章
  */
-router.post('/column/chapter/article', new Auth(AUTH_ADMIN).m, async (ctx) => {
+router.post('/chapter/section', new Auth(AUTH_ADMIN).m, async (ctx) => {
 
   // 通过验证器校验参数是否通过
-  const v = await new ColumnChapterArticleValidator().validate(ctx);
+  const v = await new ChapterSectionValidator().validate(ctx);
 
   // 创建专栏章节
-  await ColumnChapterArticleDao.create(v);
+  await ChapterSectionDao.create(v);
 
   // 返回结果
   ctx.response.status = 200;
@@ -37,7 +37,7 @@ router.post('/column/chapter/article', new Auth(AUTH_ADMIN).m, async (ctx) => {
 /**
  * 删除专栏文章
  */
-router.delete('/column/chapter/article/:id', new Auth(AUTH_ADMIN).m, async (ctx) => {
+router.delete('/chapter/section/:id', new Auth(AUTH_ADMIN).m, async (ctx) => {
 
   // 通过验证器校验参数是否通过
   const v = await new PositiveIdParamsValidator().validate(ctx);
@@ -45,7 +45,7 @@ router.delete('/column/chapter/article/:id', new Auth(AUTH_ADMIN).m, async (ctx)
   // 获取专栏文章ID参数
   const id = v.get('path.id');
   // 删除专栏
-  await ColumnChapterArticleDao.destroy(id);
+  await ChapterSectionDao.destroy(id);
 
   ctx.response.status = 200;
   ctx.body = res.success('删除专栏文章成功');
@@ -54,15 +54,14 @@ router.delete('/column/chapter/article/:id', new Auth(AUTH_ADMIN).m, async (ctx)
 /**
  * 更新专栏文章
  */
-router.put('/column/chapter/article/:id', new Auth(AUTH_ADMIN).m, async (ctx) => {
-
+router.put('/chapter/section/:id', new Auth(AUTH_ADMIN).m, async (ctx) => {
   // 通过验证器校验参数是否通过
   const v = await new PositiveIdParamsValidator().validate(ctx);
 
   // 获取专栏ID参数
   const id = v.get('path.id');
   // 更新专栏章节
-  await ColumnChapterArticleDao.update(id, v);
+  await ChapterSectionDao.update(id, v);
 
   ctx.response.status = 200;
   ctx.body = res.success('更新专栏文章成功');
@@ -72,37 +71,42 @@ router.put('/column/chapter/article/:id', new Auth(AUTH_ADMIN).m, async (ctx) =>
 /**
  * 获取专栏文章列表
  */
-router.get('/column/chapter/article', async (ctx) => {
-  // 获取页码，排序方法
-  const {column_chapter_id = 0} = ctx.query;
+router.get('/chapter/section', async (ctx) => {
+  // 通过验证器校验参数是否通过
+  const v = await new PositiveIdParamsValidator().validate(ctx, {
+    id: column_chapter_id
+  });
   // 查询专栏章节列表
-  const columnChapterArticleList = await ColumnChapterArticleDao.list(column_chapter_id);
+  const chapterSectionList = await ChapterSectionDao.list(v.get('query.column_chapter_id'));
 
   // 返回结果
   ctx.response.status = 200;
-  ctx.body = res.json(columnChapterArticleList);
+  ctx.body = res.json(chapterSectionList);
 });
 
 /**
  * 查询专栏文章详情
  */
-router.get('/column/chapter/article/:id', async (ctx) => {
+router.get('/chapter/section/:id', async (ctx) => {
 
   // 通过验证器校验参数是否通过
   const v = await new PositiveIdParamsValidator().validate(ctx);
 
   // 获取专栏ID参数
   const id = v.get('path.id');
-  // 查询专栏文章
-  const columnChapterArticle = await ColumnChapterArticleDao.detail(id);
+  // 查询章节目
+  const chapterSection = await ChapterSectionDao.detail(id);
 
-  // 获取关联此文章的评论列表
-  const commentsList = await ColumnCommentsDao.articleComments(id);
-  await columnChapterArticle.setDataValue('comments', commentsList);
+  // 获取关联此章节目的评论列表
+  const commentList = await CommentDao.targetComment({
+    target_id: id,
+    target_type: 'column'
+  });
+  await chapterSection.setDataValue('section_comment', commentList);
 
   // 返回结果
   ctx.response.status = 200;
-  ctx.body = res.json(columnChapterArticle);
+  ctx.body = res.json(chapterSection);
 
 })
 

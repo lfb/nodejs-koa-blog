@@ -49,6 +49,7 @@ Article.init({
   },
   created_at: {
     type: Sequelize.DATE,
+    allowNull: false,
     get() {
       return moment(this.getDataValue('created_at')).format('YYYY-MM-DD');
     }

@@ -1,11 +1,11 @@
 const {Reply} = require('../models/reply')
-const {Comments} = require('../models/comments')
+const {Comment} = require('../models/comment')
 
 class ReplyDao {
   // 创建评论
   static async create(v) {
     // 查询文章
-    const comment = await Comments.findByPk(v.get('body.comment_id'));
+    const comment = await Comment.findByPk(v.get('body.comment_id'));
     if (!comment) {
       throw new global.errs.NotFound('没有找到相关评论');
     }

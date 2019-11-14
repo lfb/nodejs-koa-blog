@@ -3,13 +3,13 @@ const {sequelize} = require('../../core/db')
 const {Sequelize, Model} = require('sequelize')
 const {ColumnChapter} = require('../models/column-chapter')
 
-// 定义专栏文章模型
-class ColumnChapterArticle extends Model {
+// 定义章节目
+class ChapterSection extends Model {
 
 }
 
-// 初始化专栏文章模型
-ColumnChapterArticle.init({
+// 初始化章节目
+ChapterSection.init({
   id: {
     type: Sequelize.INTEGER,
     primaryKey: true,
@@ -34,24 +34,25 @@ ColumnChapterArticle.init({
   // 创建时间
   created_at: {
     type: Sequelize.DATE,
+    allowNull: false,
     get() {
       return moment(this.getDataValue('created_at')).format('YYYY-MM-DD');
     }
   }
 }, {
   sequelize,
-  modelName: 'column_chapter_article',
-  tableName: 'column_chapter_article'
+  modelName: 'chapter_section',
+  tableName: 'chapter_section'
 })
 
-// 专栏与专栏章节关联
-ColumnChapter.hasMany(ColumnChapterArticle, {
-  foreignKey: 'column_chapter_id', sourceKey: 'id', as: 'column_chapter_article'
+// 章节目与章节关联
+ColumnChapter.hasMany(ChapterSection, {
+  foreignKey: 'column_chapter_id', sourceKey: 'id', as: 'chapter_section'
 })
-ColumnChapterArticle.belongsTo(ColumnChapter, {
+ChapterSection.belongsTo(ColumnChapter, {
   foreignKey: 'column_chapter_id', targetKey: 'id', as: 'column_chapter'
 })
 
 module.exports = {
-  ColumnChapterArticle
+  ChapterSection
 }

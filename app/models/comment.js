@@ -2,17 +2,26 @@ const moment = require('moment');
 
 const {Sequelize, Model} = require('sequelize')
 const {sequelize} = require('../../core/db')
-const {Article} = require('../models/article')
 
-class Comments extends Model {
+class Comment extends Model {
 
 }
 
-Comments.init({
+Comment.init({
   id: {
     type: Sequelize.INTEGER,
     primaryKey: true,
     autoIncrement: true
+  },
+  target_id: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+    comment: '评论目标id, 如普通文章，专栏的文章id'
+  },
+  target_type: {
+    type: Sequelize.STRING(32),
+    allowNull: false,
+    comment: '评论目标类型, 如article, column'
   },
   nickname: {
     type: Sequelize.STRING(64),
@@ -31,24 +40,17 @@ Comments.init({
   },
   created_at: {
     type: Sequelize.DATE,
+    allowNull: false,
     get() {
       return moment(this.getDataValue('created_at')).format('YYYY-MM-DD');
     }
   }
 }, {
   sequelize,
-  modelName: 'comments',
-  tableName: 'comments'
-})
-
-// 评论关联文章
-Article.hasMany(Comments, {
-  foreignKey: 'article_id', sourceKey: 'id', as: 'comment'
-})
-Comments.belongsTo(Article, {
-  foreignKey: 'article_id', targetKey: 'id', as: 'article'
+  modelName: 'comment',
+  tableName: 'comment'
 })
 
 module.exports = {
-  Comments
+  Comment
 }

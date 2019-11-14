@@ -37,9 +37,15 @@ class ArticleDao {
   }
 
   // 获取文章列表
-  static async list(page = 1, desc = 'created_at', category_id, keyword) {
-    const pageSize = 10;
+  static async list(params = {}) {
+    const {
+      category_id,
+      keyword,
+      page = 1,
+      desc = 'created_at'
+    } = params;
 
+    const pageSize = 10;
     // 筛选方式
     let filter = {
       deleted_at: null

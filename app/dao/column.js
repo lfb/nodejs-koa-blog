@@ -1,6 +1,6 @@
 const {Column} = require('../models/column')
 const {ColumnChapter} = require('../models/column-chapter')
-const {ColumnChapterArticle} = require('../models/column-chapter-article')
+const {ChapterSection} = require('../models/chapter-section')
 
 // 定义专栏模型
 class ColumnDao {
@@ -112,8 +112,8 @@ class ColumnDao {
           exclude: ['deleted_at', 'updated_at']
         },
         include: [{
-          model: ColumnChapterArticle,
-          as: 'column_chapter_article',
+          model: ChapterSection,
+          as: 'chapter_section',
           attributes: ['id', 'title']
         }]
       }]

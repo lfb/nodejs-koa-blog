@@ -1,5 +1,5 @@
 const {ColumnChapter} = require('../models/column-chapter')
-const {ColumnChapterArticle} = require('../models/column-chapter-article')
+const {ChapterSection} = require('../models/chapter-section')
 
 // 定义专栏模型
 class ColumnChapterDao {
@@ -38,8 +38,8 @@ class ColumnChapterDao {
         ['created_at', 'DESC']
       ],
       include: [{
-        model: ColumnChapterArticle,
-        as: 'column_chapter_article',
+        model: ChapterSection,
+        as: 'chapter_section',
         attributes: ['id', 'title']
       }]
     });
@@ -56,8 +56,8 @@ class ColumnChapterDao {
         ['created_at', 'DESC']
       ],
       include: [{
-        model: ColumnChapterArticle,
-        as: 'column_chapter_article',
+        model: ChapterSection,
+        as: 'chapter_section',
         attributes: ['id', 'title']
       }]
     });
@@ -104,8 +104,8 @@ class ColumnChapterDao {
         id
       },
       include: [{
-        model: ColumnChapterArticle,
-        as: 'column_chapter_article',
+        model: ChapterSection,
+        as: 'chapter_section',
         attributes: ['id', 'title']
       }]
     });
