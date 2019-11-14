@@ -1,8 +1,8 @@
 <template>
   <section class="comment">
     <div class="comment-header">评论列表</div>
-    <ul class="comment-box" v-if="comments && comments.data.length > 0">
-      <li class="comment-item" v-for="(item, index) in comments.data" :key="index">
+    <ul class="comment-box" v-if="comment && comment.data.length > 0">
+      <li class="comment-item" v-for="(item, index) in comment.data" :key="index">
         <div class="comment-avatar">
           <Avatar size="small" style="background-color: #2d8cf0" icon="ios-person"/>
         </div>
@@ -35,7 +35,7 @@
       v-model="show"
       :z-index="zIndex"
       :title="replyNickname">
-      <v-comment-create @updateComments="updateComments" :comment_id="comment_id"/>
+      <v-comment-create @updateComment="updateComment" :comment_id="comment_id"/>
     </Modal>
   </section>
 </template>
@@ -47,7 +47,7 @@
       VCommentCreate
     },
     props: {
-      comments: {
+      comment: {
         type: Object,
         default() {
           return {}
@@ -77,9 +77,9 @@
         this.replyNickname = `回复：${name}`
         this.show = !this.show
       },
-      updateComments(newComment, type) {
+      updateComment(newComment, type) {
         this.show = !this.show
-        this.$emit('updateComments', newComment, type)
+        this.$emit('updateComment', newComment, type)
       }
     }
   }

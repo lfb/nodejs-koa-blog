@@ -6,21 +6,21 @@
       </h1>
       <v-column-chapter @getArticle="getArticle" :chapter="chapter"/>
     </div>
-    <article class="chapter-container" v-if="article">
+    <article class="chapter-container" v-if="section">
       <h1 class="chapter-title">
-        {{article.title}}
+        {{section.title}}
       </h1>
       <ul class="chapter-intro">
         <li>
           <Icon size="16" type="ios-person-outline"/>
-          {{article.author}}
+          {{section.author}}
         </li>
       </ul>
       <div class="chapter-content">
         <mavon-editor
           style="height: 100%"
           :ishljs="true"
-          v-model="article.content"
+          v-model="section.content"
           :defaultOpen="'preview'"
           :editable="false"
           :subfield="false"
@@ -30,7 +30,7 @@
       <v-comment-create/>
       <!-- 评论列表-->
       <div v-if="comments">
-        <v-comment-list :comments="comments" :articles_id="articleId"/>
+        <v-comment-list :comment="comment" :articles_id="articleId"/>
       </div>
     </article>
   </section>
@@ -51,11 +51,11 @@
       VCommentList,
       VCommentCreate
     },
-    name: 'columnChapterArticle',
+    name: 'chapterSection',
     computed: {
       ...mapState({
-        article: state => state['column-chapter-article'].article,
-        comments: state => state['column-chapter-article'].comments
+        section: state => state['chapter-section'].section,
+        comment: state => state['chapter-section'].comment
       })
     },
     data() {
@@ -69,7 +69,7 @@
     },
     created() {
       this.fetchData()
-      this.getArticle()
+      this.getSection()
     },
     methods: {
       ...mapActions({
@@ -85,7 +85,7 @@
         this.chapter = r.data.data.chapter_list
       },
       // 获取专栏文章详情
-      async getArticle(id) {
+      async getSection(id) {
         await this.getColumnChapterArticle({
           id: id || this.articleId
         })

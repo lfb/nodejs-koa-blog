@@ -35,7 +35,7 @@
       <!-- 新建评论-->
       <v-comment-create :article_id="article.id" @updateComments="updateComments"/>
       <!-- 评论列表-->
-      <v-comment-list :comments="article.comments" :article_id="article.id" @updateComments="updateComments"/>
+      <v-comment-list :updateComment="article.comments" :article_id="article.id" @updateComments="updateComments"/>
     </div>
 
     <!-- 侧边栏 -->
@@ -82,7 +82,7 @@
       /**
        * 更新评论
        **/
-      updateComments(newComments, type) {
+      updateComment(newComments, type) {
         if (type === 'comment') {
           this.article.comments.data.unshift(newComments)
         } else if (type === 'reply') {

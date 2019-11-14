@@ -5,6 +5,6 @@ export default {
   detail(params) {
     const id = params.id
     delete params.id
-    return fetch.get('/column/chapter/article/' + id, params)
+    return fetch.get('/chapter/section/' + id, params)
   }
 }

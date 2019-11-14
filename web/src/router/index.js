@@ -45,12 +45,12 @@ const routes = [
     component: () => import(/* webpackChunkName: "columnChapter" */ '../views/column/chapter.vue')
   },
   {
-    path: '/column/chapter/article',
+    path: '/chapter/section',
     meta: {
       navIndex: 2
     },
-    name: 'columnChapterArticle',
-    component: () => import(/* webpackChunkName: "columnChapterArticle" */ '../views/column/article.vue')
+    name: 'chapterSection',
+    component: () => import(/* webpackChunkName: "chapterSection" */ '../views/column/section.vue')
   },
   {
     path: '/about',
