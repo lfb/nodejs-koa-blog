@@ -40,7 +40,7 @@ ColumnChapter.init({
   tableName: 'column_chapter'
 })
 
-// 专栏与专栏章节关联
+// 一对多：专栏表下拥有多个章节
 Column.hasMany(ColumnChapter, {
   foreignKey: 'column_id', sourceKey: 'id', as: 'column_chapter'
 })

@@ -45,7 +45,7 @@ ChapterSection.init({
   tableName: 'chapter_section'
 })
 
-// 章节目与章节关联
+// 一对多：章节表下拥有多个章节目
 ColumnChapter.hasMany(ChapterSection, {
   foreignKey: 'column_chapter_id', sourceKey: 'id', as: 'chapter_section'
 })

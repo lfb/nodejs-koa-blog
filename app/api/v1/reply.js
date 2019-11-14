@@ -1,7 +1,6 @@
 const Router = require('koa-router')
 
 const {ReplyDao} = require('../../dao/reply')
-const {CommentReplyDao} = require('../../dao/comment-reply')
 const {ReplyValidator, PositiveArticleIdParamsValidator} = require('../../validators/reply')
 const {Auth} = require('../../../middlewares/auth');
 
@@ -20,12 +19,6 @@ router.post('/reply', async (ctx) => {
   const v = await new ReplyValidator().validate(ctx);
   // 创建回复
   const r = await ReplyDao.create(v);
-
-  // 创建评论回复表
-  await CommentReplyDao.create({
-    comment_id: v.get('body.comment_id'),
-    reply_id: r.getDataValue('id')
-  })
 
   const data = {
     id: r.getDataValue('id'),

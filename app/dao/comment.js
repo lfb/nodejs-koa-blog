@@ -42,11 +42,6 @@ class CommentDao {
       include: [{
         model: Reply,
         as: 'reply',
-        through: {
-          attributes: {
-            exclude: ['updated_at', 'created_at']
-          }
-        },
         attributes: {
           exclude: ['email', 'updated_at', 'deleted_at']
         }
@@ -133,11 +128,6 @@ class CommentDao {
       include: [{
         model: Reply,
         as: 'reply',
-        through: {
-          attributes: {
-            exclude: ['updated_at', 'created_at']
-          }
-        },
         attributes: {
           exclude: ['email', 'updated_at', 'deleted_at']
         }

@@ -3,7 +3,6 @@ const moment = require('moment');
 const {Sequelize, Model} = require('sequelize')
 const {sequelize} = require('../../core/db')
 const {Comment} = require('../models/comment')
-const {CommentReply} = require('./comment-reply')
 
 class Reply extends Model {
 
@@ -43,18 +42,16 @@ Reply.init({
   modelName: 'reply'
 })
 
-// 回复关联评论
-Comment.belongsToMany(Reply, {
+// 一对多：评论表下拥有多个评论
+Comment.hasMany(Reply, {
   foreignKey: 'comment_id',
   sourceKey: 'id',
-  as: 'reply',
-  through: CommentReply
+  as: 'reply'
 })
-Reply.belongsToMany(Comment, {
-  foreignKey: 'reply_id',
+Reply.belongsTo(Comment, {
+  foreignKey: 'comment_id',
   targetKey: 'id',
-  as: 'comment',
-  through: CommentReply
+  as: 'comment'
 })
 
 module.exports = {
