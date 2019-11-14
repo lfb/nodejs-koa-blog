@@ -15,6 +15,7 @@ POST    /article
 ---|---|:---:
 title | 文章标题 | 是
 author | 文章作者 | 是
+description | 文章简介 | 是
 content | 文章内容 | 是
 cover | 文章封面 | 是
 category_id | 文章分类 | 是
@@ -44,29 +45,34 @@ GET    /article/:id
 ### 成功操作返回
 字段 | 说明
 ---|---
-category_detail | 文章关联的分类详情 
-comments_list | 文章关联的评论
+category | 文章关联的分类详情 
+article_comment | 文章关联的评论
+reply | 评论下的回复
 ```json
 {
     "code": 200,
     "msg": "success",
     "errorCode": 0,
     "data": {
-        "id": 6,
-        "title": "今夜一起学习Node.js吗？",
+        "created_at": "2019-11-14",
+        "id": 1,
+        "title": "深入浅出 Node.js",
         "author": "梁凤波",
-        "content": "今夜一起学习Node.js，9点Github不见不散！",
-        "cover": "http://cdn.boblog.com/JS.png",
-        "category_id": "2",
+        "description": "简介：深入浅出 Node.js",
+        "content": "hello world",
+        "cover": "http://cdn.boblog.com/FmdNNoR1MRtgvmQD1KwaKzbkL_i7",
         "browse": 1,
-        "created_at": "2019-06-14T12:41:15.000Z",
-        "category_detail": {
-            "id": 2,
-            "name": "css",
-            "key": "css",
+        "updated_at": "2019-11-14T04:25:22.000Z",
+        "deleted_at": null,
+        "category_id": 1,
+        "category": {
+            "created_at": "2019-11-14",
+            "id": 1,
+            "name": "html",
+            "key": "html",
             "parent_id": 0
         },
-        "comments_list": {
+        "article_comment": {
             "data": [],
             "meta": {
                 "current_page": 1,
@@ -96,8 +102,7 @@ keyword | 搜索关键字 | 否
 ### 成功操作返回
 字段 | 说明
 ---|---
-category_detail | 文章关联的分类详情 
-comments_nums | 文章关联的评论总数
+category | 文章关联的分类详情 
 ```json
 {
     "code": 200,
@@ -106,19 +111,19 @@ comments_nums | 文章关联的评论总数
     "data": {
         "data": [
             {
-                "id": 6,
-                "title": "今夜一起学习Node.js吗？",
+                "created_at": "2019-11-14",
+                "id": 1,
+                "title": "深入浅出 Node.js",
                 "author": "梁凤波",
-                "content": "今夜一起学习Node.js，9点Github不见不散！",
-                "cover": "http://cdn.boblog.com/JS.png",
-                "category_id": "2",
+                "description": "简介：深入浅出 Node.js",
+                "cover": "http://cdn.boblog.com/FmdNNoR1MRtgvmQD1KwaKzbkL_i7",
                 "browse": 0,
-                "created_at": "2019-06-14T12:41:15.000Z",
-                "comments_nums": 0,
-                "category_detail": {
-                    "id": 2,
-                    "name": "css",
-                    "key": "css",
+                "category_id": 1,
+                "category": {
+                    "created_at": "2019-11-14",
+                    "id": 1,
+                    "name": "html",
+                    "key": "html",
                     "parent_id": 0
                 }
             }
@@ -145,6 +150,7 @@ PUT    /article/:id
 :id | 文章ID | 是
 title | 文章标题 | 否
 author | 文章作者 | 否
+description | 文章内容 | 否
 content | 文章内容 | 否
 cover | 文章封面 | 否
 category_id | 文章分类 | 否
@@ -202,21 +208,22 @@ desc | 排序，默认最新：created_at，浏览次数：browse | 否
     "data": {
         "data": [
             {
-                "id": 6,
-                "title": "今夜一起学习Node.js吗？?",
+                "created_at": "2019-11-14",
+                "id": 1,
+                "title": "深入浅出 Node.js",
                 "author": "梁凤波",
-                "content": "今夜一起学习Node.js，9点Github不见不散！",
-                "cover": "http://cdn.boblog.com/JS.png",
-                "category_id": "2",
-                "browse": 3,
-                "created_at": "2019-06-14T12:41:15.000Z",
-                "updated_at": "2019-06-14T12:54:19.000Z",
+                "description": "简介：深入浅出 Node.js",
+                "content": "hello world",
+                "cover": "http://cdn.boblog.com/FmdNNoR1MRtgvmQD1KwaKzbkL_i7",
+                "browse": 1,
+                "updated_at": "2019-11-14T04:27:37.000Z",
                 "deleted_at": null,
-                "comments_nums": 0,
-                "category_detail": {
-                    "id": 2,
-                    "name": "css",
-                    "key": "css",
+                "category_id": 1,
+                "category": {
+                    "created_at": "2019-11-14",
+                    "id": 1,
+                    "name": "html",
+                    "key": "html",
                     "parent_id": 0
                 }
             }

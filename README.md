@@ -89,7 +89,12 @@ $ npm run dev
 - [管理员接口文档说明](./doc/admin.md)
 - [文章接口文档说明](./doc/article.md)
 - [分类接口文档说明](./doc/category.md)
-- [评论接口文档说明](./doc/comments.md)
+- [评论接口文档说明](./doc/comment.md)
+- [回复评论接口文档说明](./doc/reply.md)
+- [专栏接口文档说明](./doc/column.md)
+- [专栏章节接口文档说明](./doc/column-chapter.md)
+- [章节目接口文档说明](./doc/chapter-section.md)
+- [广告接口文档说明](./doc/advertise.md)
 
 ## License
 
@@ -99,6 +104,3 @@ $ npm run dev
 
 [MIT](https://github.com/liangfengbo/nodejs-koa-blog/blob/master/LICENSE), by 梁凤波
 
-
-## 项目参考学习资料
-- [《纯正商业级应用－Node.js Koa2开发微信小程序服务端》](https://s.imooc.com/SHHXs2R), by 慕课网：7七月老师

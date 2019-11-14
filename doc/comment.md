@@ -3,11 +3,11 @@
 http://localhost:3000/v1
 ```
 
-# 评论
+# 评论接口
 
 ## 创建评论
 ```
-POST    /comments
+POST    /comment
 ```
 
 ### 参数说明
@@ -16,21 +16,29 @@ POST    /comments
 nickname | 评论人名字 | 是
 email    | 评论人邮箱 | 是
 content | 评论内容 | 是
-article_id | 文章ID | 是
-parent_id | 评论父级ID | 否
+target_id | 评论目标id，如果是普通文章为普通文章id，专栏文章为专栏文章id | 是
+target_type | 评论类型，普通文章为：article，专栏文章为：column | 是
 
 ### 成功操作返回
 ```json
 {
-    "msg": "创建评论成功",
     "code": 200,
-    "errorCode": 0
+    "msg": "success",
+    "errorCode": 0,
+    "data": {
+        "id": 1,
+        "nickname": "linhe123",
+        "content": "Hello Node.js",
+        "target_id": "1",
+        "target_type": "article",
+        "created_at": "2019-11-14T04:33:37.048Z"
+    }
 }
 ```
 
 ## 评论详情
 ```
-GET    /comments/:id
+GET    /comment/:id
 ```
 
 ### 参数说明
@@ -46,20 +54,19 @@ GET    /comments/:id
     "msg": "success",
     "errorCode": 0,
     "data": {
-        "id": 10,
-        "nickname": "梁凤波",
-        "email": "itbo@163.com",
-        "content": "今夜一起学习Node.js，9点Github不见不散！",
-        "article_id": "6",
-        "parent_id": 0,
-        "created_at": "2019-06-14T15:16:37.000Z"
+        "created_at": "2019-11-14",
+        "id": 1,
+        "target_id": 1,
+        "target_type": "article",
+        "nickname": "linhe123",
+        "reply": []
     }
 }
 ```
 
 ## 评论列表
 ```
-GET    /category
+GET    /comment
 ```
 
 ### 参数说明
@@ -74,32 +81,18 @@ GET    /category
     "data": {
         "data": [
             {
-                "id": 10,
-                "nickname": "梁凤波",
-                "content": "今夜一起学习Node.js，9点Github不见不散！",
-                "article_id": "6",
-                "parent_id": 0
-            },
-            {
-                "id": 9,
-                "nickname": "bobobo",
-                "content": "koa2框架入门",
-                "article_id": "3",
-                "parent_id": 0
-            },
-            {
-                "id": 8,
-                "nickname": "lynn",
-                "content": "一起学习nodejs啊",
-                "article_id": "3",
-                "parent_id": 0
+                "id": 1,
+                "target_id": 1,
+                "target_type": "article",
+                "nickname": "linhe123",
+                "content": "Hello Node.js"
             }
         ],
         "meta": {
             "current_page": 1,
             "per_page": 10,
-            "count": 3,
-            "total": 3,
+            "count": 1,
+            "total": 1,
             "total_pages": 1
         }
     }
@@ -108,18 +101,18 @@ GET    /category
 
 ## 更新单个评论
 ```
-PUT    /comments/:id
+PUT    /comment/:id
 ```
 
 ### 参数说明
 参数 | 说明 | 是否必填
 ---|---|:---:
-:id | 分类ID | 是
+:id | 评论ID | 是
 nickname | 评论人名字 | 否
 email    | 评论人邮箱 | 否
 content | 评论内容 | 否
-article_id | 文章ID | 否
-parent_id | 评论父级ID | 否
+target_id | 评论目标id，如果是普通文章为普通文章id，专栏文章为专栏文章id | 是
+target_type | 评论类型，普通文章为：article，专栏文章为：column | 是
 
 ### 成功操作返回
 
@@ -133,7 +126,7 @@ parent_id | 评论父级ID | 否
 
 ## 删除单篇评论
 ```
-DELETE    /comments/:id
+DELETE    /comment/:id
 ```
 
 ### 参数说明
