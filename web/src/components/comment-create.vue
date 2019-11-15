@@ -85,14 +85,15 @@
                 this.params.target_type = this.target_type
                 const r = await this.createComment(this.params)
                 this.$emit('updateComment', r.data.data, 'comment')
+                this.$Message.success('评论成功！')
               } else if (this.comment_type === 'reply') {
                 this.params.comment_id = this.comment_id
                 const r = await this.createReply(this.params)
                 this.$emit('updateComment', r.data.data, 'reply')
+                this.$Message.success('回复成功！')
               }
 
               this.resetCommentInput('params')
-              this.$Message.success('评论成功！')
             } catch (e) {
               console.log(e)
             }

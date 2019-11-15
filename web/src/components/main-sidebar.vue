@@ -3,7 +3,7 @@
     <div class="sidebar-box" v-if="advertiseList && advertiseList.length > 0">
       <div class="sidebar-header">
         <div class="sidebar-header-title">
-          <Icon type="ios-apps" class="icon" size="16"/>
+          <Icon type="ios-apps" class="icon" size="18"/>
           广告推荐
         </div>
       </div>
@@ -23,7 +23,7 @@
     <div class="sidebar-box">
       <div class="sidebar-header">
         <div class="sidebar-header-title">
-          <Icon class="icon" type="ios-link" size="16"/>
+          <Icon class="icon" type="ios-link" size="18"/>
           链接
         </div>
       </div>
@@ -35,12 +35,6 @@
                 <Icon class="icon" type="logo-github"/>
                 Github
               </div>
-            </a>
-            <span></span>
-          </li>
-          <li class="sidebar-box-content-item">
-            <a href="https://dev.tencent.com/u/liangfengbo" target="_blank">
-              coding.net
             </a>
             <span></span>
           </li>
@@ -78,6 +72,12 @@
 <style scoped lang="less">
   .sidebar {
     width: 350px;
+  }
+
+  @media screen and (min-width: 200px) and (max-width: 750px) {
+    .sidebar {
+      display: none;
+    }
   }
 
   .sidebar-box {

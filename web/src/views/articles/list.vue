@@ -3,7 +3,7 @@
 
     <article class="article-list">
       <ul class="category" v-if="category && category.length > 0">
-        <li class="category-item" @click="changCategory('')">
+        <li class="category-item" @click="getAllArticle">
           全部
         </li>
         <li v-for="(item, index) in category"
@@ -53,6 +53,12 @@
         category: state => state.category.categoryList
       })
     },
+    watch: {
+      'keyword': (val, oldVal) => {
+        console.log('val, oldVal')
+        console.log(val, oldVal)
+      }
+    },
     created() {
       this.getArticle()
     },
@@ -64,7 +70,8 @@
       async getArticle() {
         const params = {
           page: this.currentPage,
-          category_id: this.$route.query.category_id
+          category_id: this.$route.query.category_id,
+          keyword: this.$route.query.keyword
         }
         const r = await this.getArticleList(params)
         await this.getCategoryList()
@@ -92,6 +99,12 @@
         })
         this.currentPage = page
         this.getArticle()
+      },
+      // 获取所有文章
+      getAllArticle() {
+        this.$router.replace('/articles')
+        this.getArticle()
+        this.categoryIndex = -1
       }
     }
   }
@@ -102,8 +115,8 @@
     width: 100%;
     overflow: hidden;
     overflow-x: auto;
-    height: 56px;
-    line-height: 56px;
+    height: 64px;
+    line-height: 64px;
     display: flex;
     border-bottom: 1px solid #f0f0f0;
   }
@@ -138,5 +151,15 @@
     overflow: hidden;
     box-shadow: 1px 2px 3px #f0f0f0;
     background: #fff;
+  }
+
+  @media screen and (min-width: 200px) and (max-width: 750px) {
+    .articles {
+      width: 100%;
+    }
+
+    .article-list {
+      margin-right: 0;
+    }
   }
 </style>

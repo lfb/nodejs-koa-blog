@@ -77,7 +77,7 @@
 
   .column-title {
     color: #17233d;
-    font-size: 24px;
+    font-size: 26px;
     font-weight: 500;
   }
 
@@ -88,6 +88,7 @@
   }
 
   .column-intro-btn {
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -100,9 +101,13 @@
 
   .column-intro li {
     display: inline-block;
-    margin-right: 32px;
     font-size: 16px;
     color: #9ea7b4;
-    white-space: nowrap;
+  }
+
+  @media screen and (min-width: 200px) and (max-width: 750px) {
+    .column-intro {
+      display: none;
+    }
   }
 </style>

@@ -2,9 +2,7 @@
   <div id="app">
     <v-loading :text="loadingText" v-if="isLoading"/>
     <v-headers/>
-    <div class="app-inner">
-      <router-view/>
-    </div>
+    <router-view/>
     <BackTop/>
     <v-footer/>
   </div>
@@ -41,5 +39,11 @@
     margin: 0;
     padding: 0;
     list-style: none;
+  }
+
+  #app {
+    width: 100%;
+    overflow: hidden;
+    box-sizing: border-box;
   }
 </style>

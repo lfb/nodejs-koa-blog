@@ -44,7 +44,6 @@
       <!-- 评论列表-->
       <v-comment-list
         :comment="article.article_comment"
-        :article_id="article.id"
         @updateComment="updateComment"/>
     </div>
 
@@ -127,7 +126,7 @@
   .article-title {
     color: #17233d;
     text-align: center;
-    font-size: 36px;
+    font-size: 40px;
     font-weight: 500;
   }
 
@@ -164,5 +163,15 @@
     padding: 32px 0 16px;
     display: flex;
     align-items: center;
+  }
+
+  @media screen and (min-width: 200px) and (max-width: 750px) {
+    .article-detail {
+      width: 100%;
+    }
+
+    .article-container {
+      margin-right: 0;
+    }
   }
 </style>

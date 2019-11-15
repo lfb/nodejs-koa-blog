@@ -2,7 +2,7 @@
   <section class="chapter-detail">
     <div class="chapter-table" v-if="chapter.length > 0">
       <h1 class="chapter-table-title">
-        {{columnTitle}}
+        <Icon type="md-book" /> {{columnTitle}}
       </h1>
       <v-column-chapter @getSection="getSection" :chapter="chapter"/>
     </div>
@@ -34,7 +34,7 @@
       <v-comment-create @updateComment="updateComment" target_type="column" :target_id="parseInt(sectionId)"/>
       <!-- 评论列表-->
       <div v-if="comment">
-        <v-comment-list :comment="comment"/>
+        <v-comment-list @updateComment="updateComment" :comment="comment"/>
       </div>
     </article>
   </section>
@@ -158,7 +158,7 @@
   .chapter-title {
     color: #17233d;
     text-align: center;
-    font-size: 36px;
+    font-size: 40px;
     font-weight: 500;
     margin-top: 16px;
   }
@@ -186,5 +186,35 @@
     padding: 32px 0 16px;
     display: flex;
     align-items: center;
+  }
+
+  @media screen and (min-width: 200px) and (max-width: 750px) {
+    .chapter-detail {
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+      margin: 24px 0;
+      left: 0;
+      height: 100%;
+      border-radius: 6px;
+      box-sizing: border-box;
+      padding: 32px;
+      background: #fff;
+    }
+
+    .chapter-table {
+      display: none;
+      position: fixed;
+      height: 100%;
+      width: 20%;
+      top: 120px;
+      left: 0;
+      overflow: hidden;
+      overflow-y: auto;
+      box-sizing: border-box;
+      padding: 24px;
+      border-radius: 0 6px 6px 0;
+      background: #fff;
+    }
   }
 </style>

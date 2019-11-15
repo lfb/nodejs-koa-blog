@@ -60,7 +60,7 @@
 
   .articles-item {
     cursor: pointer;
-    padding: 24px;
+    padding: 32px;
     display: flex;
     border-bottom: 1px solid #f6f6f6;
     transition: 0.12s ease-in;
@@ -80,12 +80,13 @@
 
   .articles-item-title {
     color: #17233d;
-    font-size: 22px;
+    font-size: 26px;
     font-weight: 500;
   }
 
   .articles-item-description {
     color: #808695;
+    font-size: 18px;
     padding: 24px 0;
   }
 
@@ -103,12 +104,10 @@
   }
 
   .articles-item-intro .articles-item-category {
-    height: 28px;
-    line-height: 28px;
-    padding: 0 32px;
+    padding: 5px 32px;
     font-size: 16px;
     color: #409EFF;
-    border-radius: 64px;
+    border-radius: 96px;
     background: rgba(51, 119, 255, .1);
   }
 

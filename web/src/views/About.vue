@@ -27,8 +27,10 @@
     width: @window-Width;
     min-height: 80vh;
     margin: 24px auto;
+    overflow: hidden;
     padding-bottom: 24px;
-    background-color: white;
+    background-color: #fff;
+    border-radius: 6px;
   }
 
   .item {
@@ -52,7 +54,7 @@
   }
 
   .text {
-    padding: 0 24px 24px;
+    padding: 0 32px 32px;
     line-height: 42px;
     font-size: 20px;
     color: #666;
@@ -60,7 +62,7 @@
   }
 
   .content {
-    padding-top: 24px;
+    padding-top: 32px;
   }
 
   .end {

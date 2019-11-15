@@ -3,7 +3,9 @@
     <section class="header-inner">
 
       <div class="logo">
-        <img src="../assets/images/logo.png" alt="logo">
+        <div class="logo-box">
+          <img src="../assets/images/logo.png" alt="logo">
+        </div>
       </div>
 
       <div class="nav">
@@ -18,7 +20,12 @@
       </div>
 
       <div class="search">
-        <Input size="default" suffix="ios-search" placeholder="搜索文章.." style="width: auto"/>
+        <Input size="default"
+               @keyup.enter.native="search"
+               suffix="ios-search"
+               v-model="keyword"
+               placeholder="搜索文章.."
+               style="width: auto"/>
       </div>
 
     </section>
@@ -37,6 +44,7 @@
     },
     data() {
       return {
+        keyword: '',
         nav: [
           {
             name: '首页',
@@ -64,6 +72,14 @@
         } catch (e) {
           console.log(e)
         }
+      },
+      search() {
+        const keyword = '/articles?keyword=' + this.keyword
+        if (this.$route.name !== 'article-list') {
+          this.$router.push(keyword)
+        } else {
+          window.location.replace(keyword)
+        }
       }
     }
   }
@@ -88,6 +104,9 @@
   }
 
   .logo {
+  }
+
+  .logo-box {
     width: 168px;
     display: flex;
     align-items: center;
@@ -123,5 +142,17 @@
 
   .nav-item-active {
     color: #2d8cf0;
+  }
+
+  @media screen and (min-width: 200px) and (max-width: 750px) {
+    .search {
+      display: none;
+    }
+
+    .header-inner {
+      box-sizing: border-box;
+      width: 100%;
+      padding: 0 32px;
+    }
   }
 </style>

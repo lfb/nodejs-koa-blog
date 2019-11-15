@@ -6,7 +6,7 @@
       <div class="column" v-if="column.length > 0">
         <div class="sidebar-header">
           <div class="sidebar-header-title">
-            <Icon class="icon" type="md-book" size="16"/>
+            <Icon class="icon" type="md-book" size="18"/>
             专栏
           </div>
           <div class="sidebar-header-more" @click="goLink('/column')">
@@ -21,7 +21,7 @@
       <article class="articles" v-if="article.length > 0">
         <div class="sidebar-header">
           <div class="sidebar-header-title">
-            <Icon type="md-list-box" class="icon" size="16"/>
+            <Icon type="md-list-box" class="icon" size="18"/>
             文章
           </div>
           <div class="sidebar-header-more" @click="goLink('/articles')">
@@ -105,5 +105,15 @@
 
   .icon {
     margin-right: 10px;
+  }
+
+  @media screen and (min-width: 200px) and (max-width: 750px) {
+    .home-wrap {
+      width: 100%;
+    }
+
+    .column-articles-list {
+      margin-right: 0;
+    }
   }
 </style>

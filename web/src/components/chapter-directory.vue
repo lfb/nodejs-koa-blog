@@ -2,12 +2,18 @@
   <section>
     <div class="column-chapter" v-if="chapter.length > 0">
       <dl v-for="(item, index) in chapter" :key="index">
-        <dt>Chapter {{index + 1}}：{{item.title}}</dt>
+        <dt>
+          <Icon type="md-list" />
+          第 {{index + 1}} 章：{{item.title}}
+        </dt>
         <div v-if="item.chapter_section">
-          <dd v-for="(article, index2) in item.chapter_section"
+          <dd v-for="(section, index2) in item.chapter_section"
               :key="index2"
-              @click="toChapterSection(article.id)">
-            <h1>{{article.title}}</h1>
+              @click="toChapterSection(section.id)">
+            <h1>
+              <Icon type="md-git-commit" />
+              {{section.title}}
+            </h1>
             <span></span>
           </dd>
         </div>
@@ -50,28 +56,28 @@
 
 <style scoped lang="less">
   .column-chapter dt {
-    font-size: 18px;
+    font-size: 20px;
     font-weight: 500;
     color: #17233d;
     padding-top: 24px;
   }
 
   .column-chapter dd {
-    padding: 16px;
+    padding: 24px;
     cursor: pointer;
-    transition: 0.28s ease;
     color: #515a6e;
     display: flex;
+    font-size: 18px;
+    align-items: center;
     justify-content: space-between;
+    border-bottom: 1px solid #f0f0f0;
 
     &:hover {
       color: #2d8cf0;
-      padding-left: 32px;
-      box-shadow: 1px 2px 3px #f0f0f0;
     }
 
     & h1 {
-      font-size: 16px;
+      font-size: 18px;
       font-weight: 400;
     }
 

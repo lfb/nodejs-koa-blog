@@ -74,7 +74,7 @@
     methods: {
       reply(id, name) {
         this.comment_id = id
-        this.replyNickname = `回复：${name}`
+        this.replyNickname = `回复 「${name}」：`
         this.show = !this.show
       },
       updateComment(newComment, type) {

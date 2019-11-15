@@ -1,7 +1,7 @@
 <template>
-  <section class="articles">
+  <section class="column">
 
-    <article class="article-list">
+    <article class="column-list">
       <!-- 专栏组件-->
       <v-column-item :list="list"/>
 
@@ -65,19 +65,29 @@
 </script>
 
 <style scoped lang="less">
-  .articles {
+  .column {
     width: @window-Width;
     display: flex;
     margin: 24px auto;
     min-height: 80vh;
   }
 
-  .article-list {
+  .column-list {
     flex: 1;
     margin-right: 32px;
     border-radius: 10px;
     overflow: hidden;
     box-shadow: 1px 2px 3px #f0f0f0;
     background: #fff;
+  }
+
+  @media screen and (min-width: 200px) and (max-width: 750px) {
+    .column {
+      width: 100%;
+    }
+
+    .column-list {
+      margin-right: 0;
+    }
   }
 </style>
