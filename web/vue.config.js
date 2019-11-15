@@ -27,40 +27,40 @@ module.exports = {
   configureWebpack: config => {
     if (isProduction) {
       // 上线压缩去除console等信息
-      config.plugins.push(
-        new UglifyJsPlugin({
-          uglifyOptions: {
-            compress: {
-              // 删除所有的console语句
-              drop_console: true,
-              // 把使用多次的静态值自动定义为变量
-              reduce_vars: true,
-              drop_debugger: false,
-              pure_funcs: ['console.log'] // 移除console
-            },
-            output: {
-              // 使输出的代码尽可能紧凑
-              beautify: false
-            }
-          },
-          sourceMap: false,
-          // 允许并发
-          parallel: true,
-          // 开启缓存
-          cache: true
-        })
-      )
+      // config.plugins.push(
+      //   new UglifyJsPlugin({
+      //     uglifyOptions: {
+      //       compress: {
+      //         // 删除所有的console语句
+      //         drop_console: true,
+      //         // 把使用多次的静态值自动定义为变量
+      //         reduce_vars: true,
+      //         drop_debugger: false,
+      //         pure_funcs: ['console.log'] // 移除console
+      //       },
+      //       output: {
+      //         // 使输出的代码尽可能紧凑
+      //         beautify: false
+      //       }
+      //     },
+      //     sourceMap: false,
+      //     // 允许并发
+      //     parallel: true,
+      //     // 开启缓存
+      //     cache: true
+      //   })
+      // )
       // 开启gzip，降低服务器压缩对CPU资源的占用，服务器也要相应开启gzip
-      const productionGzipExtensions = /\.(js|css|json|txt|html|ico|svg|tiff)(\?.*)?$/i
-      config.plugins.push(
-        new CompressionWebpackPlugin({
-          filename: '[path].gz[query]',
-          algorithm: 'gzip',
-          test: productionGzipExtensions,
-          threshold: 10240,
-          minRatio: 0.8
-        })
-      )
+      // const productionGzipExtensions = /\.(js|css|json|txt|html|ico|svg|tiff)(\?.*)?$/i
+      // config.plugins.push(
+      //   new CompressionWebpackPlugin({
+      //     filename: '[path].gz[query]',
+      //     algorithm: 'gzip',
+      //     test: productionGzipExtensions,
+      //     threshold: 10240,
+      //     minRatio: 0.8
+      //   })
+      // )
       // 配置 dll 文件
       config.plugins.push(
         new webpack.DllReferencePlugin({
@@ -78,7 +78,9 @@ module.exports = {
         })
       )
       // 打包后模块大小分析
-      config.plugins.push(new BundleAnalyzerPlugin())
+      if (process.env.npm_config_report) {
+        config.plugins.push(new BundleAnalyzerPlugin())
+      }
 
       // happyBabel
       config.plugins.push(new HappyPack({
