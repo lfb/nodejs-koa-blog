@@ -29,8 +29,6 @@
         }
       }
     },
-    created() {
-    },
     methods: {
       ...mapActions({
         createChapter: 'chapter/create'

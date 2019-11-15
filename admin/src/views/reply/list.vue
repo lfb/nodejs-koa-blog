@@ -1,36 +1,30 @@
 <template>
   <section>
+    <div class="empty" v-if="list.length === 0">
+      暂无回复
+    </div>
     <section v-if="list.length > 0">
       <Table border :columns="columns" :data="list">
         <template slot-scope="{ row }" slot="name">
           <strong>{{ row.name }}</strong>
         </template>
         <template slot-scope="{ row, index }" slot="action">
-          <Button type="primary" size="small" @click="reply(row.id)" style="margin-right: 5px">回复列表</Button>
           <Button type="error" size="small" @click="destroy(row.id)">删除</Button>
         </template>
       </Table>
-
-      <section class="page">
-        <Page :total="page.total" :page-size="page.per_page" :current="page.current_page" show-total
-              @on-change="handlePage"></Page>
-      </section>
-
     </section>
   </section>
 </template>
 
 <script>
-  import merge from 'webpack-merge'
   import {mapState, mapActions} from 'vuex';
 
   export default {
     name: "list",
     data() {
       return {
+        comment_id: this.$route.params.comment_id,
         list: [],
-        page: {},
-        currentPage: 1,
         columns: [
           {
             title: 'ID',
@@ -51,17 +45,6 @@
             key: 'content'
           },
           {
-            title: '评论类型',
-            key: 'target_type',
-            width: 100,
-            align: "center",
-            render: (h, params) => {
-              return h('div', [
-                h('span', params.row.target_type === 'article' ? '普通文章' : '专栏')
-              ]);
-            }
-          },
-          {
             title: 'Action',
             slot: 'action',
             width: 200,
@@ -71,47 +54,34 @@
       }
     },
     created() {
-      this._getCommentsList();
+      this.fetchData();
     },
     methods: {
       ...mapActions({
-        getCommentsList: 'comment/getCommentsList',
-        destroyComments: 'comment/destroyComments'
+        getReplyList: 'reply/list',
+        destroyReply: 'reply/destroy'
       }),
       // 获取分类
-      async _getCommentsList() {
-        const res = await this.getCommentsList({
-          page: this.currentPage
+      async fetchData() {
+        const res = await this.getReplyList({
+          comment_id: this.comment_id
         });
+        this.list = res.data.data;
+      },
+      reply(){
 
-        this.list = res.data.data.data;
-        this.page = res.data.data.meta;
-      },
-      // 切换分页
-      handlePage(page) {
-        this.$router.replace({
-          query: merge(this.$route.query, {
-            page
-          })
-        });
-        this.currentPage = page;
-        this._getCommentsList();
-      },
-      reply(id) {
-        this.$router.push('/reply/' + id)
       },
       // 删除分类
       destroy(id) {
         this.$Modal.confirm({
           title: '提示',
-          content: '<p>确定删除此评论吗？</p>',
+          content: '<p>确定删除此回复评论吗？</p>',
           loading: true,
           onOk: async () => {
             try {
-              await this.destroyComments(id);
+              await this.destroyReply(id);
               this.$Message.success('删除成功');
-
-              this._getCommentsList();
+              this.fetchData();
 
             } catch (e) {
               this.$Message.error(e);
@@ -131,7 +101,7 @@
 </script>
 
 <style scoped>
-  .page {
+  .empty {
     padding: 32px 0;
     text-align: center;
   }

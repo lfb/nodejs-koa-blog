@@ -18,13 +18,13 @@
     props: {
       title: {
         type: String,
-        default(){
+        default() {
           return ''
         }
       },
       chapter_id: {
         type: Number,
-        default(){
+        default() {
           return -1
         }
       }
@@ -43,8 +43,10 @@
         }
       }
     },
-    created() {
-      this.formValidate.title = this.title;
+    watch: {
+      title() {
+        this.formValidate.title = this.title
+      }
     },
     methods: {
       ...mapActions({
@@ -57,7 +59,7 @@
           this.formValidate.column_id = this.column_id
           await this.updateChapter(this.formValidate);
           this.$Message.success('更新成功!');
-          this.$emit('showCreateChapter')
+          this.$emit('showUpdateChapter')
 
         } catch (e) {
 
