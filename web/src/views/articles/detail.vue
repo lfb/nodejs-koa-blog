@@ -16,9 +16,9 @@
           <Icon size="16" type="ios-eye-outline"/>
           {{article.browse}}
         </li>
-        <li v-if="article.comments_list">
+        <li v-if="article.article_comment">
           <Icon size="16" type="ios-text-outline"/>
-          {{article.comments_list.data.length}}
+          {{article.article_comment.data.length}}
         </li>
       </ul>
       <div class="article-content">
@@ -33,9 +33,18 @@
       </div>
 
       <!-- 新建评论-->
-      <v-comment-create :article_id="article.id" @updateComments="updateComments"/>
+      <div class="comment-header">
+        <Icon type="ios-create-outline" />
+        欢迎评论</div>
+      <v-comment-create
+        :target_id="article.id"
+        :target_type="targetType"
+        @updateComment="updateComment"/>
       <!-- 评论列表-->
-      <v-comment-list :updateComment="article.comments" :article_id="article.id" @updateComments="updateComments"/>
+      <v-comment-list
+        :comment="article.article_comment"
+        :article_id="article.id"
+        @updateComment="updateComment"/>
     </div>
 
     <!-- 侧边栏 -->
@@ -63,7 +72,7 @@
       return {
         article: null,
         id: this.$route.query.id,
-        commentsList: []
+        targetType: 'article'
       }
     },
     created() {
@@ -82,9 +91,9 @@
       /**
        * 更新评论
        **/
-      updateComment(newComments, type) {
+      updateComment(newComment, type) {
         if (type === 'comment') {
-          this.article.comments.data.unshift(newComments)
+          this.article.article_comment.data.unshift(newComment)
         } else if (type === 'reply') {
           this.getArticle()
         }
@@ -145,5 +154,14 @@
     color: #409EFF;
     border-radius: 64px;
     background: rgba(51, 119, 255, .1);
+  }
+
+  .comment-header {
+    font-size: 28px;
+    font-weight: 500;
+    color: #2d8cf0;
+    padding: 32px 0 16px;
+    display: flex;
+    align-items: center;
   }
 </style>

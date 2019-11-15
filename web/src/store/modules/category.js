@@ -21,7 +21,7 @@ const actions = {
    * @param params
    * @returns {Promise<void>}
    */
-  async getCategoryList({ state, commit }, params) {
+  async list({ state, commit }, params) {
     let res = await category.list(params)
     commit('SET_CATEGORY_LIST', res.data.data)
     return res

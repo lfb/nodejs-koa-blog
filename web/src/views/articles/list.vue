@@ -2,6 +2,18 @@
   <section class="articles">
 
     <article class="article-list">
+      <ul class="category" v-if="category && category.length > 0">
+        <li class="category-item" @click="changCategory('')">
+          全部
+        </li>
+        <li v-for="(item, index) in category"
+            :class="categoryIndex === index ? 'category-item category-item-active' : 'category-item'"
+            @click="changCategory(item.id, index)"
+            :key="index">
+          <Icon v-if="item.type" class="icon" :style="{color: item.color}" :type="item.type"/>
+          {{item.name}}
+        </li>
+      </ul>
       <!-- 文章组件-->
       <v-article-item :list="list"/>
 
@@ -17,7 +29,7 @@
 </template>
 
 <script>
-  import { mapActions } from 'vuex'
+  import { mapState, mapActions } from 'vuex'
   import merge from 'webpack-merge'
   import VArticleItem from '../../components/article-item'
   import VMainSidebar from '../../components/main-sidebar'
@@ -32,23 +44,44 @@
       return {
         list: [],
         page: null,
-        currentPage: 1
+        currentPage: 1,
+        categoryIndex: -1
       }
+    },
+    computed: {
+      ...mapState({
+        category: state => state.category.categoryList
+      })
     },
     created() {
       this.getArticle()
     },
     methods: {
       ...mapActions({
-        getArticleList: 'articles/list'
+        getArticleList: 'articles/list',
+        getCategoryList: 'category/list'
       }),
       async getArticle() {
         const params = {
-          page: this.currentPage
+          page: this.currentPage,
+          category_id: this.$route.query.category_id
         }
         const r = await this.getArticleList(params)
+        await this.getCategoryList()
         this.list = r.data.data.data
         this.page = r.data.data.meta
+      },
+      // 切换分类下的文章
+      changCategory(id, index) {
+        if (this.categoryIndex !== index) {
+          this.$router.replace({
+            query: merge(this.$route.query, {
+              category_id: id
+            })
+          })
+          this.categoryIndex = index
+          this.getArticle()
+        }
       },
       // 切换分页
       handlePage(page) {
@@ -65,6 +98,32 @@
 </script>
 
 <style scoped lang="less">
+  .category {
+    width: 100%;
+    overflow: hidden;
+    overflow-x: auto;
+    height: 56px;
+    line-height: 56px;
+    display: flex;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  .category-item {
+    margin-left: 32px;
+    cursor: pointer;
+    color: #515a6e;
+    font-size: 14px;
+    font-weight: 400;
+
+    &:hover {
+      color: #2d8cf0;
+    }
+  }
+
+  .category-item-active {
+    color: #2d8cf0;
+  }
+
   .articles {
     width: @window-Width;
     display: flex;

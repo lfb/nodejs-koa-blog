@@ -1,20 +1,21 @@
 <template>
   <section class="comment-create">
-<!--    <div class="comment-header">欢迎评论</div>-->
-    <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" label-position="left" :label-width="80">
+    <Form ref="params" :model="params" :rules="ruleValidate" label-position="left" :label-width="80">
       <FormItem label="昵称" prop="nickname">
-        <Input v-model="formValidate.nickname" placeholder="请输入您的昵称"/>
+        <Input v-model="params.nickname" placeholder="请输入您的昵称"/>
       </FormItem>
       <FormItem label="邮箱" prop="email">
-        <Input v-model="formValidate.email" placeholder="请输入您的邮箱（不会被公开）"/>
+        <Input v-model="params.email" placeholder="请输入您的邮箱（不会被公开）"/>
       </FormItem>
       <FormItem label="评论" prop="content">
-        <Input v-model="formValidate.content" type="textarea" :autosize="{minRows: 2,maxRows: 5}"
+        <Input v-model="params.content" type="textarea" :autosize="{minRows: 2,maxRows: 5}"
                placeholder="请输入您的评论内容..."/>
       </FormItem>
       <FormItem>
-        <Button @click="resetCommentInput('formValidate')">清空</Button>
-        <Button type="primary" style="margin-left: 8px" @click="createComment('formValidate')">评论</Button>
+        <Button @click="resetCommentInput('params')">清空</Button>
+        <Button type="primary" style="margin-left: 8px" @click="submit('params')">
+         {{comment_type === 'comment' ? '评论' : '回复'}}
+        </Button>
       </FormItem>
     </Form>
   </section>
@@ -23,16 +24,22 @@
   import { mapActions } from 'vuex'
   export default {
     props: {
-      article_id: {
+      target_id: {
         type: Number,
         default() {
           return 0
         }
       },
-      parent_id: {
-        type: Number,
+      target_type: {
+        type: String,
         default() {
-          return 0
+          return 'article'
+        }
+      },
+      comment_type: {
+        type: String,
+        default() {
+          return 'comment'
         }
       },
       comment_id: {
@@ -44,7 +51,7 @@
     },
     data() {
       return {
-        formValidate: {
+        params: {
           nickname: '',
           email: '',
           content: ''
@@ -66,26 +73,25 @@
     },
     methods: {
       ...mapActions({
-        createComments: 'comments/createComments',
+        createComment: 'comment/createComment',
         createReply: 'reply/createReply'
       }),
-      createComment(name) {
+      submit(name) {
         this.$refs[name].validate(async (valid) => {
           if (valid) {
-            console.log(this.formValidate)
             try {
-              if (this.article_id) {
-                this.formValidate.article_id = this.article_id
-                this.formValidate.parent_id = this.parent_id
-                const r = await this.createComments(this.formValidate)
-                this.$emit('updateComments', r.data.data, 'comment')
-              } else {
-                this.formValidate.comment_id = this.comment_id
-                const r = await this.createReply(this.formValidate)
-                this.$emit('updateComments', r.data.data, 'reply')
+              if (this.comment_type === 'comment') {
+                this.params.target_id = this.target_id
+                this.params.target_type = this.target_type
+                const r = await this.createComment(this.params)
+                this.$emit('updateComment', r.data.data, 'comment')
+              } else if (this.comment_type === 'reply') {
+                this.params.comment_id = this.comment_id
+                const r = await this.createReply(this.params)
+                this.$emit('updateComment', r.data.data, 'reply')
               }
 
-              this.resetCommentInput('formValidate')
+              this.resetCommentInput('params')
               this.$Message.success('评论成功！')
             } catch (e) {
               console.log(e)

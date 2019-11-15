@@ -5,11 +5,11 @@ export default {
   list(params) {
     const id = params.article_id
     delete params.article_id
-    return fetch.get('/article/' + id + '/comments', params)
+    return fetch.get('/article/' + id + '/comment', params)
   },
 
   // 新增评论
   create(params) {
-    return fetch.post('/comments', params)
+    return fetch.post('/comment', params)
   }
 }

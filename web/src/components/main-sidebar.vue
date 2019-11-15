@@ -1,16 +1,20 @@
 <template>
   <article class="sidebar">
-    <div class="sidebar-box">
+    <div class="sidebar-box" v-if="advertiseList && advertiseList.length > 0">
       <div class="sidebar-header">
         <div class="sidebar-header-title">
-          <Icon type="ios-apps" class="icon" size="20"/>
-          推荐
+          <Icon type="ios-apps" class="icon" size="16"/>
+          广告
         </div>
       </div>
       <div class="sidebar-box-content">
         <ul>
-          <li class="sidebar-box-content-item" v-for="(item, index) in 5" :key="index">
-            <h1>数据结构与算法</h1>
+          <li class="sidebar-box-content-item"
+              v-for="(ad, index) in advertiseList"
+              :key="index">
+            <a :href="ad.link" target="_blank">
+              <h1>{{ad.title}}</h1>
+            </a>
             <span></span>
           </li>
         </ul>
@@ -19,68 +23,26 @@
     <div class="sidebar-box">
       <div class="sidebar-header">
         <div class="sidebar-header-title">
-          <Icon type="ios-apps" class="icon" size="20"/>
-          分类
-        </div>
-      </div>
-      <div class="sidebar-box-content">
-        <ul>
-          <li class="sidebar-box-content-item">
-            <div>
-              <p>
-                <Icon class="icon" style="color: #e34c24;" type="logo-html5"/>
-                html（ 10 ）
-              </p>
-            </div>
-          </li>
-          <li class="sidebar-box-content-item">
-            <div>
-              <p>
-                <Icon class="icon" style="color: #006fba;" type="logo-css3"/>
-                css（ 15 ）
-              </p>
-            </div>
-          </li>
-          <li>
-          <li class="sidebar-box-content-item">
-            <div>
-              <p>
-                <Icon class="icon" style="color: #f0da4e;" type="logo-javascript"/>
-                javascript（ 32 ）
-              </p>
-            </div>
-          </li>
-          <li class="sidebar-box-content-item">
-            <div>
-              <p>
-                <Icon class="icon" style="color: #8cc84b" type="logo-nodejs"/>
-                Node.js
-              </p>
-            </div>
-          </li>
-        </ul>
-      </div>
-    </div>
-    <div class="sidebar-box">
-      <div class="sidebar-header">
-        <div class="sidebar-header-title">
-          <Icon class="icon" type="ios-link" size="20"/>
+          <Icon class="icon" type="ios-link" size="16"/>
           链接
         </div>
       </div>
       <div class="sidebar-box-content">
         <ul>
           <li class="sidebar-box-content-item">
-            <div>
-              <Icon class="icon" type="logo-github"/>
-              Github
-            </div>
+            <a href="https://github.com/liangfengbo" target="_blank">
+              <div>
+                <Icon class="icon" type="logo-github"/>
+                Github
+              </div>
+            </a>
+            <span></span>
           </li>
           <li class="sidebar-box-content-item">
-            慕课网
-          </li>
-          <li class="sidebar-box-content-item">
-            coding.net
+            <a href="https://dev.tencent.com/u/liangfengbo" target="_blank">
+              coding.net
+            </a>
+            <span></span>
           </li>
         </ul>
       </div>
@@ -90,8 +52,26 @@
 </template>
 
 <script>
+  import { mapState, mapActions } from 'vuex'
   export default {
-    name: 'main-sidebar'
+    name: 'main-sidebar',
+    computed: {
+      ...mapState({
+        advertiseList: state => state.advertise.advertiseList
+      })
+    },
+    created() {
+      this.fetchData()
+    },
+    methods: {
+      ...mapActions({
+        getAdvertiseList: 'advertise/list'
+      }),
+      // 获取数据
+      async fetchData() {
+        await this.getAdvertiseList()
+      }
+    }
   }
 </script>
 
@@ -128,6 +108,11 @@
   .sidebar-box-content-item h1 {
     font-size: 16px;
     font-weight: 400;
+  }
+
+  .sidebar-box-content-item a {
+    flex: 1;
+    color: #657180;
   }
 
   .sidebar-box-content-item span {

@@ -1,6 +1,8 @@
 <template>
   <section class="comment">
-    <div class="comment-header">评论列表</div>
+    <div class="comment-header">
+      评论列表
+    </div>
     <ul class="comment-box" v-if="comment && comment.data.length > 0">
       <li class="comment-item" v-for="(item, index) in comment.data" :key="index">
         <div class="comment-avatar">
@@ -15,10 +17,10 @@
             <ul class="comment-box">
               <li class="comment-item" v-for="(reply, index2) in item.reply" :key="index2">
                 <div class="comment-avatar">
-                  <Avatar size="small" style="background-color: #2d8cf0" icon="ios-person"/>
+                  <Avatar size="small" style="background-color: #2d8cf0" icon="ios-chatbubbles"/>
                 </div>
                 <div class="comment-info">
-                  <h1 class="comment-username">{{reply.nickname}} 回复 {{reply.reply_username}}</h1>
+                  <h1 class="comment-username">来自「{{reply.nickname}}」的回复 {{reply.reply_username}}</h1>
                   <p class="comment-content">
                     {{reply.content}}
                   </p>
@@ -26,7 +28,7 @@
               </li>
             </ul>
           </div>
-          <p class="comment-reply-btn" @click="reply(item.id, item.nickname)">回复</p>
+          <p class="comment-reply-btn" @click="reply(item.id, item.nickname)">点击回复</p>
         </div>
       </li>
     </ul>
@@ -35,7 +37,10 @@
       v-model="show"
       :z-index="zIndex"
       :title="replyNickname">
-      <v-comment-create @updateComment="updateComment" :comment_id="comment_id"/>
+      <v-comment-create
+        @updateComment="updateComment"
+        :comment_type="commentType"
+        :comment_id="comment_id"/>
     </Modal>
   </section>
 </template>
@@ -54,7 +59,7 @@
         }
       },
       articles_id: {
-        type: String,
+        type: Number,
         default() {
           return 0
         }
@@ -68,7 +73,8 @@
         // 回复昵称
         replyNickname: '',
         zIndex: 9999,
-        replyArr: []
+        replyArr: [],
+        commentType: 'reply'
       }
     },
     methods: {

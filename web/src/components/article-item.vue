@@ -1,7 +1,8 @@
 <!--文章列表项-->
 <template>
   <section>
-    <ul class="article-box">
+    <div class="article-empty" v-if="list && list.length === 0">暂无文章~</div>
+    <ul class="article-box" v-if="list && list.length > 0">
       <li class="articles-item" v-for="(item, index) in list" @click="toArticleDetail(item.id)" :key="index">
         <div class="articles-item-info">
           <h1 class="articles-item-title">{{item.title}}</h1>
@@ -50,6 +51,12 @@
 </script>
 
 <style scoped lang="less">
+  .article-empty {
+    text-align: center;
+    padding: 32px 0;
+    color: #515a6e;
+    font-size: 16px;
+  }
 
   .articles-item {
     cursor: pointer;

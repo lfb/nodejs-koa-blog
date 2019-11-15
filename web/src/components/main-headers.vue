@@ -26,7 +26,7 @@
 </template>
 
 <script>
-  import {mapState} from 'vuex'
+  import { mapState } from 'vuex'
 
   export default {
     name: '',
@@ -38,10 +38,6 @@
     data() {
       return {
         nav: [
-          {
-            name: '首页',
-            router: '/'
-          },
           {
             name: '文章',
             router: '/articles'
