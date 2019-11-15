@@ -112,8 +112,8 @@
     margin-left: 32px;
     cursor: pointer;
     color: #515a6e;
-    font-size: 14px;
-    font-weight: 400;
+    font-size: 16px;
+    font-weight: normal;
 
     &:hover {
       color: #2d8cf0;

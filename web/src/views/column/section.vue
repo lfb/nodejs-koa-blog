@@ -4,7 +4,7 @@
       <h1 class="chapter-table-title">
         {{columnTitle}}
       </h1>
-      <v-column-chapter @getArticle="getArticle" :chapter="chapter"/>
+      <v-column-chapter @getSection="getSection" :chapter="chapter"/>
     </div>
     <article class="chapter-container" v-if="section">
       <h1 class="chapter-title">
@@ -27,10 +27,10 @@
           :toolbarsFlag="false"/>
       </div>
       <!-- 新建评论-->
-      <v-comment-create/>
+      <v-comment-create @updateComment="updateComment" target_type="column" :target_id="parseInt(sectionId)"/>
       <!-- 评论列表-->
-      <div v-if="comments">
-        <v-comment-list :comment="comment" :articles_id="articleId"/>
+      <div v-if="comment">
+        <v-comment-list :comment="comment"/>
       </div>
     </article>
   </section>
@@ -61,7 +61,7 @@
     data() {
       return {
         content: '呢绒',
-        articleId: this.$route.query.articleId,
+        sectionId: this.$route.query.sectionId,
         columnId: this.$route.query.columnId,
         chapter: [],
         columnTitle: ''
@@ -74,7 +74,7 @@
     methods: {
       ...mapActions({
         getColumnChapter: 'column-chapter/list',
-        getColumnChapterArticle: 'column-chapter-article/detail'
+        getSectionDetail: 'chapter-section/detail'
       }),
       // 获取数据
       async fetchData() {
@@ -86,9 +86,13 @@
       },
       // 获取专栏文章详情
       async getSection(id) {
-        await this.getColumnChapterArticle({
-          id: id || this.articleId
+        await this.getSectionDetail({
+          id: id || this.sectionId
         })
+      },
+      // 更新评论
+      updateComment() {
+        this.getSection()
       }
     }
   }

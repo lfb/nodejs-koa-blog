@@ -2,7 +2,7 @@
   <section class="column-box" v-if="list.length > 0">
     <div class="column-item" v-for="(item, index) in list" :key="index">
       <div class="column-images">
-        <img :src="item.cover + '?imageView2/1/w/320/h/180'" alt="column">
+        <img v-lazy="item.cover + '?imageView2/1/w/320/h/180'" alt="column">
       </div>
       <div class="column-info">
         <h1 class="column-title">{{item.title}}</h1>

@@ -10,7 +10,7 @@
   </div>
 </template>
 <script>
-  import {mapGetters} from 'vuex'
+  import { mapGetters } from 'vuex'
   import VLoading from './components/mian-loading'
   import VHeaders from './components/main-headers'
   import VFooter from './components/main-footer'

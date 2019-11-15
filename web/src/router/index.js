@@ -6,12 +6,16 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    redirect: '/articles'
+    meta: {
+      navIndex: 0
+    },
+    name: 'home',
+    component: () => import(/* webpackChunkName: "home" */ '../views/home.vue')
   },
   {
     path: '/articles',
     meta: {
-      navIndex: 0
+      navIndex: 1
     },
     name: 'article-list',
     component: () => import(/* webpackChunkName: "articlesList" */ '../views/articles/list.vue')
@@ -19,7 +23,7 @@ const routes = [
   {
     path: '/article/detail',
     meta: {
-      navIndex: 0
+      navIndex: 1
     },
     name: 'article-detail',
     component: () => import(/* webpackChunkName: "articleDetail" */ '../views/articles/detail.vue')
@@ -27,7 +31,7 @@ const routes = [
   {
     path: '/column',
     meta: {
-      navIndex: 1
+      navIndex: 2
     },
     name: 'column-list',
     component: () => import(/* webpackChunkName: "columnList" */ '../views/column/list.vue')
@@ -35,7 +39,7 @@ const routes = [
   {
     path: '/column/chapter',
     meta: {
-      navIndex: 1
+      navIndex: 2
     },
     name: 'columnChapter',
     component: () => import(/* webpackChunkName: "columnChapter" */ '../views/column/chapter.vue')
@@ -43,7 +47,7 @@ const routes = [
   {
     path: '/chapter/section',
     meta: {
-      navIndex: 1
+      navIndex: 2
     },
     name: 'chapterSection',
     component: () => import(/* webpackChunkName: "chapterSection" */ '../views/column/section.vue')
@@ -51,7 +55,7 @@ const routes = [
   {
     path: '/about',
     meta: {
-      navIndex: 2
+      navIndex: 3
     },
     name: 'about',
     component: () => import(/* webpackChunkName: "about" */ '../views/about.vue')

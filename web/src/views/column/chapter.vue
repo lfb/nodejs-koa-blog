@@ -5,7 +5,7 @@
       <!-- 专栏组件-->
       <v-column-item :isButton="isButton" :list="column"/>
       <div class="chapter">
-        <v-column-chapter :chapter="chapter" :columnId="id"/>
+        <v-chapter-directory :chapter="chapter" :columnId="id"/>
       </div>
     </article>
 
@@ -17,13 +17,13 @@
 <script>
   import { mapActions } from 'vuex'
   import VColumnItem from '../../components/column-item'
-  import VColumnChapter from '../../components/column-chapter'
+  import VChapterDirectory from '../../components/chapter-directory'
   import VMainSidebar from '../../components/main-sidebar'
 
   export default {
     components: {
       VColumnItem,
-      VColumnChapter,
+      VChapterDirectory,
       VMainSidebar
     },
     name: 'list',

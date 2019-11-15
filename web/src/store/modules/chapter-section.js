@@ -2,7 +2,7 @@ import section from '../../api/chapter-section'
 
 const state = {
   section: null,
-  comment: []
+  comment: null
 }
 
 const mutations = {
@@ -22,7 +22,7 @@ const actions = {
   async detail({ state, commit }, params) {
     const r = await section.detail(params)
     commit('SET_COLUMN_CHAPTER_SECTION', r.data.data)
-    commit('SET_COLUMN_CHAPTER_SECTION_COMMENT', r.data.data.comment)
+    commit('SET_COLUMN_CHAPTER_SECTION_COMMENT', r.data.data.section_comment)
   }
 }
 

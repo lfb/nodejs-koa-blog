@@ -24,7 +24,7 @@
           </ul>
         </div>
         <div class="articles-images">
-          <img :src="item.cover + '?imageView2/1/w/100/h/100'" alt="articles">
+          <img v-lazy="item.cover + '?imageView2/1/w/100/h/100'" alt="articles">
         </div>
       </li>
     </ul>

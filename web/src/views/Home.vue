@@ -2,39 +2,34 @@
   <section class="home-wrap">
 
     <article class="column-articles-list">
-
       <!-- 专栏 -->
-      <div class="column">
+      <div class="column" v-if="column.length > 0">
         <div class="sidebar-header">
           <div class="sidebar-header-title">
-            <Icon class="icon" type="md-book" size="20"/>
+            <Icon class="icon" type="md-book" size="16"/>
             专栏
           </div>
-          <div class="sidebar-header-more">
+          <div class="sidebar-header-more" @click="goLink('/column')">
             更多
           </div>
         </div>
         <!-- 专栏组件 -->
-        <v-column-item/>
+        <v-column-item :list="column"/>
       </div>
 
       <!-- 文章 -->
-      <article class="articles">
+      <article class="articles" v-if="article.length > 0">
         <div class="sidebar-header">
           <div class="sidebar-header-title">
-            <Icon type="md-list-box" class="icon" size="20"/>
+            <Icon type="md-list-box" class="icon" size="16"/>
             文章
           </div>
-          <div class="sidebar-header-more">
+          <div class="sidebar-header-more" @click="goLink('/articles')">
             更多
           </div>
         </div>
         <!-- 文章组件-->
-        <v-article-item/>
-
-        <div class="page">
-          <Page :total="100" />
-        </div>
+        <v-article-item :list="article"/>
       </article>
     </article>
 
@@ -47,6 +42,7 @@
   import VColumnItem from '../components/column-item'
   import VArticleItem from '../components/article-item'
   import VMainSidebar from '../components/main-sidebar'
+  import home from '../api/home'
 
   export default {
     components: {
@@ -55,14 +51,28 @@
       VMainSidebar
     },
     name: 'list',
+    created() {
+      this.fetchData()
+    },
+    data() {
+      return {
+        article: [],
+        column: []
+      }
+    },
     methods: {
+      async fetchData() {
+        const r = await home.data()
+        this.article = r.data.data.article
+        this.column = r.data.data.column
+      },
       /**
        * 路由跳转
-       * @param id
+       * @param path
        */
-      // toArticle(id) {
-      //   this.$router.push(`/article/detail?id=${id}`)
-      // }
+      goLink(path) {
+        this.$router.push(path)
+      }
     }
   }
 </script>

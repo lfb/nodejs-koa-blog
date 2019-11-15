@@ -39,6 +39,10 @@
       return {
         nav: [
           {
+            name: '首页',
+            router: '/'
+          },
+          {
             name: '文章',
             router: '/articles'
           },

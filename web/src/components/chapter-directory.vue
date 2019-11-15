@@ -4,10 +4,10 @@
       <dl v-for="(item, index) in chapter" :key="index">
         <dt>Chapter {{index + 1}}：{{item.title}}</dt>
         <div v-if="item.chapter_section">
-          <dd v-for="(section, index2) in item.chapter_section"
+          <dd v-for="(article, index2) in item.chapter_section"
               :key="index2"
-              @click="getSection(section.id)">
-            <h1>{{section.title}}</h1>
+              @click="toChapterSection(article.id)">
+            <h1>{{article.title}}</h1>
             <span></span>
           </dd>
         </div>
@@ -32,7 +32,7 @@
         }
       }
     },
-    name: 'Chapter',
+    name: 'ChapterDirectory',
     data() {
       return {
         isButton: false,
@@ -41,12 +41,8 @@
       }
     },
     methods: {
-      // 获取专栏文章详情
-      getSection(id) {
-        if (this.id !== id) {
-          this.id = id
-          this.$emit('getSection', id)
-        }
+      toChapterSection(id) {
+        this.$router.push(`/chapter/section?columnId=${this.columnId}&sectionId=${id}`)
       }
     }
   }

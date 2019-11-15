@@ -57,12 +57,6 @@
         default() {
           return {}
         }
-      },
-      articles_id: {
-        type: Number,
-        default() {
-          return 0
-        }
       }
     },
     data() {

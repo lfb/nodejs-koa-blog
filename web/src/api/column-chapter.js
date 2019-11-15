@@ -5,7 +5,7 @@ export default {
   list(params) {
     const id = params.column_id
     delete params.column_id
-    return fetch.get('/column/chapter/list/' + id, params)
+    return fetch.get('/column/chapter-list/' + id, params)
   },
   // 专栏章节详情
   detail(params) {

@@ -4,7 +4,7 @@
       <div class="sidebar-header">
         <div class="sidebar-header-title">
           <Icon type="ios-apps" class="icon" size="16"/>
-          广告
+          广告推荐
         </div>
       </div>
       <div class="sidebar-box-content">
@@ -123,5 +123,9 @@
     border-right: 1px solid #D9D9D9;
     transform: rotate(45deg);
     -webkit-transform: rotate(45deg);
+  }
+
+  .icon {
+    margin-right: 10px;
   }
 </style>

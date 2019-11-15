@@ -5,8 +5,21 @@ import store from './store'
 import Storage from 'vue-ls'
 import 'lib-flexible/flexible'
 import 'view-design/dist/styles/iview.css'
+import VueLazyLoad from 'vue-lazyload'
 
-import { Input, Icon, Button, Drawer, Avatar, Page, BackTop, Form, FormItem, Message, Modal } from 'view-design'
+import {
+  Input,
+  Icon,
+  Button,
+  Drawer,
+  Avatar,
+  Page,
+  BackTop,
+  Form,
+  FormItem,
+  Message,
+  Modal
+} from 'view-design'
 
 Vue.component('Input', Input)
 Vue.component('Icon', Icon)
@@ -18,6 +31,11 @@ Vue.component('BackTop', BackTop)
 Vue.component('Form', Form)
 Vue.component('FormItem', FormItem)
 Vue.component('Modal', Modal)
+
+Vue.use(VueLazyLoad, {
+  error: require('./assets/images/logo.png'),
+  loading: require('./assets/images/logo.png')
+})
 
 Vue.prototype.$Message = Message
 Vue.config.productionTip = false
