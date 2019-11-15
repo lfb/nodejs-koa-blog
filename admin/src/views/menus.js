@@ -23,6 +23,7 @@ const menus = [
         }
       ]
     },
+    // 分类
     {
       name: "分类管理",
       path: "category",
@@ -40,6 +41,7 @@ const menus = [
         }
       ]
     },
+    // 文章
     {
       name: "文章管理",
       path: "article",
@@ -57,6 +59,25 @@ const menus = [
         }
       ]
     },
+    // 专栏
+    {
+      name: "专栏管理",
+      path: "column",
+      icon: "md-list-box",
+      children: [
+        {
+          name: "专栏列表",
+          path: "/column",
+          icon: "md-list"
+        },
+        {
+          name: "专栏创建",
+          path: "/column/create",
+          icon: "md-add-circle"
+        }
+      ]
+    },
+    // 广告
     {
       name: "广告管理",
       path: "advertise",
@@ -74,6 +95,7 @@ const menus = [
         }
       ]
     },
+    // 评论
     {
       name: "评论管理",
       path: "comments",

@@ -5,12 +5,6 @@ export default {
   list(params) {
     return fetch.get('/article', params)
   },
-
-  // 搜索文章列表
-  search(params) {
-    return fetch.get('/search/article', params)
-  },
-
   // 获取文章详情
   detail(params) {
     const {id} = params;

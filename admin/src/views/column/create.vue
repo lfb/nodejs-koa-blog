@@ -1,21 +1,16 @@
 <template>
   <section>
     <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="100">
-      <FormItem label="文章标题" prop="title">
-        <Input v-model="formValidate.title" placeholder="文章标题"></Input>
+      <FormItem label="专栏标题" prop="title">
+        <Input v-model="formValidate.title" placeholder="专栏标题"></Input>
       </FormItem>
-      <FormItem label="文章作者" prop="author">
-        <Input v-model="formValidate.author" placeholder="文章作者"></Input>
+      <FormItem label="专栏作者" prop="author">
+        <Input v-model="formValidate.author" placeholder="专栏作者"></Input>
       </FormItem>
-      <FormItem label="文章简介" prop="description">
-        <Input v-model="formValidate.description" placeholder="文章简介"></Input>
+      <FormItem label="专栏简介" prop="description">
+        <Input v-model="formValidate.description" placeholder="专栏简介"></Input>
       </FormItem>
-      <FormItem label="文章分类" v-if="categoryList.length > 0">
-        <Select v-model="formValidate.category_id">
-          <Option v-for="(item, index) in categoryList" :value="item.id" :key="index">{{item.name}}</Option>
-        </Select>
-      </FormItem>
-      <FormItem label="文章封面" prop="cover">
+      <FormItem label="专栏封面" prop="cover">
         <div class="cover">
           <div class="upload">
             <Upload
@@ -36,14 +31,6 @@
             <img :src="formValidate.cover" alt="cover">
           </div>
         </div>
-      </FormItem>
-      <FormItem label="文章内容" prop="content">
-        <mavon-editor
-          v-model="formValidate.content"
-          :ishljs="true"
-          ref=md>
-        </mavon-editor>
-
       </FormItem>
       <FormItem>
         <Button @click="handleReset('formValidate')">重置</Button>
@@ -66,37 +53,31 @@
         formValidate: {
           title: '',
           author: '',
-          category_id: '',
           cover: '',
-          description: '',
-          content: ''
+          description: ''
         },
         ruleValidate: {
           title: [
-            {required: true, message: '文章标题不能为空', trigger: 'blur'}
+            {required: true, message: '专栏标题不能为空', trigger: 'blur'}
           ],
           author: [
-            {required: true, message: '文章作者不能为空', trigger: 'blur'}
+            {required: true, message: '专栏作者不能为空', trigger: 'blur'}
           ],
           cover: [
-            {required: true, message: '文章封面不能为空', trigger: 'blur'}
+            {required: true, message: '专栏封面不能为空', trigger: 'blur'}
           ],
           description: [
-            {required: true, message: '文章简介不能为空', trigger: 'blur'}
-          ],
-          content: [
-            {required: true, message: '文章内容不能为空', trigger: 'blur'}
+            {required: true, message: '专栏简介不能为空', trigger: 'blur'}
           ]
         }
       }
     },
     created() {
-      this._getCategoryList();
       this._getUploadToken();
     },
     methods: {
       ...mapActions({
-        createArticle: 'article/createArticle',
+        createColumn: 'column/create',
         getCategoryList: 'category/getCategoryList'
       }),
       // 上传图片成功
@@ -120,19 +101,14 @@
           console.log(e)
         }
       },
-      // 获取分类列表
-      async _getCategoryList() {
-        const res = await this.getCategoryList();
-        this.categoryList = res.data.data;
-      },
       // 创建
-      async _createArticle() {
+      async _createColumn() {
         this.formValidate.id = this.id;
 
         try {
-          await this.createArticle(this.formValidate);
+          await this.createColumn(this.formValidate);
           this.$Message.success('新增成功!');
-          this.$router.push('/article');
+          this.$router.push('/column');
 
         } catch (e) {
 
@@ -142,7 +118,7 @@
       handleSubmit(name) {
         this.$refs[name].validate((valid) => {
           if (valid) {
-            this._createArticle();
+            this._createColumn();
 
           } else {
             this.$Message.error('请完成表单!');

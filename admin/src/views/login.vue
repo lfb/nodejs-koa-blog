@@ -10,16 +10,16 @@
           <Form ref="loginForm" :model="form" :rules="rules">
             <FormItem prop="email">
               <i-input v-model="form.email" placeholder="请输入用户名">
-                            <span slot="prepend">
-                                    <Icon :size="16" type="person"></Icon>
-                                </span>
+                <span slot="prepend">
+                  <Icon :size="16" type="person"></Icon>
+                </span>
               </i-input>
             </FormItem>
             <FormItem prop="password">
               <i-input type="password" v-model="form.password" placeholder="请输入密码">
-                            <span slot="prepend">
-                                  <Icon :size="14" type="locked"></Icon>
-                                </span>
+                <span slot="prepend">
+                  <Icon :size="14" type="locked"></Icon>
+                </span>
               </i-input>
             </FormItem>
             <FormItem>

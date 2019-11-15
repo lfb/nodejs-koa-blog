@@ -1,6 +1,6 @@
 <template>
   <section>
-    <Button type="primary" @click="toPathLink('/article/create')" icon="md-add" style="margin-bottom: 16px;">新增文章
+    <Button type="primary" @click="toPathLink('/column/create')" icon="md-add" style="margin-bottom: 16px;">新增专栏
     </Button>
     <section v-if="list.length > 0">
       <Table :loading="loading" border :columns="columns" :data="list">
@@ -8,6 +8,7 @@
           <strong>{{ row.name }}</strong>
         </template>
         <template slot-scope="{ row, index }" slot="action">
+          <Button type="warning" size="small" style="margin-right: 5px" @click="chapter(row.id)">章节</Button>
           <Button type="primary" size="small" style="margin-right: 5px" @click="update(row.id)">编辑</Button>
           <Button type="error" size="small" @click="destroy(row.id)">删除</Button>
         </template>
@@ -45,7 +46,7 @@
             align: "center"
           },
           {
-            title: '文章封面',
+            title: '专栏封面',
             width: 150,
             align: 'center',
             render: (h, params) => {
@@ -63,25 +64,12 @@
             }
           },
           {
-            title: '文章分类',
-            width: 100,
-            align: 'center',
-            key: 'browse',
-            render: (h, params) => {
-              return h('div', [
-                h('span', params.row.category.name)
-              ]);
-            }
-          },
-          {
-            title: '文章标题',
+            title: '专栏标题',
             key: 'title'
           },
           {
-            title: '浏览次数',
-            width: 100,
-            align: 'center',
-            key: 'browse'
+            title: '专栏简介',
+            key: 'description'
           },
           {
             title: '操作',
@@ -93,17 +81,16 @@
       }
     },
     created() {
-      this._getArticleList();
+      this.fetchData();
     },
     methods: {
       ...mapActions({
-        getArticleList: 'article/getArticleList',
-        destroyArticle: 'article/destroyArticle'
+        geColumnList: 'column/list',
+        destroyColumn: 'column/destroy'
       }),
       // 获取文章
-      async _getArticleList() {
-        // let {page, desc, category_id, keyword} = this.$route.query;
-        const res = await this.getArticleList({
+      async fetchData() {
+        const res = await this.geColumnList({
           page: this.currentPage
         });
 
@@ -119,31 +106,33 @@
           })
         });
         this.currentPage = page;
-        this._getArticleList();
+        this.fetchData();
       },
       // 更新
       update(id) {
-        this.$router.push(`/article/update/${id}`);
+        this.$router.push(`/column/update/${id}`);
+      },
+      // 专栏章节
+      chapter(id) {
+        this.$router.push(`/column/chapter/${id}`);
       },
       // 路由跳转
       toPathLink(path) {
         this.$router.push(path)
       },
-      // 删除文章
+      // 删除分类
       destroy(id) {
         this.$Modal.confirm({
           title: '提示',
-          content: '<p>确定删除此文章吗？</p>',
+          content: '<p>确定删除此专栏吗？</p>',
           loading: true,
           onOk: async () => {
             try {
-              await this.destroyArticle(id);
+              await this.destroyColumn(id);
               this.$Message.success('删除成功');
-
-              this._getArticleList();
+              this.fetchData();
 
             } catch (e) {
-              console.log(e)
               this.$Message.error(e);
 
             } finally {
