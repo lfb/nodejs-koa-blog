@@ -35,7 +35,8 @@
       <!-- 新建评论-->
       <div class="comment-header">
         <Icon type="ios-create-outline" />
-        欢迎评论</div>
+        欢迎评论
+      </div>
       <v-comment-create
         :target_id="article.id"
         :target_type="targetType"

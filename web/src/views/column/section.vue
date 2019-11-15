@@ -27,6 +27,10 @@
           :toolbarsFlag="false"/>
       </div>
       <!-- 新建评论-->
+      <div class="comment-header">
+        <Icon type="ios-create-outline" />
+        欢迎评论
+      </div>
       <v-comment-create @updateComment="updateComment" target_type="column" :target_id="parseInt(sectionId)"/>
       <!-- 评论列表-->
       <div v-if="comment">
@@ -173,5 +177,14 @@
     font-size: 16px;
     color: #9ea7b4;
     white-space: nowrap;
+  }
+
+  .comment-header {
+    font-size: 28px;
+    font-weight: 500;
+    color: #2d8cf0;
+    padding: 32px 0 16px;
+    display: flex;
+    align-items: center;
   }
 </style>
