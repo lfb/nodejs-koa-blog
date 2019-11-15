@@ -140,11 +140,9 @@ router.get('/search/article', async (ctx) => {
  */
 router.get('/home', async (ctx) => {
   // 查询文章
-  const article = await ArticleDao.list({
-    pageSize: 5
-  });
+  const article = await ArticleDao.list();
   const column = await ColumnDao.list({
-    pageSize: 3
+    pageSize: 2
   })
   // 返回结果
   ctx.response.status = 200;
