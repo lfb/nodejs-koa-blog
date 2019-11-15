@@ -9,6 +9,7 @@ const {
 const {Auth} = require('../../../middlewares/auth');
 const {ArticleDao} = require('../../dao/article');
 const {CommentDao} = require('../../dao/comment');
+const {ColumnDao} = require('../../dao/column');
 
 const {Resolve} = require('../../lib/helper');
 const res = new Resolve();
@@ -133,7 +134,25 @@ router.get('/search/article', async (ctx) => {
   // 返回结果
   ctx.response.status = 200;
   ctx.body = res.json(article);
-
 })
+/**
+ * 返回首页的文章和专栏
+ */
+router.get('/home', async (ctx) => {
+  // 查询文章
+  const article = await ArticleDao.list({
+    pageSize: 5
+  });
+  const column = await ColumnDao.list({
+    pageSize: 3
+  })
+  // 返回结果
+  ctx.response.status = 200;
+  ctx.body = res.json({
+    column: column.data,
+    article: article.data
+  });
+})
+
 
 module.exports = router

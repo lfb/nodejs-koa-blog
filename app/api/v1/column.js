@@ -72,10 +72,8 @@ router.put('/column/:id', new Auth(AUTH_ADMIN).m, async (ctx) => {
  * 获取专栏列表
  */
 router.get('/column', async (ctx) => {
-  // 获取页码，排序方法
-  const {page, desc} = ctx.query;
   // 查询专栏列表
-  const columnList = await ColumnDao.list(page, desc);
+  const columnList = await ColumnDao.list(ctx.query);
 
   // 返回结果
   ctx.response.status = 200;

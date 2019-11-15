@@ -31,8 +31,12 @@ class ColumnDao {
   }
 
   // 获取专栏列表
-  static async list(page = 1, desc = 'created_at') {
-    const pageSize = 10;
+  static async list(params) {
+    const {
+      page = 1,
+      pageSize = 10,
+      desc = 'created_at'
+    } = params;
 
     // 筛选方式
     let filter = {

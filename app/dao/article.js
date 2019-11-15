@@ -42,10 +42,10 @@ class ArticleDao {
       category_id,
       keyword,
       page = 1,
+      pageSize = 10,
       desc = 'created_at'
     } = params;
 
-    const pageSize = 10;
     // 筛选方式
     let filter = {
       deleted_at: null
