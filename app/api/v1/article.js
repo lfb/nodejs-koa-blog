@@ -112,29 +112,6 @@ router.get('/article/:id', async (ctx) => {
   ctx.body = res.json(article);
 })
 
-
-/**
- * 搜索文章
- */
-router.get('/search/article', async (ctx) => {
-
-  // 通过验证器校验参数是否通过
-  const v = await new ArticleSearchValidator().validate(ctx);
-
-  // 获取查询文章关键字
-  const keyword = v.get('query.keyword');
-  // 页码
-  const page = v.get('query.page');
-  // 排序
-  const desc = v.get('query.desc');
-
-  // 查询文章
-  const article = await ArticleDao.search(keyword, page, desc);
-
-  // 返回结果
-  ctx.response.status = 200;
-  ctx.body = res.json(article);
-})
 /**
  * 返回首页的文章和专栏
  */

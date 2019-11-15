@@ -167,44 +167,6 @@ class ArticleDao {
     return article;
   }
 
-  // 搜索文章
-  static async search(keyword, page = 1, desc = 'created_at') {
-    const pageSize = 10;
-
-    const article = await Article.findAndCountAll({
-      where: {
-        title: {
-          [Op.like]: `%${keyword}%`
-        },
-        deleted_at: null
-      },
-      limit: pageSize,//每页10条
-      offset: (page - 1) * pageSize,
-      order: [
-        [desc, 'DESC']
-      ],
-      include: [{
-        model: Category,
-        as: 'category',
-        attributes: {
-          exclude: ['deleted_at', 'updated_at']
-        }
-      }]
-    });
-
-    return {
-      data: article.rows,
-      // 分页
-      meta: {
-        current_page: parseInt(page),
-        per_page: 10,
-        count: article.count,
-        total: article.count,
-        total_pages: Math.ceil(article.count / 10),
-      }
-    };
-  }
-
 }
 
 module.exports = {

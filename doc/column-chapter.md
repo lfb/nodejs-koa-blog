@@ -14,6 +14,7 @@ POST    /column/chapter
 参数 | 说明 | 是否必填
 ---|---|:---:
 title | 专栏章节标题 | 是
+column_id | 专栏ID | 是
 
 ### 成功操作返回
 ```json
@@ -109,6 +110,7 @@ PUT    /column/chapter/:id
 ---|---|:---:
 :id | 专栏章节ID | 是
 title | 专栏章节标题 | 是
+column_id | 专栏ID | 是
 
 ### 成功操作返回
 
