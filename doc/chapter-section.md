@@ -1,4 +1,4 @@
-z## 接口前缀
+## 接口前缀
 ```shell
 http://localhost:3000/v1
 ```
@@ -16,7 +16,7 @@ POST    /chapter/section
 title | 专栏文章标题 | 是
 author | 专栏文章作者 | 否
 content | 专栏文章内容 | 是
-cover | 专栏文章封面 | 是
+column_chapter_id | 章节ID | 是
 
 
 ### 成功操作返回
@@ -127,11 +127,11 @@ PUT    /column/article/:id
 ### 参数说明
 参数 | 说明 | 是否必填
 ---|---|:---:
-:id | 专栏文章ID | 是
-title | 专栏文章标题 | 是
+:id | 专栏文章ID | 否
+title | 专栏文章标题 | 否
 author | 专栏文章作者 | 否
-content | 专栏文章内容 | 是
-cover | 专栏文章封面 | 是
+content | 专栏文章内容 | 否
+column_chapter_id | 章节ID | 否
 
 ### 成功操作返回
 

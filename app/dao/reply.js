@@ -2,9 +2,9 @@ const {Reply} = require('../models/reply')
 const {Comment} = require('../models/comment')
 
 class ReplyDao {
-  // 创建评论
+  // 创建回复
   static async create(v) {
-    // 查询文章
+    // 查询评论
     const comment = await Comment.findByPk(v.get('body.comment_id'));
     if (!comment) {
       throw new global.errs.NotFound('没有找到相关评论');
@@ -19,7 +19,7 @@ class ReplyDao {
     return reply.save();
   }
 
-  // 删除评论
+  // 删除回复
   static async destroy(id) {
     const reply = await Reply.findOne({
       where: {
@@ -33,7 +33,7 @@ class ReplyDao {
     reply.destroy()
   }
 
-  // 获取评论详情
+  // 获取回复详情
   static async detail(id) {
     const reply = await Reply.scope('iv').findOne({
       where: {
@@ -51,7 +51,7 @@ class ReplyDao {
     return reply
   }
 
-  // 更新评论
+  // 更新回复
   static async update(id, v) {
     const reply = await Reply.findByPk(id);
     if (!reply) {
@@ -66,34 +66,17 @@ class ReplyDao {
   }
 
 
-  // 评论列表
-  static async list(page = 1) {
-    const pageSize = 10;
-    const reply = await Reply.scope('bh').findAndCountAll({
-      //每页10条
-      limit: pageSize,
-      offset: (page - 1) * pageSize,
+  // 回复列表
+  static async list(comment_id) {
+    return await Reply.findAll({
       where: {
+        comment_id,
         deleted_at: null
       },
       order: [
         ['created_at', 'DESC']
-      ],
-      attributes: {
-        exclude: ['email']
-      }
-    })
-
-    return {
-      data: reply.rows,
-      meta: {
-        current_page: parseInt(page),
-        per_page: 10,
-        count: reply.count,
-        total: reply.count,
-        total_pages: Math.ceil(reply.count / 10),
-      }
-    };
+      ]
+    });
   }
 }
 

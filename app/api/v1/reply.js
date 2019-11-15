@@ -65,8 +65,8 @@ router.put('/reply/:id', new Auth(AUTH_ADMIN).m, async (ctx) => {
 
 // 获取评论列表
 router.get('/reply', async (ctx) => {
-  const page = ctx.query.page;
-  let replyList = await ReplyDao.list(page);
+  const comment_id = ctx.query.comment_id
+  let replyList = await ReplyDao.list(comment_id);
 
   // 返回结果
   ctx.response.status = 200;
