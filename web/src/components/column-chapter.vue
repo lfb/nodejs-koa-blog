@@ -3,16 +3,15 @@
     <div class="column-chapter" v-if="chapter.length > 0">
       <dl v-for="(item, index) in chapter" :key="index">
         <dt>
-          <Icon type="md-list" />
+          <Icon type="md-list"/>
           第 {{index + 1}} 章：{{item.title}}
         </dt>
         <div v-if="item.chapter_section">
           <dd v-for="(section, index2) in item.chapter_section"
-              :class="sectionIndex === index2 ? 'active' : ''"
               :key="index2"
-              @click="getSection(section.id, index2)">
+              @click="getSection(section.id)">
             <h1>
-              <Icon type="md-git-commit" />
+              <Icon type="md-git-commit"/>
               {{section.title}}
             </h1>
             <span></span>
@@ -41,11 +40,11 @@
     },
     methods: {
       // 获取专栏文章详情
-      getSection(id, index) {
-        if (this.sectionIndex !== index) {
-          this.sectionIndex = index
-          this.$emit('getSection', id)
-        }
+      getSection(id) {
+        window.scroll(0, 0)
+        this.$store.commit('chapter-section/SET_COLUMN_CHAPTER_SECTION', null)
+        this.$store.commit('chapter-section/SET_COLUMN_CHAPTER_SECTION_COMMENT', null)
+        this.$emit('getSection', id)
       }
     }
   }
