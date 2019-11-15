@@ -92,5 +92,19 @@ router.get('/comment/:id', async (ctx) => {
 
 })
 
+// 获取关联目标下的评论列表
+router.get('/comment/target/:id', async (ctx) => {
+  // 通过验证器校验参数是否通过
+  const v = await new PositiveArticleIdParamsValidator().validate(ctx);
+
+  // 获取分类ID参数
+  const id = v.get('path.id');
+  let comment = await CommentDao.targetComment(id)
+
+  // 返回结果
+  ctx.response.status = 200;
+  ctx.body = res.json(comment);
+
+})
 
 module.exports = router
