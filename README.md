@@ -16,31 +16,29 @@
 [![sequelize](https://img.shields.io/badge/sequelize-%5E5.6.1-brightgreen.svg)](https://www.npmjs.com/package/sequelize)
 [![mysql2](https://img.shields.io/badge/mysql2-%5E1.6.5-brightgreen.svg)](https://www.npmjs.com/package/mysql2)
 
-- Koa2服务端
-    - 管理员与权限控制
-    - 文章
-    - 文章分类
-    - 评论与回复文章
-    - 专栏
-    - 专栏章节
-    - 专栏文章
-    - 专栏评论回复
-    - 广告
-- 前端博客网站 Vue.js
-- 后台管理系统 Vue.js
+### Node.js Koa2服务端 API
+- [x] 管理员与权限控制接口
+- [x] 文章管理接口
+- [x] 评论回复功能接口
+- [x] 专栏接口
+- [x] 专栏关联章节接口
+- [x] 专栏章节关联文章接口
+- [x] 专栏文章评论回复接口
+- [x] 分类接口
+- [x] 广告接口
 
-## 项目的亮点
-- Koa 与 Koa 二次开发API
-- 多 koa-router 拆分路由
-- require-directory 自动路由加载
-- 异步编程 - async/await
-- 异步异常链与全局异常处理
-- Sequelize ORM 管理 MySQL
-- JWT 权限控制中间件
-- 参数验证器 Validator 
-- nodemon 修改文件自动重启
-- 前后端分离
-- 使用 Vue.js 搭建前端网站和后台管理系统
+### 博客前端展示网站和后台管理系统
+- [x] 使用最新 [Vue-cli3 模板](https://github.com/liangfengbo/vue-cli3-template) 搭建
+- [x] 使用 Vue.js iviewui design 搭建的后台管理系统
+
+## 项目特点
+- 前后端分离，使用精小而强大的 Node.js Koa2 框架做服务端 API 接口，使用前端 Vue.js 框架搭建博客前端展示网站和后台管理系统。
+- Koa 与 Koa 二次开发API，深入Koa2的中间件洋葱模型的应用，使用 async/await 解决异步编程问题。
+- 在 Koa2 项目添加参数验证、全局异常处理中间件，编写JWT权限控制中间件，使项目变得更加健壮、清晰地高效开发。
+- 使用 Sequelize ORM 管理 MySQL。
+- 前端网站结合最新 [Vue-cli3](https://github.com/liangfengbo/vue-cli3-template)，使用Webpack构建工具对项目进行构建优化，如减少对loader做的事情，第三方库避免重复打包，拆分文件资源，按需加载代码，进行Gzip压缩等配置。
+- 后台管理系统使用 iviewui design 组件库，每个接口都使用模块化管理，清晰、简单快速地管理。
+- ...
 
 ## 如何使用和学习？
 
@@ -54,8 +52,8 @@ $ mysql -uroot -p密码
 $ CREATE DATABASE IF NOT EXISTS boblog DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 ```
 
-### 修改数据库配置
-请在 [|——config/config.js](https://github.com/liangfengbo/nodejs-koa-blog/blob/master/config/config.js) 文件下修改您本地的数据库名字（`boblog`）和数据库密码。
+### 修改 Koa2 项目数据库配置
+请在根目录下的 [|——config/config.js](https://github.com/liangfengbo/nodejs-koa-blog/blob/master/config/config.js) 文件下修改您本地的数据库名字（`boblog`）和数据库密码。
 
 ### 克隆项目
 首先使克隆项目，然后进入项目根目录使用命令安装包，最后命令启动项目，代码会根据模型自动创建数据库表的。
@@ -67,23 +65,24 @@ $ CREATE DATABASE IF NOT EXISTS boblog DEFAULT CHARACTER SET utf8mb4 COLLATE utf
 # 克隆项目代码
 $ git clone https://github.com/liangfengbo/nodejs-koa-blog.git
 
-# 进入koa项目根目录
+# 进入项目根目录
 $ cd nodejs-koa-blog
 
-# 安装包
+# 安装依赖包
 $ npm install
 
-# 运行服务
+# 启动 Node.js Koa2 项目
 $ npm run dev
 
-# 打开浏览器输入回车：http://localhost:3000
+# 打开浏览器输入回车：http://localhost:3000/v1/
+# 可以查看目录下的 ./app/api/v1 下的接口 或者 看 doc 目录下的markdown 接口文档，在 postman 测试接口
 
-// 前端项目使用
+# 启动前端项目
 1. 在根目录下进入web项目：cd web，
 2. 安装包，执行: npm install 命令，
 3. 启动服务: npm run dev; 浏览器打开：http://localhost:8080/ 即可以访问。
 
-// 后台管理系统使用
+# 启动后台管理系统
 1. 在根目录下进入admin项目：cd admin，
 2. 安装包，执行: npm install 命令，
 3. 启动服务: npm run dev; 浏览器打开：http://localhost:8083/ 即可以访问。
@@ -101,11 +100,19 @@ $ npm run dev
 - [章节目接口文档说明](./doc/chapter-section.md)
 - [广告接口文档说明](./doc/advertise.md)
 
+## FAQ
+1. 没有yarn环境，npm 可以吗？ 
+> 答：可以的，建议使用 yarn，yarn 比 npm 速度快，主要是安装版本统一。
+
+2. 启动 Koa2 项目报错，请问原因？
+> 答：首先，请检查一下使用 npm 或 yarn 安装依赖包没。然后，再请检查一下确保安装好数据库，新建好数据库：boblog，请看上面的数据库配置。最后看下启动打印日志是否有报错的信息。
+3. ... 更多问题请到 [Issues](https://github.com/liangfengbo/nodejs-koa-blog/issues)查阅，或者有问题请到 [Issues 提问](https://github.com/liangfengbo/nodejs-koa-blog/issues/new)。
+
 ## License
 
 项目已实现管理员、权限管理、文章、分类、评论等接口，前端模板网站和后台管理系统。自己可以根据项目代码学习，可以到 postman 软件中测试API或学习。
 
-喜欢或对你有帮助的话，请你点一个星星 <strong style='color:red;'>star</strong> 鼓励我，或者您有更好的建议和意见，请提出来告知我，可以留言 [Issues](https://github.com/liangfengbo/nodejs-koa-blog/issues/new)。希望能够帮助到你学习！Thanks！
+喜欢或对你有帮助的话，请你点一个星星 <strong style='color:red;'>star</strong> 鼓励我，或者您有更好的建议和意见，请提出来告知我，可以留言 [Issues](https://github.com/liangfengbo/nodejs-koa-blog/issues/new)。希望能够帮助到你学习！Thanks！共勉！
 
 [MIT](https://github.com/liangfengbo/nodejs-koa-blog/blob/master/LICENSE), by 梁凤波
 
