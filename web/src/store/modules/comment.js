@@ -1,8 +1,22 @@
 import comment from '../../api/comment'
 
-const state = {}
+const state = {
+  // 评论列表
+  commentList: [],
+  // 评论页码
+  commentPage: null
+}
 
-const mutations = {}
+const mutations = {
+  // 设置评论列表
+  SET_COMMENT_LIST(state, list) {
+    state.commentList = list
+  },
+  // 评论页码
+  SET_COMMENT_PAGE(state, data) {
+    state.commentPage = data
+  }
+}
 
 const actions = {
   // 获取评论列表

@@ -42,9 +42,9 @@
         :target_type="targetType"
         @updateComment="updateComment"/>
       <!-- 评论列表-->
-      <v-comment-list
-        :comment="article.article_comment"
-        @updateComment="updateComment"/>
+      <div v-if="article.article_comment.data.length > 0">
+        <v-comment-list :target_id="parseInt(id)" @updateComment="updateComment"/>
+      </div>
     </div>
 
     <!-- 侧边栏 -->
@@ -87,6 +87,8 @@
           id: this.id
         })
         this.article = r.data.data
+        this.$store.commit('comment/SET_COMMENT_LIST', r.data.data.article_comment.data)
+        this.$store.commit('comment/SET_COMMENT_PAGE', r.data.data.article_comment.meta)
       },
       /**
        * 更新评论
@@ -139,7 +141,8 @@
   }
 
   .article-intro li {
-    display: inline-block;
+    display: flex;
+    align-items: center;
     margin-right: 24px;
     font-size: 16px;
     color: #9ea7b4;

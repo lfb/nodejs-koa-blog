@@ -4,7 +4,7 @@
       <div class="sidebar-header">
         <div class="sidebar-header-title">
           <Icon type="ios-apps" class="icon" size="18"/>
-          广告推荐
+          广告
         </div>
       </div>
       <div class="sidebar-box-content">

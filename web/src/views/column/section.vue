@@ -33,8 +33,8 @@
       </div>
       <v-comment-create @updateComment="updateComment" target_type="column" :target_id="parseInt(sectionId)"/>
       <!-- 评论列表-->
-      <div v-if="comment">
-        <v-comment-list @updateComment="updateComment" :comment="comment"/>
+      <div v-if="section && section.section_comment && section.section_comment.data.length > 0">
+        <v-comment-list @updateComment="updateComment" :target_id="parseInt(sectionId)" target_type="column"/>
       </div>
     </article>
   </section>
@@ -58,8 +58,7 @@
     name: 'chapterSection',
     computed: {
       ...mapState({
-        section: state => state['chapter-section'].section,
-        comment: state => state['chapter-section'].comment
+        section: state => state['chapter-section'].section
       })
     },
     data() {
@@ -90,9 +89,11 @@
       },
       // 获取专栏文章详情
       async getSection(id) {
-        await this.getSectionDetail({
+        const r = await this.getSectionDetail({
           id: id || this.sectionId
         })
+        this.$store.commit('comment/SET_COMMENT_LIST', r.data.data.section_comment.data)
+        this.$store.commit('comment/SET_COMMENT_PAGE', r.data.data.section_comment.meta)
       },
       // 更新评论
       updateComment() {

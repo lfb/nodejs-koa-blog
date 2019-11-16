@@ -22,21 +22,12 @@ const actions = {
    * @returns {Promise<void>}
    */
   async list({ state, commit }, params) {
+    if (state.categoryList && state.categoryList.length > 0) {
+      return state.categoryList
+    }
     let res = await category.list(params)
     commit('SET_CATEGORY_LIST', res.data.data)
     return res
-  },
-
-  /**
-   * 查询分类ID下的所有文章列表
-   * @param state
-   * @param commit
-   * @param params
-   * @returns {Promise<void>}
-   */
-  async getCategoryArticle({ state, commit }, id) {
-    const r = await category.article(id)
-    return r
   }
 }
 

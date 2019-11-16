@@ -3,8 +3,8 @@
     <div class="comment-header">
       评论列表
     </div>
-    <ul class="comment-box" v-if="comment && comment.data.length > 0">
-      <li class="comment-item" v-for="(item, index) in comment.data" :key="index">
+    <ul class="comment-box" v-if="comment && comment.length > 0">
+      <li class="comment-item" v-for="(item, index) in comment" :key="index">
         <div class="comment-avatar">
           <Avatar size="small" style="background-color: #2d8cf0" icon="ios-person"/>
         </div>
@@ -33,6 +33,11 @@
       </li>
     </ul>
 
+    <ul class="load-more-comment" @click="loadMoreComment" v-if="page && page.current_page < page.total_pages">
+      <Icon type="md-ionic" style="color: #f00;" />
+      点击加载更多
+    </ul>
+
     <Modal
       v-model="show"
       :z-index="zIndex"
@@ -45,19 +50,32 @@
   </section>
 </template>
 <script>
+  import { mapState, mapActions } from 'vuex'
   import VCommentCreate from './comment-create'
 
   export default {
+    props: {
+      target_id: {
+        type: Number || String,
+        default() {
+          return -1
+        }
+      },
+      target_type: {
+        type: String,
+        default() {
+          return 'article'
+        }
+      }
+    },
     components: {
       VCommentCreate
     },
-    props: {
-      comment: {
-        type: Object,
-        default() {
-          return {}
-        }
-      }
+    computed: {
+      ...mapState({
+        comment: state => state.comment.commentList,
+        page: state => state.comment.commentPage
+      })
     },
     data() {
       return {
@@ -68,18 +86,37 @@
         replyNickname: '',
         zIndex: 9999,
         replyArr: [],
-        commentType: 'reply'
+        commentType: 'reply',
+        currentPage: 2
       }
     },
     methods: {
+      ...mapActions({
+        getCommentList: 'comment/getCommentList'
+      }),
+      // 回复评论
       reply(id, name) {
         this.comment_id = id
         this.replyNickname = `回复 「${name}」：`
         this.show = !this.show
       },
+      // 更新评论
       updateComment(newComment, type) {
         this.show = !this.show
         this.$emit('updateComment', newComment, type)
+      },
+      // 加载更多评论
+      async loadMoreComment() {
+        if (this.page && this.page.current_page !== this.page.total_pages) {
+          const r = await this.getCommentList({
+            target_id: this.target_id,
+            target_type: this.target_type,
+            page: this.currentPage
+          })
+          const newCommentList = [...this.comment, ...r.data.data.data]
+          this.$store.commit('comment/SET_COMMENT_LIST', newCommentList)
+          this.$store.commit('comment/SET_COMMENT_PAGE', r.data.data.meta)
+        }
       }
     }
   }
@@ -137,5 +174,13 @@
 
   .content {
     padding-left: 5px;
+  }
+
+  .load-more-comment {
+    text-align: center;
+    margin: 32px 0;
+    font-size: 18px;
+    color: #2d8cf0;
+    cursor: pointer;
   }
 </style>

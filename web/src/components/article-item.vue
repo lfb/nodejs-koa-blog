@@ -96,7 +96,8 @@
   }
 
   .articles-item-intro li {
-    display: inline-block;
+    display: flex;
+    align-items: center;
     margin-right: 32px;
     font-size: 16px;
     color: #9ea7b4;

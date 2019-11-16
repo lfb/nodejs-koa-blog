@@ -43,7 +43,8 @@
       getSection(id) {
         window.scroll(0, 0)
         this.$store.commit('chapter-section/SET_COLUMN_CHAPTER_SECTION', null)
-        this.$store.commit('chapter-section/SET_COLUMN_CHAPTER_SECTION_COMMENT', null)
+        this.$store.commit('comment/SET_COMMENT_LIST', [])
+        this.$store.commit('comment/SET_COMMENT_PAGE', null)
         this.$emit('getSection', id)
       }
     }
