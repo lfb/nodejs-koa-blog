@@ -36,7 +36,7 @@
 - Koa 与 Koa 二次开发API，深入Koa2的中间件洋葱模型的应用，使用 async/await 解决异步编程问题。
 - 在 Koa2 项目添加参数验证、全局异常处理中间件，编写JWT权限控制中间件，使项目变得更加健壮、清晰地高效开发。
 - 使用 Sequelize ORM 管理 MySQL。
-- 前端网站结合最新 [Vue-cli3](https://github.com/liangfengbo/vue-cli3-template)，使用Webpack构建工具对项目进行构建优化，如减少对loader做的事情，第三方库避免重复打包，拆分文件资源，按需加载代码，进行Gzip压缩等配置。
+- 前端网站结合最新 [Vue-cli3](https://github.com/liangfengbo/vue-cli3-template)，使用Webpack构建工具对项目进行构建优化，如进行Gzip压缩等配置。
 - 后台管理系统使用 iviewui design 组件库，每个接口都使用模块化管理，清晰、简单快速地管理。
 - ...
 
