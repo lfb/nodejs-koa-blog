@@ -62,7 +62,7 @@
       }
     },
     created() {
-      this._getAdvertiseList();
+      this.fetchData();
     },
     methods: {
       ...mapActions({
@@ -70,7 +70,7 @@
         destroyAdvertise: 'advertise/destroyAdvertise'
       }),
       // 获取广告列表
-      async _getAdvertiseList() {
+      async fetchData() {
         const res = await this.getAdvertiseList();
         this.list = res.data.data.data;
       },
@@ -92,7 +92,7 @@
             try {
               await this.destroyAdvertise(id);
               this.$Message.success('删除成功');
-              this._getAdvertiseList();
+              this.fetchData();
 
             } catch (e) {
               this.$Message.error(e);

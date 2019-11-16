@@ -127,7 +127,6 @@
               this.fetchData();
 
             } catch (e) {
-              console.log(e)
               this.$Message.error(e);
 
             } finally {

@@ -93,7 +93,7 @@
       }
     },
     created() {
-      this._getArticleList();
+      this.fetchData();
     },
     methods: {
       ...mapActions({
@@ -101,7 +101,7 @@
         destroyArticle: 'article/destroyArticle'
       }),
       // 获取文章
-      async _getArticleList() {
+      async fetchData() {
         // let {page, desc, category_id, keyword} = this.$route.query;
         const res = await this.getArticleList({
           page: this.currentPage
@@ -119,7 +119,7 @@
           })
         });
         this.currentPage = page;
-        this._getArticleList();
+        this.fetchData();
       },
       // 更新
       update(id) {
@@ -140,7 +140,7 @@
               await this.destroyArticle(id);
               this.$Message.success('删除成功');
 
-              this._getArticleList();
+              this.fetchData();
 
             } catch (e) {
               console.log(e)

@@ -113,6 +113,14 @@
   .sidebar-box-content-item a {
     flex: 1;
     color: #657180;
+    margin-right: 10px;
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
+
+    &:hover {
+      color: #2d8cf0;
+    }
   }
 
   .sidebar-box-content-item span {
