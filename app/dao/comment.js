@@ -112,8 +112,8 @@ class CommentDao {
     const pageSize = 10;
     const comment = await Comment.findAndCountAll({
       where: {
-        target_id,
         target_type,
+        target_id,
         deleted_at: null
       },
       // 每页10条

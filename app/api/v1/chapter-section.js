@@ -99,7 +99,8 @@ router.get('/chapter/section/:id', async (ctx) => {
   // 获取关联此章节目的评论列表
   const commentList = await CommentDao.targetComment({
     target_id: id,
-    target_type: 'column'
+    target_type: 'column',
+    page: 1
   });
   await chapterSection.setDataValue('section_comment', commentList);
 
