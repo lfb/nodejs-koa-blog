@@ -42,15 +42,12 @@
 
 <script>
   import { mapState, mapActions } from 'vuex'
-  import { mavonEditor } from 'mavon-editor'
-  import 'mavon-editor/dist/css/index.css'
   import VColumnChapter from '../../components/column-chapter'
   import VCommentList from '../../components/comment-list'
   import VCommentCreate from '../../components/comment-create'
 
   export default {
     components: {
-      mavonEditor,
       VColumnChapter,
       VCommentList,
       VCommentCreate

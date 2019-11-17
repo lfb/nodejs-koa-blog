@@ -3,7 +3,7 @@
     <section class="header-inner">
 
       <div class="logo">
-        <div class="logo-box">
+        <div class="logo-box" @click="toLink('/')">
           <img src="../assets/images/logo.png" alt="logo">
         </div>
       </div>
@@ -11,7 +11,7 @@
       <div class="nav">
         <ul class="nav-box">
           <li v-for="(item, index) in nav"
-              @click="changeNav(item.router)"
+              @click="toLink(item.router)"
               :class="index === navIndex ? 'nav-item nav-item-active' : 'nav-item'"
               :key="index">
             {{item.name}}
@@ -66,13 +66,11 @@
       }
     },
     methods: {
-      changeNav(router) {
-        try {
-          this.$router.push(router)
-        } catch (e) {
-          console.log(e)
-        }
+      // 路由跳转
+      toLink(router) {
+        this.$router.push(router)
       },
+      // 搜索
       search() {
         const keyword = '/articles?keyword=' + this.keyword
         if (this.$route.name !== 'article-list') {

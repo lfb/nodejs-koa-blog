@@ -6,6 +6,8 @@ import Storage from 'vue-ls'
 import 'lib-flexible/flexible'
 import 'view-design/dist/styles/iview.css'
 import VueLazyLoad from 'vue-lazyload'
+import mavonEditor from 'mavon-editor'
+import 'mavon-editor/dist/css/index.css'
 
 import {
   Input,
@@ -36,6 +38,8 @@ Vue.use(VueLazyLoad, {
   error: require('./assets/images/logo.png'),
   loading: require('./assets/images/logo.png')
 })
+
+Vue.use(mavonEditor)
 
 Vue.prototype.$Message = Message
 Vue.config.productionTip = false

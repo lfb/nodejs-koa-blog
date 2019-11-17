@@ -54,15 +54,12 @@
 
 <script>
   import { mapActions } from 'vuex'
-  import { mavonEditor } from 'mavon-editor'
-  import 'mavon-editor/dist/css/index.css'
   import VCommentList from '../../components/comment-list'
   import VCommentCreate from '../../components/comment-create'
   import VMainSidebar from '../../components/main-sidebar'
 
   export default {
     components: {
-      mavonEditor,
       VCommentList,
       VCommentCreate,
       VMainSidebar
