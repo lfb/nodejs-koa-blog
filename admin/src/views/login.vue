@@ -33,7 +33,7 @@
 </template>
 
 <script>
-  import {mapState, mapActions} from 'vuex';
+  import {mapActions} from 'vuex';
 
   export default {
     data() {
@@ -70,7 +70,6 @@
 
       // 提交登录
       handleSubmit() {
-
         this.buttonLoading = true;
         // 表单验证
         var formLabel = this.$refs.loginForm;
@@ -81,20 +80,17 @@
             return false
           }
 
-          console.log('start')
-
           this.login(this.form).then(ret => {
-            console.log('done')
             this.$ls.set('token', ret.data.token);
             // 跳转
             this.$Message.success("登录成功！");
             window.location.href = '/'
 
           }).catch(err => {
-            console.log('err')
-            console.log(err)
             this.buttonLoading = false
-
+            if (err.status === 401 || err.status === 403) {
+              this.$Message.error(err.data.msg || "登录失败！");
+            }
           })
         })
       }

@@ -26,19 +26,12 @@ Util.ajax.interceptors.response.use(response => {
   console.log(error)
   let {response = {}} = error
 
-  if (response.status === 401) {
-    // 登录鉴权失败
-    Vue.prototype.$Message.error('登录鉴权失败');
-    Vue.ls.remove("token");
-    location.href = "/login";
-
-  } else if (response.status === 403) {
-    Vue.prototype.$Message.error('Token无效，请重新登录！');
-    Vue.ls.remove("token");
-    location.href = "/login";
-
-  } else if (response.status === 400) {
+  if (response.status === 400) {
     Vue.prototype.$Message.error(response.data.msg.join(','))
+
+  } else if (response.status === 401 || response.status === 403) {
+    // 登录鉴权失败，清除TOKEN
+    Vue.ls.remove("token");
 
   } else {
     Vue.prototype.$Message.error(response.data.msg)
