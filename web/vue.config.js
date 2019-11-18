@@ -1,5 +1,4 @@
 const path = require('path')
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const isProduction = process.env.NODE_ENV === 'production'
 
 function resolve(dir) {
@@ -18,12 +17,7 @@ module.exports = {
     }
   },
   configureWebpack: config => {
-    if (isProduction) {
-      // 打包后模块大小分析
-      if (process.env.npm_config_report) {
-        config.plugins.push(new BundleAnalyzerPlugin())
-      }
-    }
+
   },
   css: {
     // 是否使用css分离插件 ExtractTextPlugin
