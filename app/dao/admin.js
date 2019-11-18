@@ -35,14 +35,14 @@ class AdminDao {
     })
 
     if (!admin) {
-      throw new global.errs.AuthFailed('账号不存在')
+      throw new global.errs.AuthFailed('账号不存在或者密码不正确')
     }
 
     // 验证密码是否正确
     const correct = bcrypt.compareSync(plainPassword, admin.password);
 
     if (!correct) {
-      throw new global.errs.AuthFailed('密码不正确')
+      throw new global.errs.AuthFailed('账号不存在或者密码不正确')
     }
 
     return admin
@@ -59,7 +59,7 @@ class AdminDao {
     })
 
     if (!admin) {
-      throw new global.errs.AuthFailed('账号不存在')
+      throw new global.errs.AuthFailed('账号不存在或者密码不正确')
     }
 
     return admin

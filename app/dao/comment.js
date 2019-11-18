@@ -84,7 +84,7 @@ class CommentDao {
         ['created_at', 'DESC']
       ],
       attributes: {
-        exclude: ['email', 'updated_at']
+        exclude: ['updated_at']
       },
     })
 
