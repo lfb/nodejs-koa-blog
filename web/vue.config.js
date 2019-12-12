@@ -50,8 +50,6 @@ module.exports = {
         ]
       })
   },
-  // 打包时不生成.map文件
-  productionSourceMap: false,
   pluginOptions: {
     'style-resources-loader': {
       preProcessor: 'less',
