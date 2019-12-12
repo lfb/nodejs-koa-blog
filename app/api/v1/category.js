@@ -73,8 +73,6 @@ router.put('/category/:id', new Auth(AUTH_ADMIN).m, async (ctx) => {
  * 获取所有的分类
  */
 router.get('/category', async (ctx) => {
-
-  // 获取分类下关联的文章
   const categoryList = await CategoryDao.list();
 
   // 返回结果

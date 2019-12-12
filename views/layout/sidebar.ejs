@@ -1,0 +1,119 @@
+<style>
+    .sidebar {
+        width: 228px;
+    }
+
+    @media screen and (min-width: 200px) and (max-width: 750px) {
+        .sidebar {
+            display: none;
+        }
+    }
+
+    .sidebar-box {
+        margin-bottom: 16px;
+        border-radius: 3px;
+        overflow: hidden;
+        background: #fff;
+    }
+
+    .sidebar-box-content {
+        margin: 0;
+        padding: 0;
+    }
+
+    .sidebar-header {
+        height: 32px;
+        line-height: 32px;
+        padding: 0 16px;
+        font-size: 16px;
+        border-bottom: 1px solid #f0f0f0;
+    }
+
+    .sidebar-box-content-item {
+        padding: 0 24px;
+        height: 36px;
+        line-height: 36px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        color: #657180;
+    }
+
+    .sidebar-box-content-item:hover {
+        color: #2d8cf0;
+    }
+
+    .sidebar-box-content-item a {
+        flex: 1;
+        font-size: 13px;
+        color: #657180;
+        margin-right: 10px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        text-decoration: none;
+        white-space: nowrap;
+    }
+
+    .sidebar-box-content-item a:hover {
+        color: #2d8cf0;
+    }
+
+    .sidebar-box-content-item span {
+        display: inline-block;
+        width: 6px;
+        height: 6px;
+        border-top: 1px solid #D9D9D9;
+        border-right: 1px solid #D9D9D9;
+        transform: rotate(45deg);
+        -webkit-transform: rotate(45deg);
+    }
+</style>
+<article class="sidebar">
+
+    <div class="sidebar-box">
+        <header class="sidebar-header">
+            广告
+        </header>
+        <ul class="sidebar-box-content">
+            <li class="sidebar-box-content-item">
+                <a href="/" target="_blank">
+                    链接
+                </a>
+                <span></span>
+            </li>
+            <li class="sidebar-box-content-item">
+                <a href="/" target="_blank">
+                    链接
+                </a>
+                <span></span>
+            </li>
+            <li class="sidebar-box-content-item">
+                <a href="/" target="_blank">
+                    链接
+                </a>
+                <span></span>
+            </li>
+            <li class="sidebar-box-content-item">
+                <a href="/" target="_blank">
+                    链接
+                </a>
+                <span></span>
+            </li>
+        </ul>
+    </div>
+
+    <div class="sidebar-box">
+        <header class="sidebar-header">
+            链接
+        </header>
+        <ul class="sidebar-box-content">
+            <li class="sidebar-box-content-item">
+                <a href="https://github.com/liangfengbo" target="_blank">
+                    Github
+                </a>
+                <span></span>
+            </li>
+        </ul>
+    </div>
+</article>

@@ -2,18 +2,15 @@ const Router = require('koa-router');
 
 const {
   ArticleValidator,
-  PositiveIdParamsValidator,
-  ArticleSearchValidator
+  PositiveIdParamsValidator
 } = require('../../validators/article');
 
 const {Auth} = require('../../../middlewares/auth');
 const {ArticleDao} = require('../../dao/article');
 const {CommentDao} = require('../../dao/comment');
-const {ColumnDao} = require('../../dao/column');
 
 const {Resolve} = require('../../lib/helper');
 const res = new Resolve();
-const marked = require('marked');
 
 const AUTH_ADMIN = 16;
 
@@ -76,15 +73,13 @@ router.put('/article/:id', new Auth(AUTH_ADMIN).m, async (ctx) => {
  * 获取文章列表
  */
 router.get('/article', async (ctx) => {
+  // 获取页码，排序方法，分类ID，搜索关键字
   // 查询文章列表
-  const list = await ArticleDao.list(ctx.query);
-  console.log(list)
+  const articleList = await ArticleDao.list(ctx.query);
+
   // 返回结果
   ctx.response.status = 200;
-  ctx.body = res.json();
-  await ctx.render('article-list', {
-    list,
-  });
+  ctx.body = res.json(articleList);
 });
 
 /**
@@ -109,38 +104,14 @@ router.get('/article/:id', async (ctx) => {
   // 更新文章浏览
   await ArticleDao.updateBrowse(id, ++article.browse);
   await article.setDataValue('article_comment', commentList);
-  const content = marked(article.content.toString());
+
   // 返回结果
   ctx.response.status = 200;
-  await ctx.render('article-detail', {
-    article: article,
-    content
+  console.log(article.dataValues)
+  // ctx.body = res.json(article);
+  await ctx.render('index', {
+    article: article.dataValues
   });
 })
-
-/**
- * 返回首页的文章和专栏
- */
-router.get('/article/detail', async (ctx) => {
-  // 获取文章ID参数
-  const id = v.get('path.id');
-  // 查询文章
-  const article = await ArticleDao.detail(id);
-  // 返回结果
-  const content = marked(article.content.toString());
-  ctx.response.status = 200;
-  await ctx.render('article-detail', {
-    article: article,
-    content
-  });
-})
-
-/**
- * 关于
- */
-router.get('/about', async (ctx) => {
-  await ctx.render('about');
-})
-
 
 module.exports = router

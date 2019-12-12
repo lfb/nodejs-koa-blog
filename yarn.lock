@@ -872,6 +872,11 @@ has-flag@^3.0.0:
   resolved "https://registry.yarnpkg.com/has-flag/-/has-flag-3.0.0.tgz#b5d454dc2199ae225699f3467e5a07f3b955bafd"
   integrity sha1-tdRU3CGZriJWmfNGfloH87lVuv0=
 
+hashids@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.npm.taobao.org/hashids/download/hashids-2.1.0.tgz#96eec6de3081a76dcd839650a6a26e6081e729d3"
+  integrity sha1-lu7G3jCBp23Ng5ZQpqJuYIHnKdM=
+
 highlight-es@^1.0.0:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/highlight-es/-/highlight-es-1.0.3.tgz#12abc300a27e686f6f18010134e3a5c6d2fe6930"

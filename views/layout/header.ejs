@@ -28,18 +28,18 @@
 <header class="header-wrap">
     <section class="header-inner">
         <div class="logo">
-            <div class="logo-box">
-                <img src="https://cdn.boblog.com/boblog.png" alt="logo">
-            </div>
+            <a href="/" class="logo-box">
+                <img src="/images/boblog.png" alt="logo">
+            </a>
         </div>
 
         <div class="nav">
             <ul class="nav-box">
                 <li class="nav-item">
-                    <a href="/v1/article">文章</a>
+                    <a class="<% if (navActiveTag === 'article') { %> nav-item-active <% } %>" href="/">文章</a>
                 </li>
                 <li class="nav-item">
-                    <a href="/v1/about">关于</a>
+                    <a class="<% if (navActiveTag === 'about') { %> nav-item-active <% } %>" href="/about">关于</a>
                 </li>
             </ul>
         </div>

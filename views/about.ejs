@@ -1,10 +1,10 @@
-<%- include('layout/header', { title: '关于波博客 - boblog.com', isArticleList: false, isArticleDetail: false, needHighlighting: false}) %>
+<%- include('layout/header', { title: '关于波博客 - boblog.com', isArticleList: false, isArticleDetail: false, navActiveTag: 'about', needHighlighting: false}) %>
 <style>
     .author {
         box-sizing: border-box;
         width: 70%;
         min-height: 80vh;
-        margin: 24px auto;
+        margin: 88px auto 32px;
         overflow: hidden;
         padding-bottom: 24px;
         background-color: #fff;
@@ -19,7 +19,7 @@
     }
 
     .about-logo {
-        width: 248px;
+        width: 180px;
         margin: 32px auto 0;
     }
 
@@ -29,7 +29,6 @@
 
     .text {
         padding: 0 32px 32px;
-        line-height: 42px;
         font-size: 14px;
         color: #666;
         text-indent: 2em;
@@ -55,7 +54,7 @@
 <section class="author">
     <article class="item">
         <h1 class="about-logo">
-            <img src="https://cdn.boblog.com/boblog.png" alt="logo">
+            <img src="images/boblog.png" alt="logo">
         </h1>
     </article>
     <article class="text">
