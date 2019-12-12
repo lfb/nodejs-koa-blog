@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title><%= title %></title>
+    <link href="/css/header-footer.css" rel="stylesheet">
+
+    <% if (isArticleList) { %>
+        <link href="/css/article-list.css" rel="stylesheet">
+    <% } %>
+
+    <% if (isArticleDetail) { %>
+        <link href="/css/article-detail.css" rel="stylesheet">
+    <% } %>
+
+    <% if (needHighlighting) { %>
+        <link rel="stylesheet"
+              href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.16.2/build/styles/github.min.css">
+        <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.16.2/build/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script>
+    <% } %>
+
+</head>
+<body>
+
+<header class="header-wrap">
+    <section class="header-inner">
+        <div class="logo">
+            <div class="logo-box">
+                <img src="https://cdn.boblog.com/boblog.png" alt="logo">
+            </div>
+        </div>
+
+        <div class="nav">
+            <ul class="nav-box">
+                <li class="nav-item">
+                    <a href="/v1/article">文章</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/v1/about">关于</a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="search">
+            <input type="text" placeholder="搜索文章..">
+        </div>
+    </section>
+</header>

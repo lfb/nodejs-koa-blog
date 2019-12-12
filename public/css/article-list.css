@@ -1,0 +1,148 @@
+.container {
+    display: flex;
+    width: 70%;
+    margin: 24px auto;
+    overflow: hidden;
+}
+
+.article {
+    flex: 9;
+    border-radius: 8px;
+    background: #fff;
+}
+
+.article-nav {
+    padding: 16px 0;
+    border-bottom: 1px solid #efefef;
+}
+
+.article-nav-box {
+    display: flex;
+    align-items: center;
+}
+
+.article-nav-item {
+    cursor: pointer;
+    padding: 0 24px;
+    position: relative;
+    font-size: 18px;
+    color: #404040;
+}
+
+.article-nav-item:after {
+    display: block;
+    content: "";
+    width: 1px;
+    height: 16px;
+    position: absolute;
+    top: 5px;
+    right: 0;
+    border-right: 1px solid #efefef;
+}
+
+.article-nav-item:last-child:after {
+    display: none;
+}
+
+.article-nav-item:hover {
+    color: #409EFF;
+}
+
+
+.article-nav-item--active {
+    color: #409EFF;
+}
+
+.article-item {
+    cursor: pointer;
+    padding: 24px;
+    display: flex;
+    border-bottom: 1px solid #f4f4f4;
+}
+
+.article-item:hover {
+    background: #f4f4f4;
+}
+
+.article-item:hover .article-title {
+    color: #409EFF;
+}
+
+
+.article-img-inner {
+    width: 96px;
+}
+
+.article-img-inner img {
+    width: 100%;
+    border-radius: 5px;
+}
+
+
+.article-content {
+    flex: 1;
+    margin-right: 24px;
+}
+
+.article-title {
+    color: #464c5b;
+    font-size: 24px;
+    margin: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.article-info p {
+    display: inline-block;
+    margin-right: 24px;
+    margin-top: 24px;
+    font-size: 16px;
+    color: #9ea7b4;
+}
+
+p.article-category {
+    height: 32px;
+    line-height: 32px;
+    padding: 0 32px;
+    font-size: 16px;
+    color: #409EFF;
+    border-radius: 32px;
+    background: rgba(51, 119, 255, .1);
+}
+
+.article-empty {
+    text-align: center;
+    padding: 24px 0;
+    font-size: 16px;
+    color: #989898;
+}
+
+.sidebar {
+    box-sizing: border-box;
+    width: 320px;
+    margin-left: 24px;
+}
+
+.page {
+    padding: 32px 0;
+    text-align: center;
+}
+
+@media screen and (min-width: 200px) and (max-width: 768px) {
+    .container {
+        box-sizing: border-box;
+        display: flex;
+        width: 100%;
+        overflow: hidden;
+        flex-direction: column;
+    }
+
+    .sidebar {
+        box-sizing: border-box;
+        width: auto;
+        flex: 1;
+        margin-left: 0;
+        margin-top: 24px;
+    }
+}

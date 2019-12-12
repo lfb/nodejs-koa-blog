@@ -1,0 +1,28 @@
+<%- include('layout/header', { title: article ? article.title : '波博客 - boblog.com', isArticleList: false, isArticleDetail: true, needHighlighting: true}) %>
+<% if (article) { %>
+    <article class="article-detail">
+        <div class="article-container">
+            <h1 class="article-title">
+                <%= article.title %>
+            </h1>
+            <ul class="article-intro">
+                <li>
+                    作者：<%= article.author %>
+                </li>
+                <% if (article.category) { %>
+                    <li>
+                        分类：<%= article.category.name %>
+                    </li>
+                <% } %>
+                <li>
+                    浏览次数： <%= article.browse %>
+                </li>
+            </ul>
+        </div>
+        <div>
+            <%- content %>
+        </div>
+    </article>
+<% } %>
+
+<%- include('layout/footer') %>

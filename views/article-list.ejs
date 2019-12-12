@@ -1,0 +1,52 @@
+<%- include('layout/header', { title: '波博客 - boblog.com', isArticleList: true, isArticleDetail: false, needHighlighting: true}) %>
+
+<section class="container">
+    <article class="article" id="article">
+        <nav class="article-nav">
+            <ul class="article-nav-box">
+                <li>
+                    全部
+                </li>
+            </ul>
+        </nav>
+        <% if (list && list.data && list.data.length > 0) { %>
+            <ul class="article-box">
+                <% list.data.forEach(article => { %>
+                    <li class="article-item">
+                        <a href="/v1/article/<%= article.id %>">
+                            <div class="article-content">
+                                <h1 class="article-title">
+                                    <%= article.title %>
+                                </h1>
+                                <div class="article-info">
+                                    <% if (article.category_detail) { %>
+                                        <p class="article-category">
+                                            <%= article.category_detail.name %>
+                                        </p>
+                                    <% } %>
+                                    <p class="article-author"><%= article.author %></p>
+                                    <p class="article-browse"><%= article.browse %></p>
+                                    <p class="article-browse"><%= article.comments_nums %></p>
+                                    <p class="article-create-at"><%= article.created_at %></p>
+                                </div>
+                            </div>
+                            <div class="article-img">
+                                <div class="article-img-inner">
+                                    <img src="<%= article.cover %>" alt="img">
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                <% }) %>
+            </ul>
+            <ul class="page">
+                页码
+            </ul>
+        <% } else { %>
+            <ul class="article-empty">暂无文章</ul>
+        <% } %>
+    </article>
+
+</section>
+
+<%- include('layout/footer') %>
