@@ -65,6 +65,10 @@
     padding: 0;
 }
 
+.article-list-box-inner {
+    list-style: none;
+}
+
 .article-list-item {
     padding: 24px;
     text-decoration: none;

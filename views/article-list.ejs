@@ -19,7 +19,7 @@
         <% if (article && article.data && article.data.length > 0) { %>
             <ul class="article-list-box">
                 <% article.data.forEach(item => { %>
-                    <li style="list-style: none">
+                    <li class="article-list-box-inner">
                         <a class="article-list-item" href="/article/detail/<%= item.id %>">
                             <div class="article-list-content">
                                 <h1 class="article-list-title">
@@ -40,7 +40,7 @@
                             </div>
                             <div class="article-list-img">
                                 <div class="article-list-img-inner">
-                                    <img src="<%= item.cover %>" alt="img">
+                                    <img src="<%= item.cover + '?imageView2/1/w/80' %>" alt="img">
                                 </div>
                             </div>
                         </a>

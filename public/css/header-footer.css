@@ -5,7 +5,7 @@ html, body, p {
 
 body {
     line-height: 2;
-    background: #f0f0f0;
+    /*background: #f0f0f0;*/
 }
 
 .header-wrap {
@@ -107,6 +107,11 @@ body {
     font-size: 14px;
     color: #fff;
     background: #262626;
+}
+
+.footer-inner h3 {
+    font-size: 14px;
+    font-weight: 400;
 }
 
 .footer-inner a {

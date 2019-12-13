@@ -6,22 +6,19 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title><%= title %></title>
     <link href="/css/header-footer.css" rel="stylesheet">
-
     <% if (isArticleList) { %>
         <link href="/css/article-list.css" rel="stylesheet">
+        <link href="/css/sidebar.css" rel="stylesheet">
     <% } %>
-
     <% if (isArticleDetail) { %>
         <link href="/css/article-detail.css" rel="stylesheet">
     <% } %>
-
     <% if (needHighlighting) { %>
         <link rel="stylesheet"
               href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.16.2/build/styles/github.min.css">
         <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.16.2/build/highlight.min.js"></script>
         <script>hljs.initHighlightingOnLoad();</script>
     <% } %>
-
 </head>
 <body>
 
@@ -32,20 +29,54 @@
                 <img src="/images/boblog.png" alt="logo">
             </a>
         </div>
-
         <div class="nav">
             <ul class="nav-box">
                 <li class="nav-item">
-                    <a class="<% if (navActiveTag === 'article') { %> nav-item-active <% } %>" href="/">文章</a>
+                    <a class="<% if (navActiveTag === 'article') { %>nav-item-active<% } %>" href="/">文章</a>
                 </li>
                 <li class="nav-item">
-                    <a class="<% if (navActiveTag === 'about') { %> nav-item-active <% } %>" href="/about">关于</a>
+                    <a class="<% if (navActiveTag === 'about') { %>nav-item-active<% } %>" href="/about">关于</a>
                 </li>
             </ul>
         </div>
-
         <div class="search">
-            <input type="text" placeholder="搜索文章..">
+            <input type="text" id="search-input" value="" placeholder="搜索文章..">
         </div>
     </section>
 </header>
+
+<script>
+  window.onload = function () {
+
+    /**
+     * 监听搜索表单
+     */
+    document.getElementById('search-input').addEventListener('keydown', function (event) {
+      var e = event || event.event;
+      if (e && e.keyCode === 13) {
+        var value = document.getElementById('search-input').value
+        if (escapeHtml(value)) {
+          console.log()
+          window.location.replace(`/?keyword=${escapeHtml(value)}`)
+        }
+      }
+    })
+
+    /**
+     * 格式化字符串
+     * @param str
+     * @return {*}
+     */
+    function escapeHtml(str) {
+      str = str.replace(/</g, '小于')
+      str = str.replace(/>/g, '大于')
+      str = str.replace(/\(/g, '括号')
+      str = str.replace(/\)/g, '括号')
+      str = str.replace(/'/g, '单号')
+      str = str.replace(/"/g, '双引号')
+      // str = str.replace(/ /g, '空格')
+      str = str.replace(/(^\s*)|(\s*$)/g, '');
+      return str
+    }
+  }
+</script>

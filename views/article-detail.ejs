@@ -18,13 +18,44 @@
                         </li>
                     <% } %>
                     <li>
-                        浏览次数： <%= article.browse %>
+                        浏览： <%= article.browse %>
                     </li>
+                    <% if (commentList && commentList.meta) { %>
+                        <li>
+                            评论： <%= commentList.meta.total %>
+                        </li>
+                    <% } %>
                 </ul>
             </div>
             <div>
                 <%- content %>
             </div>
+
+            <section class="comment-list">
+                <div>
+                    <h2 class="comment-list-title">欢迎评论：</h2>
+                    <form action="/comment" method="POST" class="comment-list-box">
+                        昵称： <input name="nickname" type="text" required> <br>
+                        邮箱： <input name="email" type="email" required> <br>
+                        内容： <input name="content" type='texteare' required> <br>
+                        <input name="target_type" value="article" type='hidden' required>
+                        <input name="target_id" value="<%= article.id %>" type='hidden' required>
+                        <input type="submit" value="提交"/>
+                    </form>
+                </div>
+                <% if (commentList && commentList.data && commentList.data.length > 0) { %>
+                    <div>
+                        <h2 class="comment-list-title">评论列表：</h2>
+                        <ul class="comment-list-box">
+                            <% commentList.data.forEach(item => { %>
+                                <li class="comment-list-item">
+                                    <%= item.nickname %>：<%= item.content %>
+                                </li>
+                            <% }) %>
+                        </ul>
+                    </div>
+                <% } %>
+            </section>
         </article>
     </article>
 <% } %>
