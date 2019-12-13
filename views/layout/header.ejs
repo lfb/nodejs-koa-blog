@@ -2,13 +2,22 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title><%= title %></title>
-    <link href="/css/header-footer.css" rel="stylesheet">
+    <% if (isArticleDetail) { %>
+        <meta name="description" content=""/>
+    <% } %>
+    <meta name="description" content="波博客 - boblog.com, <%= description %>"/>
+    <meta name="keywords" content="<%= title %>,<%= keyword %>, 梁凤波, 波博客, 博客, 个人博客, 个人网站, 首页, web前端, JavaScript, css, html, boblog, boblog.com"/>
+    <meta name="author" content="梁凤波,liangfengbo"/>
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+    <link rel="dns-prefetch" href="//cdn.boblog.com">
+    <link rel="dns-prefetch" href="//boblog.com">
+    <link rel="dns-prefetch" href="//www.boblog.com">
+    <link rel="dns-prefetch" href="//api.boblog.com">
+    <title><%= title %> - 波博客 - boblog.com</title>
     <% if (isArticleList) { %>
         <link href="/css/article-list.css" rel="stylesheet">
-        <link href="/css/sidebar.css" rel="stylesheet">
     <% } %>
     <% if (isArticleDetail) { %>
         <link href="/css/article-detail.css" rel="stylesheet">
@@ -16,12 +25,11 @@
     <% if (needHighlighting) { %>
         <link rel="stylesheet"
               href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.16.2/build/styles/github.min.css">
-        <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.16.2/build/highlight.min.js"></script>
-        <script>hljs.initHighlightingOnLoad();</script>
     <% } %>
+    <link href="/css/header-footer.css" rel="stylesheet">
+    <script src="/javascript/common.js"></script>
 </head>
 <body>
-
 <header class="header-wrap">
     <section class="header-inner">
         <div class="logo">
@@ -37,6 +45,9 @@
                 <li class="nav-item">
                     <a class="<% if (navActiveTag === 'about') { %>nav-item-active<% } %>" href="/about">关于</a>
                 </li>
+                <li class="nav-item">
+                    <a target="_blank" href="https://github.com/liangfengbo">Github</a>
+                </li>
             </ul>
         </div>
         <div class="search">
@@ -44,39 +55,3 @@
         </div>
     </section>
 </header>
-
-<script>
-  window.onload = function () {
-
-    /**
-     * 监听搜索表单
-     */
-    document.getElementById('search-input').addEventListener('keydown', function (event) {
-      var e = event || event.event;
-      if (e && e.keyCode === 13) {
-        var value = document.getElementById('search-input').value
-        if (escapeHtml(value)) {
-          console.log()
-          window.location.replace(`/?keyword=${escapeHtml(value)}`)
-        }
-      }
-    })
-
-    /**
-     * 格式化字符串
-     * @param str
-     * @return {*}
-     */
-    function escapeHtml(str) {
-      str = str.replace(/</g, '小于')
-      str = str.replace(/>/g, '大于')
-      str = str.replace(/\(/g, '括号')
-      str = str.replace(/\)/g, '括号')
-      str = str.replace(/'/g, '单号')
-      str = str.replace(/"/g, '双引号')
-      // str = str.replace(/ /g, '空格')
-      str = str.replace(/(^\s*)|(\s*$)/g, '');
-      return str
-    }
-  }
-</script>

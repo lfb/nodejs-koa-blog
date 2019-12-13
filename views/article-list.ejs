@@ -1,21 +1,19 @@
-<%- include('layout/header', { title: '波博客 - boblog.com', isArticleList: true, isArticleDetail: false, navActiveTag: 'article', needHighlighting: true}) %>
+<%- include(
+'layout/header', {
+title: '波博客 - boblog.com',
+description: '',
+keyword: '',
+isArticleList: true,
+navActiveTag: 'article',
+isArticleDetail: false,
+needHighlighting: false
+})
+%>
 
+<!--<script>alert(document.cookie)</script>-->
 <section class="article-list-sidebar">
     <article class="article-list" id="article">
-        <% if (category && category.length > 0) { %>
-            <nav class="article-list-nav">
-                <ul class="article-list-nav-box">
-                    <li class="article-list-nav-item">
-                        <a href="/">全部</a>
-                    </li>
-                    <% category.forEach(cate => { %>
-                        <li class="article-list-nav-item">
-                            <a href="/?category_id=<%= cate.id %>"><%= cate.name %></a>
-                        </li>
-                    <% }) %>
-                </ul>
-            </nav>
-        <% } %>
+        <%- include('layout/category', {category}) %>
         <% if (article && article.data && article.data.length > 0) { %>
             <ul class="article-list-box">
                 <% article.data.forEach(item => { %>
@@ -40,21 +38,28 @@
                             </div>
                             <div class="article-list-img">
                                 <div class="article-list-img-inner">
-                                    <img src="<%= item.cover + '?imageView2/1/w/80' %>" alt="img">
+                                    <img src="<%= item.cover + '?imageView2/1/w/160' %>" alt="img">
                                 </div>
                             </div>
                         </a>
                     </li>
                 <% }) %>
             </ul>
-            <ul class="page">
-                页码
-            </ul>
+            <% if (article && article.meta && article.meta.total_pages > 1) { %>
+                <ul class="page">
+                    <% for (var i = 0; i < article.meta.total_pages; i++) { %>
+                        <li class="page-item">
+                            <a href="/?page=<%= i + 1 %>">
+                                <%= i + 1 %>
+                            </a>
+                        </li>
+                    <% } %>
+                </ul>
+            <% } %>
         <% } else { %>
             <ul class="article-list-empty">暂无文章</ul>
         <% } %>
     </article>
-    <%- include('layout/sidebar') %>
 </section>
 
 

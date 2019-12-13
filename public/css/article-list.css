@@ -1,18 +1,28 @@
 .article-list-sidebar {
-    display: flex;
-    width: 70%;
-    margin: 88px auto 20px;
+    width: 66%;
+    min-height: 80vh;
+    box-sizing: border-box;
+    margin: 64px auto 32px;
     overflow: hidden;
 }
 
+
+@media screen and (min-width: 200px) and (max-width: 750px) {
+    .article-list-sidebar {
+        padding: 0 24px;
+        width: 100%;
+    }
+}
+
 .article-list {
-    flex: 9;
     border-radius: 8px;
     background: #fff;
 }
 
 .article-list-nav {
-    padding: 10px 0;
+    box-sizing: border-box;
+    height: 42px;
+    line-height: 42px;
     border-bottom: 1px solid #f4f4f4;
 }
 
@@ -29,7 +39,7 @@
 
 .article-list-nav-item a {
     cursor: pointer;
-    padding: 0 16px;
+    padding-right: 32px;
     position: relative;
     font-size: 12px;
     color: #404040;
@@ -70,7 +80,7 @@
 }
 
 .article-list-item {
-    padding: 24px;
+    padding: 24px 0;
     text-decoration: none;
     cursor: pointer;
     display: flex;
@@ -78,17 +88,14 @@
     transition: 0.1s ease-in;
 }
 
-.article-list-item:hover {
-    background: #f4f4f4;
-}
-
 .article-list-item:hover .article-list-title {
     color: #409EFF;
+    text-decoration: underline;
 }
-
 
 .article-list-img-inner {
     width: 80px;
+    margin-left: 24px;
 }
 
 .article-list-img-inner img {
@@ -149,8 +156,41 @@ p.article-list-category {
 }
 
 .page {
-    padding: 32px 0;
+    padding: 32px 0 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.page-item {
+    list-style: none;
+    display: inline-block;
+}
+
+.page-item a {
+    display: inline-block;
+    text-decoration: none;
+    vertical-align: middle;
+    min-width: 32px;
+    height: 32px;
+    line-height: 30px;
     text-align: center;
+    color: #515a6e;
+    background-color: #fff;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: pointer;
+    border: 1px solid #dcdee2;
+    border-radius: 4px;
+    margin: 0 10px;
+    transition: border .2s ease-in-out, color .2s ease-in-out;
+}
+
+.page-item a:hover {
+    color: #2f8cf0;
+    border-color: #2f8cf0;
 }
 
 @media screen and (min-width: 200px) and (max-width: 768px) {

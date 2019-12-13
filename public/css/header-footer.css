@@ -1,35 +1,51 @@
 html, body, p {
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
 
 body {
     line-height: 2;
+    font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
     /*background: #f0f0f0;*/
+}
+
+table {
+    border-color: #f8f8f8;
+
+}
+
+th, td {
+    box-sizing: border-box;
+    padding: 8px 16px;
+    border-color: #f8f8f8;
 }
 
 .header-wrap {
     position: fixed;
     width: 100%;
     height: 64px;
-    display: flex;
-    align-items: center;
     z-index: 1000;
     top: 0;
     left: 0;
     border-bottom: 1px solid #f0f0f0;
     background: #fff;
-    -webkit-transform-style: preserve-3d;
-    transform-style: preserve-3d;
-    -webkit-transform: translateZ(0);
-    transform: translateZ(0);
 }
 
 .header-inner {
     margin: 0 auto;
-    width: 70%;
+    width: 66%;
+    height: 64px;
+    box-sizing: border-box;
     display: flex;
     align-items: center;
+}
+
+@media screen and (min-width: 200px) and (max-width: 750px) {
+    .header-inner {
+        padding: 0 24px;
+        width: 100%;
+    }
 }
 
 .logo {
@@ -38,7 +54,7 @@ body {
 .logo-box {
     outline: none;
     height: 100%;
-    width: 128px;
+    width: 120px;
     display: flex;
     align-items: center;
 }
@@ -69,9 +85,8 @@ body {
     font-size: 16px;
     position: relative;
     color: #17233d;
-    font-weight: 400;
     text-align: center;
-    padding: 0 32px;
+    padding: 0 24px;
     text-decoration: none;
     white-space: nowrap;
 }

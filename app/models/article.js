@@ -26,18 +26,24 @@ Article.init({
     defaultValue: '梁凤波',
     comment: '文章作者'
   },
-  description: {
-    type: Sequelize.STRING,
-    allowNull: true,
-    comment: '文章简介'
-  },
   content: {
     type: Sequelize.TEXT,
     allowNull: false,
     comment: '文章内容'
   },
+  description: {
+    type: Sequelize.STRING,
+    allowNull: false,
+    comment: '文章简介'
+  },
+  keyword: {
+    type: Sequelize.STRING,
+    allowNull: false,
+    defaultValue: 0,
+    comment: '文章关键字'
+  },
   cover: {
-    type: Sequelize.STRING(100),
+    type: Sequelize.STRING,
     allowNull: false,
     comment: '文章封面'
   },

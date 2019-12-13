@@ -1,10 +1,20 @@
-<%- include('layout/header', { title: '关于波博客 - boblog.com', isArticleList: false, isArticleDetail: false, navActiveTag: 'about', needHighlighting: false}) %>
+<%- include(
+'layout/header', {
+title: '波博客 - boblog.com',
+description: '',
+keyword: '',
+isArticleList: false,
+navActiveTag: 'about',
+isArticleDetail: false,
+needHighlighting: false
+})
+%>
 <style>
     .author {
         box-sizing: border-box;
-        width: 70%;
+        width: 66%;
         min-height: 80vh;
-        margin: 88px auto 32px;
+        margin: 64px auto 32px;
         overflow: hidden;
         padding-bottom: 24px;
         background-color: #fff;
@@ -28,7 +38,6 @@
     }
 
     .text {
-        padding: 0 32px 32px;
         font-size: 14px;
         color: #666;
         text-indent: 2em;
@@ -47,6 +56,7 @@
 
     @media screen and (min-width: 200px) and (max-width: 750px) {
         .author {
+            padding: 0 24px;
             width: 100%;
         }
     }

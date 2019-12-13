@@ -17,6 +17,8 @@ const {ArticleDao} = require('../../dao/article');
 const {CategoryDao} = require('../../dao/category');
 const {CommentDao} = require('../../dao/comment');
 
+const {set, get} = require('../../cache/_redis')
+
 const router = new Router()
 
 const LAST_MODIFIED_TIME = '123'
@@ -32,20 +34,35 @@ router.get('/', async (ctx) => {
   //
   // } else {
   // 查询文章列表
-  const articleList = await ArticleDao.list(ctx.query);
-  // 获取所有的分类
-  const categoryList = await CategoryDao.list();
+  // 尝试获取缓存
+  const key = 'list'
+  const cacheData = await get(key)
+  if (cacheData != null) {
+    // 获取缓存成功
+    console.log('获取缓存成功')
+    console.log('获取缓存成功')
+    console.log('获取缓存成功')
+    console.log('获取缓存成功')
+    await ctx.render('article-list', cacheData)
+  }else {
+    // 没有缓存，则读取数据库
+    const articleList = await ArticleDao.list(ctx.query);
+    // 获取所有的分类
+    const categoryList = await CategoryDao.list();
+    ctx.response.status = 200;
+    ctx.response.set('Content-Type', 'text/html; charset=utf-8')
+    // ctx.response.set('Cache-Control', 'max-age=60, s-maxage=90')
+    // ctx.response.set('Last-Modified', LAST_MODIFIED_TIME)
+    const data = {
+      article: articleList,
+      category: categoryList
+    }
 
-  ctx.response.status = 200;
-  ctx.response.set('Content-Type', 'text/html; charset=utf-8')
-  // ctx.response.set('Cache-Control', 'max-age=60, s-maxage=90')
-  // ctx.response.set('Last-Modified', LAST_MODIFIED_TIME)
+    // 设置缓存，过期时间 1min
+    set(key, data, 60)
 
-  await ctx.render('article-list', {
-    article: articleList,
-    category: categoryList
-  })
-  // }
+    await ctx.render('article-list', data)
+  }
 })
 
 /**

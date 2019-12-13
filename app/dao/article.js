@@ -27,6 +27,7 @@ class ArticleDao {
 
     article.title = v.get('body.title');
     article.author = v.get('body.author');
+    article.keyword = v.get('body.keyword');
     article.description = v.get('body.description');
     article.content = v.get('body.content');
     article.cover = v.get('body.cover');
@@ -122,6 +123,7 @@ class ArticleDao {
     // 更新文章
     article.title = v.get('body.title');
     article.author = v.get('body.author');
+    article.keyword = v.get('body.keyword');
     article.description = v.get('body.description');
     article.content = v.get('body.content');
     article.cover = v.get('body.cover');

@@ -1,5 +1,17 @@
-<%- include('layout/header', { title: article ? article.title : '波博客 - boblog.com', isArticleList: false, navActiveTag: 'article',isArticleDetail: true, needHighlighting: true}) %>
+
+
 <% if (article) { %>
+    <%- include(
+    'layout/header', {
+    title: article ? article.title : '波博客 - boblog.com',
+    description: article.description,
+    keyword: article ? article.keyword : '',
+    isArticleList: false,
+    navActiveTag: 'article',
+    isArticleDetail: true,
+    needHighlighting: true
+    })
+    %>
 
     <article class="article-detail">
         <article class="article-container">
@@ -61,3 +73,7 @@
 <% } %>
 
 <%- include('layout/footer') %>
+<script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.16.2/build/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>

@@ -1,18 +1,27 @@
 .article-detail {
     box-sizing: border-box;
-    width: 70%;
-    margin: 88px auto 20px;
+    width: 66%;
+    margin: 64px auto 32px;
     border-radius: 10px;
     overflow: hidden;
 }
 
+@media screen and (min-width: 200px) and (max-width: 750px) {
+    .article-detail {
+        padding: 0 24px;
+        width: 100%;
+    }
+
+    .article-detail-intro {
+        flex-direction: column;
+    }
+}
 
 .article-container {
     box-sizing: border-box;
-    padding: 32px;
+    padding: 32px 0;
     border-radius: 10px;
     overflow: hidden;
-    box-shadow: 1px 2px 3px #f0f0f0;
     background: #fff;
 }
 
@@ -38,8 +47,7 @@
 }
 
 .article-detail-intro li {
-    display: flex;
-    align-items: center;
+    list-style: none;
     margin-right: 24px;
     font-size: 14px;
     color: #9ea7b4;

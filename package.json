@@ -42,9 +42,11 @@
     "moment": "^2.24.0",
     "mysql2": "^1.6.5",
     "npm-check": "^5.9.0",
+    "redis": "^2.8.0",
     "require-directory": "^2.1.1",
     "sequelize": "^5.21.2",
-    "validator": "^10.11.0"
+    "validator": "^10.11.0",
+    "xss": "^1.0.6"
   },
   "directories": {
     "test": "test"

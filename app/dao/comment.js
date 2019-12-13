@@ -1,3 +1,5 @@
+const xss = require('xss')
+
 const {Comment} = require('../models/comment')
 const {Reply} = require('../models/reply')
 
@@ -5,11 +7,11 @@ class CommentDao {
   // 创建评论
   static async create(v) {
     const comment = new Comment();
-    comment.nickname = v.get('body.nickname');
-    comment.email = v.get('body.email');
-    comment.content = v.get('body.content');
-    comment.target_id = v.get('body.target_id');
-    comment.target_type = v.get('body.target_type');
+    comment.nickname = xss(v.get('body.nickname'));
+    comment.email = xss(v.get('body.email'));
+    comment.content = xss(v.get('body.content'));
+    comment.target_id = xss(v.get('body.target_id'));
+    comment.target_type = xss(v.get('body.target_type'));
 
     return comment.save();
   }

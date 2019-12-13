@@ -1,0 +1,14 @@
+<% if (category && category.length > 0) { %>
+    <nav class="article-list-nav">
+        <ul class="article-list-nav-box">
+            <li class="article-list-nav-item">
+                <a href="/">全部</a>
+            </li>
+            <% category.forEach(cate => { %>
+                <li class="article-list-nav-item">
+                    <a href="/?category_id=<%= cate.id %>"><%= cate.name %></a>
+                </li>
+            <% }) %>
+        </ul>
+    </nav>
+<% } %>
