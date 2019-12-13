@@ -1,6 +1,6 @@
 <%- include(
 'layout/header', {
-title: '波博客 - boblog.com',
+title: '波博客 - www.boblog.com',
 description: '',
 keyword: '',
 isArticleList: true,
@@ -32,8 +32,8 @@ needHighlighting: false
                                             <%= item.category.name %>
                                         </p>
                                     <% } %>
-                                    <p class="article-list-author">作者：<%= item.author %></p>
-                                    <p class="article-list-browse">浏览次数：<%= item.browse %></p>
+                                    <p class="article-list-author">@<%= item.author %></p>
+                                    <p class="article-list-browse">浏览：<%= item.browse %></p>
                                 </div>
                             </div>
                             <div class="article-list-img">
