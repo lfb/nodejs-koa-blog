@@ -39,13 +39,8 @@ class ArticleDao {
 
   // 获取文章列表
   static async list(params = {}) {
-    const {
-      category_id,
-      keyword,
-      page = 1,
-      pageSize = 10,
-      desc = 'created_at'
-    } = params;
+    const {category_id, keyword, page = 1} = params;
+    const pageSize = 10
 
     // 筛选方式
     let filter = {
@@ -68,7 +63,7 @@ class ArticleDao {
       offset: (page - 1) * pageSize,
       where: filter,
       order: [
-        [desc, 'DESC']
+        ['created_at', 'DESC']
       ],
       // 查询每篇文章下关联的分类
       include: [{

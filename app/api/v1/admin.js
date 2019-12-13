@@ -1,3 +1,8 @@
+/**
+ * @description 管理员接口
+ * @author 梁凤波
+ */
+
 const Router = require('koa-router')
 
 const {
