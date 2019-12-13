@@ -14,10 +14,10 @@ const {CategoryDao} = require('../../dao/category');
 const {CommentDao} = require('../../dao/comment');
 
 const {getRedis, setRedis} = require('../../cache/_redis')
-
-const router = new Router()
 // redis key 前缀
 const KEY_PREFIX = 'boblog'
+
+const router = new Router()
 
 /**
  * 首页 - 文章列表页
