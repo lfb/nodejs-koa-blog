@@ -93,16 +93,15 @@
     text-decoration: underline;
 }
 
-.article-list-img-inner {
+.article-list-cover-inner {
     width: 80px;
+    line-height: 80px;
     margin-left: 24px;
 }
 
-.article-list-img-inner img {
+.article-list-cover {
     width: 100%;
-    border-radius: 5px;
 }
-
 
 .article-list-content {
     flex: 1;

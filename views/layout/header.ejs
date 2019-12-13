@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge,chrome=1">
     <% if (isArticleDetail) { %>
         <meta name="description" content=""/>
     <% } %>
-    <meta name="description" content="波博客 - www.boblog.com, <%= description %>"/>
-    <meta name="keywords" content="<%= title %>,<%= keyword %>, 梁凤波, 波博客, 博客, 个人博客, 个人网站, 首页, web前端, JavaScript, css, html, boblog, boblog.com, www.boblog.com,www"/>
+    <meta name="description" content="波波博客 - www.boblog.com, <%= description %>"/>
+    <meta name="keywords"
+          content="<%= title %>,<%= keyword %>, 波波博客, 波波, 梁凤波, 梁凤波博客, 波博客, 博客, 个人博客, 个人网站, www, boblog, boblog, boblog.com, www.boblog.com, 首页, web前端, Node.js, Koa, Express, JavaScript, css, html"/>
     <meta name="author" content="梁凤波,liangfengbo"/>
     <meta http-equiv="x-dns-prefetch-control" content="on">
     <link rel="dns-prefetch" href="//cdn.boblog.com">
@@ -44,7 +45,7 @@
                     <a class="<% if (navActiveTag === 'article') { %>nav-item-active<% } %>" href="/">文章</a>
                 </li>
                 <li class="nav-item">
-                    <a class="<% if (navActiveTag === 'about') { %>nav-item-active<% } %>" href="/about">关于</a>
+                    <a class="<% if (navActiveTag === 'about') { %>nav-item-active<% } %>" href="/about">关于波波</a>
                 </li>
                 <li class="nav-item">
                     <a target="_blank" href="https://github.com/liangfengbo">Github</a>

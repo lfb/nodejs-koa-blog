@@ -1,6 +1,6 @@
 <%- include(
 'layout/header', {
-title: '波博客 - www.boblog.com',
+title: '波波博客 - boblog.com',
 description: '',
 keyword: '',
 isArticleList: true,
@@ -36,10 +36,8 @@ needHighlighting: false
                                     <p class="article-list-browse">浏览：<%= item.browse %></p>
                                 </div>
                             </div>
-                            <div class="article-list-img">
-                                <div class="article-list-img-inner">
-                                    <img src="<%= item.cover + '?imageView2/1/w/160' %>" alt="img">
-                                </div>
+                            <div class="article-list-cover-inner">
+                                <img class="article-list-cover" data-src="<%= item.cover + '?imageView2/1/w/160' %>">
                             </div>
                         </a>
                     </li>
@@ -62,5 +60,5 @@ needHighlighting: false
     </article>
 </section>
 
-
+<script src="/javascript/lazyload.js"></script>
 <%- include('layout/footer') %>
