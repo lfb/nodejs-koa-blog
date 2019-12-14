@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>返回顶部练习</title>
+    <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            height: 2000px;
+            width: 100%;
+        }
+
+        .to_top {
+            width: 60px;
+            height: 60px;
+            position: fixed;
+            bottom: 20%;
+            right: 20px;
+            font-size: 40px;
+            line-height: 70px;
+            border: none;
+            background: rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            opacity: 0;
+            /*display: none;*/
+            transition: all 1s;
+        }
+
+        .to_top:hover {
+            background: rgba(0, 0, 0, 0.4);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+<button class="to_top">^</button>
+<script type="text/javascript">
+
+</script>
+
+<!-- 	DOM：
+	    1、document.getElementById()
+	    2、document.documentElement.scrollTop
+	    3、document.body.scrollTop
+	事件：
+	    1、window.onload
+	    2、window.onscroll
+	    3、obtn.onclick
+	定时器的使用：
+	    1、setInterval(function(){},30)
+	    2、clearInterval(timer) -->
+
+</body>
+</html>

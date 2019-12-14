@@ -10,10 +10,12 @@ needHighlighting: false
 })
 %>
 
-<!--<script>alert(document.cookie)</script>-->
 <section class="article-list-sidebar">
+    <%- include('layout/sidebar', { category, advertise }) %>
     <article class="article-list" id="article">
-        <%- include('layout/category', {category}) %>
+        <header class="article-list-header">
+            <span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span>文章
+        </header>
         <% if (article && article.data && article.data.length > 0) { %>
             <ul class="article-list-box">
                 <% article.data.forEach(item => { %>
@@ -29,36 +31,52 @@ needHighlighting: false
                                 <div class="article-list-info">
                                     <% if (item.category) { %>
                                         <p class="article-list-category">
+                                            <span class="glyphicon glyphicon-tag" aria-hidden="true"></span>
                                             <%= item.category.name %>
                                         </p>
                                     <% } %>
-                                    <p class="article-list-author">@<%= item.author %></p>
-                                    <p class="article-list-browse">浏览：<%= item.browse %></p>
                                 </div>
                             </div>
                             <div class="article-list-cover-inner">
-                                <img class="article-list-cover" data-src="<%= item.cover + '?imageView2/1/w/160' %>">
+                                <img class="article-list-cover"
+                                     data-src="<%= item.cover + '?imageView2/1/w/160' %>">
                             </div>
                         </a>
                     </li>
                 <% }) %>
             </ul>
+
             <% if (article && article.meta && article.meta.total_pages > 1) { %>
-                <ul class="page">
-                    <% for (var i = 0; i < article.meta.total_pages; i++) { %>
-                        <li class="page-item">
-                            <a href="/?page=<%= i + 1 %>">
-                                <%= i + 1 %>
+
+                <nav aria-label="Page navigation page">
+                    <ul class="pagination">
+                        <li>
+                            <a href="#" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
                             </a>
                         </li>
-                    <% } %>
-                </ul>
+                        <% for (var i = 0; i < article.meta.total_pages; i++) { %>
+                            <li><a href="/?page=<%= i + 1 %>"><%= i + 1 %></a></li>
+                        <% } %>
+                        <li>
+                            <a href="#" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
             <% } %>
+
         <% } else { %>
             <ul class="article-list-empty">暂无文章</ul>
         <% } %>
     </article>
 </section>
+<div id="back-to-top-page">
+    <span class="glyphicon glyphicon-menu-up"></span>
+    <span>TOP</span>
+</div>
 
-<script src="/javascript/lazyload.js"></script>
+
 <%- include('layout/footer') %>
+<script src="/javascript/lazyload.js"></script>

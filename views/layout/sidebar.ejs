@@ -1,48 +1,40 @@
-<article class="sidebar">
+<article class="sidebar-container-visibility"></article>
+<article class="sidebar-container-fixed">
+    <% if (advertise && advertise.length > 0) { %>
+        <div class="sidebar-box">
+            <header class="sidebar-header">
+                <span class="glyphicon glyphicon glyphicon-th-large" aria-hidden="true"></span>
+                推荐
+            </header>
+            <div class="list-group" style="margin: 0">
+                <% advertise.forEach(ad => { %>
+                    <a href="<%= ad.link %>" class="list-group-item list-group-item-border">
+                        <%= ad.title %>
+                    </a>
+                <% }) %>
+            </div>
+        </div>
+    <% } %>
 
-    <div class="sidebar-box">
-        <header class="sidebar-header">
-            广告
-        </header>
-        <ul class="sidebar-box-content">
-            <li class="sidebar-box-content-item">
-                <a href="/" target="_blank">
-                    链接
-                </a>
-                <span></span>
-            </li>
-            <li class="sidebar-box-content-item">
-                <a href="/" target="_blank">
-                    链接
-                </a>
-                <span></span>
-            </li>
-            <li class="sidebar-box-content-item">
-                <a href="/" target="_blank">
-                    链接
-                </a>
-                <span></span>
-            </li>
-            <li class="sidebar-box-content-item">
-                <a href="/" target="_blank">
-                    链接
-                </a>
-                <span></span>
-            </li>
-        </ul>
-    </div>
+    <% if (category && category.length > 0) { %>
+        <div class="sidebar-box">
+            <header class="sidebar-header">
+                <span class="glyphicon glyphicon-tags" aria-hidden="true"></span>
+                分类
+            </header>
+            <ul class="sidebar-box-content">
+                <li class="sidebar-box-category">
+                    <% category.forEach(cate => { %>
+                        <button type="button" class="btn btn-default btn-primary btn-xs btn-margin-bottom">
+                            <span class="glyphicon glyphicon-tag" aria-hidden="true"></span>
+                            <%= cate.name %>
+                        </button>
+                    <% }) %>
+                </li>
+            </ul>
+        </div>
+    <% } %>
 
-    <div class="sidebar-box">
-        <header class="sidebar-header">
-            链接
-        </header>
-        <ul class="sidebar-box-content">
-            <li class="sidebar-box-content-item">
-                <a href="https://github.com/liangfengbo" target="_blank">
-                    Github
-                </a>
-                <span></span>
-            </li>
-        </ul>
-    </div>
 </article>
+
+

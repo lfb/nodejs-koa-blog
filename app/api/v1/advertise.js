@@ -58,11 +58,11 @@ router.put('/advertise/:id', new Auth(AUTH_ADMIN).m, async (ctx) => {
 // 获取广告列表
 router.get('/advertise', async (ctx) => {
   const page = ctx.query.page;
-  let CommentReplyList = await AdvertiseDao.list(page);
+  const list = await AdvertiseDao.list(page);
 
   // 返回结果
   ctx.response.status = 200;
-  ctx.body = res.json(CommentReplyList);
+  ctx.body = res.json(list);
 
 })
 
@@ -73,11 +73,11 @@ router.get('/advertise/:id', async (ctx) => {
 
   // 获取广告ID参数
   const id = v.get('path.id');
-  let commentReply = await AdvertiseDao.detail(id)
+  const data = await AdvertiseDao.detail(id)
 
   // 返回结果
   ctx.response.status = 200;
-  ctx.body = res.json(commentReply);
+  ctx.body = res.json(data);
 
 })
 

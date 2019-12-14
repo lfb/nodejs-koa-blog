@@ -1,22 +1,48 @@
 .article-list-sidebar {
-    width: 66%;
+    width: 70%;
     min-height: 80vh;
     box-sizing: border-box;
-    margin: 64px auto 32px;
+    margin: 66px auto 24px;
     overflow: hidden;
 }
 
 
 @media screen and (min-width: 200px) and (max-width: 750px) {
     .article-list-sidebar {
-        padding: 0 24px;
+        padding: 0 15px;
         width: 100%;
+    }
+
+    .article-list-sidebar {
+        margin-right: 0;
+        margin-left: 0;
+        padding: 0;
     }
 }
 
+
 .article-list {
-    border-radius: 8px;
+    overflow: hidden;
+    right: 16px;
+    border-radius: 10px;
+    padding: 0 24px;
     background: #fff;
+}
+
+.article-list-header {
+    box-sizing: border-box;
+    height: 42px;
+    line-height: 42px;
+    font-weight: 500;
+    border-bottom: 1px solid #f4f4f4;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    color: #337ab7;
+}
+
+.article-list-header span {
+    margin-right: 10px;
 }
 
 .article-list-nav {
@@ -84,13 +110,16 @@
     text-decoration: none;
     cursor: pointer;
     display: flex;
-    border-bottom: 1px solid #f4f4f4;
+    border-bottom: 1px solid #eee;
     transition: 0.1s ease-in;
+}
+
+.article-list-item:hover {
+    text-decoration: none;
 }
 
 .article-list-item:hover .article-list-title {
     color: #409EFF;
-    text-decoration: underline;
 }
 
 .article-list-cover-inner {
@@ -101,6 +130,7 @@
 
 .article-list-cover {
     width: 100%;
+    border-radius: 5px;
 }
 
 .article-list-content {
@@ -110,6 +140,7 @@
 .article-list-title {
     color: #464c5b;
     font-size: 18px;
+    font-weight: 500;
     margin: 0;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -119,25 +150,34 @@
 .article-list-description {
     color: #808695;
     font-size: 14px;
-    padding: 10px 0;
+    padding: 16px 0;
 }
 
 .article-list-info {
+    display: flex;
+    align-items: center;
 }
 
 .article-list-info p {
-    display: inline-block;
-    margin-right: 16px;
     font-size: 12px;
-    color: #9ea7b4;
+    color: #2d8cf0;
+    display: flex;
+    align-items: center;
+    margin: 0;
+    margin-right: 12px;
+}
+
+.article-list-info p span {
+    margin-right: 5px;
 }
 
 p.article-list-category {
     height: 24px;
     line-height: 24px;
+    font-size: 12px;
     padding: 0 24px;
     color: #2d8cf0;
-    border-radius: 64px;
+    border-radius: 96px;
     background: rgba(51, 119, 255, .1);
 }
 

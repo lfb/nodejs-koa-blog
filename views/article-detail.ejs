@@ -12,8 +12,8 @@
     %>
 
     <article class="article-detail">
-        <article class="article-container">
-
+        <%- include('layout/sidebar', { category, advertise }) %>
+        <article class="article-detail-container">
             <div class="article-detail-header">
                 <h1 class="article-detail-title">
                     <%= article.title %>
@@ -41,34 +41,15 @@
                 <%- content %>
             </div>
 
-            <section class="comment-list">
-                <div>
-                    <h2 class="comment-list-title">欢迎评论：</h2>
-                    <form action="/comment" method="POST" class="comment-list-box">
-                        昵称： <input name="nickname" type="text" required> <br>
-                        邮箱： <input name="email" type="email" required> <br>
-                        内容： <input name="content" type='texteare' required> <br>
-                        <input name="target_type" value="article" type='hidden' required>
-                        <input name="target_id" value="<%= article.id %>" type='hidden' required>
-                        <input type="submit" value="提交"/>
-                    </form>
-                </div>
-                <% if (commentList && commentList.data && commentList.data.length > 0) { %>
-                    <div>
-                        <h2 class="comment-list-title">评论列表：</h2>
-                        <ul class="comment-list-box">
-                            <% commentList.data.forEach(item => { %>
-                                <li class="comment-list-item">
-                                    <%= item.nickname %>：<%= item.content %>
-                                </li>
-                            <% }) %>
-                        </ul>
-                    </div>
-                <% } %>
-            </section>
+            <%- include('layout/comment', {commentList}) %>
         </article>
     </article>
 <% } %>
+
+<div id="back-to-top-page">
+    <span class="glyphicon glyphicon-menu-up"></span>
+    <span>TOP</span>
+</div>
 
 <%- include('layout/footer') %>
 <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.16.2/build/highlight.min.js"></script>

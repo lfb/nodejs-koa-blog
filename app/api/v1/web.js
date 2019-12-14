@@ -12,6 +12,7 @@ const {CommentValidator} = require('../../validators/comment')
 const {ArticleDao} = require('../../dao/article')
 const {CategoryDao} = require('../../dao/category')
 const {CommentDao} = require('../../dao/comment')
+const {AdvertiseDao} = require('../../dao/advertise')
 
 const {getRedis, setRedis} = require('../../cache/_redis')
 const REDIS_KEY_PREFIX = 'boblog'
@@ -34,11 +35,15 @@ router.get('/', async (ctx) => {
 
   } else {
     // 如果没有缓存数据，则读取数据库
+    // 文章
     const article = await ArticleDao.list(ctx.query)
+    // 分类
     const category = await CategoryDao.list()
+    // 广告
+    const advertise = await AdvertiseDao.list()
 
     // 合并数据
-    const data = {article, category}
+    const data = {article, category, advertise: advertise.data}
 
     // 设置缓存，过期时间 1min
     setRedis(key, data, 60)
@@ -69,6 +74,10 @@ router.get('/article/detail/:id', async (ctx) => {
     const id = v.get('path.id')
     // 查询文章
     const article = await ArticleDao.detail(id)
+    // 分类
+    const category = await CategoryDao.list()
+    // 广告
+    const advertise = await AdvertiseDao.list()
     // 获取关联此文章的评论列表
     const commentList = await CommentDao.targetComment({
       target_id: id,
@@ -81,7 +90,7 @@ router.get('/article/detail/:id', async (ctx) => {
     const content = marked(article.content.toString())
 
     // 合并数据
-    const data = {article, content, commentList}
+    const data = {article, content, category, advertise: advertise.data, commentList}
 
     // 设置 Redis 缓存，过期时间1分钟
     setRedis(key, data, 60)
@@ -114,8 +123,13 @@ router.post('/comment', async (ctx) => {
   // 通过 marked 工具解析 markdown 语法
   const content = marked(article.content.toString())
 
+  // 分类
+  const category = await CategoryDao.list()
+  // 广告
+  const advertise = await AdvertiseDao.list()
+
   // 合并数据
-  const data = {article, content, commentList}
+  const data = {article, content, category, advertise: advertise.data, commentList}
   // 设置 Redis 缓存，过期时间1分钟
   const key = `${REDIS_KEY_PREFIX}_article_detail_${ctx.params.id}`
   setRedis(key, data, 60)

@@ -67,9 +67,9 @@ class AdvertiseDao {
 
   // 广告列表
   static async list(page = 1) {
-    const pageSize = 10;
+    const pageSize = 6;
     const advertise = await Advertise.scope('bh').findAndCountAll({
-      limit: pageSize,//每页10条
+      limit: pageSize,
       offset: (page - 1) * pageSize,
       where: {
         deleted_at: null

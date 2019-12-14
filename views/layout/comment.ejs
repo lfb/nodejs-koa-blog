@@ -1,0 +1,84 @@
+<section class="comment-create">
+    <div class="comment-header">
+        <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
+        欢迎评论
+    </div>
+    <div class="from">
+        <div class="form-group">
+            <label for="exampleInputEmail1">昵称</label>
+            <input required name="nickname" type="text" class="form-control" id="exampleInputEmail1"
+                   placeholder="请填写您的昵称">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">邮箱</label>
+            <input required name="email" type="email" class="form-control" id="exampleInputEmail1"
+                   placeholder="请填写您的邮箱">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">评论内容</label>
+            <textarea required name="content" class="form-control" rows="3"
+                      placeholder="请填写您的评论内容"></textarea>
+        </div>
+        <input name="target_type" value="article" type='hidden' required>
+        <input name="target_id" value="<%= article.id %>" type='hidden' required>
+        <button type="submit" class="btn btn-default btn-primary">提交评论</button>
+    </div>
+</section>
+
+<% if (commentList && commentList.data && commentList.data.length > 0) { %>
+    <section class="comment-list">
+        <% commentList.data.forEach(item => { %>
+            <div class="media">
+                <div class="media-left">
+                    <a href="#">
+                        <img class="media-object" src="http://cdn.boblog.com/funny.jpg?imageView2/1/w/64"
+                             alt="...">
+                    </a>
+                </div>
+                <div class="media-body">
+                    <h4 class="media-heading"><%= item.nickname %></h4>
+                    <%= item.content %>
+                    <p>
+                        <button type="button" data-toggle="modal" data-target=".bs-example-modal-lg"
+                                class="btn btn-primary btn-xs">回复
+                        </button>
+                    </p>
+                </div>
+            </div>
+        <% }) %>
+    </section>
+<% } %>
+
+<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <section class="comment-create">
+                <div class="comment-header">
+                    <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
+                    欢迎评论
+                </div>
+                <div class="from">
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">昵称</label>
+                        <input required name="nickname" type="text" class="form-control" id="exampleInputEmail1"
+                               placeholder="请填写您的昵称">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">邮箱</label>
+                        <input required name="email" type="email" class="form-control" id="exampleInputEmail1"
+                               placeholder="请填写您的邮箱">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">评论内容</label>
+                        <textarea required name="content" class="form-control" rows="3"
+                                  placeholder="请填写您的评论内容"></textarea>
+                    </div>
+                    <input name="target_type" value="article" type='hidden' required>
+                    <input name="target_id" value="<%= article.id %>" type='hidden' required>
+                    <button type="submit" class="btn btn-default btn-primary">提交评论</button>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+

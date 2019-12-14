@@ -5,9 +5,10 @@ window.onload = function () {
   document.getElementById('search-input').addEventListener('keydown', function (event) {
     var e = event || event.event;
     if (e && e.keyCode === 13) {
+      console.log('11')
       var value = document.getElementById('search-input').value
       if (escapeHtml(value)) {
-        console.log()
+        event.preventDefault()
         window.location.replace(`/?keyword=${escapeHtml(value)}`)
       }
     }
@@ -29,7 +30,8 @@ window.onload = function () {
     str = str.replace(/'/g, '单号')
     str = str.replace(/"/g, '双引号')
     // str = str.replace(/ /g, '空格')
-    str = str.replace(/(^\s*)|(\s*$)/g, '');
+    str = str.replace(/(^\s*)|(\s*$)/g, '')
+
     return str
   }
 }
