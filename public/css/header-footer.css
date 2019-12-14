@@ -66,7 +66,7 @@ body {
 }
 
 .comment-header {
-    margin: 48px 0 12px;
+    margin: 32px 0;
     display: flex;
     color: #337ab7;
     font-size: 24px;
@@ -79,9 +79,20 @@ body {
     margin-right: 5px;
 }
 
-.comment-list{
+.comment-list {
     margin: 24px 0;
 }
+
+.comment-reply {
+    border-radius: 10px;
+    padding: 16px;
+    background: #f4f4f4;
+}
+
+.reply-model {
+    padding: 24px;
+}
+
 .footer-inner {
     position: relative;
     z-index: 5000;

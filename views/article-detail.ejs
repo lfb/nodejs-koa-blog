@@ -39,6 +39,7 @@
             </div>
             <div>
                 <%- content %>
+                <input type="hidden" id="article-hidden-id" value="<%= article.id %>">
             </div>
 
             <%- include('layout/comment', {commentList}) %>

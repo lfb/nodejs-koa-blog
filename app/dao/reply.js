@@ -1,3 +1,4 @@
+const xss = require('xss')
 const {Reply} = require('../models/reply')
 const {Comment} = require('../models/comment')
 
@@ -11,10 +12,10 @@ class ReplyDao {
     }
 
     const reply = new Reply();
-    reply.nickname = v.get('body.nickname');
-    reply.email = v.get('body.email');
-    reply.content = v.get('body.content');
-    reply.comment_id = v.get('body.comment_id');
+    reply.nickname = xss(v.get('body.nickname'));
+    reply.email = xss(v.get('body.email'));
+    reply.content = xss(v.get('body.content'));
+    reply.comment_id = xss(v.get('body.comment_id'));
 
     return reply.save();
   }

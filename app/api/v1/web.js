@@ -6,13 +6,15 @@
 const Router = require('koa-router')
 const marked = require('marked')
 
-const {PositiveIdParamsValidator} = require('../../validators/article')
-const {CommentValidator} = require('../../validators/comment')
-
+const {ReplyDao} = require('../../dao/reply')
 const {ArticleDao} = require('../../dao/article')
 const {CategoryDao} = require('../../dao/category')
 const {CommentDao} = require('../../dao/comment')
 const {AdvertiseDao} = require('../../dao/advertise')
+
+const {PositiveIdParamsValidator} = require('../../validators/article')
+const {CommentValidator} = require('../../validators/comment')
+const {ReplyValidator} = require('../../validators/reply')
 
 const {getRedis, setRedis} = require('../../cache/_redis')
 const REDIS_KEY_PREFIX = 'boblog'
@@ -47,11 +49,9 @@ router.get('/', async (ctx) => {
 
     // 设置缓存，过期时间 1min
     setRedis(key, data, 60)
-
     // 响应返回页面
     ctx.response.status = 200
     ctx.response.set('Content-Type', 'text/html charset=utf-8')
-    ctx.response.set('Cache-Control', 'max-age=60, s-maxage=90')
     await ctx.render('article-list', data)
   }
 })
@@ -62,12 +62,14 @@ router.get('/', async (ctx) => {
 router.get('/article/detail/:id', async (ctx) => {
   // 尝试获文章取缓存
   const key = `${REDIS_KEY_PREFIX}_article_detail_${ctx.params.id}`
-
+  // 获取参数
   const cacheArticleDetail = await getRedis(key)
   if (cacheArticleDetail) {
+    console.log('读缓存')
     await ctx.render('article-detail', cacheArticleDetail)
 
   } else {
+    console.log('重新重新')
     // 通过验证器校验参数是否通过
     const v = await new PositiveIdParamsValidator().validate(ctx)
     // 获取文章ID参数
@@ -98,7 +100,6 @@ router.get('/article/detail/:id', async (ctx) => {
     // 响应返回页面
     ctx.response.status = 200
     ctx.response.set('Content-Type', 'text/html charset=utf-8')
-    ctx.response.set('Cache-Control', 'max-age=60, s-maxage=90')
     // 返回结果
     await ctx.render('article-detail', data)
   }
@@ -137,7 +138,43 @@ router.post('/comment', async (ctx) => {
   // 响应页面
   ctx.response.status = 200
   ctx.response.set('Content-Type', 'text/html charset=utf-8')
-  ctx.response.set('Cache-Control', 'max-age=60, s-maxage=90')
+  await ctx.render('article-detail', data)
+})
+
+// 创建评论
+router.post('/reply', async (ctx) => {
+  // 通过验证器校验参数是否通过
+  const v = await new ReplyValidator().validate(ctx);
+  // 创建回复
+  await ReplyDao.create(v);
+
+  // 获取评论目标id和评论类型
+  const targetId = v.get('body.target_id')
+  const targetType = v.get('body.target_type')
+  // 查询文章
+  const article = await ArticleDao.detail(targetId)
+  // 获取关联此文章的评论列表
+  const commentList = await CommentDao.targetComment({
+    target_id: targetId,
+    target_type: targetType
+  })
+  // 通过 marked 工具解析 markdown 语法
+  const content = marked(article.content.toString())
+
+  // 分类
+  const category = await CategoryDao.list()
+  // 广告
+  const advertise = await AdvertiseDao.list()
+
+  // 合并数据
+  const data = {article, content, category, advertise: advertise.data, commentList}
+  // 设置 Redis 缓存，过期时间1分钟
+  const key = `${REDIS_KEY_PREFIX}_article_detail_${targetId}`
+  setRedis(key, data, 60)
+
+  // 响应页面
+  ctx.response.status = 200
+  ctx.response.set('Content-Type', 'text/html charset=utf-8')
   await ctx.render('article-detail', data)
 })
 
@@ -147,7 +184,6 @@ router.post('/comment', async (ctx) => {
 router.get('/about', async ctx => {
   ctx.response.status = 200
   ctx.response.set('Content-Type', 'text/html charset=utf-8')
-  ctx.response.set('Cache-Control', 'max-age=60, s-maxage=90')
   await ctx.render('about')
 })
 
@@ -155,7 +191,6 @@ router.get('/about', async ctx => {
 router.get('*', async ctx => {
   ctx.response.status = 200
   ctx.response.set('Content-Type', 'text/html charset=utf-8')
-  ctx.response.set('Cache-Control', 'max-age=60, s-maxage=90')
   await ctx.render('404')
 })
 

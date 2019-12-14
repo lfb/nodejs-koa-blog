@@ -8,7 +8,7 @@
             </header>
             <div class="list-group" style="margin: 0">
                 <% advertise.forEach(ad => { %>
-                    <a href="<%= ad.link %>" class="list-group-item list-group-item-border">
+                    <a href="<%= ad.link %>" target="_blank" class="list-group-item list-group-item-border">
                         <%= ad.title %>
                     </a>
                 <% }) %>

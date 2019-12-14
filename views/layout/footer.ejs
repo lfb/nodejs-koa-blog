@@ -8,23 +8,212 @@
         integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
         crossorigin="anonymous"></script>
 <script src="/javascript/common.js"></script>
+<link href="https://cdn.bootcss.com/jquery.bootstrapvalidator/0.5.3/css/bootstrapValidator.min.css" rel="stylesheet">
+<script src="https://cdn.bootcss.com/jquery.bootstrapvalidator/0.5.3/js/bootstrapValidator.min.js"></script>
 <script>
   // 回到顶部
-  $("#back-to-top-page").bind('click', function () {
-    $('body,html').animate({scrollTop: 0}, 500)
-  }).fadeOut(0)
+  $(function () {
+    $("#back-to-top-page").bind('click', function () {
+      $('body,html').animate({scrollTop: 0}, 500)
+    }).fadeOut(0)
 
-  var clientHeight = document.documentElement.clientHeight || document.body.clientHeight;
-  $(window).scroll(function () {
-    var osTop = document.documentElement.scrollTop || document.body.scrollTop;
-    if (osTop >= clientHeight) {
-      $("#back-to-top-page").fadeIn(400);
+    var clientHeight = document.documentElement.clientHeight || document.body.clientHeight;
+    $(window).scroll(function () {
+      var osTop = document.documentElement.scrollTop || document.body.scrollTop;
+      if (osTop >= clientHeight) {
+        $("#back-to-top-page").fadeIn(400);
 
-    } else {
-      $("#back-to-top-page").fadeOut(400);
-    }
+      } else {
+        $("#back-to-top-page").fadeOut(400);
+      }
+    })
+
+    // 创建回复
+    $('#replyCommentModal').on('show.bs.modal', function (event) {
+      var button = $(event.relatedTarget) // Button that triggered the modal
+      var targetId = button.data('whatever') // Extract info from data-* attributes
+      // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+      // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+      var modal = $(this)
+      modal.find('.comment-id').val(targetId)
+    })
+
+    $('#createCommentBtn').bind('click', function () {
+      var nickname = $('#createCommentNickname').val()
+      var email = $('#createCommentEmail').val()
+      var content = $('#createCommentContent').val()
+      var target_id = $('#createCommentTargetId').val()
+      var target_type = $('#createCommentTargetType').val()
+
+      if (nickname && email && content && target_id && target_type) {
+        $.ajax({
+          url: "http://localhost:3000/v1/comment",
+          type: 'POST',
+          data: {
+            nickname,
+            email,
+            content,
+            target_id,
+            target_type
+          },
+          success: function (res) {
+            if (res.code === 200) {
+              $('.alert-success-comment').css({display: 'block'}).delay(1000).hide(0, function () {
+                $('#createCommentBtn').removeAttr('disabled')
+                window.location.reload()
+              })
+            }
+          },
+          error: function (err) {
+            $('.alert-danger-comment').css({display: 'block'}).html(err.responseJSON.msg.join(', ')).delay(1000).hide(0, function () {
+              $('#createCommentBtn').removeAttr('disabled')
+            })
+
+          }
+        });
+      }
+    })
+
+    $('#createReplayCommentBtn').bind('click', function () {
+      var nickname = $('#replayNickname').val()
+      var email = $('#replayEmail').val()
+      var content = $('#replayContent').val()
+      var target_id = $('#createReplyTargetId').val()
+      var target_type = $('#createReplyTargetType').val()
+      var comment_id = $('#createReplyCommentId').val()
+
+      if (nickname && email && content && target_id && target_type && comment_id) {
+
+        $.ajax({
+          url: "http://localhost:3000/v1/reply",
+          type: 'POST',
+          data: {
+            nickname,
+            email,
+            content,
+            target_id,
+            comment_id,
+            target_type
+          },
+          success: function (res) {
+            if (res.code === 200) {
+              $('.alert-success-reply').css({display: 'block'}).delay(1000).hide(0, function () {
+                $('#createReplayCommentBtn').removeAttr('disabled')
+                window.location.reload()
+              })
+            }
+          },
+          error: function (err) {
+            $('.alert-danger-reply').css({display: 'block'}).html(err.responseJSON.msg.join(', ')).delay(1000).hide(0, function () {
+              $('#createReplayCommentBtn').removeAttr('disabled')
+            })
+
+          }
+        });
+      }
+    })
+
+    // 创建评论
+    $('#createCommentFrom').bootstrapValidator({
+      message: 'This value is not valid',
+      feedbackIcons: {
+        valid: 'glyphicon glyphicon-ok',
+        invalid: 'glyphicon glyphicon-remove',
+        validating: 'glyphicon glyphicon-refresh'
+      },
+      fields: {
+        nickname: {
+          validators: {
+            notEmpty: {
+              message: '昵称不能为空'
+            },
+            stringLength: {
+              min: 2,
+              max: 16,
+              message: '昵称长度必须在2到16位之间'
+            }
+          }
+        },
+        email: {
+          validators: {
+            notEmpty: {
+              message: '邮箱不能为空'
+            },
+            stringLength: {
+              min: 2,
+              max: 32,
+              message: '邮箱长度必须在2到32位之间'
+            },
+            emailAddress: {
+              message: '邮箱地址格式有误'
+            }
+          }
+        },
+        content: {
+          validators: {
+            notEmpty: {
+              message: '评论内容不能为空'
+            },
+            stringLength: {
+              min: 1,
+              max: 500,
+              message: '评论内容必须在到500位之内'
+            },
+          }
+        }
+      }
+    });
+    // 创建回复
+    $('#createReplyFrom').bootstrapValidator({
+      message: 'This value is not valid',
+      feedbackIcons: {
+        valid: 'glyphicon glyphicon-ok',
+        invalid: 'glyphicon glyphicon-remove',
+        validating: 'glyphicon glyphicon-refresh'
+      },
+      fields: {
+        nickname: {
+          validators: {
+            notEmpty: {
+              message: '昵称不能为空'
+            },
+            stringLength: {
+              min: 2,
+              max: 16,
+              message: '昵称长度必须在2到16位之间'
+            }
+          }
+        },
+        email: {
+          validators: {
+            notEmpty: {
+              message: '邮箱不能为空'
+            },
+            stringLength: {
+              min: 2,
+              max: 32,
+              message: '邮箱长度必须在2到32位之间'
+            },
+            emailAddress: {
+              message: '邮箱地址格式有误'
+            }
+          }
+        },
+        content: {
+          validators: {
+            notEmpty: {
+              message: '评论内容不能为空'
+            },
+            stringLength: {
+              min: 1,
+              max: 500,
+              message: '评论内容必须在到500位之内'
+            },
+          }
+        }
+      }
+    });
   })
-
 </script>
 </body>
 </html>

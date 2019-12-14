@@ -7,6 +7,9 @@ const {Auth} = require('../../../middlewares/auth');
 const {Resolve} = require('../../lib/helper');
 const res = new Resolve();
 
+const {setRedis} = require('../../cache/_redis')
+const REDIS_KEY_PREFIX = 'boblog'
+
 const AUTH_ADMIN = 16;
 
 const router = new Router({
@@ -23,13 +26,16 @@ router.post('/comment', async (ctx) => {
 
   const data = {
     id: r.getDataValue('id'),
-    article_id: r.getDataValue('article_id'),
     nickname: r.getDataValue('nickname'),
     content: r.getDataValue('content'),
     target_id: r.getDataValue('target_id'),
     target_type: r.getDataValue('target_type'),
     created_at: r.getDataValue('created_at')
   };
+
+  // 清除Redis
+  const key = `${REDIS_KEY_PREFIX}_article_detail_${r.getDataValue('target_id')}`
+  setRedis(key, null, 0)
 
   // 返回结果
   ctx.response.status = 200;
