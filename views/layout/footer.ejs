@@ -60,6 +60,9 @@
             if (res.code === 200) {
               $('.alert-success-comment').css({display: 'block'}).delay(1000).hide(0, function () {
                 $('#createCommentBtn').removeAttr('disabled')
+                $('#createCommentNickname').val('')
+                $('#createCommentEmail').val('')
+                $('#createCommentContent').val('')
                 window.location.reload()
               })
             }
@@ -99,6 +102,9 @@
             if (res.code === 200) {
               $('.alert-success-reply').css({display: 'block'}).delay(1000).hide(0, function () {
                 $('#createReplayCommentBtn').removeAttr('disabled')
+                $('#replayNickname').val('')
+                $('#replayEmail').val('')
+                $('#replayContent').val('')
                 window.location.reload()
               })
             }

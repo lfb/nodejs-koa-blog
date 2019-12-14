@@ -65,11 +65,9 @@ router.get('/article/detail/:id', async (ctx) => {
   // 获取参数
   const cacheArticleDetail = await getRedis(key)
   if (cacheArticleDetail) {
-    console.log('读缓存')
     await ctx.render('article-detail', cacheArticleDetail)
 
   } else {
-    console.log('重新重新')
     // 通过验证器校验参数是否通过
     const v = await new PositiveIdParamsValidator().validate(ctx)
     // 获取文章ID参数
