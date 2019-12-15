@@ -116,7 +116,7 @@ parent_id | 分类父级ID | 否
 }
 ```
 
-## 删除单篇文章
+## 删除单个分类
 ```
 DELETE    /category/:id
 ```

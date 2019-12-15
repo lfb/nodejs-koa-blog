@@ -41,7 +41,7 @@ router.delete('/advertise/:id', new Auth(AUTH_ADMIN).m, async (ctx) => {
 
   // 返回结果
   ctx.response.status = 200;
-  ctx.body = res.success('删除回复评论成功')
+  ctx.body = res.success('删除广告成功')
 })
 
 // 修改广告
@@ -56,7 +56,7 @@ router.put('/advertise/:id', new Auth(AUTH_ADMIN).m, async (ctx) => {
 
   // 返回结果
   ctx.response.status = 200;
-  ctx.body = res.success('更新评论成功')
+  ctx.body = res.success('更新广告成功')
 })
 
 // 获取广告列表
