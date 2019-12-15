@@ -30,12 +30,19 @@
 ### 2.3.优势
 - 使用精小而强大的 Node.js Koa2 框架做服务端 API 接口。
 - 前端既有服务端渲染，也有前后端分离，且做了大量的优化工作，前端展示网站打开快。
+- 性能优化方面的工作：
+    - 服务端使用了缓存机制，减少服务器的请求压力，如Redis 缓存，HTTP缓存
+    - 使用了 CND 加速，静态文件存储在七牛服务器上
+    - ejs 服务端渲染尽量减少文件的引入，减少对 DOM的操作，且封装使用了图片懒加载，事件防抖和节流控制浏览器滚动监听事件。
+    - Vue.js 项目使用了模块按需加载，使用浏览器缓存机制减少对服务器请求的压力
+    - ...
 
 ### 2.4.知识点
 - 服务端：`Node.js, Koa, MySQL, Sequelize, Redis`
 - 前端服务端渲染：`ejs, jQuery, Bootstrap`, [体验网址：www.boblog.com](https://www.boblog.com/)
 - 前后端分离：`Vue.js, iviewui`, [体验网址：vue.boblog.com](http://vue.boblog.com/)
 - 后端管理系统：`Vue.js, iviewui`
+- 性能优化
 - 非常适合想用 `Node.js Koa2` 做网站的朋友，相信你一定能学到知识。
 
 ## 三、如何学习？
