@@ -35,6 +35,14 @@ needHighlighting: false
                                             <%= item.category.name %>
                                         </p>
                                     <% } %>
+                                    <p>
+                                        <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                                        <%= item.author %>
+                                    </p>
+                                    <p>
+                                        <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+                                        <%= item.browse %>
+                                    </p>
                                 </div>
                             </div>
                             <div class="article-list-cover-inner">
@@ -48,20 +56,34 @@ needHighlighting: false
 
             <% if (article && article.meta && article.meta.total_pages > 1) { %>
 
-                <nav aria-label="Page navigation page">
+                <nav aria-label="Page navigation" class="page-center">
                     <ul class="pagination">
-                        <li>
-                            <a href="#" aria-label="Previous">
-                                <span aria-hidden="true">&laquo;</span>
-                            </a>
+                        <li class="<%= article.meta.current_page === 1 ? 'disabled' : '' %>">
+                            <% if (article.meta.current_page === 1) { %>
+                                <span>
+                                    <span aria-hidden="true">&laquo;</span>
+                                </span>
+                            <% } else { %>
+                                <a href="/?page=<%= article.meta.current_page - 1 %>" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            <% } %>
+
                         </li>
                         <% for (var i = 0; i < article.meta.total_pages; i++) { %>
-                            <li><a href="/?page=<%= i + 1 %>"><%= i + 1 %></a></li>
+                            <li class="<%= article.meta.current_page === i + 1 ? 'active' : '' %>"><a
+                                        href="/?page=<%= i + 1 %>"><%= i + 1 %></a></li>
                         <% } %>
-                        <li>
-                            <a href="#" aria-label="Next">
-                                <span aria-hidden="true">&raquo;</span>
-                            </a>
+                        <li class="<%= article.meta.current_page === article.meta.total_pages ? 'disabled' : '' %>">
+                            <% if (article.meta.current_page === article.meta.total_pages) { %>
+                                <span>
+                                    <span aria-hidden="true">&raquo;</span>
+                                </span>
+                            <% } else { %>
+                                <a href="/?page=<%= article.meta.current_page + 1 %>" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            <% } %>
                         </li>
                     </ul>
                 </nav>
@@ -78,5 +100,5 @@ needHighlighting: false
 </div>
 
 
-<%- include('layout/footer') %>
+<%- include('layout/footer', {isComment: false}) %>
 <script src="/javascript/lazyload.js"></script>

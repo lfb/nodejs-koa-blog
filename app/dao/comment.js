@@ -148,6 +148,35 @@ class CommentDao {
       }
     };
   }
+
+  // 关联目标下的所有评论
+  static async AllTargetComment(params = {}) {
+    const {target_id, target_type} = params;
+
+    const comment = await Comment.findAndCountAll({
+      where: {
+        target_type,
+        target_id,
+        deleted_at: null
+      },
+      order: [
+        ['created_at', 'DESC']
+      ],
+      attributes: {
+        exclude: ['email', 'updated_at']
+      },
+      include: [{
+        model: Reply,
+        as: 'reply',
+        attributes: {
+          exclude: ['email', 'updated_at', 'deleted_at']
+        }
+      }]
+    })
+    return {
+      data: comment.rows,
+    };
+  }
 }
 
 module.exports = {

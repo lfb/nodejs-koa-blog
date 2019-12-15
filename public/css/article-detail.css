@@ -49,15 +49,14 @@
 
 .article-detail-intro li {
     list-style: none;
-    margin-right: 24px;
     font-size: 12px;
+    margin: 0;
+    margin-right: 16px;
     color: #9ea7b4;
     white-space: nowrap;
 }
 
 li.articles-detail-item-category {
-    height: 24px;
-    line-height: 24px;
     padding: 0 24px;
     color: #409EFF;
     border-radius: 64px;

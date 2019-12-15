@@ -1,3 +1,4 @@
+const xss = require('xss')
 const {Op} = require('sequelize')
 
 const {Article} = require('../models/article')
@@ -29,7 +30,7 @@ class ArticleDao {
     article.author = v.get('body.author');
     article.keyword = v.get('body.keyword');
     article.description = v.get('body.description');
-    article.content = v.get('body.content');
+    article.content = xss(v.get('body.content'));
     article.cover = v.get('body.cover');
     article.browse = v.get('body.browse');
     article.category_id = v.get('body.category_id');
@@ -55,7 +56,7 @@ class ArticleDao {
     // 筛选方式：存在搜索关键字
     if (keyword) {
       filter.title = {
-        [Op.like]: `%${keyword}%`
+        [Op.like]: `%${xss(keyword)}%`
       };
     }
     const article = await Article.scope('iv').findAndCountAll({
@@ -120,7 +121,7 @@ class ArticleDao {
     article.author = v.get('body.author');
     article.keyword = v.get('body.keyword');
     article.description = v.get('body.description');
-    article.content = v.get('body.content');
+    article.content = xss(v.get('body.content'));
     article.cover = v.get('body.cover');
     article.browse = v.get('body.browse');
     article.category_id = v.get('body.category_id');

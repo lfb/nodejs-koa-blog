@@ -12,11 +12,11 @@ needHighlighting: false
 <style>
     .author {
         box-sizing: border-box;
-        width: 66%;
+        width: 70%;
+        padding: 0 24px 24px 24px;
         min-height: 80vh;
         margin: 64px auto 32px;
         overflow: hidden;
-        padding-bottom: 24px;
         background-color: #fff;
         border-radius: 6px;
     }
@@ -30,7 +30,7 @@ needHighlighting: false
 
     .about-logo {
         width: 180px;
-        margin: 32px auto 0;
+        margin: 16px auto;
     }
 
     .about-logo img {
@@ -90,4 +90,4 @@ needHighlighting: false
     <span class="glyphicon glyphicon-menu-up"></span>
     <span>TOP</span>
 </div>
-<%- include('layout/footer') %>
+<%- include('layout/footer', {isComment: false}) %>

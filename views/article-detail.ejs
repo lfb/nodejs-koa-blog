@@ -21,18 +21,22 @@
                 <ul class="article-detail-intro">
                     <% if (article.category) { %>
                         <li class="articles-detail-item-category">
+                            <span class="glyphicon glyphicon-tag" aria-hidden="true"></span>
                             <%= article.category.name %>
                         </li>
                     <% } %>
                     <li>
-                        @<%= article.author %>
+                        <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+                        <%= article.author %>
                     </li>
                     <li>
-                        浏览： <%= article.browse %>
+                        <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+                        <%= article.browse %>
                     </li>
                     <% if (commentList && commentList.meta) { %>
                         <li>
-                            评论： <%= commentList.meta.total %>
+                            <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
+                            <%= commentList.meta.total %>
                         </li>
                     <% } %>
                 </ul>
@@ -52,7 +56,7 @@
     <span>TOP</span>
 </div>
 
-<%- include('layout/footer') %>
+<%- include('layout/footer', {isComment: true}) %>
 <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.16.2/build/highlight.min.js"></script>
 <script>
   hljs.initHighlightingOnLoad();

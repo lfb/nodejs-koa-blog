@@ -26,13 +26,17 @@ const router = new Router()
  */
 router.get('/', async (ctx) => {
   // 获取参数
-  const {category_id = 0, page = 1} = ctx.query
+  const {category_id = 0, page = 1, keyword} = ctx.query
   // 设置 Redis 的 key
-  const key = `${REDIS_KEY_PREFIX}_article_list_category_id${category_id}_page${page}`
+  let key = `${REDIS_KEY_PREFIX}_article_list_category_id${category_id}_page${page}`
+  if (keyword) {
+    key += 'keyword'
+  }
 
   // 读取 Redis 中的数据
   const cacheArticleData = await getRedis(key)
-  if (cacheArticleData) {
+  if (cacheArticleData && !keyword) {
+    console.log('读缓存列表数据')
     await ctx.render('article-list', cacheArticleData)
 
   } else {
@@ -65,6 +69,7 @@ router.get('/article/detail/:id', async (ctx) => {
   // 获取参数
   const cacheArticleDetail = await getRedis(key)
   if (cacheArticleDetail) {
+    console.log('读缓存详情数据')
     await ctx.render('article-detail', cacheArticleDetail)
 
   } else {
@@ -79,7 +84,7 @@ router.get('/article/detail/:id', async (ctx) => {
     // 广告
     const advertise = await AdvertiseDao.list()
     // 获取关联此文章的评论列表
-    const commentList = await CommentDao.targetComment({
+    const commentList = await CommentDao.AllTargetComment({
       target_id: id,
       target_type: 'article'
     })

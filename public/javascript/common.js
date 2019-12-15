@@ -1,37 +1,19 @@
-window.onload = function () {
+$(function () {
   /**
-   * 监听搜索表单
+   * 回到顶部
    */
-  document.getElementById('search-input').addEventListener('keydown', function (event) {
-    var e = event || event.event;
-    if (e && e.keyCode === 13) {
-      console.log('11')
-      var value = document.getElementById('search-input').value
-      if (escapeHtml(value)) {
-        event.preventDefault()
-        window.location.replace(`/?keyword=${escapeHtml(value)}`)
-      }
+  $("#back-to-top-page").bind('click', function () {
+    $('body,html').animate({scrollTop: 0}, 500)
+  }).fadeOut(0)
+
+  var clientHeight = document.documentElement.clientHeight || document.body.clientHeight;
+  $(window).scroll(function () {
+    var osTop = document.documentElement.scrollTop || document.body.scrollTop;
+    if (osTop >= clientHeight) {
+      $("#back-to-top-page").fadeIn(400);
+
+    } else {
+      $("#back-to-top-page").fadeOut(400);
     }
   })
-
-  // document.getElementsByTagName('table')[0].setAttribute('border', 1)
-  // document.getElementsByTagName('table')[0].setAttribute('cellspacing', 0)
-
-  /**
-   * 格式化字符串
-   * @param str
-   * @return {*}
-   */
-  function escapeHtml(str) {
-    str = str.replace(/</g, '小于')
-    str = str.replace(/>/g, '大于')
-    str = str.replace(/\(/g, '括号')
-    str = str.replace(/\)/g, '括号')
-    str = str.replace(/'/g, '单号')
-    str = str.replace(/"/g, '双引号')
-    // str = str.replace(/ /g, '空格')
-    str = str.replace(/(^\s*)|(\s*$)/g, '')
-
-    return str
-  }
-}
+})

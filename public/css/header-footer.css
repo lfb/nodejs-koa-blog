@@ -93,6 +93,11 @@ body {
     padding: 24px;
 }
 
+.page-center {
+    display: flex;
+    justify-content: center;
+}
+
 .footer-inner {
     position: relative;
     z-index: 5000;

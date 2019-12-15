@@ -24,11 +24,19 @@
             </header>
             <ul class="sidebar-box-content">
                 <li class="sidebar-box-category">
-                    <% category.forEach(cate => { %>
+                    <a href="/">
                         <button type="button" class="btn btn-default btn-primary btn-xs btn-margin-bottom">
                             <span class="glyphicon glyphicon-tag" aria-hidden="true"></span>
-                            <%= cate.name %>
+                            全部
                         </button>
+                    </a>
+                    <% category.forEach(cate => { %>
+                        <a href="/?category_id=<%= cate.id %>">
+                            <button type="button" class="btn btn-default btn-primary btn-xs btn-margin-bottom">
+                                <span class="glyphicon glyphicon-tag" aria-hidden="true"></span>
+                                <%= cate.name %>
+                            </button>
+                        </a>
                     <% }) %>
                 </li>
             </ul>
