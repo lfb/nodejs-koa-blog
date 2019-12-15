@@ -175,6 +175,10 @@ class CommentDao {
     })
     return {
       data: comment.rows,
+      // 分页
+      meta: {
+        total: comment.count
+      }
     };
   }
 }
