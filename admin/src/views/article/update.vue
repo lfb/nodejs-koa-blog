@@ -110,7 +110,7 @@
       }),
       // 上传图片成功
       uploadSuccess(response) {
-        const url = `http://cdn.boblog.com/${response.key}`;
+        const url = `https://cdn.boblog.com/${response.key}`;
         this.formValidate.cover = url;
         this.$Message.success('上传成功!');
       },
