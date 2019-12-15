@@ -1,6 +1,6 @@
 ## 接口前缀
 ```shell
-http://localhost:3000/v1/api
+http://localhost:3000/api/v1
 ```
 
 # 管理员

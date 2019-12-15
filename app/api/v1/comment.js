@@ -14,7 +14,7 @@ const REDIS_KEY_API_PREFIX = 'boblog_api'
 const AUTH_ADMIN = 16;
 
 const router = new Router({
-  prefix: '/v1/api'
+  prefix: '/api/v1'
 })
 
 // 创建评论

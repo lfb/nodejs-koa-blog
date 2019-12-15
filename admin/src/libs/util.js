@@ -8,8 +8,8 @@ util.title = function (title) {
 };
 
 const ajaxUrl = process.env.NODE_ENV === 'development' ?
-  'http://localhost:3000/v1/api' :
-  'https://www.boblog.com/v1/api';
+  'http://localhost:3000/api/v1' :
+  'https://www.boblog.com/api/v1';
 
 util.ajax_url = ajaxUrl;
 

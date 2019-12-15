@@ -11,7 +11,7 @@ $(function () {
 
     if (nickname && email && content && target_id && target_type) {
       $.ajax({
-        url: "/v1/api/comment",
+        url: "/api/v1/comment",
         type: 'POST',
         data: {
           nickname,
@@ -54,7 +54,7 @@ $(function () {
 
     if (nickname && email && content && target_id && target_type && comment_id) {
       $.ajax({
-        url: "/v1/api/reply",
+        url: "/api/v1/reply",
         type: 'POST',
         data: {
           nickname,
