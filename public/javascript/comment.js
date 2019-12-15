@@ -11,7 +11,7 @@ $(function () {
 
     if (nickname && email && content && target_id && target_type) {
       $.ajax({
-        url: "http://localhost:3000/v1/comment",
+        url: "/v1/comment",
         type: 'POST',
         data: {
           nickname,
@@ -54,7 +54,7 @@ $(function () {
 
     if (nickname && email && content && target_id && target_type && comment_id) {
       $.ajax({
-        url: "http://localhost:3000/v1/reply",
+        url: "/v1/reply",
         type: 'POST',
         data: {
           nickname,
@@ -110,6 +110,9 @@ $(function () {
       },
       email: {
         validators: {
+          emailAddress: {
+            message: '邮箱地址格式有误'
+          },
           notEmpty: {
             message: '邮箱不能为空'
           },
@@ -117,9 +120,6 @@ $(function () {
             min: 2,
             max: 32,
             message: '邮箱长度必须在2到32位之间'
-          },
-          emailAddress: {
-            message: '邮箱地址格式有误'
           }
         }
       },
@@ -172,6 +172,9 @@ $(function () {
       },
       email: {
         validators: {
+          emailAddress: {
+            message: '邮箱地址格式有误'
+          },
           notEmpty: {
             message: '邮箱不能为空'
           },
@@ -179,9 +182,6 @@ $(function () {
             min: 2,
             max: 32,
             message: '邮箱长度必须在2到32位之间'
-          },
-          emailAddress: {
-            message: '邮箱地址格式有误'
           }
         }
       },
