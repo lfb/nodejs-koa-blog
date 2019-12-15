@@ -21,34 +21,35 @@ needHighlighting: false
                 <% article.data.forEach(item => { %>
                     <li class="article-list-box-inner">
                         <a class="article-list-item" href="/article/detail/<%= item.id %>">
-                            <div class="article-list-content">
-                                <h1 class="article-list-title">
-                                    <%= item.title %>
-                                </h1>
-                                <div class="article-list-description">
-                                    <%= item.description %>
-                                </div>
-                                <div class="article-list-info">
-                                    <% if (item.category) { %>
-                                        <p class="article-list-category">
-                                            <span class="glyphicon glyphicon-tag" aria-hidden="true"></span>
-                                            <%= item.category.name %>
+                                <div class="article-list-content">
+                                    <h1 class="article-list-title">
+                                        <%= item.title %>
+                                    </h1>
+                                    <div class="article-list-description">
+                                        <%= item.description %>
+                                    </div>
+                                    <div class="article-list-info">
+                                        <% if (item.category) { %>
+                                            <p class="article-list-category">
+                                                <span class="glyphicon glyphicon-tag" aria-hidden="true"></span>
+                                                <%= item.category.name %>
+                                            </p>
+                                        <% } %>
+                                        <p class="article-list-author">
+                                            <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                                            <%= item.author %>
                                         </p>
-                                    <% } %>
-                                    <p>
-                                        <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-                                        <%= item.author %>
-                                    </p>
-                                    <p>
-                                        <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
-                                        <%= item.browse %>
-                                    </p>
+                                        <p class="article-list-browse">
+                                            <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+                                            <%= item.browse %>
+                                        </p>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="article-list-cover-inner">
-                                <img class="article-list-cover"
-                                     data-src="<%= item.cover + '?imageView2/1/w/160' %>">
-                            </div>
+                                <div class="article-list-cover-box">
+                                    <div class="article-list-cover-inner">
+                                        <img class="article-list-cover-img" data-src="<%= item.cover + '?imageView2/1/w/160' %>">
+                                    </div>
+                                </div>
                         </a>
                     </li>
                 <% }) %>

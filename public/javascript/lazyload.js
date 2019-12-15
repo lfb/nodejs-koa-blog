@@ -35,7 +35,7 @@ window.onload = function () {
   }
 
   // 获取所有的图片标签
-  const imgs = document.getElementsByClassName('article-list-cover')
+  const imgs = document.getElementsByClassName('article-list-cover-img')
   // 获取可视区域的高度
   const viewHeight = window.innerHeight || document.documentElement.clientHeight
   // num 用于统计当前显示到了哪一张图片，避免每次都从第一张图片开始检查是否露出

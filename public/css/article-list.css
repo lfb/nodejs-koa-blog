@@ -6,24 +6,10 @@
     overflow: hidden;
 }
 
-
-@media screen and (min-width: 200px) and (max-width: 750px) {
-    .article-list-sidebar {
-        padding: 0 15px;
-        width: 100%;
-    }
-
-    .article-list-sidebar {
-        margin-right: 0;
-        margin-left: 0;
-        padding: 0;
-    }
-}
-
-
 .article-list {
+    box-sizing: border-box;
+    width: 100%;
     overflow: hidden;
-    right: 16px;
     border-radius: 10px;
     padding: 0 24px;
     background: #fff;
@@ -99,6 +85,7 @@
 .article-list-box {
     margin: 0;
     padding: 0;
+    width: 100%;
 }
 
 .article-list-box-inner {
@@ -110,6 +97,7 @@
     text-decoration: none;
     cursor: pointer;
     display: flex;
+    width: 100%;
     border-bottom: 1px solid #eee;
     transition: 0.1s ease-in;
 }
@@ -122,29 +110,32 @@
     color: #409EFF;
 }
 
-.article-list-cover-inner {
-    width: 80px;
-    line-height: 80px;
-    margin-left: 24px;
+.article-list-content {
+    flex: 1;
+    margin-right: 24px;
 }
 
-.article-list-cover {
+.article-list-cover-box {
+    width: 80px;
+    height: 80px;
+}
+
+.article-list-cover-inner {
+    width: 80px;
+    height: 80px;
+}
+
+.article-list-cover-img {
     width: 100%;
     border-radius: 5px;
 }
 
-.article-list-content {
-    flex: 1;
-}
 
 .article-list-title {
     color: #464c5b;
     font-size: 18px;
     font-weight: 500;
     margin: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
 }
 
 .article-list-description {
@@ -156,6 +147,7 @@
 .article-list-info {
     display: flex;
     align-items: center;
+    flex-direction: row;
 }
 
 .article-list-info p {
@@ -171,6 +163,7 @@
 }
 
 p.article-list-category {
+    display: inline-block;
     height: 24px;
     line-height: 24px;
     font-size: 12px;
@@ -247,4 +240,25 @@ p.article-list-category {
         margin-left: 0;
         margin-top: 24px;
     }
+
+    .article-list-sidebar {
+        padding: 0 15px;
+        width: 100%;
+    }
+
+    .article-list-sidebar {
+        margin-right: 0;
+        margin-left: 0;
+        padding: 0;
+    }
+
+    .article-list-info {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .article-list-author, .article-list-browse {
+        display: none;
+    }
 }
+
