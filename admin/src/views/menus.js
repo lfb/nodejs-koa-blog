@@ -59,24 +59,6 @@ const menus = [
         }
       ]
     },
-    // 专栏
-    {
-      name: "专栏管理",
-      path: "column",
-      icon: "md-list-box",
-      children: [
-        {
-          name: "专栏列表",
-          path: "/column",
-          icon: "md-list"
-        },
-        {
-          name: "专栏创建",
-          path: "/column/create",
-          icon: "md-add-circle"
-        }
-      ]
-    },
     // 广告
     {
       name: "广告管理",

@@ -14,7 +14,7 @@ const res = new Resolve();
 
 const {getRedis, setRedis} = require('../../cache/_redis')
 // redis key 前缀
-const REDIS_KEY_PREFIX = 'boblog'
+const REDIS_KEY_API_PREFIX = 'boblog_api'
 
 const AUTH_ADMIN = 16;
 
@@ -79,11 +79,10 @@ router.put('/article/:id', new Auth(AUTH_ADMIN).m, async (ctx) => {
 router.get('/article', async (ctx) => {
   // 尝试获文章取缓存
   const {category_id = 0, page = 1} = ctx.query;
-  const key = `${REDIS_KEY_PREFIX}_article_list_category_id${category_id}_page${page}`
+  const key = `${REDIS_KEY_API_PREFIX}_article_list_category_id${category_id}_page${page}`
   const cacheArticleData = await getRedis(key)
 
   if (cacheArticleData) {
-    ctx.response.status = 200;
     ctx.body = res.json(cacheArticleData);
 
   } else {
@@ -101,7 +100,7 @@ router.get('/article', async (ctx) => {
  */
 router.get('/article/:id', async (ctx) => {
   // 尝试获文章取缓存
-  const key = `${REDIS_KEY_PREFIX}_article_detail_${ctx.params.id}`
+  const key = `${REDIS_KEY_API_PREFIX}_article_detail_${ctx.params.id}`
   const cacheArticleDetail = await getRedis(key)
   if (cacheArticleDetail) {
     ctx.body = res.json(cacheArticleDetail);

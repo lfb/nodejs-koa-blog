@@ -11,6 +11,10 @@ const {Auth} = require('../../../middlewares/auth');
 const {Resolve} = require('../../lib/helper');
 const res = new Resolve();
 
+const {getRedis, setRedis} = require('../../cache/_redis')
+// redis key 前缀
+const REDIS_KEY_API_PREFIX = 'boblog_api'
+
 const AUTH_ADMIN = 16;
 
 const router = new Router({
@@ -73,11 +77,18 @@ router.put('/category/:id', new Auth(AUTH_ADMIN).m, async (ctx) => {
  * 获取所有的分类
  */
 router.get('/category', async (ctx) => {
-  const categoryList = await CategoryDao.list();
-
-  // 返回结果
-  ctx.response.status = 200;
-  ctx.body = res.json(categoryList);
+  const key = `${REDIS_KEY_API_PREFIX}_category_list`
+  const cacheCategoryListData = await getRedis(key)
+  if (cacheCategoryListData) {
+    // 返回结果
+    ctx.body = res.json(cacheCategoryListData);
+  } else {
+    const categoryList = await CategoryDao.list();
+    setRedis(key, categoryList, 60)
+    // 返回结果
+    ctx.response.status = 200;
+    ctx.body = res.json(categoryList);
+  }
 })
 
 /**

@@ -60,7 +60,7 @@ class ArticleDao {
       };
     }
     const article = await Article.scope('iv').findAndCountAll({
-      limit: pageSize,//每页10条
+      limit: pageSize, //每页10条
       offset: (page - 1) * pageSize,
       where: filter,
       order: [

@@ -7,9 +7,6 @@ import comment from './modules/comment'
 import reply from './modules/reply'
 import article from './modules/article'
 import advertise from './modules/advertise'
-import column from './modules/column'
-import chapter from './modules/chapter'
-import section from './modules/section'
 
 Vue.use(Vuex);
 
@@ -58,9 +55,6 @@ export default new Vuex.Store({
     comment,
     reply,
     category,
-    advertise,
-    column,
-    chapter,
-    section
+    advertise
   }
 });

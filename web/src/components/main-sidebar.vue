@@ -38,6 +38,15 @@
             </a>
             <span></span>
           </li>
+          <li class="sidebar-box-content-item">
+            <a href="https://www.boblog.com" target="_blank">
+              <div style="color: #2d8cf0;">
+                <Icon type="md-ionic" />
+                波波博客
+              </div>
+            </a>
+            <span></span>
+          </li>
         </ul>
       </div>
     </div>

@@ -9,6 +9,7 @@ const res = new Resolve();
 
 const {setRedis} = require('../../cache/_redis')
 const REDIS_KEY_PREFIX = 'boblog'
+const REDIS_KEY_API_PREFIX = 'boblog_api'
 
 const AUTH_ADMIN = 16;
 
@@ -34,7 +35,9 @@ router.post('/reply', async (ctx) => {
 
   // 清除Redis
   const key = `${REDIS_KEY_PREFIX}_article_detail_${v.get('body.target_id')}`
+  const apikey = `${REDIS_KEY_API_PREFIX}_article_detail_${v.get('body.target_id')}`
   setRedis(key, null, 0)
+  setRedis(apikey, null, 0)
 
   // 返回结果
   ctx.response.status = 200;

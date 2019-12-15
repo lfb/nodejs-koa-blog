@@ -10,6 +10,9 @@
       <FormItem label="文章简介" prop="description">
         <Input v-model="formValidate.description" placeholder="文章简介"></Input>
       </FormItem>
+      <FormItem label="文章关键字" prop="keyword">
+        <Input v-model="formValidate.keyword" placeholder="文章简介"></Input>
+      </FormItem>
       <FormItem label="文章分类" v-if="categoryList.length > 0">
         <Select v-model="formValidate.category_id">
           <Option v-for="(item, index) in categoryList" :value="item.id" :key="index">{{item.name}}</Option>
@@ -69,6 +72,7 @@
           category_id: '',
           cover: '',
           description: '',
+          keyword: '',
           content: ''
         },
         ruleValidate: {
@@ -83,6 +87,9 @@
           ],
           description: [
             {required: true, message: '文章简介不能为空', trigger: 'blur'}
+          ],
+          keyword: [
+            {required: true, message: '文章关键字不能为空', trigger: 'blur'}
           ],
           content: [
             {required: true, message: '文章内容不能为空', trigger: 'blur'}

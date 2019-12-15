@@ -87,50 +87,6 @@ const routers = [
         meta: {edit: true, module: "/article", group: "article", title: '文章 - 更新'},
         component: (resolve) => require(['../views/article/update.vue'], resolve),
       },
-      //todo: 专栏管理
-      {
-        path: 'column',
-        name: 'column',
-        meta: {module: "/column", group: "column", title: '专栏 - 列表'},
-        component: (resolve) => require(['../views/column/list.vue'], resolve),
-      },
-      {
-        path: 'column/create',
-        name: 'column/create',
-        meta: {module: "/column/create", group: "column", title: '专栏 - 创建'},
-        component: (resolve) => require(['../views/column/create.vue'], resolve),
-      },
-      {
-        path: 'column/update/:id',
-        name: 'column/update',
-        meta: {edit: true, module: "/column", group: "column", title: '专栏 - 更新'},
-        component: (resolve) => require(['../views/column/update.vue'], resolve),
-      },
-      //todo: 章节管理
-      {
-        path: 'column/chapter/:column_id',
-        name: 'chapter',
-        meta: {module: "/column", group: "column", title: '专栏章节 - 列表'},
-        component: (resolve) => require(['../views/chapter/list.vue'], resolve),
-      },
-      {
-        path: 'chapter/section/:column_chapter_id',
-        name: 'section',
-        meta: {module: "/column", group: "column", title: '专栏章节文章 - 列表'},
-        component: (resolve) => require(['../views/section/list.vue'], resolve),
-      },
-      {
-        path: 'chapter/section/create/:column_chapter_id',
-        name: 'chapter/section/create',
-        meta: {module: "/column", group: "column", title: '专栏章节文章 - 创建'},
-        component: (resolve) => require(['../views/section/create.vue'], resolve),
-      },
-      {
-        path: 'chapter/section/update/:id',
-        name: 'chapter/section/update',
-        meta: {edit: true, module: "/column", group: "column", title: '专栏章节文章 - 更新'},
-        component: (resolve) => require(['../views/section/update.vue'], resolve),
-      },
       //todo: 评论管理
       {
         path: 'comments',

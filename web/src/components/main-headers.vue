@@ -11,7 +11,7 @@
       <div class="nav">
         <ul class="nav-box">
           <li v-for="(item, index) in nav"
-              @click="toLink(item.router)"
+              @click="toLink(item.router, index === navIndex)"
               :class="index === navIndex ? 'nav-item nav-item-active' : 'nav-item'"
               :key="index">
             {{item.name}}
@@ -47,16 +47,8 @@
         keyword: '',
         nav: [
           {
-            name: '首页',
-            router: '/'
-          },
-          {
             name: '文章',
-            router: '/articles'
-          },
-          {
-            name: '专栏',
-            router: '/column'
+            router: '/'
           },
           {
             name: '关于',
@@ -67,8 +59,10 @@
     },
     methods: {
       // 路由跳转
-      toLink(router) {
-        this.$router.push(router)
+      toLink(router, isActiveIndex) {
+        if (!isActiveIndex) {
+          this.$router.push(router)
+        }
       },
       // 搜索
       search() {

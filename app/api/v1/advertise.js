@@ -9,6 +9,10 @@ const res = new Resolve();
 
 const AUTH_ADMIN = 16;
 
+const {getRedis, setRedis} = require('../../cache/_redis')
+// redis key 前缀
+const REDIS_KEY_API_PREFIX = 'boblog_api'
+
 const router = new Router({
   prefix: '/v1'
 })
@@ -57,12 +61,22 @@ router.put('/advertise/:id', new Auth(AUTH_ADMIN).m, async (ctx) => {
 
 // 获取广告列表
 router.get('/advertise', async (ctx) => {
-  const page = ctx.query.page;
-  const list = await AdvertiseDao.list(page);
+  const key = `${REDIS_KEY_API_PREFIX}_advertise_list`
+  const cacheAdvertiseListData = await getRedis(key)
+  if (cacheAdvertiseListData) {
+    console.log('广告缓存')
+    // 返回结果
+    ctx.body = res.json(cacheAdvertiseListData);
 
-  // 返回结果
-  ctx.response.status = 200;
-  ctx.body = res.json(list);
+  } else {
+    const page = ctx.query.page;
+    const list = await AdvertiseDao.list(page);
+
+    setRedis(key, list, 60)
+    // 返回结果
+    ctx.response.status = 200;
+    ctx.body = res.json(list);
+  }
 
 })
 
