@@ -17,7 +17,10 @@
     }
 
     .article-detail-intro {
-        flex-direction: column-reverse;
+    }
+
+    .sidebar-container-fixed {
+        display: none !important;
     }
 }
 
@@ -40,23 +43,22 @@
 
 .article-detail-intro {
     color: #515a6e;
-    padding-top: 24px;
-    margin: 0 auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    padding: 0;
+    margin: 32px auto 0;
+    text-align: center;
 }
 
 .article-detail-intro li {
+    display: inline-block;
     list-style: none;
     font-size: 12px;
     margin: 0;
     margin-right: 16px;
     color: #9ea7b4;
-    white-space: nowrap;
 }
 
 li.articles-detail-item-category {
+    display: inline-block;
     padding: 0 24px;
     color: #409EFF;
     border-radius: 64px;

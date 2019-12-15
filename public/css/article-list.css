@@ -232,6 +232,10 @@ p.article-list-category {
         flex-direction: column;
     }
 
+    .article-list{
+        border-radius: 0 0 10px 10px;
+    }
+
     .sidebar {
         box-sizing: border-box;
         width: auto;
