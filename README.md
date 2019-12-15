@@ -95,9 +95,6 @@ $ npm run dev
 - [分类接口文档说明](./doc/category.md)
 - [评论接口文档说明](./doc/comment.md)
 - [回复评论接口文档说明](./doc/reply.md)
-- [专栏接口文档说明](./doc/column.md)
-- [专栏章节接口文档说明](./doc/column-chapter.md)
-- [章节目接口文档说明](./doc/chapter-section.md)
 - [广告接口文档说明](./doc/advertise.md)
 
 ## FAQ

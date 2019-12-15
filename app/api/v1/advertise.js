@@ -14,7 +14,7 @@ const {getRedis, setRedis} = require('../../cache/_redis')
 const REDIS_KEY_API_PREFIX = 'boblog_api'
 
 const router = new Router({
-  prefix: '/v1'
+  prefix: '/v1/api'
 })
 
 // 创建广告

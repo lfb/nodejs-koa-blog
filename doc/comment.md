@@ -1,6 +1,6 @@
 ## 接口前缀
 ```shell
-http://localhost:3000/v1
+http://localhost:3000/v1/api
 ```
 
 # 评论接口
