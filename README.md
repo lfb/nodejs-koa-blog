@@ -1,27 +1,42 @@
 <p align="center"><a href="http://www.boblog.com" target="_blank" rel="noopener noreferrer"><img width="234" src="http://images.boblog.com/BOBLOG-03.png" alt="logo"></a></p>
 
-## 一、什么是博客？
+## 一、这是个什么的项目？
 
-做博客这么多年，我觉得博客，仅代表我的想法，我喜欢的博客风格是简约至上，博客的文章内容让读者读完会有收获的。
+基于 Node.js Koa2 实战开发的一套完整的博客项目网站，使用 Koa2 二次开发一套适合多端的 RESTful API，同时配套完整的后台管理系统，且前端展示既有基于 ejs 服务端渲染，也有基于 Vue.js 前后端分离的 2 套前端网站。
 
+博客线上地址是：[https://www.boblog.com](https://www.boblog.com/)
 
-## 二、博客项目
+## 二、项目包含什么功能？
 
-这个项目使用 `Node.js Koa2` 打造做的一套博客项目网站，博客线上地址是：[https://www.boblog.com](https://www.boblog.com/)
+[![koa](https://img.shields.io/badge/koa-%5E2.7.0-brightgreen.svg) ](https://www.npmjs.com/package/koa)
+[![koa-router](https://img.shields.io/badge/koa--router-%5E7.4.0-brightgreen.svg)](https://www.npmjs.com/package/koa-router)
+[![sequelize](https://img.shields.io/badge/sequelize-%5E5.6.1-brightgreen.svg)](https://www.npmjs.com/package/sequelize)
+[![mysql2](https://img.shields.io/badge/mysql2-%5E1.6.5-brightgreen.svg)](https://www.npmjs.com/package/mysql2)
 
-### 2.1.特点
-使用 `Koa2` 二次开发一套服务端API，可以多端使用，现在拥有后台管理系统，前端展示网站也有2套：一套是基于 `ejs` 服务端渲染，另外一套是基于 `Vue.js` 前端网站。
+### 2.1.Node.js Koa2服务端 RESTful API
+- [x] 管理员与权限控制接口
+- [x] 文章管理接口
+- [x] 评论/回复功能接口
+- [x] 分类接口
+- [x] 广告接口
 
-### 2.2.优势
-- 使用精而小 `Koa2` 框架二次开发，速度快。
-- 做了大量的优化工作，前端展示网站打开快。
-- 非常适合想用 `Node.js Koa2` 做网站的朋友，相信你一定能学到知识。
+### 2.2.博客前端展示网站
+- ejs 服务端渲染
+- Vue.js 前后端分离
 
-### 2.3.知识点
+### 2.2.后台管理系统
+- [x] 使用 Vue.js iviewui design 搭建的后台管理系统
+
+### 2.3.优势
+- 使用精小而强大的 Node.js Koa2 框架做服务端 API 接口。
+- 前端既有服务端渲染，也有前后端分离，且做了大量的优化工作，前端展示网站打开快。
+
+### 2.4.知识点
 - 服务端：`Node.js, Koa, MySQL, Sequelize, Redis`
 - 前端服务端渲染：`ejs, jQuery, Bootstrap`, [体验网址：www.boblog.com](https://www.boblog.com/)
 - 前后端分离：`Vue.js, iviewui`, [体验网址：vue.boblog.com](http://vue.boblog.com/)
 - 后端管理系统：`Vue.js, iviewui`
+- 非常适合想用 `Node.js Koa2` 做网站的朋友，相信你一定能学到知识。
 
 ## 三、如何学习？
 

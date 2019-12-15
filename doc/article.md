@@ -16,6 +16,7 @@ POST    /article
 title | 文章标题 | 是
 author | 文章作者 | 是
 description | 文章简介 | 是
+keyword | 文章关键字 | 是
 content | 文章内容 | 是
 cover | 文章封面 | 是
 category_id | 文章分类 | 是
@@ -151,6 +152,7 @@ PUT    /article/:id
 title | 文章标题 | 否
 author | 文章作者 | 否
 description | 文章内容 | 否
+keyword | 文章关键字 | 否
 content | 文章内容 | 否
 cover | 文章封面 | 否
 category_id | 文章分类 | 否
