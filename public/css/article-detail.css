@@ -22,6 +22,7 @@
 .article-detail-title {
     color: #17233d;
     text-align: center;
+    font-weight: 600;
 }
 
 .article-detail-intro {
@@ -65,4 +66,4 @@ li.articles-detail-item-category {
     .sidebar-container-fixed {
         display: none !important;
     }
-}   
+}

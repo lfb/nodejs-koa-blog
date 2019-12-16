@@ -46,8 +46,14 @@
 - 非常适合想用 `Node.js Koa2` 做网站的朋友，相信你一定能学到知识。
 
 ## 三、如何学习？
+### 3.1.克隆项目
+首先使克隆项目，然后进入项目根目录使用命令安装包，最后命令启动项目，代码会根据模型自动创建数据库表的。
+```
+# 克隆项目代码
+$ git clone https://github.com/liangfengbo/nodejs-koa-blog.git
+```
 
-### 3.1.数据库
+### 3.2.数据库
 启动项目前一定要在创建好 `boblog` 数据库，以下是执行数据库命令：
 ```
 # 登录数据库
@@ -57,19 +63,16 @@ $ mysql -uroot -p密码
 $ CREATE DATABASE IF NOT EXISTS boblog DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 ```
 
-### 3.2.修改 Koa2 项目数据库配置
-请在根目录下的 [|——config/config.js](https://github.com/liangfengbo/nodejs-koa-blog/blob/master/config/config.js) 文件下修改您本地的数据库名字（`boblog`）和数据库密码 ( `password` )。
+### 3.3.Redis
+项目使用了Redis，请在你的电脑上面装上Redis：：[「点击：附上Redis安装教程」](https://www.runoob.com/redis/redis-install.html)，安装好 Redis 后，需启动Redis。 
 
-### 3.3.克隆项目
-首先使克隆项目，然后进入项目根目录使用命令安装包，最后命令启动项目，代码会根据模型自动创建数据库表的。
+### 3.4.修改 Koa2 项目数据库配置
+请在根目录下的 [|——config/config.js](https://github.com/liangfengbo/nodejs-koa-blog/blob/master/config/config.js) 文件下修改您本地的数据库名字（`boblog`）和数据库密码 ( `password` )。
 
 根目录都是 Node.js + Koa2 API 开发源代码，重点是 app 文件夹下的 api 开发；根目录下的 view 文件夹是 ejs 渲染项目；web 文件夹下都是前端网站项目源代码；根目录下的 admin 文件夹下都是后台管理系统的源代码。
 
 以下是启动服务端项目的操作命令：
 ```
-# 克隆项目代码
-$ git clone https://github.com/liangfengbo/nodejs-koa-blog.git
-
 # 进入项目根目录
 $ cd nodejs-koa-blog
 
@@ -79,6 +82,7 @@ $ npm install
 # 启动 Node.js Koa2 项目
 $ npm run dev
 ```
+
 打开浏览器输入回车：http://localhost:3000 可以看到服务端渲染的前端网站，当然可能该网站是个空数据网站，可以查看目录下的 `./app/api/v1` 下的接口或者看 doc 目录下的 markdown 接口文档，在 postman 测试接口。
 
 
