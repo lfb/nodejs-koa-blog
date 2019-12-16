@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "description": "Node.js + Koa2 + MySQL + Vue.js 实战开发一套完整个人博客项目网站",
   "main": "index.js",
-  "scripts": {
-    "dev": "nodemon app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+"scripts": {
+  "dev": "nodemon app.js",
+  "test": "jest _tests  --runInBand --forceExit --colors"
+},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/liangfengbo/nodejs-koa2-blog.git"
@@ -23,12 +23,13 @@
   "homepage": "https://github.com/liangfengbo/nodejs-koa2-blog#readme",
   "dependencies": {
     "@koa/cors": "^3.0.0",
-    "axios": "^0.18.0",
+    "axios": "^0.19.0",
     "basic-auth": "^2.0.1",
     "bcryptjs": "^2.4.3",
     "ejs": "^2.7.4",
     "hashids": "^2.1.0",
     "highlight.js": "^9.16.2",
+    "jest": "^24.9.0",
     "jsonwebtoken": "^8.4.0",
     "koa": "^2.7.0",
     "koa-bodyparser": "^4.2.1",
@@ -43,10 +44,11 @@
     "redis": "^2.8.0",
     "require-directory": "^2.1.1",
     "sequelize": "^5.21.2",
+    "supertest": "^4.0.2",
     "validator": "^10.11.0",
     "xss": "^1.0.6"
   },
   "directories": {
-    "test": "test"
+    "test": "_tests"
   }
 }

@@ -21,3 +21,5 @@ app.use(parser())
 InitManager.initCore(app)
 
 app.listen(3000)
+
+module.exports = app
