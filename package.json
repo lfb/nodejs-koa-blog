@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "description": "基于 Node.js Koa2 实战开发的一套完整的博客项目网站，使用 Koa2 二次开发一套适合多端的 RESTful API，同时配套完整的后台管理系统，且前端展示既有基于 ejs 服务端渲染，也有基于 Vue.js 前后端分离的 2 套前端网站。",
   "main": "index.js",
-"scripts": {
-  "dev": "nodemon app.js",
-  "test": "jest _tests  --runInBand --forceExit --colors"
-},
+  "scripts": {
+    "dev": "nodemon app.js",
+    "test": "jest _tests  --forceExit --runInBand --colors"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/liangfengbo/nodejs-koa2-blog.git"

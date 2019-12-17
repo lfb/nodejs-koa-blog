@@ -2,11 +2,12 @@ const {Category} = require('../models/category')
 
 class CategoryDao {
   // 创建分类
-  static async create(v) {
+  static async create(params = {}) {
+    const {name, key, parent_id = 0} = params
     // 查询是否存在重复的分类
     const hasCategory = await Category.findOne({
       where: {
-        key: v.get('body.key'),
+        key,
         deleted_at: null
       }
     });
@@ -16,12 +17,19 @@ class CategoryDao {
     }
 
     const category = new Category();
-    category.name = v.get('body.name');
-    category.key = v.get('body.key');
-    category.parent_id = v.get('body.parent_id');
-
+    category.name = name
+    category.key = key
+    category.parent_id = parent_id
     category.save();
+
+    return {
+      name: category.name,
+      key: category.key,
+      parent_id: category.parent_id,
+      msg: '创建成功'
+    }
   }
+
 
   // 删除分类
   static async destroy(id) {

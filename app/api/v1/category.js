@@ -1,3 +1,9 @@
+/**
+ * @description 分类的路由 API 接口
+ * @description Category's routing API interface
+ * @author 梁凤波, Peter Liang
+ */
+
 const Router = require('koa-router');
 
 const {
@@ -25,15 +31,17 @@ const router = new Router({
  * 创建分类
  */
 router.post('/category', new Auth(AUTH_ADMIN).m, async (ctx) => {
-
   // 通过验证器校验参数是否通过
   const v = await new CategoryValidator().validate(ctx);
-
-  await CategoryDao.create(v);
+  const result = await CategoryDao.create({
+    name: v.get('body.name'),
+    key: v.get('body.key'),
+    parent_id: v.get('body.parent_id'),
+  });
 
   // 返回结果
   ctx.response.status = 200;
-  ctx.body = res.success('创建分类成功')
+  ctx.body = res.json(result)
 })
 
 

@@ -1,9 +1,8 @@
 const server = require('../server')
 const {nickname, email, password} = require('../utils')
+const {saveTokens, getToken} = require('../token')
 
-let token = ''
-
-test('测试管理员注册，按正确的发送参数，测试结果应该注册成功', async () => {
+test('测试管理员注册，按正确的发送参数，测试结果应该注册成功', async (done) => {
   const res = await server.post('/api/v1/admin/register').send({
     nickname,
     email,
@@ -11,6 +10,7 @@ test('测试管理员注册，按正确的发送参数，测试结果应该注�
     password2: password
   })
   expect(res.status).toBe(200)
+  done()
 })
 
 test('测试管理员注册，输入不正确的邮箱进行注册，测试结果应该注册失败', async () => {
@@ -40,9 +40,10 @@ test('测试管理员登录，使用正确的邮箱和密码，测试结果应�
     email,
     password
   })
-  token = res.body.token
+
+  saveTokens(res.body.token)
   expect(res.status).toBe(200);
-  expect(res.body.msg).toBe('登录成功');
+  expect(res.body).toHaveProperty('msg', '登录成功');
 })
 
 test('测试管理员登录，使用正确的邮箱和错误密码，测试结果应该登录失败', async () => {
@@ -70,22 +71,22 @@ test('测试登录，使用不正确的邮箱和正确的密码，测试结果�
   expect(res.status).toBe(400);
 })
 
-test('测试使用正确的 token 获取管理员信息，测试结果应该成功', async () => {
-  const res = await server.get('/api/v1/admin/auth').auth(token, { type: "basic" })
+test('测试使用正确的 token 获取管理员信息，测试结果应该成功', async (done) => {
+  const token = getToken()
+  const res = await server.get('/api/v1/admin/auth')
+    .auth(token, {type: "basic"})
+
   expect(res.status).toBe(200)
   expect(res.body.data.nickname).toBe(nickname)
   expect(res.body.data.email).toBe(email)
-  expect(res.body.data.password).toBe(undefined)
+  expect(res.body.data.password).toBeUndefined
+  done()
 })
 
-test('测试使用错误的 token 获取管理员信息，测试结果应该错误', async () => {
-  const res = await server.get('/api/v1/admin/auth').auth(token + '11', { type: "basic" })
-  expect(res.status).toBe(403)
-})
 
-test('测试使用过期的 token 获取管理员信息，测试结果应该错误', async () => {
-  const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjEsInNjb3BlIjoxNiwiaWF0IjoxNTc2NDEyMTc2LCJleHAiOjE1NzY0MTU3NzZ9.hoMfvuMsa3Bfyb0Y_p9CESnB_gRk6dARpIRibxpKiq8'
-  const res = await server.get('/api/v1/admin/auth').auth(token, { type: "basic" })
+test('测试使用不正确的 token 获取管理员信息，测试结果应该不成功', async () => {
+  const token = getToken()
+  const res = await server.get('/api/v1/admin/auth').auth(token + '1024', {type: "basic"})
   expect(res.status).toBe(403)
 })
 
