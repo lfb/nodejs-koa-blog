@@ -1,13 +1,20 @@
+/**
+ * @description 管理员的数据访问对象
+ * @description Data Access Objects for Administrators
+ * @author 梁凤波, Peter Liang
+ */
+
 const {Admin} = require('../models/admin')
 const bcrypt = require('bcryptjs')
 
-// data access object
 class AdminDao {
   // 创建用管理员
-  static async create(v) {
+  static async create(params) {
+    const {email, password, nickname} = params
+
     const hasAdmin = await Admin.findOne({
       where: {
-        email: v.get('body.email'),
+        email,
         deleted_at: null
       }
     });
@@ -17,11 +24,15 @@ class AdminDao {
     }
 
     const admin = new Admin();
-    admin.email = v.get('body.email');
-    admin.password = v.get('body.password2');
-    admin.nickname = v.get('body.nickname');
-
+    admin.nickname = nickname
+    admin.email = email
+    admin.password = password
     admin.save();
+
+    return {
+      email: admin.email,
+      nickname: admin.nickname
+    }
   }
 
   // 验证密码

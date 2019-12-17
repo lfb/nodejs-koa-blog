@@ -19,7 +19,6 @@ class Auth {
       const tokenToken = basicAuth(ctx.req);
 
       let errMsg = "无效的token";
-
       // 无带token
       if (!tokenToken || !tokenToken.name) {
         errMsg = "需要携带token值";

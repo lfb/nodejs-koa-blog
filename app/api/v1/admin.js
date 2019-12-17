@@ -1,6 +1,7 @@
 /**
- * @description 管理员接口
- * @author 梁凤波
+ * @description 管理员的路由 API 接口
+ * @description Administrator's routing API interface
+ * @author 梁凤波, Peter Liang
  */
 
 const Router = require('koa-router')
@@ -13,7 +14,6 @@ const {
 const {AdminDao} = require('../../dao/admin');
 const {Auth} = require('../../../middlewares/auth');
 const {LoginManager} = require('../../service/login');
-
 const {Resolve} = require('../../lib/helper');
 const res = new Resolve();
 
@@ -30,11 +30,15 @@ router.post('/register', async (ctx) => {
   const v = await new RegisterValidator().validate(ctx);
 
   // 创建管理员
-  await AdminDao.create(v);
+  const admin = await AdminDao.create({
+    email: v.get('body.email'),
+    password: v.get('body.password2'),
+    nickname: v.get('body.nickname')
+  });
 
   // 返回结果
   ctx.response.status = 200;
-  ctx.body = res.success('注册成功');
+  ctx.body = res.json(admin);
 })
 
 // 管理登录
@@ -42,7 +46,10 @@ router.post('/login', async (ctx) => {
 
   const v = await new AdminLoginValidator().validate(ctx);
 
-  let token = await LoginManager.adminLogin(v.get('body.email'), v.get('body.password'));
+  let token = await LoginManager.adminLogin({
+    email: v.get('body.email'),
+    password: v.get('body.password')
+  });
 
   ctx.response.status = 200;
   ctx.body = {
