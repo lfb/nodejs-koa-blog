@@ -50,7 +50,7 @@
 首先使克隆项目，然后进入项目根目录使用命令安装包，最后命令启动项目，代码会根据模型自动创建数据库表的。
 ```
 # 克隆项目代码
-$ git clone https://github.com/liangfengbo/nodejs-koa-blog.git
+$ git clone https://github.com/LFB/nodejs-koa-blog.git
 ```
 
 ### 3.2.数据库
@@ -67,7 +67,7 @@ $ CREATE DATABASE IF NOT EXISTS boblog DEFAULT CHARACTER SET utf8mb4 COLLATE utf
 项目使用了Redis，请在你的电脑上面装上Redis：：[「点击：附上Redis安装教程」](https://www.runoob.com/redis/redis-install.html)，安装好 Redis 后，需启动Redis。 
 
 ### 3.4.修改 Koa2 项目数据库配置
-请在根目录下的 [|——config/config.js](https://github.com/liangfengbo/nodejs-koa-blog/blob/master/config/config.js) 文件下修改您本地的数据库名字（`boblog`）和数据库密码 ( `password` )。
+请在根目录下的 [|——config/config.js](https://github.com/LFB/nodejs-koa-blog/blob/master/config/config.js) 文件下修改您本地的数据库名字（`boblog`）和数据库密码 ( `password` )。
 
 根目录都是 Node.js + Koa2 API 开发源代码，重点是 app 文件夹下的 api 开发；根目录下的 view 文件夹是 ejs 渲染项目；web 文件夹下都是前端网站项目源代码；根目录下的 admin 文件夹下都是后台管理系统的源代码。
 
@@ -119,13 +119,13 @@ $ npm run dev
 
 2. 启动 Koa2 项目报错，请问原因？
 > 答：首先，请检查一下使用 npm 或 yarn 安装依赖包没。然后，再请检查一下确保安装好数据库，新建好数据库：boblog，请看上面的数据库配置。最后看下启动打印日志是否有报错的信息。
-3. ... 更多问题请到 [Issues](https://github.com/liangfengbo/nodejs-koa-blog/issues)查阅，或者有问题请到 [Issues 提问](https://github.com/liangfengbo/nodejs-koa-blog/issues/new)。
+3. ... 更多问题请到 [Issues](https://github.com/LFB/nodejs-koa-blog/issues)查阅，或者有问题请到 [Issues 提问](https://github.com/LFB/nodejs-koa-blog/issues/new)。
 
 ## License
 
 项目已实现管理员、权限管理、文章、分类、评论等接口，前端模板网站和后台管理系统。自己可以根据项目代码学习，可以到 postman 软件中测试API或学习。
 
-喜欢或对你有帮助的话，请你点一个星星 <strong style='color:red;'>star</strong> 鼓励我，或者您有更好的建议和意见，请提出来告知我，可以留言 [Issues](https://github.com/liangfengbo/nodejs-koa-blog/issues/new)。希望能够帮助到你学习！Thanks！共勉！
+喜欢或对你有帮助的话，请你点一个星星 <strong style='color:red;'>star</strong> 鼓励我，或者您有更好的建议和意见，请提出来告知我，可以留言 [Issues](https://github.com/LFB/nodejs-koa-blog/issues/new)。希望能够帮助到你学习！Thanks！共勉！
 
-[MIT](https://github.com/liangfengbo/nodejs-koa-blog/blob/master/LICENSE), by 梁凤波
+[MIT](https://github.com/LFB/nodejs-koa-blog/blob/master/LICENSE), by 梁凤波
 
