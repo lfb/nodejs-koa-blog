@@ -1,3 +1,4 @@
+<!--文章详情-->
 <template>
   <section class="article-detail" v-if="article">
     <div class="article-container">
@@ -23,24 +24,24 @@
       </ul>
       <div class="article-content">
         <mavon-editor
-          style="height: 100%"
-          :ishljs="true"
-          v-model="article.content"
-          :defaultOpen="'preview'"
-          :editable="false"
-          :subfield="false"
-          :toolbarsFlag="false"/>
+            style="height: 100%"
+            :ishljs="true"
+            v-model="article.content"
+            :defaultOpen="'preview'"
+            :editable="false"
+            :subfield="false"
+            :toolbarsFlag="false"/>
       </div>
 
       <!-- 新建评论-->
       <div class="comment-header">
-        <Icon type="ios-create-outline" />
+        <Icon type="ios-create-outline"/>
         欢迎评论
       </div>
       <v-comment-create
-        :target_id="article.id"
-        :target_type="targetType"
-        @updateComment="updateComment"/>
+          :target_id="article.id"
+          :target_type="targetType"
+          @updateComment="updateComment"/>
       <!-- 评论列表-->
       <div v-if="article.article_comment.data.length > 0">
         <v-comment-list :target_id="parseInt(id)" @updateComment="updateComment"/>
@@ -54,15 +55,12 @@
 
 <script>
   import { mapActions } from 'vuex'
-  import VCommentList from '../../components/comment-list'
-  import VCommentCreate from '../../components/comment-create'
-  import VMainSidebar from '../../components/main-sidebar'
 
   export default {
     components: {
-      VCommentList,
-      VCommentCreate,
-      VMainSidebar
+      VCommentList: () => import('../../components/comment-list'),
+      VCommentCreate: () => import('../../components/comment-create'),
+      VMainSidebar: () => import('../../components/main-sidebar')
     },
     name: 'detail',
     data() {

@@ -1,6 +1,6 @@
+<!--文章列表-->
 <template>
   <section class="articles">
-
     <article class="article-list">
       <ul class="category" v-if="category && category.length > 0">
         <li class="category-item" @click="getAllArticle">
@@ -9,7 +9,7 @@
         <li v-for="(item, index) in category"
             :class="categoryIndex === index ? 'category-item category-item-active' : 'category-item'"
             @click="changCategory(item.id, index)"
-            :key="index">
+            :key="item.id">
           <Icon v-if="item.type" class="icon" :style="{color: item.color}" :type="item.type"/>
           {{item.name}}
         </li>
@@ -18,8 +18,10 @@
       <v-article-item :list="list"/>
 
       <div class="page" v-if="page && page.total_pages.length > 1">
-        <Page :total="page.total" :page-size="page.per_page" :current="page.current_page" show-total
-              @on-change="handlePage"></Page>
+        <Page :total="page.total"
+              :page-size="page.per_page"
+              :current="page.current_page" show-total
+              @on-change="handlePage" />
       </div>
     </article>
 
@@ -32,12 +34,11 @@
   import { mapState, mapActions } from 'vuex'
   import merge from 'webpack-merge'
   import VArticleItem from '../../components/article-item'
-  import VMainSidebar from '../../components/main-sidebar'
 
   export default {
     components: {
       VArticleItem,
-      VMainSidebar
+      VMainSidebar: () => import('../../components/main-sidebar')
     },
     name: 'list',
     data() {

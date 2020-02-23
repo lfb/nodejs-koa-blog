@@ -3,7 +3,7 @@
   <section>
     <div class="article-empty" v-if="list && list.length === 0">暂无文章~</div>
     <ul class="article-box" v-if="list && list.length > 0">
-      <li class="articles-item" v-for="(item, index) in list" @click="toArticleDetail(item.id)" :key="index">
+      <li class="articles-item" v-for="item in list" @click="toArticleDetail(item.id)" :key="item.id">
         <div class="articles-item-info">
           <h1 class="articles-item-title">{{item.title}}</h1>
           <div class="articles-item-description">

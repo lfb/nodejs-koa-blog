@@ -10,8 +10,8 @@
       <div class="sidebar-box-content">
         <ul>
           <li class="sidebar-box-content-item"
-              v-for="(ad, index) in advertiseList"
-              :key="index">
+              v-for="ad in advertiseList"
+              :key="ad.id">
             <a :href="ad.link" target="_blank">
               <h1>{{ad.title}}</h1>
             </a>

@@ -4,7 +4,7 @@
       评论列表
     </div>
     <ul class="comment-box" v-if="comment && comment.length > 0">
-      <li class="comment-item" v-for="(item, index) in comment" :key="index">
+      <li class="comment-item" v-for="item in comment" :key="item.id">
         <div class="comment-avatar">
           <Avatar size="small" style="background-color: #2d8cf0" icon="ios-person"/>
         </div>
@@ -15,7 +15,7 @@
           </p>
           <div class="comment-reply" v-if="item.reply && item.reply.length > 0">
             <ul class="comment-box">
-              <li class="comment-item" v-for="(reply, index2) in item.reply" :key="index2">
+              <li class="comment-item" v-for="reply in item.reply" :key="reply.id">
                 <div class="comment-avatar">
                   <Avatar size="small" style="background-color: #2d8cf0" icon="ios-chatbubbles"/>
                 </div>

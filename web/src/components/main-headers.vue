@@ -13,7 +13,7 @@
           <li v-for="(item, index) in nav"
               @click="toLink(item.router, index === navIndex)"
               :class="index === navIndex ? 'nav-item nav-item-active' : 'nav-item'"
-              :key="index">
+              :key="item.id">
             {{item.name}}
           </li>
         </ul>
