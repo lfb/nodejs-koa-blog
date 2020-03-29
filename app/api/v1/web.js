@@ -40,7 +40,6 @@ router.get('/', async (ctx) => {
     // await ctx.render('article-list', cacheArticleData)
 
   } else {
-    console.log('进入查询数据库数据')
     // 如果没有缓存数据，则读取数据库
     // 文章
     const article = await ArticleDao.list(ctx.query)
@@ -74,8 +73,9 @@ router.get('/article/detail/:id', async (ctx) => {
   // 获取参数
   const cacheArticleDetail = await getRedis(key)
   if (cacheArticleDetail) {
-    console.log('读缓存详情数据')
-    ctx.response.status = 304;
+    // 返回结果
+    ctx.response.status = 200;
+    await ctx.render('article-detail', cacheArticleDetail)
 
   } else {
     // 通过验证器校验参数是否通过
@@ -106,7 +106,7 @@ router.get('/article/detail/:id', async (ctx) => {
     setRedis(key, data, 60)
 
     // 响应返回页面
-    ctx.response.status = 304;
+    ctx.response.status = 200;
     ctx.response.set('Content-Type', 'text/html charset=utf-8')
     // 返回结果
     await ctx.render('article-detail', data)
