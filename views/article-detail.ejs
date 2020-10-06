@@ -29,10 +29,6 @@
                         <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
                         <%= article.author %>
                     </li>
-                    <li>
-                        <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
-                        <%= article.browse %>
-                    </li>
                     <% if (commentList && commentList.meta) { %>
                         <li>
                             <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
@@ -45,8 +41,6 @@
                 <%- content %>
                 <input type="hidden" id="article-hidden-id" value="<%= article.id %>">
             </div>
-
-            <%- include('layout/comment', {commentList}) %>
         </article>
     </article>
 <% } %>

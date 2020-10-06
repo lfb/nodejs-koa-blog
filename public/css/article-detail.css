@@ -67,3 +67,8 @@ li.articles-detail-item-category {
         display: none !important;
     }
 }
+
+pre {
+    background: #f8f8f8!important;
+    border: none!important;
+}
