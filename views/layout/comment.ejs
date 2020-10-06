@@ -1,0 +1,142 @@
+<section class="comment-create">
+    <div class="comment-header">
+        <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
+        欢迎评论
+    </div>
+    <form class="from" id="createCommentFrom" onsubmit="return preventFromDefaultBehavior()">
+        <div class="form-group">
+            <label for="createCommentNickname">昵称</label>
+            <input maxlength="16" required name="nickname" type="text" class="form-control" id="createCommentNickname"
+                   placeholder="请填写您的昵称">
+        </div>
+        <div class="form-group">
+            <label for="createCommentEmail">邮箱</label>
+            <input maxlength="32" required name="email" type="email" class="form-control" id="createCommentEmail"
+                   placeholder="请填写您的邮箱">
+        </div>
+        <div class="form-group">
+            <label for="createCommentContent">评论内容</label>
+            <textarea maxlength="500" style="resize: none;" id="createCommentContent" required name="content"
+                      class="form-control" rows="3"
+                      placeholder="请填写您的评论内容"></textarea>
+        </div>
+        <div class="form-group">
+            <input name="target_type" value="article" id="createCommentTargetType" type='hidden' required>
+            <input name="target_id" value="<%= article.id %>" id="createCommentTargetId" type='hidden' required>
+            <div class="alert alert-success alert-success-comment" style="display: none" role="alert">评论成功</div>
+            <div class="alert alert-danger alert-danger-comment" style="display: none" role="alert">评论失败</div>
+            <button type="submit" id="createCommentBtn" class="btn btn-default btn-primary">提交评论</button>
+        </div>
+
+    </form>
+</section>
+
+<% if (commentList && commentList.data && commentList.data.length > 0) { %>
+    <section class="comment-list">
+        <div class="comment-header">
+            <span class="glyphicon glyphicon-th" aria-hidden="true"></span>
+            评论列表
+        </div>
+        <% commentList.data.forEach(item => { %>
+            <div class="media">
+                <div class="media-left">
+                    <img width="64" class="media-object"
+                         src="https://cdn.boblog.com/Gravatar-Logo.jpg?imageView2/1/w/128"
+                         alt="avatar">
+                </div>
+                <div class="media-body">
+                    <h4 class="media-heading"><%= item.nickname %></h4>
+                    <%= item.content %>
+                    <% if (item.reply && item.reply.length === 0) { %>
+                        <p>
+                            <button type="button" data-toggle="modal" data-target=".bs-example-modal-lg"
+                                    class="btn btn-primary btn-xs" data-whatever="<%= item.id %>">回复
+                            </button>
+                        </p>
+                    <% } %>
+                    <% if (item.reply && item.reply.length > 0) { %>
+                        <div class="comment-reply">
+                            <% item.reply.forEach(res => { %>
+                                <div class="media">
+                                    <div class="media-left">
+                                        <img width="32" class="media-object"
+                                             src="https://cdn.boblog.com/Gravatar-Logo.jpg?imageView2/1/w/64"
+                                             alt="...">
+                                    </div>
+                                    <div class="media-body">
+                                        <h4 class="media-heading">来自「<%= res.nickname %>」的回复</h4>
+                                        <%= res.content %>
+                                    </div>
+                                </div>
+                            <% }) %>
+                            <button type="button" data-toggle="modal" data-target=".bs-example-modal-lg"
+                                    class="btn btn-primary btn-xs" data-whatever="<%= item.id %>">回复
+                            </button>
+                        </div>
+                    <% } %>
+                </div>
+            </div>
+        <% }) %>
+    </section>
+<% } %>
+
+<div class="modal fade bs-example-modal-lg" id="replyCommentModal" tabindex="-1" role="dialog"
+     aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="reply-model">
+                <section class="comment-create">
+                    <div class="comment-header" style="margin-top: 0;">
+                        <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
+                        回复评论
+                    </div>
+                    <form class="from" id="createReplyFrom" onsubmit="return preventFromDefaultBehavior()">
+                        <div class="form-group">
+                            <label for="replayNickname">昵称</label>
+                            <input maxlength="16" required name="nickname" type="text" class="form-control"
+                                   id="replayNickname"
+                                   placeholder="请填写您的昵称">
+                        </div>
+                        <div class="form-group">
+                            <label for="replayEmail">邮箱</label>
+                            <input maxlength="32" required name="email" type="email" class="form-control"
+                                   id="replayEmail"
+                                   placeholder="请填写您的邮箱">
+                        </div>
+                        <div class="form-group">
+                            <label for="replayContent">评论内容</label>
+                            <textarea maxlength="500" id="replayContent" style="resize: none;" required name="content"
+                                      class="form-control"
+                                      rows="3"
+                                      placeholder="请填写您的评论内容"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <input name="target_type" id="createReplyTargetType" value="article" type='hidden' required>
+                            <input class="comment-id" id="createReplyCommentId" name="comment_id" value="" type='hidden'
+                                   required>
+                            <input class="target-id" id="createReplyTargetId" name="target_id" value="<%= article.id %>"
+                                   type='hidden' required>
+                            <div class="alert alert-success alert-success-reply" style="display: none" role="alert">
+                                回复成功
+                            </div>
+                            <div class="alert alert-danger alert-danger-reply" style="display: none" role="alert">回复失败
+                            </div>
+                            <button type="submit" id="createReplayCommentBtn" class="btn btn-default btn-primary">提交回复
+                            </button>
+                        </div>
+                    </form>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+  /**
+   * 阻止from表单默认行为
+   * @return {boolean}
+   */
+  function preventFromDefaultBehavior() {
+    return false;
+  }
+</script>

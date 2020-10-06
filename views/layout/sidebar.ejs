@@ -1,0 +1,48 @@
+<article class="sidebar-container-visibility"></article>
+<article class="sidebar-container-fixed">
+    <% if (advertise && advertise.length > 0) { %>
+        <div class="sidebar-box recommend-box">
+            <header class="sidebar-header">
+                <span class="glyphicon glyphicon glyphicon-th-large" aria-hidden="true"></span>
+                推荐
+            </header>
+            <div class="list-group" style="margin: 0">
+                <% advertise.forEach(ad => { %>
+                    <a href="<%= ad.link %>" target="_blank" class="list-group-item list-group-item-border">
+                        <%= ad.title %>
+                    </a>
+                <% }) %>
+            </div>
+        </div>
+    <% } %>
+
+    <% if (category && category.length > 0) { %>
+        <div class="sidebar-box">
+            <header class="sidebar-header">
+                <span class="glyphicon glyphicon-tags" aria-hidden="true"></span>
+                分类
+            </header>
+            <ul class="sidebar-box-content">
+                <li class="sidebar-box-category">
+                    <a href="/">
+                        <button type="button" class="btn btn-default btn-primary btn-xs btn-margin-bottom">
+                            <span class="glyphicon glyphicon-tag" aria-hidden="true"></span>
+                            全部
+                        </button>
+                    </a>
+                    <% category.forEach(cate => { %>
+                        <a href="/?category_id=<%= cate.id %>">
+                            <button type="button" class="btn btn-default btn-primary btn-xs btn-margin-bottom">
+                                <span class="glyphicon glyphicon-tag" aria-hidden="true"></span>
+                                <%= cate.name %>
+                            </button>
+                        </a>
+                    <% }) %>
+                </li>
+            </ul>
+        </div>
+    <% } %>
+
+</article>
+
+

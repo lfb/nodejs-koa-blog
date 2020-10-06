@@ -1,0 +1,122 @@
+.clearfix {
+    overflow: auto;
+    zoom: 1;
+}
+.page-title {
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #eee;
+    line-height: 1;
+}
+.page-title h2 {
+    float: left;
+}
+.page-title-left {
+    float:left;
+}
+.title-button {
+    float: right;
+}
+.list-pager-box {
+    margin-top: 15px;
+    text-align: center;
+}
+.layout-loading.ivu-spin-fix {
+    display: block !important;
+}
+.layout-loading.ivu-spin-fix .ivu-spin-main {
+    position: absolute;
+    top: 50%;
+    margin-top: -16px;
+    left: 50%;
+    margin-left: -16px;
+    display: block;
+    width: initial;
+    height: initial;
+}
+.description-box img {
+    width: 100%;
+}
+.title-store-name {
+    background: #57c5f7;
+    padding: 4px 15px;
+    color: #fff;
+    border-radius: 2px;
+    margin-right: 10px;
+}
+.margin-top {
+    margin-top: 12px;
+}
+
+.margin-top-112 {
+  margin-top: 112px;
+}
+
+.product_pic_modal .ivu-modal-wrap {
+    z-index: 1001 !important;
+}
+.wrap-index {
+    background: #fff;
+    border-radius: 4px;
+    padding: 10px 20px;
+}
+
+.header-info {
+    padding: 10px 0 20px;
+    margin: 0 0 10px;
+    border-bottom: 1px solid #eee;
+    display: flex;
+
+
+}
+.header-info-title {
+    flex: 1;
+}
+.center-modal {
+    padding:30px 0;
+
+}
+.ivu-modal {
+    top: 50px;
+}
+
+td.ivu-table-expanded-cell {
+    padding: 20px 30px !important;
+}
+
+.ivu-table-overflowX {
+    overflow-x: visible !important;
+}
+
+.div-right-border {
+    border-right: 1px dashed #cccccc;
+}
+
+.button-box {
+    margin-bottom: 20px;
+}
+.button-left {
+    float: left;
+}
+.button-right {
+    float: right;
+}
+.goods-upload-box {
+    border: 1px dashed #ccc;
+    width: 180px;
+    text-align: center;
+    margin:5px;
+    font-size: 12px;
+    float:left;
+    padding: 20px 15px 10px;
+    min-height: 240px;
+    position: relative;
+}
+.goods-select-box {
+    height: 93px;
+    border: 1px solid #ccc;
+    float: left;
+    padding:10px;
+    border-radius: 10px;
+    margin: 5px 10px;
+}

@@ -1,0 +1,63 @@
+<% if (article) { %>
+    <%- include(
+    'layout/header', {
+    title: article ? article.title + ' - 波波博客 - boblog.com': '波波博客 - boblog.com',
+    description: article.description,
+    keyword: article ? article.keyword : '',
+    isArticleList: false,
+    navActiveTag: 'article',
+    isArticleDetail: true,
+    needHighlighting: true
+    })
+    %>
+
+    <article class="article-detail">
+        <%- include('layout/sidebar', { category, advertise }) %>
+        <article class="article-detail-container">
+            <div class="article-detail-header">
+                <h1 class="article-detail-title">
+                    <%= article.title %>
+                </h1>
+                <ul class="article-detail-intro">
+                    <% if (article.category) { %>
+                        <li class="articles-detail-item-category">
+                            <span class="glyphicon glyphicon-tag" aria-hidden="true"></span>
+                            <%= article.category.name %>
+                        </li>
+                    <% } %>
+                    <li>
+                        <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                        <%= article.author %>
+                    </li>
+                    <li>
+                        <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+                        <%= article.browse %>
+                    </li>
+                    <% if (commentList && commentList.meta) { %>
+                        <li>
+                            <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
+                            <%= commentList.meta.total %>
+                        </li>
+                    <% } %>
+                </ul>
+            </div>
+            <div>
+                <%- content %>
+                <input type="hidden" id="article-hidden-id" value="<%= article.id %>">
+            </div>
+
+            <%- include('layout/comment', {commentList}) %>
+        </article>
+    </article>
+<% } %>
+
+<div id="back-to-top-page">
+    <span class="glyphicon glyphicon-menu-up"></span>
+    <span>TOP</span>
+</div>
+
+<%- include('layout/footer', {isComment: true}) %>
+<script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.16.2/build/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>

@@ -1,0 +1,105 @@
+<%- include(
+'layout/header', {
+title: '波波博客 - boblog.com',
+description: '',
+keyword: '',
+isArticleList: true,
+navActiveTag: 'article',
+isArticleDetail: false,
+needHighlighting: false
+})
+%>
+
+<section class="article-list-sidebar">
+    <%- include('layout/sidebar', { category, advertise }) %>
+    <article class="article-list" id="article">
+        <header class="article-list-header">
+            <span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span>文章
+        </header>
+        <% if (article && article.data && article.data.length > 0) { %>
+            <ul class="article-list-box">
+                <% article.data.forEach(item => { %>
+                    <li class="article-list-box-inner">
+                        <a class="article-list-item" href="/article/detail/<%= item.id %>">
+                                <div class="article-list-content">
+                                    <h1 class="article-list-title">
+                                        <%= item.title %>
+                                    </h1>
+                                    <div class="article-list-description">
+                                        <%= item.description %>
+                                    </div>
+                                    <div class="article-list-info">
+                                        <% if (item.category) { %>
+                                            <p class="article-list-category">
+                                                <span class="glyphicon glyphicon-tag" aria-hidden="true"></span>
+                                                <%= item.category.name %>
+                                            </p>
+                                        <% } %>
+                                        <p class="article-list-author">
+                                            <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                                            <%= item.author %>
+                                        </p>
+                                        <p class="article-list-browse">
+                                            <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+                                            <%= item.browse %>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="article-list-cover-box">
+                                    <div class="article-list-cover-inner">
+                                        <img class="article-list-cover-img" data-src="<%= item.cover + '?imageView2/1/w/160' %>">
+                                    </div>
+                                </div>
+                        </a>
+                    </li>
+                <% }) %>
+            </ul>
+
+            <% if (article && article.meta && article.meta.total_pages > 1) { %>
+
+                <nav aria-label="Page navigation" class="page-center">
+                    <ul class="pagination">
+                        <li class="<%= article.meta.current_page === 1 ? 'disabled' : '' %>">
+                            <% if (article.meta.current_page === 1) { %>
+                                <span>
+                                    <span aria-hidden="true">&laquo;</span>
+                                </span>
+                            <% } else { %>
+                                <a href="/?page=<%= article.meta.current_page - 1 %>" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            <% } %>
+
+                        </li>
+                        <% for (var i = 0; i < article.meta.total_pages; i++) { %>
+                            <li class="<%= article.meta.current_page === i + 1 ? 'active' : '' %>"><a
+                                        href="/?page=<%= i + 1 %>"><%= i + 1 %></a></li>
+                        <% } %>
+                        <li class="<%= article.meta.current_page === article.meta.total_pages ? 'disabled' : '' %>">
+                            <% if (article.meta.current_page === article.meta.total_pages) { %>
+                                <span>
+                                    <span aria-hidden="true">&raquo;</span>
+                                </span>
+                            <% } else { %>
+                                <a href="/?page=<%= article.meta.current_page + 1 %>" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            <% } %>
+                        </li>
+                    </ul>
+                </nav>
+            <% } %>
+
+        <% } else { %>
+            <ul class="article-list-empty">暂无文章</ul>
+        <% } %>
+    </article>
+</section>
+<div id="back-to-top-page">
+    <span class="glyphicon glyphicon-menu-up"></span>
+    <span>TOP</span>
+</div>
+
+
+<%- include('layout/footer', {isComment: false}) %>
+<script src="/javascript/lazyload.js"></script>

@@ -1,0 +1,62 @@
+{
+  "name": "nodejs-koa2-blog",
+  "version": "1.0.0",
+  "description": "基于 Node.js Koa2 实战开发的一套完整的博客项目网站，使用 Koa2 二次开发一套适合多端的 RESTful API，同时配套完整的后台管理系统，且前端展示既有基于 ejs 服务端渲染，也有基于 Vue.js 前后端分离的 2 套前端网站。",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon app.js",
+    "test": "jest _tests  --forceExit --runInBand --colors"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/liangfengbo/nodejs-koa2-blog.git"
+  },
+  "keywords": [
+    "nodejs",
+    "koa2",
+    "sequelize",
+    "mysql",
+    "ejs",
+    "vuejs",
+    "JavaScript",
+    "博客网站",
+    "Node.js实战",
+    "ejs 服务端渲染"
+  ],
+  "author": "Fengbo Liang, https://github.com/liangfengbo",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/liangfengbo/nodejs-koa2-blog/issues"
+  },
+  "homepage": "https://github.com/liangfengbo/nodejs-koa2-blog#readme",
+  "dependencies": {
+    "@koa/cors": "^3.0.0",
+    "axios": "^0.19.0",
+    "basic-auth": "^2.0.1",
+    "bcryptjs": "^2.4.3",
+    "ejs": "^2.7.4",
+    "hashids": "^2.1.0",
+    "highlight.js": "^9.16.2",
+    "jest": "^24.9.0",
+    "jsonwebtoken": "^8.4.0",
+    "koa": "^2.7.0",
+    "koa-bodyparser": "^4.2.1",
+    "koa-router": "^7.4.0",
+    "koa-static": "^5.0.0",
+    "koa-views": "^6.2.1",
+    "lodash": "^4.17.11",
+    "marked": "^0.7.0",
+    "moment": "^2.24.0",
+    "mysql2": "^1.6.5",
+    "npm-check": "^5.9.0",
+    "redis": "^2.8.0",
+    "require-directory": "^2.1.1",
+    "sequelize": "^5.21.2",
+    "supertest": "^4.0.2",
+    "validator": "^10.11.0",
+    "xss": "^1.0.6"
+  },
+  "directories": {
+    "test": "_tests"
+  }
+}

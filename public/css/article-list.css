@@ -1,0 +1,268 @@
+.article-list-sidebar {
+    width: 70%;
+    min-height: 80vh;
+    box-sizing: border-box;
+    margin: 66px auto 24px;
+    overflow: hidden;
+}
+
+.article-list {
+    box-sizing: border-box;
+    overflow: hidden;
+    border-radius: 10px;
+    padding: 0 24px;
+    background: #fff;
+}
+
+.article-list-header {
+    box-sizing: border-box;
+    height: 42px;
+    line-height: 42px;
+    font-weight: 500;
+    border-bottom: 1px solid #f4f4f4;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    color: #337ab7;
+}
+
+.article-list-header span {
+    margin-right: 10px;
+}
+
+.article-list-nav {
+    box-sizing: border-box;
+    height: 42px;
+    line-height: 42px;
+    border-bottom: 1px solid #f4f4f4;
+}
+
+.article-list-nav-box {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+}
+
+.article-list-nav-item {
+    list-style: none;
+}
+
+.article-list-nav-item a {
+    cursor: pointer;
+    padding-right: 32px;
+    position: relative;
+    font-size: 12px;
+    color: #404040;
+    text-decoration: none;
+}
+
+.article-list-nav-item a:after {
+    display: block;
+    content: "";
+    width: 1px;
+    height: 16px;
+    position: absolute;
+    top: 5px;
+    right: 0;
+    border-right: 1px solid #f8f8f8;
+}
+
+.article-list-nav-item a:last-child:after {
+    display: none;
+}
+
+.article-list-nav-item a:hover {
+    color: #409EFF;
+}
+
+
+.article-list-nav-item--active {
+    color: #409EFF;
+}
+
+.article-list-box {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+.article-list-box-inner {
+    list-style: none;
+}
+
+.article-list-item {
+    padding: 24px 0;
+    text-decoration: none;
+    cursor: pointer;
+    display: flex;
+    width: 100%;
+    border-bottom: 1px solid #eee;
+    transition: 0.1s ease-in;
+}
+
+.article-list-item:hover {
+    text-decoration: none;
+}
+
+.article-list-item:hover .article-list-title {
+    color: #409EFF;
+}
+
+.article-list-content {
+    flex: 1;
+    margin-right: 24px;
+}
+
+.article-list-cover-box {
+    width: 80px;
+    height: 80px;
+}
+
+.article-list-cover-inner {
+    width: 80px;
+    height: 80px;
+}
+
+.article-list-cover-img {
+    width: 100%;
+    border-radius: 5px;
+}
+
+
+.article-list-title {
+    color: #464c5b;
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0;
+}
+
+.article-list-description {
+    color: #808695;
+    font-size: 14px;
+    padding: 16px 0;
+}
+
+.article-list-info {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+}
+
+.article-list-info p {
+    font-size: 12px;
+    color: #9ea7b4;
+    margin: 0;
+    margin-right: 16px;
+    white-space: nowrap;
+}
+
+.article-list-info p span {
+    margin-right: 5px;
+}
+
+p.article-list-category {
+    display: inline-block;
+    height: 24px;
+    line-height: 24px;
+    font-size: 12px;
+    padding: 0 24px;
+    color: #2d8cf0;
+    border-radius: 96px;
+    background: rgba(51, 119, 255, .1);
+}
+
+.article-list-empty {
+    text-align: center;
+    padding: 24px 0;
+    font-size: 16px;
+    color: #989898;
+}
+
+.sidebar {
+    box-sizing: border-box;
+    width: 320px;
+    margin-left: 24px;
+}
+
+.page {
+    padding: 32px 0 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.page-item {
+    list-style: none;
+    display: inline-block;
+}
+
+.page-item a {
+    display: inline-block;
+    text-decoration: none;
+    vertical-align: middle;
+    min-width: 32px;
+    height: 32px;
+    line-height: 30px;
+    text-align: center;
+    color: #515a6e;
+    background-color: #fff;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: pointer;
+    border: 1px solid #dcdee2;
+    border-radius: 4px;
+    margin: 0 10px;
+    transition: border .2s ease-in-out, color .2s ease-in-out;
+}
+
+.page-item a:hover {
+    color: #2f8cf0;
+    border-color: #2f8cf0;
+}
+
+@media screen and (min-width: 200px) and (max-width: 768px) {
+    .container {
+        box-sizing: border-box;
+        display: flex;
+        width: 100%;
+        overflow: hidden;
+        flex-direction: column;
+    }
+
+    .article-list{
+        border-radius: 0 0 10px 10px;
+        padding: 0 15px;
+    }
+
+    .sidebar {
+        box-sizing: border-box;
+        width: auto;
+        flex: 1;
+        margin-left: 0;
+        margin-top: 24px;
+    }
+
+    .article-list-sidebar {
+        padding: 0 15px;
+        width: 100%;
+    }
+
+    .article-list-sidebar {
+        margin-right: 0;
+        margin-left: 0;
+        padding: 0;
+    }
+
+    .article-list-info {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .article-list-author, .article-list-browse {
+        display: none;
+    }
+}
+
