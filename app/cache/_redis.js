@@ -4,12 +4,12 @@
  */
 const redis = require('redis')
 const {REDIS_CONF} = require('../../core/redis')
-
 // 创建客户端
-const redisClient = redis.createClient(
-  REDIS_CONF.port,
-  REDIS_CONF.host
-)
+const redisClient = redis.createClient({
+  host: REDIS_CONF.host,
+  port: REDIS_CONF.port,
+  password: REDIS_CONF.password
+})
 
 redisClient.on('error', err => {
   console.log('Redis err')
