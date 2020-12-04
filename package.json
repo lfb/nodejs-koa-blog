@@ -36,7 +36,7 @@
     "bcryptjs": "^2.4.3",
     "ejs": "^2.7.4",
     "hashids": "^2.1.0",
-    "highlight.js": "^9.16.2",
+    "highlight.js": "^10.4.1",
     "jest": "^24.9.0",
     "jsonwebtoken": "^8.4.0",
     "koa": "^2.7.0",
