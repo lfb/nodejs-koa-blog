@@ -10,7 +10,7 @@
     "test:unit": "vue-cli-service test:unit --watch"
   },
   "dependencies": {
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "babel-plugin-import": "^1.12.2",
     "core-js": "^3.3.2",
     "fastclick": "^1.0.6",
