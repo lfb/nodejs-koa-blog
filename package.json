@@ -49,7 +49,7 @@
     "moment": "^2.24.0",
     "mysql2": "^1.6.5",
     "npm-check": "^5.9.0",
-    "redis": "^2.8.0",
+    "redis": "^3.1.1",
     "require-directory": "^2.1.1",
     "sequelize": "^5.21.2",
     "supertest": "^4.0.2",
