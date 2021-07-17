@@ -19,21 +19,27 @@ router.post('/reply', async (ctx) => {
   console.log(ctx.request.body)
   const v = await new ReplyValidator().validate(ctx);
   // 创建回复
-  const r = await ReplyDao.create(v);
+  const [err, data] = await ReplyDao.create(v);
 
-  const data = {
-    id: r.getDataValue('id'),
-    content: r.getDataValue('content'),
-    status: r.getDataValue('status'),
-    comment_id: r.getDataValue('comment_id'),
-    user_id: r.getDataValue('user_id'),
-    reply_user_id: r.getDataValue('reply_user_id'),
-    created_at: r.getDataValue('created_at')
-  };
+  if(!err) {
+    const resData = {
+      id: data.id,
+      content: data.content,
+      status: data.status,
+      comment_id: data.comment_id,
+      article_id: data.article_id,
+      user_id: data.user_id,
+      reply_user_id: data.reply_user_id,
+      created_at: data.created_at
+    };
 
-  // 返回结果
-  ctx.response.status = 200;
-  ctx.body = res.json(data);
+    // 返回结果
+    ctx.response.status = 200;
+    ctx.body = res.json(resData);
+  }else {
+    ctx.body = res.fail(err);
+  }
+
 })
 
 // 删除评论
@@ -48,7 +54,7 @@ router.delete('/reply/:id', new Auth(AUTH_ADMIN).m, async (ctx) => {
     // 返回结果
     ctx.response.status = 200;
     ctx.body = res.success('删除回复评论成功')
-  }else {
+  } else {
     ctx.body = res.fail(err)
   }
 })
@@ -82,8 +88,6 @@ router.get('/reply', async (ctx) => {
   } else {
     ctx.body = res.fail(err);
   }
-
-
 })
 
 // 获取评论详情

@@ -57,17 +57,17 @@ Reply.init({
 })
 
 // 一对多：评论表下拥有多个评论
-Comment.hasMany(Reply, {
-  foreignKey: 'comment_id',
-  sourceKey: 'id',
-  as: 'reply'
-})
-
-Reply.belongsTo(Comment, {
-  foreignKey: 'comment_id',
-  targetKey: 'id',
-  as: 'comment'
-})
+// Comment.hasMany(Reply, {
+//   foreignKey: 'comment_id',
+//   sourceKey: 'id',
+//   as: 'reply'
+// })
+//
+// Reply.belongsTo(Comment, {
+//   foreignKey: 'comment_id',
+//   targetKey: 'id',
+//   as: 'comment'
+// })
 
 module.exports = {
   Reply

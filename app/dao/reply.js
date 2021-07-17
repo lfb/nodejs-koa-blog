@@ -17,7 +17,13 @@ class ReplyDao {
     reply.reply_user_id = v.get('body.reply_user_id');
     reply.content = xss(v.get('body.content'));
 
-    return reply.save();
+    try {
+      const res =await reply.save();
+      return [null, res]
+
+    } catch (err) {
+      return  [err, null]
+    }
   }
 
   // 删除回复

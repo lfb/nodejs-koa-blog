@@ -2,6 +2,8 @@
 const {Comment} = require('@models/comment')
 const {Reply} = require('@models/reply')
 const xss = require('xss')
+const {sequelize} = require('@core/db')
+const {Sequelize, Model} = require('sequelize')
 
 class CommentDao {
   // 创建评论
@@ -52,12 +54,17 @@ class CommentDao {
           exclude: ['updated_at']
         },
         include: [{
-          model: Reply,
+          association: Comment.hasMany(Reply, {
+              foreignKey: 'comment_id',
+              sourceKey: 'id',
+          }),
           as: 'reply',
+          // required: false,
           attributes: {
-            exclude: ['email', 'updated_at', 'deleted_at']
+            exclude: ['comment_id','commentId' ,'updated_at', 'deleted_at']
           }
         }]
+
       });
       if (!comment) {
         throw new global.errs.NotFound('没有找到相关评论信息');
@@ -94,6 +101,9 @@ class CommentDao {
   // 评论列表
   static async list(page = 1) {
     try {
+      // const records = await sequelize.query(`select comment.*,reply.* from comment,reply where comment.id = reply.comment_id;`, {
+      //   type: Sequelize.SELECT
+      // });
       const pageSize = 10;
       const comment = await Comment.scope('bh').findAndCountAll({
         // 每页10条
@@ -108,6 +118,16 @@ class CommentDao {
         attributes: {
           exclude: ['updated_at']
         },
+        include: [{
+          association: Comment.hasOne(Reply, {
+
+          }),
+          as: 'reply',
+          required: false,
+          attributes: {
+            exclude: ['updated_at', 'deleted_at']
+          }
+        }]
       })
 
       const data = {
@@ -120,7 +140,7 @@ class CommentDao {
           total_pages: Math.ceil(comment.count / 10),
         }
       };
-      return  [null, data]
+      return  [null, comment]
 
     }catch (err) {
       return  [err, null]
@@ -152,7 +172,7 @@ class CommentDao {
           exclude: ['updated_at']
         },
         include: [{
-          model: Reply,
+          association: Comment.hasMany(Reply, {}),
           as: 'reply',
           attributes: {
             exclude: ['updated_at', 'deleted_at']
