@@ -1,10 +1,10 @@
 const Router = require('koa-router')
 
-const {ReplyDao} = require('../../dao/reply')
-const {ReplyValidator, PositiveArticleIdParamsValidator} = require('../../validators/reply')
-const {Auth} = require('../../../middlewares/auth');
+const {ReplyDao} = require('@dao/reply')
+const {ReplyValidator, PositiveArticleIdParamsValidator} = require('@validators/reply')
+const {Auth} = require('@middlewares/auth');
 
-const {Resolve} = require('../../lib/helper');
+const {Resolve} = require('@lib/helper');
 const res = new Resolve();
 
 const AUTH_ADMIN = 16;

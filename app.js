@@ -2,6 +2,8 @@ const Koa = require('koa')
 const InitManager = require('./core/init')
 const parser = require('koa-bodyparser')
 const cors = require('@koa/cors');
+require('module-alias/register')
+
 
 const catchError = require('./middlewares/exception')
 

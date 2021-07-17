@@ -1,7 +1,7 @@
 const moment = require('moment');
 
 const {Sequelize, Model} = require('sequelize')
-const {sequelize} = require('../../core/db')
+const {sequelize} = require('@core/db')
 
 class Comment extends Model {
 

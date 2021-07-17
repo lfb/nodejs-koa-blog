@@ -1,6 +1,6 @@
 const moment = require('moment');
 const bcrypt = require('bcryptjs')
-const {sequelize} = require('../../core/db')
+const {sequelize} = require('@core/db')
 const {Sequelize, Model} = require('sequelize')
 
 // 定义管理员模型

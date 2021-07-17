@@ -9,12 +9,12 @@ const Router = require('koa-router');
 const {
   CategoryValidator,
   PositiveIdParamsValidator
-} = require('../../validators/category');
+} = require('@validators/category');
 
-const {CategoryDao} = require('../../dao/category');
-const {Auth} = require('../../../middlewares/auth');
+const {CategoryDao} = require('@dao/category');
+const {Auth} = require('@middlewares/auth');
 
-const {Resolve} = require('../../lib/helper');
+const {Resolve} = require('@lib/helper');
 const res = new Resolve();
 
 const AUTH_ADMIN = 16;

@@ -3,13 +3,13 @@ const Router = require('koa-router');
 const {
   ArticleValidator,
   PositiveIdParamsValidator
-} = require('../../validators/article');
+} = require('@validators/article');
 
-const {Auth} = require('../../../middlewares/auth');
-const {ArticleDao} = require('../../dao/article');
-const {CommentDao} = require('../../dao/comment');
+const {Auth} = require('@middlewares/auth');
+const {ArticleDao} = require('@dao/article');
+const {CommentDao} = require('@dao/comment');
 
-const {Resolve} = require('../../lib/helper');
+const {Resolve} = require('@lib/helper');
 const res = new Resolve();
 
 

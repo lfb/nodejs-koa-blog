@@ -1,5 +1,5 @@
 const moment = require('moment');
-const {sequelize} = require('../../core/db')
+const {sequelize} = require('@core/db')
 const {Sequelize, Model} = require('sequelize')
 // const {Category} = require('./category')
 

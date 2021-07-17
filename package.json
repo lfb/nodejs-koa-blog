@@ -28,6 +28,18 @@
   "bugs": {
     "url": "https://github.com/lfb/nodejs-koa2-blog/issues"
   },
+  "_moduleAliases": {
+    "@": ".",
+    "@app": "app",
+    "@core": "core",
+    "@middlewares": "middlewares",
+    "@api": "app/api",
+    "@dao": "app/dao",
+    "@lib": "app/lib",
+    "@models": "app/models",
+    "@service": "app/service",
+    "@validators": "app/validators"
+  },
   "homepage": "https://github.com/lfb/nodejs-koa2-blog#readme",
   "dependencies": {
     "@koa/cors": "^3.0.0",
@@ -39,6 +51,7 @@
     "koa": "^2.7.0",
     "koa-bodyparser": "^4.2.1",
     "koa-router": "^7.4.0",
+    "module-alias": "^2.2.2",
     "moment": "^2.24.0",
     "mysql2": "^2.2.5",
     "nodemon": "^2.0.12",

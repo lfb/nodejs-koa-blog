@@ -9,12 +9,12 @@ const Router = require('koa-router')
 const {
   RegisterValidator,
   AdminLoginValidator
-} = require('../../validators/admin')
+} = require('@validators/admin')
 
-const {AdminDao} = require('../../dao/admin');
-const {Auth} = require('../../../middlewares/auth');
-const {LoginManager} = require('../../service/login');
-const {Resolve} = require('../../lib/helper');
+const {AdminDao} = require('@dao/admin');
+const {Auth} = require('@middlewares/auth');
+const {LoginManager} = require('@service/login');
+const {Resolve} = require('@lib/helper');
 const res = new Resolve();
 
 const AUTH_ADMIN = 16;

@@ -4,7 +4,7 @@
  * @author 梁凤波, Peter Liang
  */
 
-const {Admin} = require('../models/admin')
+const {Admin} = require('@models/admin')
 const bcrypt = require('bcryptjs')
 
 class AdminDao {

@@ -1,7 +1,7 @@
 const {
   Rule,
   LinValidator
-} = require('../../core/lin-validator-v2')
+} = require('@core/lin-validator-v2')
 
 class CommentValidator extends LinValidator {
   constructor() {

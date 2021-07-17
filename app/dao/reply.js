@@ -1,6 +1,6 @@
 const xss = require('xss')
-const {Reply} = require('../models/reply')
-const {Comment} = require('../models/comment')
+const {Reply} = require('@models/reply')
+const {Comment} = require('@models/comment')
 
 class ReplyDao {
   // 创建回复

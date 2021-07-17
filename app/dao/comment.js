@@ -1,6 +1,6 @@
 
-const {Comment} = require('../models/comment')
-const {Reply} = require('../models/reply')
+const {Comment} = require('@models/comment')
+const {Reply} = require('@models/reply')
 const xss = require('xss')
 
 class CommentDao {

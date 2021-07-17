@@ -1,7 +1,7 @@
-const {AdminDao} = require('../dao/admin')
-const {UserDao} = require('../dao/user')
-const {generateToken} = require('../../core/util')
-const {Auth} = require('../../middlewares/auth')
+const {AdminDao} = require('@dao/admin')
+const {UserDao} = require('@dao/user')
+const {generateToken} = require('@core/util')
+const {Auth} = require('@middlewares/auth')
 
 
 class LoginManager {

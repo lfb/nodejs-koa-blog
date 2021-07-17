@@ -4,7 +4,7 @@
  * @author 梁凤波, Peter Liang
  */
 
-const {User} = require('../models/user')
+const {User} = require('@models/user')
 const bcrypt = require('bcryptjs')
 
 class UserDao {

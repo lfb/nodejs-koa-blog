@@ -1,9 +1,9 @@
 const {
   Rule,
   LinValidator
-} = require('../../core/lin-validator-v2')
+} = require('@core/lin-validator-v2')
 
-const {Category} = require('../models/category')
+const {Category} = require('@models/category')
 
 class ArticleValidator extends LinValidator {
   constructor() {
