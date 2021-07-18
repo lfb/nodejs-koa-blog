@@ -367,12 +367,13 @@ class CommentDao {
       // 如果ids是数组，则使用 Op.in 查询，反之id索引查询
       const fn = isArrayIds ? 'findAll' : 'findOne'
       const res = await User.scope(scope)[fn](finner)
-      const user = {}
 
       if (isArrayIds) {
+        const user = {}
         res.forEach(item => {
           user[item.id] = item
         })
+        return [null, user]
       }
 
       return [null, res]
