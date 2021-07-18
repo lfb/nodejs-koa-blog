@@ -2,6 +2,8 @@ const { Op } = require('sequelize')
 
 const { Article } = require('@models/article')
 const { Category } = require('@models/category')
+const { Admin } = require('@models/admin')
+const { isArray, unique } = require('@lib/utils')
 
 // 定义文章模型
 class ArticleDao {
@@ -44,6 +46,79 @@ class ArticleDao {
     }
   }
 
+  static async _handleAdmin(data, ids) {
+    const finner = {
+      where: {
+        id: {}
+      },
+      attributes: ['id', 'email', 'nickname']
+    }
+
+    if (isArray(ids)) {
+      finner.where.id = {
+        [Op.in]: ids
+      }
+    } else {
+      finner.where.id = ids
+    }
+
+    try {
+      if (isArray(ids)) {
+        const res = await Admin.findAll(finner)
+        let admin = {}
+        res.forEach(item => {
+          admin[item.id] = item
+        })
+
+        data.forEach(item => {
+          item.setDataValue('admin_info', admin[item.admin_id] || null)
+        })
+      } else {
+        const res = await Admin.findOne(finner)
+        data.setDataValue('admin_info', res)
+      }
+      return [null, data]
+    } catch (err) {
+      return [err, null]
+    }
+  }
+
+  static async _handleCategory(data, ids) {
+    const finner = {
+      where: {
+        id: {}
+      },
+      attributes: ['id', 'name']
+    }
+    if (isArray(ids)) {
+      finner.where.id = {
+        [Op.in]: ids
+      }
+    } else {
+      finner.where.id = ids
+    }
+
+    try {
+      if (isArray(ids)) {
+        const res = await Category.findAll(finner)
+        let category = {}
+        res.forEach(item => {
+          category[item.id] = item
+        })
+
+        data.forEach(item => {
+          item.setDataValue('category_info', category[item.category_id] || null)
+        })
+      } else {
+        const res = await Category.findOne(finner)
+        data.setDataValue('category_info', res)
+      }
+      return [null, data]
+    } catch (err) {
+      return [err, null]
+    }
+  }
+
   // 获取文章列表
   static async list(params = {}) {
     const { category_id, keyword, status, page = 1 } = params;
@@ -68,34 +143,48 @@ class ArticleDao {
     if (status) {
       filter.status = status
     }
-    const article = await Article.scope('iv').findAndCountAll({
-      limit: pageSize, //每页10条
-      offset: (page - 1) * pageSize,
-      where: filter,
-      order: [
-        ['created_at', 'DESC']
-      ],
-      // 查询每篇文章下关联的分类
-      // include: [{
-      //   model: Category,
-      //   as: 'category',
-      //   attributes: {
-      //     exclude: ['deleted_at', 'updated_at']
-      //   }
-      // }]
-    });
+    try {
+      const article = await Article.scope('iv').findAndCountAll({
+        limit: pageSize, //每页10条
+        offset: (page - 1) * pageSize,
+        where: filter,
+        order: [
+          ['created_at', 'DESC']
+        ]
+      });
 
-    return {
-      data: article.rows,
-      // 分页
-      meta: {
-        current_page: parseInt(page),
-        per_page: 10,
-        count: article.count,
-        total: article.count,
-        total_pages: Math.ceil(article.count / 10),
+      let rows = article.rows
+
+      // 处理分类
+      const categoryIds = unique(rows.map(item => item.category_id))
+      const [categoryError, dataAndCategory] = await ArticleDao._handleCategory(rows, categoryIds)
+      if (!categoryError) {
+        rows = dataAndCategory
       }
-    };
+
+      // 处理创建人
+      const adminIds = unique(rows.map(item => item.admin_id))
+      const [userError, dataAndAdmin] = await ArticleDao._handleAdmin(rows, adminIds)
+      if (!userError) {
+        rows = dataAndAdmin
+      }
+
+      const data = {
+        data: rows,
+        // 分页
+        meta: {
+          current_page: parseInt(page),
+          per_page: 10,
+          count: article.count,
+          total: article.count,
+          total_pages: Math.ceil(article.count / 10),
+        }
+      }
+
+      return [null, data]
+    } catch (err) {
+      return [err, null]
+    }
   }
 
   // 删除文章
@@ -172,20 +261,23 @@ class ArticleDao {
   // 文章详情
   static async detail(id) {
     try {
-      const article = await Article.findOne({
+      let article = await Article.findOne({
         where: {
           id,
           deleted_at: null
         },
-        // 查询每篇文章下关联的分类
-        // include: [{
-        //   model: Category,
-        //   as: 'category',
-        //   attributes: {
-        //     exclude: ['deleted_at', 'updated_at']
-        //   }
-        // }]
       });
+
+      const [categoryError, dataAndCategory] = await ArticleDao._handleCategory(article, article.category_id)
+      if (!categoryError) {
+        article = dataAndCategory
+      }
+
+      // 处理创建人
+      const [userError, dataAndAdmin] = await ArticleDao._handleAdmin(article, article.admin_id)
+      if (!userError) {
+        article = dataAndAdmin
+      }
 
       if (!article) {
         throw new global.errs.NotFound('没有找到相关文章');

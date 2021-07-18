@@ -287,10 +287,6 @@ class CommentDao {
    * @returns 根据传入的ids查询出来的文章数据
    */
   static async getArticleData(ids) {
-    if (Array.isArray(ids) && ids.length === 1) {
-      ids = ids.join('')
-    }
-
     const scope = 'bh'
     const finner = {
       where: {},
@@ -309,11 +305,9 @@ class CommentDao {
 
     try {
       // 如果ids是数组，则使用 Op.in 查询，反之id索引查询
-      const fn = isArrayIds ? 'findAll' : 'findOne'
-      const res = await Article.scope(scope)[fn](finner)
-      const article = {}
-
       if (isArrayIds) {
+        const res = await Article.scope(scope).findAll(finner)
+        const article = {}
         res.forEach(item => {
           // 如果有重复的map key 则直接装进去
           if (article[item.id]) {
@@ -323,13 +317,15 @@ class CommentDao {
             article[item.id] = [item]
           }
         })
+        return [null, article]
       } else {
-        article[res.id] = res
+        const res = await Article.scope(scope).findOne(finner)
+
+        return [null, res]
       }
 
-      return [null, article]
-
     } catch (err) {
+      console.log(err)
       return [err, null]
     }
   }
@@ -343,13 +339,11 @@ class CommentDao {
       return [null, null]
     }
 
-    if (Array.isArray(ids) && ids.length === 1) {
-      ids = ids.join('')
-    }
-
     const scope = 'bh'
     const finner = {
-      where: {}
+      where: {
+        id: {}
+      }
       // attributes: ['id', 'title']
     }
     const isArrayIds = isArray(ids)
@@ -404,6 +398,8 @@ class CommentDao {
     } else {
       comment.setDataValue(key, data)
     }
+
+    // console.log('comment', comment)
 
     return comment
   }
