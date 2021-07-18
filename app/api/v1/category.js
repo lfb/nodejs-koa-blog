@@ -11,10 +11,10 @@ const {
   PositiveIdParamsValidator
 } = require('@validators/category');
 
-const {CategoryDao} = require('@dao/category');
-const {Auth} = require('@middlewares/auth');
+const { CategoryDao } = require('@dao/category');
+const { Auth } = require('@middlewares/auth');
 
-const {Resolve} = require('@lib/helper');
+const { Resolve } = require('@lib/helper');
 const res = new Resolve();
 
 const AUTH_ADMIN = 16;
@@ -36,11 +36,11 @@ router.post('/category', new Auth(AUTH_ADMIN).m, async (ctx) => {
     parent_id: v.get('body.parent_id'),
   });
 
-  if(!err) {
+  if (!err) {
     // 返回结果
     ctx.response.status = 200;
     ctx.body = res.json(data)
-  }else {
+  } else {
     ctx.body = res.fail(err)
   }
 })
@@ -58,10 +58,10 @@ router.delete('/category/:id', new Auth(AUTH_ADMIN).m, async (ctx) => {
   const id = v.get('path.id');
   // 删除分类
   const [err, data] = await CategoryDao.destroy(id);
-  if(!err) {
+  if (!err) {
     ctx.response.status = 200;
     ctx.body = res.success('删除分类成功');
-  }else {
+  } else {
     ctx.body = res.fail(err);
   }
 })
@@ -80,8 +80,8 @@ router.put('/category/:id', new Auth(AUTH_ADMIN).m, async (ctx) => {
   // 更新分类
   const [err, data] = await CategoryDao.update(id, v);
   if (!err) {
-      ctx.response.status = 200;
-      ctx.body = res.success('更新分类成功');
+    ctx.response.status = 200;
+    ctx.body = res.success('更新分类成功');
   } else {
     ctx.body = res.fail(err);
   }
@@ -96,7 +96,7 @@ router.get('/category', async (ctx) => {
     // 返回结果
     ctx.response.status = 200;
     ctx.body = res.json(data);
-  }else {
+  } else {
     ctx.body = res.fail(err);
   }
 })
@@ -113,11 +113,11 @@ router.get('/category/:id', async (ctx) => {
   const id = v.get('path.id');
   // 获取分类
   const [err, data] = await CategoryDao.detail(id);
-  if(!err) {
+  if (!err) {
     // 返回结果
     ctx.response.status = 200;
     ctx.body = res.json(data);
-  }else {
+  } else {
     ctx.body = res.fail(err);
   }
 })

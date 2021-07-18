@@ -1,7 +1,7 @@
 const moment = require('moment');
 const bcrypt = require('bcryptjs')
-const {sequelize} = require('@core/db')
-const {Sequelize, Model} = require('sequelize')
+const { sequelize } = require('@core/db')
+const { Sequelize, Model } = require('sequelize')
 
 // 定义用户模型
 class User extends Model {

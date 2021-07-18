@@ -5,11 +5,11 @@ const {
   PositiveIdParamsValidator
 } = require('@validators/article');
 
-const {Auth} = require('@middlewares/auth');
-const {ArticleDao} = require('@dao/article');
-const {CommentDao} = require('@dao/comment');
+const { Auth } = require('@middlewares/auth');
+const { ArticleDao } = require('@dao/article');
+const { CommentDao } = require('@dao/comment');
 
-const {Resolve} = require('@lib/helper');
+const { Resolve } = require('@lib/helper');
 const res = new Resolve();
 
 
@@ -29,7 +29,7 @@ router.post('/article', new Auth(AUTH_ADMIN).m, async (ctx) => {
 
   // 创建文章
   const [err, data] = await ArticleDao.create(v);
-  if(!err) {
+  if (!err) {
     // 返回结果
     ctx.response.status = 200;
     ctx.body = res.success('创建文章成功');
@@ -50,10 +50,10 @@ router.delete('/article/:id', new Auth(AUTH_ADMIN).m, async (ctx) => {
   const id = v.get('path.id');
   // 删除文章
   const [err, data] = await ArticleDao.destroy(id);
-  if(!err) {
+  if (!err) {
     ctx.response.status = 200;
     ctx.body = res.success('删除文章成功');
-  }else {
+  } else {
     ctx.body = res.fail(err);
   }
 })
@@ -69,10 +69,10 @@ router.put('/article/:id', new Auth(AUTH_ADMIN).m, async (ctx) => {
   const id = v.get('path.id');
   // 更新文章
   const [err, data] = await ArticleDao.update(id, v);
-  if(!err) {
+  if (!err) {
     ctx.response.status = 200;
     ctx.body = res.success('更新文章成功');
-  }else {
+  } else {
     ctx.body = res.fail(err);
   }
 })
@@ -83,14 +83,14 @@ router.put('/article/:id', new Auth(AUTH_ADMIN).m, async (ctx) => {
  */
 router.get('/article', async (ctx) => {
   // 尝试获文章取缓存
-  const {category_id = 0, page = 1} = ctx.query;
+  const { category_id = 0, page = 1 } = ctx.query;
 
   // 没有缓存，则读取数据库
   const [err, data] = await ArticleDao.list(ctx.query);
-  if(!err) {
+  if (!err) {
     ctx.response.status = 200;
     ctx.body = res.json(data)
-  }else {
+  } else {
     ctx.body = res.fail(err)
   }
 });
@@ -107,13 +107,13 @@ router.get('/article/:id', async (ctx) => {
   const id = v.get('path.id');
   // 查询文章
   const [err, data] = await ArticleDao.detail(id);
-  if(!err) {
+  if (!err) {
     // 获取关联此文章的评论列表
     const [commentError, commentData] = await CommentDao.targetComment({
       article_id: id
     })
 
-    if(!commentError) {
+    if (!commentError) {
       data.article_comment = commentData
     }
 
@@ -122,7 +122,7 @@ router.get('/article/:id', async (ctx) => {
     // 返回结果
     ctx.response.status = 200;
     ctx.body = res.json(data);
-  }else {
+  } else {
     ctx.body = res.fail(err);
   }
 })

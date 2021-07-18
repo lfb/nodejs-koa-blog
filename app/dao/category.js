@@ -1,4 +1,4 @@
-const {Category} = require('@models/category')
+const { Category } = require('@models/category')
 
 class CategoryDao {
   // 创建分类
@@ -36,7 +36,7 @@ class CategoryDao {
       return [null, data]
 
     } catch (err) {
-      return  [err, null]
+      return [err, null]
     }
   }
 
@@ -58,8 +58,8 @@ class CategoryDao {
       const res = await category.destroy()
       return [null, res]
 
-    }catch (err) {
-        return [err, null]
+    } catch (err) {
+      return [err, null]
     }
   }
 
@@ -77,7 +77,7 @@ class CategoryDao {
       }
 
       return [null, category]
-    }catch (err) {
+    } catch (err) {
       return [err, null]
     }
   }
@@ -96,7 +96,7 @@ class CategoryDao {
     try {
       const res = await category.save();
       return [res, null]
-    }catch (err) {
+    } catch (err) {
       return [err, null]
     }
   }
@@ -107,7 +107,7 @@ class CategoryDao {
       deleted_at: null
     }
     const status = v.get('body.status')
-    if(status) {
+    if (status) {
       params.status = status
     }
 
@@ -117,7 +117,7 @@ class CategoryDao {
       });
       return [null, res]
 
-    }catch (err) {
+    } catch (err) {
       return [err, null]
     }
   }

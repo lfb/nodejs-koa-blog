@@ -40,12 +40,12 @@ const sequelize = new Sequelize(dbName, user, password, {
 })
 
 // 创建模型
-sequelize.sync({force: false})
+sequelize.sync({ force: false })
 
-sequelize.authenticate().then(res=>{
- console.log('Connection has been established successfully.');
+sequelize.authenticate().then(res => {
+  console.log('Connection has been established successfully.');
 }).catch(err => {
- console.error('Unable to connect to the database:', err);
+  console.error('Unable to connect to the database:', err);
 })
 
 // sequelize.query("CREATE DATABASE IF NOT EXISTS boblog DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci").then(res=>{

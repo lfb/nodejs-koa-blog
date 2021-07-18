@@ -11,10 +11,10 @@ const {
   AdminLoginValidator
 } = require('@validators/admin')
 
-const {AdminDao} = require('@dao/admin');
-const {Auth} = require('@middlewares/auth');
-const {LoginManager} = require('@service/login');
-const {Resolve} = require('@lib/helper');
+const { AdminDao } = require('@dao/admin');
+const { Auth } = require('@middlewares/auth');
+const { LoginManager } = require('@service/login');
+const { Resolve } = require('@lib/helper');
 const res = new Resolve();
 
 const AUTH_ADMIN = 16;
@@ -35,7 +35,7 @@ router.post('/register', async (ctx) => {
     nickname: v.get('body.nickname')
   });
 
-  if(!err) {
+  if (!err) {
     // 返回结果
     ctx.response.status = 200;
     ctx.body = res.json(data);
@@ -71,7 +71,7 @@ router.get('/auth', new Auth(AUTH_ADMIN).m, async (ctx) => {
   // 查询用户信息
   let [err, data] = await AdminDao.detail(id);
 
-  if(!err) {
+  if (!err) {
     // 返回结果
     ctx.response.status = 200;
     ctx.body = res.json(data)

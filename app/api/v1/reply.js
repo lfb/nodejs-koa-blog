@@ -1,10 +1,10 @@
 const Router = require('koa-router')
 
-const {ReplyDao} = require('@dao/reply')
-const {ReplyValidator, PositiveArticleIdParamsValidator} = require('@validators/reply')
-const {Auth} = require('@middlewares/auth');
+const { ReplyDao } = require('@dao/reply')
+const { ReplyValidator, PositiveArticleIdParamsValidator } = require('@validators/reply')
+const { Auth } = require('@middlewares/auth');
 
-const {Resolve} = require('@lib/helper');
+const { Resolve } = require('@lib/helper');
 const res = new Resolve();
 
 const AUTH_ADMIN = 16;
@@ -21,7 +21,7 @@ router.post('/reply', async (ctx) => {
   // 创建回复
   const [err, data] = await ReplyDao.create(v);
 
-  if(!err) {
+  if (!err) {
     const resData = {
       id: data.id,
       content: data.content,
@@ -36,7 +36,7 @@ router.post('/reply', async (ctx) => {
     // 返回结果
     ctx.response.status = 200;
     ctx.body = res.json(resData);
-  }else {
+  } else {
     ctx.body = res.fail(err);
   }
 
@@ -50,7 +50,7 @@ router.delete('/reply/:id', new Auth(AUTH_ADMIN).m, async (ctx) => {
   // 获取分类ID参数
   const id = v.get('path.id');
   const [err, data] = await ReplyDao.destroy(id);
-  if(!err) {
+  if (!err) {
     // 返回结果
     ctx.response.status = 200;
     ctx.body = res.success('删除回复评论成功')
@@ -67,7 +67,7 @@ router.put('/reply/:id', new Auth(AUTH_ADMIN).m, async (ctx) => {
   // 获取分类ID参数
   const id = v.get('path.id');
   const [err, data] = await ReplyDao.update(id, v);
-  if(!err) {
+  if (!err) {
     // 返回结果
     ctx.response.status = 200;
     ctx.body = res.success('更新评论成功')
@@ -82,7 +82,7 @@ router.put('/reply/:id', new Auth(AUTH_ADMIN).m, async (ctx) => {
 router.get('/reply', async (ctx) => {
   const comment_id = ctx.query.comment_id
   const [err, data] = await ReplyDao.list(comment_id);
-  if(!err) {
+  if (!err) {
     ctx.response.status = 200;
     ctx.body = res.json(data);
   } else {
@@ -99,11 +99,11 @@ router.get('/reply/:id', async (ctx) => {
   const id = v.get('path.id');
   const [err, data] = await ReplyDao.detail(id)
 
-  if(!err) {
+  if (!err) {
     // 返回结果
     ctx.response.status = 200;
     ctx.body = res.json(data);
-  }else {
+  } else {
     ctx.body = res.fail(err)
   }
 })

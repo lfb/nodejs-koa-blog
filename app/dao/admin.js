@@ -4,13 +4,13 @@
  * @author 梁凤波, Peter Liang
  */
 
-const {Admin} = require('@models/admin')
+const { Admin } = require('@models/admin')
 const bcrypt = require('bcryptjs')
 
 class AdminDao {
   // 创建用管理员
   static async create(params) {
-    const {email, password, nickname} = params
+    const { email, password, nickname } = params
 
     const hasAdmin = await Admin.findOne({
       where: {
@@ -37,7 +37,7 @@ class AdminDao {
       }
 
       return [null, data]
-    }catch (err) {
+    } catch (err) {
       return [err, null]
     }
   }
@@ -69,22 +69,22 @@ class AdminDao {
   // 查询管理员信息
   static async detail(id) {
     const scope = 'bh';
-   try {
-     // 查询管理员是否存在
-     const admin = await Admin.scope(scope).findOne({
-       where: {
-         id
-       }
-     })
+    try {
+      // 查询管理员是否存在
+      const admin = await Admin.scope(scope).findOne({
+        where: {
+          id
+        }
+      })
 
-     if (!admin) {
-       throw new global.errs.AuthFailed('账号不存在或者密码不正确')
-     }
+      if (!admin) {
+        throw new global.errs.AuthFailed('账号不存在或者密码不正确')
+      }
 
-     return [null, admin]
-   } catch (err) {
-     return [err, null]
-   }
+      return [null, admin]
+    } catch (err) {
+      return [err, null]
+    }
   }
 }
 

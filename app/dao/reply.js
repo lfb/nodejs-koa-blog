@@ -1,6 +1,6 @@
 const xss = require('xss')
-const {Reply} = require('@models/reply')
-const {Comment} = require('@models/comment')
+const { Reply } = require('@models/reply')
+const { Comment } = require('@models/comment')
 
 class ReplyDao {
   // 创建回复
@@ -18,11 +18,11 @@ class ReplyDao {
     reply.content = xss(v.get('body.content'));
 
     try {
-      const res =await reply.save();
+      const res = await reply.save();
       return [null, res]
 
     } catch (err) {
-      return  [err, null]
+      return [err, null]
     }
   }
 
@@ -41,7 +41,7 @@ class ReplyDao {
     try {
       const res = await reply.destroy()
       return [null, res]
-    }catch (err) {
+    } catch (err) {
       return [err, null]
     }
   }
@@ -63,7 +63,7 @@ class ReplyDao {
       }
 
       return [null, reply]
-    }catch (err) {
+    } catch (err) {
       return [err, null]
     }
   }
@@ -83,7 +83,7 @@ class ReplyDao {
     try {
       const res = await reply.save();
       return [null, res]
-    }catch (err) {
+    } catch (err) {
       return [err, null]
     }
   }
@@ -101,10 +101,10 @@ class ReplyDao {
           ['created_at', 'DESC']
         ]
       });
-      return  [null, res]
+      return [null, res]
 
     } catch (err) {
-      return  [err, null]
+      return [err, null]
     }
   }
 }

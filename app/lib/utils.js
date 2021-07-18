@@ -18,12 +18,12 @@ function handleTree(list) {
 }
 
 // 数组去重
-function unique(arr){
+function unique(arr) {
   return [...new Set(arr)]
 }
 
 // 检测是否是数组
-function isArray(arr){
+function isArray(arr) {
   return Array.isArray(arr)
 }
 

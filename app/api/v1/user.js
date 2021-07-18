@@ -10,10 +10,10 @@ const {
     UserLoginValidator
 } = require('@validators/user')
 
-const {UserDao} = require('@dao/user');
-const {Auth} = require('@middlewares/auth');
-const {LoginManager} = require('@service/login');
-const {Resolve} = require('@lib/helper');
+const { UserDao } = require('@dao/user');
+const { Auth } = require('@middlewares/auth');
+const { LoginManager } = require('@service/login');
+const { Resolve } = require('@lib/helper');
 const res = new Resolve();
 
 const AUTH_USER = 16;
@@ -36,7 +36,7 @@ router.post('/register', async (ctx) => {
         username: v.get('body.username')
     });
 
-    if(!err) {
+    if (!err) {
         data.token = await LoginManager.userLogin({
             email,
             password
@@ -76,10 +76,10 @@ router.get('/auth', new Auth(AUTH_USER).m, async (ctx) => {
 
     // 查询用户信息
     let [err, data] = await UserDao.detail(id);
-    if(!err) {
+    if (!err) {
         ctx.response.status = 200;
         ctx.body = res.json(data)
-    }else {
+    } else {
         ctx.body = res.fail(err)
     }
 })

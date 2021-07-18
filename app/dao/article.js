@@ -1,7 +1,7 @@
-const {Op} = require('sequelize')
+const { Op } = require('sequelize')
 
-const {Article} = require('@models/article')
-const {Category} = require('@models/category')
+const { Article } = require('@models/article')
+const { Category } = require('@models/category')
 
 // 定义文章模型
 class ArticleDao {
@@ -46,7 +46,7 @@ class ArticleDao {
 
   // 获取文章列表
   static async list(params = {}) {
-    const {category_id, keyword, status, page = 1} = params;
+    const { category_id, keyword, status, page = 1 } = params;
     const pageSize = 10
 
     // 筛选方式
@@ -191,9 +191,9 @@ class ArticleDao {
         throw new global.errs.NotFound('没有找到相关文章');
       }
 
-      return [null , article];
-    }catch (err) {
-      return  [err, null]
+      return [null, article];
+    } catch (err) {
+      return [err, null]
     }
   }
 

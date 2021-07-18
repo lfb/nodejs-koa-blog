@@ -4,13 +4,13 @@
  * @author 梁凤波, Peter Liang
  */
 
-const {User} = require('@models/user')
+const { User } = require('@models/user')
 const bcrypt = require('bcryptjs')
 
 class UserDao {
     // 创建用用户
     static async create(params) {
-        const {email, password, username} = params
+        const { email, password, username } = params
         const hasUser = await User.findOne({
             where: {
                 email,
@@ -79,8 +79,8 @@ class UserDao {
             }
 
             return [null, user]
-        }catch (err) {
-            return  [err, null]
+        } catch (err) {
+            return [err, null]
         }
     }
 }
