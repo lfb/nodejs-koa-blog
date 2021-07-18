@@ -414,18 +414,17 @@ class CommentDao {
 
       if(!replyErr) {
         const userIds = [];
-        let newUserIds = null
+        let newUserIds = [];
 
         if(isArrayData){
           Object.keys(replyData).forEach(key=> {
             userIds.push(...replyData[key].map(item => item.user_id), ...replyData[key].map(item => item.reply_user_id))
           })
-
-          newUserIds = unique(userIds).filter(v => v !== 0)
-        }else {
-          newUserIds = [replyData.user_id, replyData.reply_user_id].filter(v => v !== 0)
+        } else {
+          userIds.push(replyData.user_id, replyData.reply_user_id)
         }
 
+        newUserIds = unique(userIds).filter(v => v !== 0)
         const [userErr1, userData1] = await CommentDao.getUserData(newUserIds)
         if(!userErr1) {
           CommentDao._handleReplyUserInfo(replyData, userData1)
