@@ -287,6 +287,10 @@ class CommentDao {
    * @returns 根据传入的ids查询出来的文章数据
    */
   static async getArticleData(ids) {
+    if (Array.isArray(ids) && ids.length === 1) {
+      ids = ids.join('')
+    }
+
     const scope = 'bh'
     const finner = {
       where: {},
@@ -307,9 +311,9 @@ class CommentDao {
       // 如果ids是数组，则使用 Op.in 查询，反之id索引查询
       const fn = isArrayIds ? 'findAll' : 'findOne'
       const res = await Article.scope(scope)[fn](finner)
+      const article = {}
 
       if (isArrayIds) {
-        const article = {}
         res.forEach(item => {
           // 如果有重复的map key 则直接装进去
           if (article[item.id]) {
@@ -319,10 +323,11 @@ class CommentDao {
             article[item.id] = [item]
           }
         })
-        return [null, article]
+      } else {
+        article[res.id] = res
       }
 
-      return [null, res]
+      return [null, article]
 
     } catch (err) {
       return [err, null]
@@ -336,6 +341,10 @@ class CommentDao {
   static async getUserData(ids) {
     if (ids === 0) {
       return [null, null]
+    }
+
+    if (Array.isArray(ids) && ids.length === 1) {
+      ids = ids.join('')
     }
 
     const scope = 'bh'
@@ -358,14 +367,12 @@ class CommentDao {
       // 如果ids是数组，则使用 Op.in 查询，反之id索引查询
       const fn = isArrayIds ? 'findAll' : 'findOne'
       const res = await User.scope(scope)[fn](finner)
+      const user = {}
 
       if (isArrayIds) {
-        const user = {}
         res.forEach(item => {
           user[item.id] = item
         })
-
-        return [null, user]
       }
 
       return [null, res]
@@ -448,20 +455,18 @@ class CommentDao {
       const USER_INFO = 'user_info'
       const REPLY_USER_INFO = 'replay_user_info'
       Object.keys(data).forEach(key => {
-        if (data.hasOwnProperty(key)) {
-          const item = data[key]
-          if (isArray(item)) {
-            item.forEach(v => {
-              v.setDataValue(USER_INFO, user[v.user_id] || null)
-              v.setDataValue(REPLY_USER_INFO, user[v.reply_user_id] || null)
-            })
-          } else {
-            if (item.user_id) {
-              item[USER_INFO] = user[item.user_id] || null
-            }
-            if (item.reply_user_id) {
-              item[REPLY_USER_INFO] = user[item.reply_user_id] || null
-            }
+        const item = data[key]
+        if (isArray(item)) {
+          item.forEach(v => {
+            v.setDataValue(USER_INFO, user[v.user_id] || null)
+            v.setDataValue(REPLY_USER_INFO, user[v.reply_user_id] || null)
+          })
+        } else {
+          if (item.user_id) {
+            item[USER_INFO] = user[item.user_id] || null
+          }
+          if (item.reply_user_id) {
+            item[REPLY_USER_INFO] = user[item.reply_user_id] || null
           }
         }
       })
