@@ -75,8 +75,7 @@ router.put('/comment/:id', new Auth(AUTH_ADMIN).m, async (ctx) => {
 
 // 获取评论列表
 router.get('/comment', async (ctx) => {
-  const page = ctx.query.page;
-  let [err, data] = await CommentDao.list(page);
+  let [err, data] = await CommentDao.list(ctx.query);
   if(!err) {
     ctx.response.status = 200;
     ctx.body = res.json(data);
@@ -92,7 +91,7 @@ router.get('/comment/:id', async (ctx) => {
 
   // 获取分类ID参数
   const id = v.get('path.id');
-  const [err, data] = await CommentDao.detail(id)
+  const [err, data] = await CommentDao.detail(id, ctx.query)
   // 返回结果
   if(!err) {
     ctx.response.status = 200;
