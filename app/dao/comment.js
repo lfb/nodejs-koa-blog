@@ -56,18 +56,7 @@ class CommentDao {
         },
         attributes: {
           exclude: ['updated_at']
-        },
-        // include: [{
-        //   association: Comment.hasMany(Reply, {
-        //       foreignKey: 'comment_id',
-        //       sourceKey: 'id',
-        //   }),
-        //   as: 'reply',
-        //   // required: false,
-        //   attributes: {
-        //     exclude: ['comment_id','commentId' ,'updated_at', 'deleted_at']
-        //   }
-        // }]
+        }
 
       });
       if (!comment) {
@@ -120,8 +109,7 @@ class CommentDao {
 
   // 评论列表
   static async list(query) {
-    const {page = 1, is_replay = 0, is_article = 0} = query
-    console.log(is_replay,page,is_article)
+    const {page = 1, is_replay = 0, is_article = 0, is_user = 0} = query
 
     try {
       // const records = await sequelize.query(`select comment.*,reply.* from comment,reply where comment.id = reply.comment_id;`, {
@@ -141,16 +129,6 @@ class CommentDao {
         attributes: {
           exclude: ['updated_at']
         },
-        // include: [{
-        //   association: Comment.hasOne(Reply, {
-        //
-        //   }),
-        //   as: 'reply',
-        //   required: false,
-        //   attributes: {
-        //     exclude: ['updated_at', 'deleted_at']
-        //   }
-        // }]
       })
 
       let rows = comment.rows
@@ -219,13 +197,6 @@ class CommentDao {
         attributes: {
           exclude: ['updated_at']
         },
-        // include: [{
-        //   association: Comment.hasMany(Reply, {}),
-        //   as: 'reply',
-        //   attributes: {
-        //     exclude: ['updated_at', 'deleted_at']
-        //   }
-        // }]
       })
 
       let rows = comment.rows
@@ -270,7 +241,7 @@ class CommentDao {
     const scope = 'bh'
     const finner = {
       where: {},
-      attributes: ['id', 'content', 'comment_id']
+      attributes: ['id', 'content', 'comment_id', 'user_id', 'reply_user_id']
     }
     const isArrayIds = isArray(ids)
 
@@ -363,6 +334,10 @@ class CommentDao {
    * @returns 根据传入的ids查询出来的用户数据
    */
   static async getUserData(ids) {
+    if (ids === 0) {
+      return [null, null]
+    }
+
     const scope = 'bh'
     const finner = {
       where: {}
@@ -387,13 +362,7 @@ class CommentDao {
       if (isArrayIds) {
         const user = {}
         res.forEach(item => {
-          // 如果有重复的map key 则直接装进去
-          if (user[item.id]) {
-            user[item.id].push(item)
-          } else {
-            // 反之，初始化数组
-            user[item.id] = [item]
-          }
+            user[item.id] = item
         })
 
         return [null, user]
@@ -416,13 +385,13 @@ class CommentDao {
    * @returns 新的评论数据
    * @private
    */
-  static _setCommentByDataValue(comment, data, id = 'id', key = 'key') {
+  static _setCommentByDataValue(comment, data = {}, id = 'id', key = 'key') {
     // 处理数组和对象的情况
     if(isArray(comment)) {
       // 查询数据列表的id是否有匹配的 map key: 如 reply[commentItem.id]
       // 有直接赋值，反之默认数组
       comment.forEach(commentItem => {
-        commentItem.setDataValue(key, data[commentItem[id]] || [])
+        commentItem.setDataValue(key, data[commentItem[id]] || null)
       })
     } else {
       comment.setDataValue(key, data)
@@ -438,15 +407,66 @@ class CommentDao {
    * @private
    */
   static async _handleReply(comment) {
-    const isArrayData = isArray(comment)
-    const commentIds = isArrayData ? unique(comment.map(c => c.id)) : comment.id
-    const [replyErr, replyData] = await CommentDao.getReplyData(commentIds)
+    try {
+      const isArrayData = isArray(comment)
+      const commentIds = isArrayData ? unique(comment.map(c => c.id)) : comment.id
+      const [replyErr, replyData] = await CommentDao.getReplyData(commentIds)
 
-    if(!replyErr) {
-      return CommentDao._setCommentByDataValue(comment, replyData, 'id', 'reply_list')
-    } else {
-      throw new global.errs.Existing(JSON.stringify(replyErr));
+      if(!replyErr) {
+        const userIds = [];
+        let newUserIds = null
+
+        if(isArrayData){
+          Object.keys(replyData).forEach(key=> {
+            userIds.push(...replyData[key].map(item => item.user_id), ...replyData[key].map(item => item.reply_user_id))
+          })
+
+          newUserIds = unique(userIds).filter(v => v !== 0)
+        }else {
+          newUserIds = [replyData.user_id, replyData.reply_user_id].filter(v => v !== 0)
+        }
+
+        const [userErr1, userData1] = await CommentDao.getUserData(newUserIds)
+        if(!userErr1) {
+          CommentDao._handleReplyUserInfo(replyData, userData1)
+        }
+
+        return  CommentDao._setCommentByDataValue(comment, replyData, 'id', 'reply_list')
+      } else {
+        throw new global.errs.Existing(JSON.stringify(replyErr));
+      }
+    }catch (err){
+      console.log(err)
     }
+  }
+
+  static _handleReplyUserInfo(data, user = {}) {
+     try {
+       const USER_INFO = 'user_info'
+       const REPLY_USER_INFO = 'replay_user_info'
+       Object.keys(data).forEach(key=> {
+         if(data.hasOwnProperty(key)) {
+             const item = data[key]
+             if(isArray(item)) {
+               item.forEach(v => {
+                 v.setDataValue(USER_INFO, user[v.user_id] || null)
+                 v.setDataValue(REPLY_USER_INFO, user[v.reply_user_id] || null)
+               })
+             } else {
+               if (item.user_id) {
+                 item[USER_INFO] = user[item.user_id] || null
+               }
+               if (item.reply_user_id) {
+                 item[REPLY_USER_INFO] =  user[item.reply_user_id] || null
+               }
+             }
+         }
+       })
+
+       return data
+     } catch (err){
+       console.log(err)
+     }
   }
 
   /**
@@ -482,12 +502,14 @@ class CommentDao {
     // 如果是数组，遍历去到评论下的文章id列表
     // 如果是对象，直接取该评论的id
     const isArrayData = isArray(comment)
-    const userIds = isArrayData ? unique(comment.map(c => c.user_id)) : comment.user_id
+    const userIds = isArrayData
+        ? unique(comment.map(c => c.user_id)).filter(v => v !== 0)
+        : comment.user_id
+
     // 进行查询
     const [userErr, userData] = await CommentDao.getUserData(userIds)
 
     if(!userErr) {
-      console.log('userData', userData)
       return CommentDao._setCommentByDataValue(comment, userData, 'user_id', 'user_info')
 
     } else {
