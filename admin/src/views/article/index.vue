@@ -226,7 +226,7 @@ export default {
   },
   methods: {
     create() {
-      this.$router.push('/category/create')
+      this.$router.push('/article/create')
     },
     async getCategoryList() {
       try {
@@ -254,21 +254,21 @@ export default {
     handleEdit(id) {
       this.$router.push('/article/edit?id=' + id)
     },
-    handleDelete(id) {
-      try {
-        this.$msgbox.confirm('确定需要删除这个文章吗', '提示', {
-          confirmButtonText: '删除',
-          cancelButtonText: '取消',
-          type: 'error'
-        }).then(async() => {
-          const r = await detele({ id })
-          this.$message.success(r.msg)
-          await this.getArticleList()
-        })
-      } catch (err) {
-        this.$message.error(err)
-      }
-    },
+handleDelete(id) {
+  try {
+    this.$msgbox.confirm('确定需要删除这个文章吗', '提示', {
+      confirmButtonText: '删除',
+      cancelButtonText: '取消',
+      type: 'error'
+    }).then(async() => {
+      const r = await detele({ id })
+      this.$message.success(r.msg)
+      await this.getArticleList()
+    })
+  } catch (err) {
+    this.$message.error(err)
+  }
+},
     searchData() {
       this.searchForm.page = 1
       this.getArticleList()
