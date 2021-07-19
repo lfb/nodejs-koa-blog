@@ -96,11 +96,17 @@ export default {
     handleEdit(id) {
       this.$router.push('/category/edit?id=' + id)
     },
-    async handleDelete(id) {
+    handleDelete(id) {
       try {
-        const r = await detele({ id })
-        this.$message.success(r.msg)
-        this.getCategoryList()
+        this.$msgbox.confirm('确定需要删除这个分类吗', '提示', {
+          confirmButtonText: '删除',
+          cancelButtonText: '取消',
+          type: 'error'
+        }).then(async() => {
+          const r = await detele({ id })
+          this.$message.success(r.msg)
+          await this.getCategoryList()
+        })
       } catch (err) {
         this.$message.error(err)
       }

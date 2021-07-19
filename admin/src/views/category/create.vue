@@ -53,8 +53,8 @@ export default {
       try {
         const res = await create(this.ruleForm)
         if (res.code === 200) {
-          this.$msgbox.confirm('创建成功', '是否退出', {
-            confirmButtonText: '确定',
+          this.$msgbox.confirm('创建成功，是否退出创建分类页面', '提示', {
+            confirmButtonText: '退出',
             cancelButtonText: '取消',
             type: 'success'
           }).then(() => {

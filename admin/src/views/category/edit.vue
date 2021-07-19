@@ -74,8 +74,8 @@ export default {
       try {
         const res = await update(this.ruleForm)
         if (res.code === 200) {
-          this.$msgbox.confirm('更新成功', '是否退出', {
-            confirmButtonText: '确定',
+          this.$msgbox.confirm('更新成功，是否退出更新分类页面', '提示', {
+            confirmButtonText: '退出',
             cancelButtonText: '取消',
             type: 'success'
           }).then(() => {
