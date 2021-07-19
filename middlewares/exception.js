@@ -8,12 +8,12 @@ const catchError = async (ctx, next) => {
     // 开发环境
     const isHttpException = error instanceof HttpException;
     const isDev = global.config.environment === 'dev';
-
+      // console.log('error1', error)
     if (isDev && !isHttpException) {
       throw error
     }
 
-    // 生成环境
+    // 生产环境
     if (isHttpException) {
       ctx.body = {
         msg: error.msg,

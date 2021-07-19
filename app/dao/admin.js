@@ -54,7 +54,7 @@ class AdminDao {
       })
 
       if (!admin) {
-        throw new global.errs.AuthFailed('账号不存在或者密码不正确')
+        throw new global.errs.AuthFailed('账号不存在')
       }
 
       // 验证密码是否正确

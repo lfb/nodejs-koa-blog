@@ -56,16 +56,16 @@ router.post('/login', async (ctx) => {
 
     const v = await new UserLoginValidator().validate(ctx);
 
-    let token = await LoginManager.userLogin({
+    let [err, token] = await LoginManager.userLogin({
         email: v.get('body.email'),
         password: v.get('body.password')
     });
 
-    ctx.response.status = 200;
-    ctx.body = {
-        code: 200,
-        msg: '登录成功',
-        token
+    if(!err) {
+        ctx.response.status = 200;
+        ctx.body = res.json({token});
+    } else {
+        ctx.body = res.fail(err, err.msg);
     }
 });
 

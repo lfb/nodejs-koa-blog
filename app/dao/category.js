@@ -91,22 +91,22 @@ class CategoryDao {
     category.name = v.get('body.name');
     category.status = v.get('body.status');
     category.sort_order = v.get('body.sort_order');
-    category.parent_id = v.get('body.parent_id');
+    category.parent_id = v.get('body.parent_id') || 0;
 
     try {
       const res = await category.save();
-      return [res, null]
+      return [null, res]
     } catch (err) {
       return [err, null]
     }
   }
 
   // 分类列表
-  static async list(v) {
+  static async list(query ={}) {
     const params = {
       deleted_at: null
     }
-    const status = v.get('body.status')
+    const status = query.status
     if (status) {
       params.status = status
     }
@@ -115,6 +115,7 @@ class CategoryDao {
       const res = await Category.scope('bh').findAll({
         where: params
       });
+
       return [null, res]
 
     } catch (err) {
