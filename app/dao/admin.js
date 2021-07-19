@@ -45,25 +45,29 @@ class AdminDao {
   // 验证密码
   static async verify(email, plainPassword) {
 
-    // 查询用户是否存在
-    const admin = await Admin.findOne({
-      where: {
-        email
+    try {
+      // 查询用户是否存在
+      const admin = await Admin.findOne({
+        where: {
+          email
+        }
+      })
+
+      if (!admin) {
+        throw new global.errs.AuthFailed('账号不存在或者密码不正确')
       }
-    })
 
-    if (!admin) {
-      throw new global.errs.AuthFailed('账号不存在或者密码不正确')
+      // 验证密码是否正确
+      const correct = bcrypt.compareSync(plainPassword, admin.password);
+
+      if (!correct) {
+        throw new global.errs.AuthFailed('账号不存在或者密码不正确')
+      }
+
+      return [null, admin]
+    } catch (err) {
+      return [err, null]
     }
-
-    // 验证密码是否正确
-    const correct = bcrypt.compareSync(plainPassword, admin.password);
-
-    if (!correct) {
-      throw new global.errs.AuthFailed('账号不存在或者密码不正确')
-    }
-
-    return admin
   }
 
   // 查询管理员信息

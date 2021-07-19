@@ -9,16 +9,20 @@ class LoginManager {
   static async adminLogin(params) {
     const { email, password } = params
     // 验证账号密码是否正确
-    const admin = await AdminDao.verify(email, password);
-    return generateToken(admin.id, Auth.ADMIN)
+    const [err, admin] = await AdminDao.verify(email, password);
+    if (!err) {
+      return generateToken(admin.id, Auth.ADMIN)
+    }
   }
 
   // 用户登录
   static async userLogin(params) {
     const { email, password } = params
     // 验证账号密码是否正确
-    const user = await UserDao.verify(email, password);
-    return generateToken(user.id, Auth.USER)
+    const [err, user] = await UserDao.verify(email, password);
+    if (!err) {
+      return generateToken(user.id, Auth.USER)
+    }
   }
 }
 

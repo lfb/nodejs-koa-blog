@@ -92,14 +92,6 @@ Article.init({
   tableName: 'article'
 })
 
-// 文章关联分类
-// Category.hasMany(Article, {
-//   foreignKey: 'category_id', sourceKey: 'id', as: 'article'
-// })
-// Article.belongsTo(Category, {
-//   foreignKey: 'category_id', targetKey: 'id', as: 'category'
-// })
-
 module.exports = {
   Article
 }
