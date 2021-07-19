@@ -8,19 +8,19 @@
         inline
       >
         <el-form-item
-          label="分类ID"
+          label="文章ID"
           prop="id"
         >
           <el-input
             v-model.trim="searchForm.id"
-            placeholder="分类ID"
+            placeholder="文章ID"
             class="input"
             clearable
           />
         </el-form-item>
 
         <el-form-item
-          label="分类状态："
+          label="文章状态："
           prop="status"
         >
           <el-select
@@ -33,13 +33,24 @@
           </el-select>
         </el-form-item>
 
+        <el-form-item label="分类" prop="category_id">
+          <el-select v-model="searchForm.category_id" placeholder="请选择分类">
+            <el-option
+              v-for="item in categoryList"
+              :key="item.id"
+              :label="item.name"
+              :value="item.id"
+            />
+          </el-select>
+        </el-form-item>
+
         <el-form-item
-          label="分类名称"
-          prop="name"
+          label="文章标题"
+          prop="title"
         >
           <el-input
-            v-model.trim="searchForm.name"
-            placeholder="分类名称"
+            v-model.trim="searchForm.title"
+            placeholder="文章名称"
             class="input"
             clearable
           />
@@ -65,7 +76,7 @@
             size="medium"
             @click="create"
           >
-            新增分类
+            新增文章
           </el-button>
         </el-form-item>
       </el-form>
@@ -85,22 +96,64 @@
             {{ scope.row.id }}
           </template>
         </el-table-column>
-        <el-table-column label="分类名称" align="center">
+        <el-table-column label="文章标题" width="150" align="center">
           <template slot-scope="scope">
-            {{ scope.row.name }}
+            {{ scope.row.title }}
           </template>
         </el-table-column>
+        <el-table-column label="文章图片" align="center">
+          <template slot-scope="scope">
+            <img :src="scope.row.img_url" width="80" height="80" alt="">
+          </template>
+        </el-table-column>
+        <el-table-column label="作者" width="80" align="center">
+          <template slot-scope="scope">
+            {{ scope.row.admin_info.nickname }}
+          </template>
+        </el-table-column>
+        <el-table-column label="分类" align="center">
+          <template slot-scope="scope">
+            {{ scope.row.category_info.name }}
+          </template>
+        </el-table-column>
+        <el-table-column label="创建时间" align="center">
+          <template slot-scope="scope">
+            {{ scope.row.created_at }}
+          </template>
+        </el-table-column>
+        <el-table-column label="文章描述" align="center">
+          <template slot-scope="scope">
+            {{ scope.row.description }}
+          </template>
+        </el-table-column>
+        <el-table-column label="文章喜欢数量" align="center">
+          <template slot-scope="scope">
+            {{ scope.row.favorite_num }}
+          </template>
+        </el-table-column>
+        <el-table-column label="文章跳转链接" align="center">
+          <template slot-scope="scope">
+            {{ scope.row.jump_url }}
+          </template>
+        </el-table-column>
+        <el-table-column label="文章SEO关键字" align="center">
+          <template slot-scope="scope">
+            {{ scope.row.seo_keyword }}
+          </template>
+        </el-table-column>
+
         <el-table-column label="排序" align="center">
           <template slot-scope="scope">
             {{ scope.row.sort_order }}
           </template>
         </el-table-column>
+
         <el-table-column class-name="status-col" label="状态" align="center">
           <template slot-scope="scope">
             <el-tag :type="scope.row.status | statusFilter">{{ scope.row.status | statusFilterText }}</el-tag>
           </template>
         </el-table-column>
-        <el-table-column label="操作" align="center">
+        <el-table-column fixed="right" width="180" label="操作" align="center">
           <template slot-scope="scope">
             <el-button
               size="mini"
@@ -131,9 +184,11 @@
 </template>
 
 <script>
-import { list, detele } from '@/api/category'
+import { list, detele } from '@/api/article'
+import { list as getCategoryList } from '@/api/category'
+
 export default {
-  name: 'CategoryList',
+  name: 'ArticleList',
   filters: {
     statusFilter(status) {
       const statusMap = {
@@ -152,18 +207,21 @@ export default {
   },
   data() {
     return {
+      categoryList: [],
       list: null,
       listLoading: true,
       count: 0,
       searchForm: {
         id: '',
-        name: '',
+        title: '',
         status: '',
-        page: 1
+        page: 1,
+        category_id: ''
       }
     }
   },
   mounted() {
+    this.getArticleList()
     this.getCategoryList()
   },
   methods: {
@@ -173,8 +231,18 @@ export default {
     async getCategoryList() {
       try {
         this.listLoading = true
+        const res = await getCategoryList()
+        this.categoryList = res.data.data
+      } catch (err) {
+        console.log(err)
+      } finally {
+        this.listLoading = false
+      }
+    },
+    async getArticleList() {
+      try {
+        this.listLoading = true
         const res = await list(this.searchForm)
-        console.log(res)
         this.list = res.data.data
         this.count = res.data.meta.count
       } catch (err) {
@@ -184,18 +252,18 @@ export default {
       }
     },
     handleEdit(id) {
-      this.$router.push('/category/edit?id=' + id)
+      this.$router.push('/article/edit?id=' + id)
     },
     handleDelete(id) {
       try {
-        this.$msgbox.confirm('确定需要删除这个分类吗', '提示', {
+        this.$msgbox.confirm('确定需要删除这个文章吗', '提示', {
           confirmButtonText: '删除',
           cancelButtonText: '取消',
           type: 'error'
         }).then(async() => {
           const r = await detele({ id })
           this.$message.success(r.msg)
-          await this.getCategoryList()
+          await this.getArticleList()
         })
       } catch (err) {
         this.$message.error(err)
@@ -203,21 +271,21 @@ export default {
     },
     searchData() {
       this.searchForm.page = 1
-      this.getCategoryList()
+      this.getArticleList()
     },
     handleSizeChange(size) {
       this.searchForm.page = 1
       this.searchForm.size = size
-      this.getCategoryList()
+      this.getArticleList()
     },
     // 点击数字
     handleCurrentChange(page) {
       this.searchForm.page = page
-      this.getCategoryList()
+      this.getArticleList()
     },
     resetSearchData() {
       this.$refs['searchForm'].resetFields()
-      this.getCategoryList()
+      this.getArticleList()
     }
   }
 }

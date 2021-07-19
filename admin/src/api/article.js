@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function list(params) {
   return request({
-    url: '/category',
+    url: '/article',
     method: 'get',
     params
   })
@@ -10,7 +10,7 @@ export function list(params) {
 
 export function create(data) {
   return request({
-    url: '/category',
+    url: '/article',
     method: 'post',
     data
   })
@@ -18,14 +18,14 @@ export function create(data) {
 
 export function detail(data) {
   return request({
-    url: '/category/' + data.id,
+    url: '/article/' + data.id,
     method: 'get',
     data
   })
 }
 export function update(data) {
   return request({
-    url: '/category/' + data.id,
+    url: '/article/' + data.id,
     method: 'put',
     data
   })
@@ -33,7 +33,7 @@ export function update(data) {
 
 export function detele(data) {
   return request({
-    url: '/category/' + data.id,
+    url: '/article/' + data.id,
     method: 'delete',
     data
   })

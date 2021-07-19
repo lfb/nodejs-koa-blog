@@ -121,8 +121,7 @@ class ArticleDao {
 
   // 获取文章列表
   static async list(params = {}) {
-    const { category_id, keyword, status, page = 1 } = params;
-    const pageSize = 10
+    const { category_id, title,page_size = 10, status, page = 1 } = params;
 
     // 筛选方式
     let filter = {
@@ -135,18 +134,19 @@ class ArticleDao {
     }
 
     // 筛选方式：存在搜索关键字
-    if (keyword) {
+    if (title) {
       filter.title = {
-        [Op.like]: `%${keyword}%`
+        [Op.like]: `%${title}%`
       };
     }
+
     if (status) {
       filter.status = status
     }
     try {
       const article = await Article.scope('iv').findAndCountAll({
-        limit: pageSize, //每页10条
-        offset: (page - 1) * pageSize,
+        // limit: page_size, //每页10条
+        offset: (page - 1) * page_size,
         where: filter,
         order: [
           ['created_at', 'DESC']
@@ -227,7 +227,7 @@ class ArticleDao {
     article.content = v.get('body.content');
     article.jump_url = v.get('body.jump_url');
     article.seo_keyword = v.get('body.seo_keyword');
-    article.status = v.get('body.status') || 1;
+    article.status = v.get('body.status');
     article.sort_order = v.get('body.sort_order');
     article.admin_id = v.get('body.admin_id');
     article.category_id = v.get('body.category_id');

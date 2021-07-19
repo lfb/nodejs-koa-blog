@@ -1,7 +1,7 @@
 <template>
   <section class="wrap">
-    <el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="100px" class="demo-ruleForm">
-      <el-form-item label="分类名称" prop="name">
+    <el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="80px" class="demo-ruleForm">
+      <el-form-item label="名称" prop="name">
         <el-input v-model="ruleForm.name" />
       </el-form-item>
       <el-form-item label="排序" prop="sort_order">
@@ -14,8 +14,8 @@
         </el-radio-group>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="submitForm('ruleForm')">立即更新</el-button>
         <el-button @click="resetForm('ruleForm')">重置</el-button>
+        <el-button type="primary" @click="submitForm('ruleForm')">立即更新</el-button>
       </el-form-item>
     </el-form>
   </section>
@@ -75,7 +75,7 @@ export default {
         const res = await update(this.ruleForm)
         if (res.code === 200) {
           this.$msgbox.confirm('更新成功，是否退出更新分类页面', '提示', {
-            confirmButtonText: '退出',
+            confirmButtonText: '确定',
             cancelButtonText: '取消',
             type: 'success'
           }).then(() => {
@@ -96,5 +96,6 @@ export default {
 <style scoped lang="scss">
 .wrap {
   box-sizing: border-box;
+  margin: 24px;
 }
 </style>

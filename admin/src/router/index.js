@@ -54,12 +54,12 @@ export const constantRoutes = [
       meta: { title: 'Dashboard', icon: 'dashboard' }
     }]
   },
-
   {
     path: '/category',
     component: Layout,
+    redirect: '/category/index',
     name: 'Category',
-    meta: { title: '分类管理', icon: 'el-icon-s-help' },
+    meta: { title: '分类管理', icon: 'tree' },
     children: [
       {
         path: 'index',
@@ -71,7 +71,7 @@ export const constantRoutes = [
         path: 'create',
         name: 'CategoryCreate',
         component: () => import('@/views/category/create'),
-        meta: { title: '创建分类', icon: 'tree' }
+        meta: { title: '创建分类', icon: 'el-icon-circle-plus-outline' }
       },
       {
         path: 'edit',
@@ -82,23 +82,29 @@ export const constantRoutes = [
   },
 
   {
-    path: '/example',
+    path: '/article',
     component: Layout,
-    redirect: '/example/table',
-    name: 'Example',
-    meta: { title: 'Example', icon: 'el-icon-s-help' },
+    redirect: '/article/index',
+    name: 'Article',
+    meta: { title: '文章管理', icon: 'el-icon-s-help' },
     children: [
       {
-        path: 'table',
-        name: 'Table',
-        component: () => import('@/views/table/index'),
-        meta: { title: 'Table', icon: 'table' }
+        path: 'index',
+        name: 'ArticleIndex',
+        component: () => import('@/views/article/index'),
+        meta: { title: '文章列表', icon: 'table' }
       },
       {
-        path: 'tree',
-        name: 'Tree',
-        component: () => import('@/views/tree/index'),
-        meta: { title: 'Tree', icon: 'tree' }
+        path: 'create',
+        name: 'ArticleCreate',
+        component: () => import('@/views/article/create'),
+        meta: { title: '创建文章', icon: 'tree' }
+      },
+      {
+        path: 'edit',
+        name: 'ArticleEdit',
+        component: () => import('@/views/article/edit'),
+        meta: { title: '编辑文章', icon: 'tree' }
       }
     ]
   },

@@ -19,6 +19,7 @@
     "element-ui": "2.13.2",
     "js-base64": "^3.6.1",
     "js-cookie": "2.2.0",
+    "mavon-editor": "^2.9.1",
     "normalize.css": "7.0.0",
     "nprogress": "0.2.0",
     "path-to-regexp": "2.4.0",

@@ -1,3 +1,4 @@
+const { Op } = require('sequelize')
 const { Category } = require('@models/category')
 
 class CategoryDao {
@@ -103,22 +104,50 @@ class CategoryDao {
 
   // 分类列表
   static async list(query ={}) {
-    const params = {
-      deleted_at: null
-    }
-    const status = query.status
+    const {status, name, id, page_size = 10, page = 1 } = query
+   let params = {}
     if (status) {
       params.status = status
     }
 
+    if (name) {
+      params.name = {
+        [Op.like]: `%${name}%`
+      };
+    }
+
+    if (id) {
+      params.id = id
+    }
+
+    console.log('params', params)
     try {
-      const res = await Category.scope('bh').findAll({
-        where: params
+      const category = await Category.scope('bh').findAndCountAll({
+        where: params,
+        // limit: page_size, //每页10条
+        offset: (page - 1) * page_size,
+        order: [
+          ['created_at', 'DESC']
+        ]
       });
 
-      return [null, res]
+      const data = {
+        data: category.rows,
+        // 分页
+        meta: {
+          current_page: parseInt(page),
+          per_page: 10,
+          count: category.count,
+          total: category.count,
+          total_pages: Math.ceil(category.count / 10),
+        }
+      }
+
+      return [null, data]
 
     } catch (err) {
+      console.log('err', err)
+
       return [err, null]
     }
   }
