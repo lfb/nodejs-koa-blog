@@ -209,6 +209,7 @@ class CommentDao {
       if (parseInt(is_article, 10) === 1) {
         rows = await CommentDao._handleArticle(rows)
       }
+
       // 用户
       if (parseInt(is_user, 10) === 1) {
         rows = await CommentDao._handleUser(rows)

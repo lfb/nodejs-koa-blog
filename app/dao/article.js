@@ -122,7 +122,7 @@ class ArticleDao {
 
   // 获取文章列表
   static async list(params = {}) {
-    const { category_id, title,page_size = 10, status, page = 1 } = params;
+    const { category_id, keyword ,page_size = 10, status, page = 1 } = params;
 
     // 筛选方式
     let filter = {
@@ -135,9 +135,9 @@ class ArticleDao {
     }
 
     // 筛选方式：存在搜索关键字
-    if (title) {
+    if (keyword) {
       filter.title = {
-        [Op.like]: `%${title}%`
+        [Op.like]: `%${keyword}%`
       };
     }
 
@@ -260,13 +260,16 @@ class ArticleDao {
   }
 
   // 文章详情
-  static async detail(id) {
+  static async detail(query) {
+    const {id, keyword } = query
     try {
+      let filter = {
+        id,
+        deleted_at: null
+      }
+
       let article = await Article.findOne({
-        where: {
-          id,
-          deleted_at: null
-        },
+        where: filter,
       });
 
       const [categoryError, dataAndCategory] = await ArticleDao._handleCategory(article, article.category_id)

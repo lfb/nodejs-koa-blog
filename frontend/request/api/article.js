@@ -7,6 +7,6 @@ export function getArticleDetail(params) {
       params
     })
 }
-export function getArticleList(data) {
-    return GET({ url: article.list, data })
+export function getArticleList(params) {
+    return GET({ url: article.list, params })
 }

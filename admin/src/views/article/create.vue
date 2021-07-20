@@ -97,7 +97,7 @@ export default {
           { required: true, message: '请选择分类', trigger: 'blur' }
         ],
         content: [
-          { required: true, message: '请选择分类', trigger: 'blur' }
+          { required: true, message: '请输入文章内容', trigger: 'blur' }
         ]
       }
     }

@@ -18,8 +18,14 @@ const md = require('markdown-it')({
     if (lang && hljs.getLanguage(lang)) {
       try {
         return '<pre class="hljs"><code>' +
-            hljs.highlight(lang, str, true).value +
-            '</code></pre>';
+            // Deprecated as of 10.7.0. highlight(lang, code, ...args) has been deprecated.
+            // Deprecated as of 10.7.0. Please use highlight(code, options) instead.
+            // https://github.com/highlightjs/highlight.js/issues/2277
+            // hljs.highlight(lang, str, true).value + '</code></pre>';
+            hljs.highlight(str, {
+              language: lang,
+              ignoreIllegals: true
+            }).value + '</code></pre>';
       } catch (__) {}
     }
 
@@ -119,7 +125,7 @@ router.get('/article/:id', async (ctx) => {
   // 获取文章ID参数
   const id = v.get('path.id');
   // 查询文章
-  const [err, data] = await ArticleDao.detail(id);
+  const [err, data] = await ArticleDao.detail(ctx.query);
   if (!err) {
     // 获取关联此文章的评论列表
     const [commentError, commentData] = await CommentDao.targetComment({
