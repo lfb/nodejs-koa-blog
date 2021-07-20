@@ -12,6 +12,20 @@ const { CommentDao } = require('@dao/comment');
 const { Resolve } = require('@lib/helper');
 const res = new Resolve();
 
+const hljs = require('highlight.js');
+const md = require('markdown-it')({
+  highlight: function (str, lang) {
+    if (lang && hljs.getLanguage(lang)) {
+      try {
+        return '<pre class="hljs"><code>' +
+            hljs.highlight(lang, str, true).value +
+            '</code></pre>';
+      } catch (__) {}
+    }
+
+    return '<pre class="hljs"><code>' + md.utils.escapeHtml(str) + '</code></pre>';
+  }
+});
 
 const AUTH_ADMIN = 16;
 
@@ -102,7 +116,6 @@ router.get('/article/:id', async (ctx) => {
 
   // 通过验证器校验参数是否通过
   const v = await new PositiveIdParamsValidator().validate(ctx);
-
   // 获取文章ID参数
   const id = v.get('path.id');
   // 查询文章
@@ -116,6 +129,11 @@ router.get('/article/:id', async (ctx) => {
     if (!commentError) {
       data.article_comment = commentData
     }
+
+    if (ctx.query.is_markdown) {
+      data.content = md.render(data.content)
+    }
+
 
     // 更新文章浏览
     await ArticleDao.updateBrowse(id, ++data.browse);

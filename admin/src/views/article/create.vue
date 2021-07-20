@@ -58,17 +58,6 @@ export default {
   name: 'CategoryCreate',
   data() {
     return {
-      value: '',
-      // article.title = title;
-      // article.description = v.get('body.description');
-      // article.img_url = v.get('body.img_url');
-      // article.content = v.get('body.content');
-      // article.jump_url = v.get('body.jump_url');
-      // article.seo_keyword = v.get('body.seo_keyword');
-      // article.status = v.get('body.status') || 1;
-      // article.sort_order = v.get('body.sort_order');
-      // article.admin_id = v.get('body.admin_id');
-      // article.category_id = v.get('body.category_id');
       categoryList: [],
       ruleForm: {
         title: '',
@@ -108,7 +97,7 @@ export default {
           { required: true, message: '请选择分类', trigger: 'blur' }
         ],
         content: [
-          { required: true, message: '请输入内容', trigger: 'blur' }
+          { required: true, message: '请选择分类', trigger: 'blur' }
         ]
       }
     }
@@ -137,7 +126,6 @@ export default {
       if (this.adminInfo) {
         this.ruleForm.admin_id = this.adminInfo.id
       }
-      console.log('ruleForm', this.ruleForm)
 
       this.$refs[formName].validate(async(valid) => {
         if (valid) {

@@ -1,10 +1,10 @@
 import { GET } from '../http.js'
 import article from '../urls/article'
 
-export function getArticleDetail(data) {
+export function getArticleDetail(params) {
     return GET({
-      url: article.detail + '/' + data.id,
-      data
+      url: article.detail + '/' + params.id,
+      params
     })
 }
 export function getArticleList(data) {

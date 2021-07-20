@@ -117,7 +117,8 @@ export default {
     async getArticleDetail() {
       try {
         const res = await detail({
-          id: this.$route.query.id
+          id: this.$route.query.id,
+          is_markdown: false
         })
         this.ruleForm.title = res.data.title
         this.ruleForm.description = res.data.description

@@ -16,7 +16,6 @@
     "cross-env": "^7.0.3",
     "dotenv": "^10.0.0",
     "element-ui": "^2.15.2",
-    "mavon-editor": "^2.9.1",
     "nuxt": "^2.15.7"
   },
   "devDependencies": {

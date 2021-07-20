@@ -1,33 +1,34 @@
 <template>
-  <div v-if="article" class="mavonEditor">
-    <no-ssr>
-      <mavon-editor
-        v-model="article.content"
-        style="height: 100%"
-        :ishljs="true"
-        code-style="atom-one-dark"
-        :default-open="'preview'"
-        :editable="false"
-        :subfield="false"
-        :toolbars-flag="false"/>
-<!--      <mavon-editor v-model="article.content" :toolbars="markdownOption"/>-->
-    </no-ssr>
+  <div>
+    <div v-html="article.content"></div>
   </div>
 </template>
 <script>
 import {getArticleDetail} from '@/request/api/article'
 export default {
+  async asyncData(context) {
+    const [err, res] = await getArticleDetail({
+      id: context.query.id,
+      is_markdown: true
+    })
+    if(!err) {
+      return {
+        article: res.data.data
+      }
+    }
+  },
   data() {
     return {
       article: null,
-      markdownOption: {
-        bold: true, // 粗体
-      },
-      handbook: "#### how to use mavonEditor in nuxt.js"
     }
   },
-  mounted() {
-    this.fetchData()
+  head: {
+    link: [
+      {
+        rel: 'stylesheet',
+        href: 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/styles/atom-one-dark.min.css'
+      }
+    ],
   },
   methods: {
    async fetchData() {
@@ -44,8 +45,5 @@ export default {
 </script>
 
 <style scoped>
-.mavonEditor {
-  width: 100%;
-  height: 100%;
-}
+
 </style>

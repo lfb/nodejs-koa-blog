@@ -28,7 +28,7 @@ export default {
   plugins: [
     '@/plugins/axios',
     '@/plugins/axios-ports',
-    { src: '@/plugins/vue-mavon-editor', ssr: false },
+    // '@/plugins/highlight',
     '@/plugins/element-ui'
   ],
 
@@ -43,7 +43,7 @@ export default {
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
-    '@nuxtjs/axios',
+    '@nuxtjs/axios'
   ],
   env: envConfig,
   // Build Configuration: https://go.nuxtjs.dev/config-build

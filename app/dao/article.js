@@ -42,6 +42,7 @@ class ArticleDao {
       const res = await article.save();
       return [null, res]
     } catch (err) {
+      console.log(err)
       return [err, null]
     }
   }
