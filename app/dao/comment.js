@@ -4,7 +4,7 @@ const { Comment } = require('@models/comment')
 const { Article } = require('@models/article')
 const { User } = require('@models/user')
 const { Reply } = require('@models/reply')
-const { isArray, unique } = require('@lib/utils')
+const { isArray, unique, extractQuery } = require('@lib/utils')
 // const {sequelize} = require('@core/db')
 const { Sequelize, Op } = require('sequelize')
 
@@ -91,11 +91,22 @@ class CommentDao {
     if (!comment) {
       throw new global.errs.NotFound('没有找到相关评论信息');
     }
-
-    comment.article_id = v.get('body.article_id');
-    comment.user_id = v.get('body.user_id');
-    comment.status = v.get('body.status');
-    comment.content = xss(v.get('body.content'));
+    const aid = v.get('body.article_id')
+    const uid  = v.get('body.user_id')
+    const status  = v.get('body.status')
+    const content  = v.get('body.content')
+    if(aid) {
+      comment.article_id = aid
+    }
+    if(uid) {
+      comment.user_id = uid
+    }
+    if(status) {
+      comment.status = status
+    }
+    if(content) {
+      comment.content = content
+    }
 
     try {
       const res = await comment.save();
@@ -106,23 +117,47 @@ class CommentDao {
     }
   }
 
-
   // 评论列表
   static async list(query) {
-    const { page = 1, is_replay = 0, is_article = 0, is_user = 0 } = query
+    const {
+      page = 1,
+      is_replay = 0,
+      is_article = 0,
+      content,
+      id,
+      status,
+      article_id,
+      is_user = 0
+    } = query
 
     try {
       // const records = await sequelize.query(`select comment.*,reply.* from comment,reply where comment.id = reply.comment_id;`, {
       //   type: Sequelize.SELECT
       // });
+      const finner = {
+        deleted_at: null
+      }
+      if(id) {
+        finner.id = id
+      }
+      if(article_id) {
+        finner.article_id = article_id
+      }
+      if(status) {
+        finner.id = id
+      }
+      if(content) {
+        finner.content = {
+          [Op.like]: `%${content}%`
+        }
+      }
+
       const pageSize = 10;
       const comment = await Comment.scope('bh').findAndCountAll({
         // 每页10条
         limit: pageSize,
         offset: (page - 1) * pageSize,
-        where: {
-          deleted_at: null
-        },
+        where: finner,
         order: [
           ['created_at', 'DESC']
         ],
@@ -174,6 +209,8 @@ class CommentDao {
         is_replay = 0,
         is_article = 0,
         is_user = 0,
+        page_size = 10,
+        status = -1,
         page = 1,
         desc = 'created_at'
       } = params;
@@ -182,15 +219,21 @@ class CommentDao {
         throw new global.errs.NotFound('必须传入article id');
       }
 
-      const pageSize = 10;
+      const finner = {
+        article_id,
+        status: 1,
+        deleted_at: null
+      }
+
+      if(status !== -1) {
+        delete finner.status
+      }
+
       const comment = await Comment.findAndCountAll({
-        where: {
-          article_id,
-          deleted_at: null
-        },
+        where: finner,
         // 每页10条
-        limit: pageSize,
-        offset: (page - 1) * pageSize,
+        limit: page_size,
+        offset: (page - 1) * page_size,
         order: [
           [desc, 'DESC']
         ],

@@ -27,8 +27,27 @@ function isArray(arr) {
   return Array.isArray(arr)
 }
 
+function extractQuery(query, like) {
+  let filter = {}
+  if(!query) {
+    return filter
+  }
+
+  for (let key in query) {
+    const value = query[key]
+    if(!!value) {
+      if(filter[key] !== like) {
+        filter[key] = value
+      }
+    }
+  }
+  return filter
+}
+
+
 module.exports = {
   handleTree,
   isArray,
-  unique
+  unique,
+  extractQuery
 }

@@ -107,6 +107,21 @@ export const constantRoutes = [
       }
     ]
   },
+  {
+    path: '/comment',
+    component: Layout,
+    redirect: '/comment/index',
+    name: 'Comment',
+    meta: { title: '评论管理', icon: 'el-icon-s-help' },
+    children: [
+      {
+        path: 'index',
+        name: 'CommentIndex',
+        component: () => import('@/views/comment/index'),
+        meta: { title: '评论列表', icon: 'table' }
+      }
+    ]
+  },
 
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }

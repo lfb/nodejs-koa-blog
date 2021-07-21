@@ -130,9 +130,9 @@ export default {
         content: this.comment
       })
       if(!err) {
-        console.log(data)
-        this.$message.success('评论成功！')
-        await this.getComment()
+        console.log('data',data)
+        this.content = ''
+        this.$message.success('评论成功，审核通过后展示！')
       }
     },
     async getComment() {

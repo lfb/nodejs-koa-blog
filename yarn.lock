@@ -684,6 +684,11 @@ async-limiter@~1.0.0:
   resolved "https://registry.yarnpkg.com/async-limiter/-/async-limiter-1.0.1.tgz#dd379e94f0db8310b08291f9d64c3209766617fd"
   integrity sha512-csOlWGAcRFJaI6m+F2WKdnMKr4HhdhFVBk0H/QbJFMCr+uO2kwohwXQPxw/9OCxp05r5ghVBFSyioixx3gfkNQ==
 
+async-ratelimiter@^1.3.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/async-ratelimiter/-/async-ratelimiter-1.3.0.tgz#315c02c9d84461f228952b1a63a75cf01f611f14"
+  integrity sha512-MvChExXc5nqaui7PQN7qroxe7mcmivBdYO3kDNAsmOnsptI36LeqUUrB5fLq5IQTW+d1ljvikSkxXVw8mCLlTw==
+
 asynckit@^0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/asynckit/-/asynckit-0.4.0.tgz#c79ed97f7f34cb8f2ba1bc9790bcc366474b4b79"
@@ -3405,6 +3410,15 @@ koa-convert@^1.2.0:
     co "^4.6.0"
     koa-compose "^3.0.0"
 
+koa-ratelimit@^5.0.1:
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/koa-ratelimit/-/koa-ratelimit-5.0.1.tgz#e4a42c9f43510351600ba052e788fae7d4bf559d"
+  integrity sha512-H7IEkNS/b18Uwtm3RIvAK3orJE8ew8wEBsnezlQWz7GTWqEnDtbTNfTedVXjj07gyh8gWTkEdODEXRquGCBqmg==
+  dependencies:
+    async-ratelimiter "^1.3.0"
+    debug "^4.1.1"
+    ms "^2.1.2"
+
 koa-router@^7.4.0:
   version "7.4.0"
   resolved "https://registry.yarnpkg.com/koa-router/-/koa-router-7.4.0.tgz#aee1f7adc02d5cb31d7d67465c9eacc825e8c5e0"
@@ -3807,7 +3821,7 @@ ms@2.1.2:
   resolved "https://registry.yarnpkg.com/ms/-/ms-2.1.2.tgz#d09d1f357b443f493382a8eb3ccd183872ae6009"
   integrity sha512-sGkPx+VjMtmA6MX27oA4FBFELFCZZ4S4XqeGOXCv68tT+jb3vk/RyaKWP0PTKyWtmLSM0b+adUTEvbs1PEaH2w==
 
-ms@^2.1.1:
+ms@^2.1.1, ms@^2.1.2:
   version "2.1.3"
   resolved "https://registry.yarnpkg.com/ms/-/ms-2.1.3.tgz#574c8138ce1d2b5861f0b44579dbadd60c6615b2"
   integrity sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==
