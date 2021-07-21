@@ -1,6 +1,12 @@
 <template>
   <section class="wrap">
-    <el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="80px" class="demo-ruleForm">
+    <el-form
+      ref="ruleForm"
+      :model="ruleForm"
+      :rules="rules"
+      label-width="80px"
+      class="demo-ruleForm"
+    >
       <el-form-item label="名称" prop="name">
         <el-input v-model="ruleForm.name" />
       </el-form-item>
@@ -15,7 +21,10 @@
       </el-form-item>
       <el-form-item>
         <el-button @click="resetForm('ruleForm')">重置</el-button>
-        <el-button type="primary" @click="submitForm('ruleForm')">立即更新</el-button>
+        <el-button
+          type="primary"
+          @click="submitForm('ruleForm')"
+        >立即更新</el-button>
       </el-form-item>
     </el-form>
   </section>
@@ -35,9 +44,7 @@ export default {
         status: 1
       },
       rules: {
-        name: [
-          { required: true, message: '请输入分类名称', trigger: 'blur' }
-        ],
+        name: [{ required: true, message: '请输入分类名称', trigger: 'blur' }],
         sort_order: [
           { required: true, message: '请输入分类排序', trigger: 'blur' }
         ]
@@ -74,13 +81,15 @@ export default {
       try {
         const res = await update(this.ruleForm)
         if (res.code === 200) {
-          this.$msgbox.confirm('更新成功，是否退出更新分类页面', '提示', {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: 'success'
-          }).then(() => {
-            this.$router.push('/category/index')
-          })
+          this.$msgbox
+            .confirm('更新成功，是否退出更新分类页面', '提示', {
+              confirmButtonText: '确定',
+              cancelButtonText: '取消',
+              type: 'success'
+            })
+            .then(() => {
+              this.$router.push('/category/index')
+            })
         }
       } catch (err) {
         this.$message.error(err)

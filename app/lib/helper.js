@@ -1,5 +1,5 @@
 class Resolve {
-  fail(err ={}, msg = '操作失败', errorCode = 10001) {
+  fail(err = {}, msg = '操作失败', errorCode = 10001) {
     return {
       msg,
       err: JSON.stringify(err),

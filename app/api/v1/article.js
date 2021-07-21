@@ -18,15 +18,15 @@ const md = require('markdown-it')({
     if (lang && hljs.getLanguage(lang)) {
       try {
         return '<pre class="hljs"><code>' +
-            // Deprecated as of 10.7.0. highlight(lang, code, ...args) has been deprecated.
-            // Deprecated as of 10.7.0. Please use highlight(code, options) instead.
-            // https://github.com/highlightjs/highlight.js/issues/2277
-            // hljs.highlight(lang, str, true).value + '</code></pre>';
-            hljs.highlight(str, {
-              language: lang,
-              ignoreIllegals: true
-            }).value + '</code></pre>';
-      } catch (__) {}
+          // Deprecated as of 10.7.0. highlight(lang, code, ...args) has been deprecated.
+          // Deprecated as of 10.7.0. Please use highlight(code, options) instead.
+          // https://github.com/highlightjs/highlight.js/issues/2277
+          // hljs.highlight(lang, str, true).value + '</code></pre>';
+          hljs.highlight(str, {
+            language: lang,
+            ignoreIllegals: true
+          }).value + '</code></pre>';
+      } catch (__) { }
     }
 
     return '<pre class="hljs"><code>' + md.utils.escapeHtml(str) + '</code></pre>';

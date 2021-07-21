@@ -7,10 +7,7 @@
         :model="searchForm"
         inline
       >
-        <el-form-item
-          label="分类ID"
-          prop="id"
-        >
+        <el-form-item label="分类ID" prop="id">
           <el-input
             v-model.trim="searchForm.id"
             placeholder="分类ID"
@@ -19,10 +16,7 @@
           />
         </el-form-item>
 
-        <el-form-item
-          label="分类状态："
-          prop="status"
-        >
+        <el-form-item label="分类状态：" prop="status">
           <el-select
             v-model="searchForm.status"
             placeholder="请选择状态"
@@ -33,10 +27,7 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item
-          label="分类名称"
-          prop="name"
-        >
+        <el-form-item label="分类名称" prop="name">
           <el-input
             v-model.trim="searchForm.name"
             placeholder="分类名称"
@@ -46,25 +37,13 @@
         </el-form-item>
 
         <el-form-item>
-          <el-button
-            type="primary"
-            size="medium"
-            @click="searchData"
-          >
+          <el-button type="primary" size="medium" @click="searchData">
             搜索
           </el-button>
-          <el-button
-            type="primary"
-            size="medium"
-            @click="resetSearchData"
-          >
+          <el-button type="primary" size="medium" @click="resetSearchData">
             重置
           </el-button>
-          <el-button
-            type="primary"
-            size="medium"
-            @click="create"
-          >
+          <el-button type="primary" size="medium" @click="create">
             新增分类
           </el-button>
         </el-form-item>
@@ -97,7 +76,9 @@
         </el-table-column>
         <el-table-column class-name="status-col" label="状态" align="center">
           <template slot-scope="scope">
-            <el-tag :type="scope.row.status | statusFilter">{{ scope.row.status | statusFilterText }}</el-tag>
+            <el-tag :type="scope.row.status | statusFilter">{{
+              scope.row.status | statusFilterText
+            }}</el-tag>
           </template>
         </el-table-column>
         <el-table-column label="操作" align="center">
@@ -188,15 +169,17 @@ export default {
     },
     handleDelete(id) {
       try {
-        this.$msgbox.confirm('确定需要删除这个分类吗', '提示', {
-          confirmButtonText: '删除',
-          cancelButtonText: '取消',
-          type: 'error'
-        }).then(async() => {
-          const r = await detele({ id })
-          this.$message.success(r.msg)
-          await this.getCategoryList()
-        })
+        this.$msgbox
+          .confirm('确定需要删除这个分类吗', '提示', {
+            confirmButtonText: '删除',
+            cancelButtonText: '取消',
+            type: 'error'
+          })
+          .then(async() => {
+            const r = await detele({ id })
+            this.$message.success(r.msg)
+            await this.getCategoryList()
+          })
       } catch (err) {
         this.$message.error(err)
       }

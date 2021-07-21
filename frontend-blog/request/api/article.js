@@ -2,11 +2,11 @@ import { GET } from '../http.js'
 import article from '../urls/article'
 
 export function getArticleDetail(params) {
-    return GET({
-      url: article.detail + '/' + params.id,
-      params
-    })
+  return GET({
+    url: article.detail + '/' + params.id,
+    params
+  })
 }
 export function getArticleList(params) {
-    return GET({ url: article.list, params })
+  return GET({ url: article.list, params })
 }

@@ -29,14 +29,14 @@ function isArray(arr) {
 
 function extractQuery(query, like) {
   let filter = {}
-  if(!query) {
+  if (!query) {
     return filter
   }
 
   for (let key in query) {
     const value = query[key]
-    if(!!value) {
-      if(filter[key] !== like) {
+    if (!!value) {
+      if (query[key] !== like) {
         filter[key] = value
       }
     }

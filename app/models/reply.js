@@ -31,6 +31,11 @@ Reply.init({
     allowNull: false,
     comment: '关联的评论id'
   },
+  article_id: {
+    type: DataTypes.INTEGER(10).UNSIGNED,
+    allowNull: false,
+    comment: '关联的文章id'
+  },
   user_id: {
     type: DataTypes.INTEGER(10).UNSIGNED,
     allowNull: true,

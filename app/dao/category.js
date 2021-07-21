@@ -103,9 +103,9 @@ class CategoryDao {
   }
 
   // 分类列表
-  static async list(query ={}) {
-    const {status, name, id, page_size = 10, page = 1 } = query
-   let params = {}
+  static async list(query = {}) {
+    const { status, name, id, page_size = 10, page = 1 } = query
+    let params = {}
     if (status) {
       params.status = status
     }

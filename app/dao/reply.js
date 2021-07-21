@@ -1,18 +1,21 @@
 const xss = require('xss')
 const { Reply } = require('@models/reply')
-const { Comment } = require('@models/comment')
+const { Article } = require('@models/article')
+const { extractQuery, isArray, unique } = require('@lib/utils')
+const { Op } = require('sequelize')
 
 class ReplyDao {
   // 创建回复
   static async create(v) {
     // 查询评论
-    const comment = await Comment.findByPk(v.get('body.comment_id'));
-    if (!comment) {
+    const hasReply = await Reply.findByPk(v.get('body.reply_id'));
+    if (!hasReply) {
       throw new global.errs.NotFound('没有找到相关评论');
     }
 
     const reply = new Reply();
-    reply.comment_id = v.get('body.comment_id');
+    reply.reply_id = v.get('body.reply_id');
+    reply.article_id = v.get('body.article_id');
     reply.user_id = v.get('body.user_id');
     reply.reply_user_id = v.get('body.reply_user_id');
     reply.content = xss(v.get('body.content'));
@@ -35,7 +38,7 @@ class ReplyDao {
       }
     });
     if (!reply) {
-      throw new global.errs.NotFound('没有找到相关评论');
+      throw new global.errs.NotFound('没有找到相关回复');
     }
 
     try {
@@ -59,7 +62,7 @@ class ReplyDao {
         }
       });
       if (!reply) {
-        throw new global.errs.NotFound('没有找到相关评论信息');
+        throw new global.errs.NotFound('没有找到相关回复信息');
       }
 
       return [null, reply]
@@ -72,13 +75,17 @@ class ReplyDao {
   static async update(id, v) {
     const reply = await Reply.findByPk(id);
     if (!reply) {
-      throw new global.errs.NotFound('没有找到相关评论信息');
+      throw new global.errs.NotFound('没有找到相关回复信息');
     }
-    reply.comment_id = v.get('body.comment_id');
-    reply.user_id = v.get('body.user_id');
-    reply.status = v.get('body.status');
-    reply.reply_user_id = v.get('body.reply_user_id');
-    reply.content = xss(v.get('body.content'));
+
+    const status = v.get('body.status')
+    const content = v.get('body.content')
+    if (status) {
+      reply.status = v.get('body.status');
+    }
+    if (content) {
+      reply.content = xss(v.get('body.content'));
+    }
 
     try {
       const res = await reply.save();
@@ -88,22 +95,163 @@ class ReplyDao {
     }
   }
 
+  /**
+   * 处理评论下的管理文章
+   * @param reply 评论数据 Array | Object
+   * @returns 新的评论数据
+   * @private
+   */
+  static async _handleArticle(reply) {
+    // 判断评论数据是否是数组或者对象
+    // 如果是数组，遍历去到评论下的文章id列表
+    // 如果是对象，直接取该评论的id
+    const isArrayData = isArray(reply)
+    const articleIds = isArrayData ? unique(reply.map(c => c.article_id)) : reply.article_id
+
+    // 进行查询
+    const [articleErr, articleData] = await ReplyDao.getArticleData(articleIds)
+
+    if (!articleErr) {
+      return ReplyDao.setReplyByDataValue(reply, articleData, 'article_id', 'article')
+    } else {
+      throw new global.errs.Existing(JSON.stringify(articleErr));
+    }
+  }
+
+  /**
+   * 新增设置评论下的属性
+   *
+   * @param reply 评论数据
+   * @param data 需要设置的数据
+   * @param id 评论表和设置数据的关联id
+   * @param key 新增设置评论下的属性 key
+   * @returns 新的评论数据
+   * @private
+   */
+  static setReplyByDataValue(reply, data = {}, id = 'id', key = 'key') {
+    // 处理数组和对象的情况
+    if (isArray(reply)) {
+      // 查询数据列表的id是否有匹配的 map key: 如 reply[replyItem.id]
+      // 有直接赋值，反之默认数组
+      reply.forEach(replyItem => {
+        replyItem.setDataValue(key, data[replyItem[id]] || null)
+      })
+    } else {
+      reply.setDataValue(key, data)
+    }
+
+    // console.log('reply', reply)
+
+    return reply
+  }
+
+  /**
+   * 查询文章id，且处理数据为 key-value 形式
+   * @param ids 文章id | Array | Object
+   * @returns 根据传入的ids查询出来的文章数据
+   */
+  static async getArticleData(ids) {
+    const scope = 'bh'
+    const finner = {
+      where: {},
+      attributes: ['id', 'title']
+    }
+    const isArrayIds = isArray(ids)
+    // 如果ids是数组，则使用 Op.in 查询
+    if (isArrayIds) {
+      finner.where.id = {
+        [Op.in]: ids
+      }
+    } else if (ids) {
+      // 反之id索引查询
+      finner.where.id = ids
+    }
+
+    try {
+      // 如果ids是数组，则使用 Op.in 查询，反之id索引查询
+      if (isArrayIds) {
+        const res = await Article.scope(scope).findAll(finner)
+        const article = {}
+        res.forEach(item => {
+          // 如果有重复的map key 则直接装进去
+          if (article[item.id]) {
+            article[item.id].push(item)
+          } else {
+            // 反之，初始化数组
+            article[item.id] = [item]
+          }
+        })
+        return [null, article]
+      } else {
+        const res = await Article.scope(scope).findOne(finner)
+
+        return [null, res]
+      }
+
+    } catch (err) {
+      console.log(err)
+      return [err, null]
+    }
+  }
 
   // 回复列表
-  static async list(comment_id) {
+  static async list(query) {
     try {
-      const res = await Reply.findAll({
-        where: {
-          comment_id,
-          deleted_at: null
-        },
+      console.log('query', query)
+      const {
+        page = 1,
+        is_article = 0,
+        content,
+        id,
+        status,
+        article_id,
+        is_user = 0
+      } = query
+
+      let finner = {}
+
+      if (id) {
+        finner.id = id
+      }
+      if (article_id) {
+        finner.article_id = article_id
+      }
+      if (status) {
+        finner.status = status
+      }
+
+      if (content) {
+        finner.content = {
+          [Op.like]: `%${content}%`
+        }
+      }
+
+      const res = await Reply.findAndCountAll({
+        where: finner,
         order: [
           ['created_at', 'DESC']
         ]
       });
-      return [null, res]
+      let reply = res.rows
+
+      if (parseInt(is_article, 10) === 1) {
+        reply = await ReplyDao._handleArticle(reply)
+      }
+
+      const data = {
+        data: reply,
+        meta: {
+          current_page: parseInt(page),
+          per_page: 10,
+          count: res.count,
+          total: res.count,
+          total_pages: Math.ceil(res.count / 10),
+        }
+      };
+      return [null, data]
 
     } catch (err) {
+      console.log(err)
       return [err, null]
     }
   }

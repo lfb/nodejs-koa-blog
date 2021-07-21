@@ -1,6 +1,5 @@
 <template>
   <div>
-
     <div class="header">
       <div class="header-inner">
         <a href="/" class="logo"></a>
@@ -8,7 +7,12 @@
           <div class="navigator-box">
             <div class="navigator-inner">
               <form class="search-box" action="/">
-                <input name="keyword" type="text" class="search" placeholder="搜索"/>
+                <input
+                  name="keyword"
+                  type="text"
+                  class="search"
+                  placeholder="搜索"
+                />
               </form>
             </div>
           </div>
@@ -21,40 +25,42 @@
         <li v-for="item in article.data" :key="item.id" class="article-list">
           <a :href="'/article/detail?id=' + item.id" class="article-item">
             <div class="article-image">
-              <img :src="item.img_url" alt="title">
+              <img :src="item.img_url" alt="title" />
             </div>
 
             <div class="article-item-content">
               <h1 class="article-title">
-                {{item.title}}
+                {{ item.title }}
               </h1>
               <div class="article-description">
-                {{item.description}}
+                {{ item.description }}
               </div>
 
               <div class="article-category">
                 {{ item.category_info.name }}
               </div>
             </div>
-
           </a>
         </li>
       </ul>
-
     </div>
 
-
     <div class="copyright">
-      &copy; <a href="http://www.boblog.com" class="copyright-item">波波博客 - BoBlog.com</a>
+      &copy;
+      <a href="http://www.boblog.com" class="copyright-item"
+        >波波博客 - BoBlog.com</a
+      >
       <span class="copyright-mark"></span>
       <a href="mailto:itbo@163.com" class="copyright-item">itbo@163.com</a>
       <span class="copyright-mark"></span>
-      <a href="https://beian.miit.gov.cn" target="_blank" class="copyright-item">粤ICP备2020120493号</a>
+      <a href="https://beian.miit.gov.cn" target="_blank" class="copyright-item"
+        >粤ICP备2020120493号</a
+      >
     </div>
   </div>
 </template>
 <script>
-import {getArticleList} from '@/request/api/article'
+import { getArticleList } from '@/request/api/article'
 export default {
   async asyncData(context) {
     const { id, keyword } = context.query
@@ -63,11 +69,11 @@ export default {
       id,
       keyword,
       is_category: 1,
-      is_admin: 1
+      is_admin: 1,
     })
-    if(!err) {
+    if (!err) {
       return {
-        article: res.data.data
+        article: res.data.data,
       }
     }
   },
@@ -78,12 +84,23 @@ export default {
   },
   mounted() {
     console.log(this.article)
-  }
-};
+  },
+}
 </script>
 
 <style scoped>
-html, body, div, h1, h2, h3, h4, h5, h6, a, ul, li {
+html,
+body,
+div,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+a,
+ul,
+li {
   padding: 0;
   margin: 0;
 }
@@ -93,7 +110,8 @@ li {
 }
 
 body {
-  font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+  font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB',
+    'Microsoft YaHei', '微软雅黑', Arial, sans-serif;
 }
 .header {
   box-sizing: border-box;
@@ -113,7 +131,8 @@ body {
   box-sizing: border-box;
   width: 150px;
   height: 64px;
-  background: url(https://img1.homary.com/common/2021/07/21/34a7ec704253d27043c9735d82245b22.png) -16px center no-repeat;
+  background: url(https://img1.homary.com/common/2021/07/21/34a7ec704253d27043c9735d82245b22.png) -16px
+    center no-repeat;
   -webkit-background-size: cover;
   background-size: cover;
   text-align: center;
@@ -142,7 +161,6 @@ body {
   height: 100%;
   width: 100%;
 }
-
 
 .search {
   box-sizing: border-box;
@@ -178,7 +196,6 @@ body {
   border: none;
 }
 
-
 .article-list:hover .article-title {
   color: #0164da;
   text-decoration: underline;
@@ -189,22 +206,20 @@ body {
   height: 100%;
   width: 100%;
   text-decoration: none;
-  -webkit-transition: background-color .35s, color .35s, margin .45s, -webkit-transform .5s;
-  transition: background-color .35s, color .35s, margin .45s, transform .5s;
+  -webkit-transition: background-color 0.35s, color 0.35s, margin 0.45s,
+    -webkit-transform 0.5s;
+  transition: background-color 0.35s, color 0.35s, margin 0.45s, transform 0.5s;
 }
-
 
 .article-image {
   float: left;
   width: 100px;
 }
 
-
 .article-image img {
   width: 100%;
   border-radius: 4px;
 }
-
 
 .article-item-content {
   overflow: hidden;
@@ -217,7 +232,6 @@ body {
   font-size: 18px;
   color: #404040;
 }
-
 
 .article-description {
   font-size: 14px;

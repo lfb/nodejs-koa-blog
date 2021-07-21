@@ -12,7 +12,7 @@ class LoginManager {
     const [err, admin] = await AdminDao.verify(email, password);
     if (!err) {
       return [null, generateToken(admin.id, Auth.ADMIN)]
-    }else {
+    } else {
       return [err, null]
     }
   }
@@ -24,7 +24,7 @@ class LoginManager {
     const [err, user] = await UserDao.verify(email, password);
     if (!err) {
       return [null, generateToken(user.id, Auth.USER)]
-    }else {
+    } else {
       return [err, null]
     }
   }

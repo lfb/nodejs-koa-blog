@@ -1,7 +1,7 @@
 const moment = require('moment');
 
 const { sequelize } = require('@core/db')
-const {  Model, DataTypes } = require('sequelize')
+const { Model, DataTypes } = require('sequelize')
 
 // 定义文章模型
 class Category extends Model {

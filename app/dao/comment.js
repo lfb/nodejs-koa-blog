@@ -4,7 +4,7 @@ const { Comment } = require('@models/comment')
 const { Article } = require('@models/article')
 const { User } = require('@models/user')
 const { Reply } = require('@models/reply')
-const { isArray, unique, extractQuery } = require('@lib/utils')
+const { isArray, unique } = require('@lib/utils')
 // const {sequelize} = require('@core/db')
 const { Sequelize, Op } = require('sequelize')
 
@@ -92,19 +92,19 @@ class CommentDao {
       throw new global.errs.NotFound('没有找到相关评论信息');
     }
     const aid = v.get('body.article_id')
-    const uid  = v.get('body.user_id')
-    const status  = v.get('body.status')
-    const content  = v.get('body.content')
-    if(aid) {
+    const uid = v.get('body.user_id')
+    const status = v.get('body.status')
+    const content = v.get('body.content')
+    if (aid) {
       comment.article_id = aid
     }
-    if(uid) {
+    if (uid) {
       comment.user_id = uid
     }
-    if(status) {
+    if (status) {
       comment.status = status
     }
-    if(content) {
+    if (content) {
       comment.content = content
     }
 
@@ -131,22 +131,19 @@ class CommentDao {
     } = query
 
     try {
-      // const records = await sequelize.query(`select comment.*,reply.* from comment,reply where comment.id = reply.comment_id;`, {
-      //   type: Sequelize.SELECT
-      // });
       const finner = {
         deleted_at: null
       }
-      if(id) {
+      if (id) {
         finner.id = id
       }
-      if(article_id) {
+      if (article_id) {
         finner.article_id = article_id
       }
-      if(status) {
-        finner.id = id
+      if (status) {
+        finner.status = status
       }
-      if(content) {
+      if (content) {
         finner.content = {
           [Op.like]: `%${content}%`
         }
@@ -167,7 +164,6 @@ class CommentDao {
       })
 
       let rows = comment.rows
-
 
       // 查询评论
       if (parseInt(is_replay, 10) === 1) {
@@ -225,7 +221,7 @@ class CommentDao {
         deleted_at: null
       }
 
-      if(status !== -1) {
+      if (status !== -1) {
         delete finner.status
       }
 
@@ -284,8 +280,11 @@ class CommentDao {
   static async getReplyData(ids) {
     const scope = 'bh'
     const finner = {
-      where: {},
-      attributes: ['id', 'content', 'comment_id', 'user_id', 'reply_user_id']
+      where: {
+        status: 1,
+        deleted_at: null
+      },
+      attributes: ['id', 'content', 'comment_id', 'status', 'user_id', 'reply_user_id']
     }
     const isArrayIds = isArray(ids)
 
@@ -529,7 +528,7 @@ class CommentDao {
     // 如果是数组，遍历去到评论下的文章id列表
     // 如果是对象，直接取该评论的id
     const isArrayData = isArray(comment)
-    const articleIds = isArrayData ? unique(comment.map(c => c.article_id)) : comment.id
+    const articleIds = isArrayData ? unique(comment.map(c => c.article_id)) : comment.article_id
 
     // 进行查询
     const [articleErr, articleData] = await CommentDao.getArticleData(articleIds)

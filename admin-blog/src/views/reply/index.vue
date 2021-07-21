@@ -8,11 +8,22 @@
         inline
       >
         <el-form-item
-          label="文章ID"
+          label="回复ID"
           prop="id"
         >
           <el-input
             v-model.trim="searchForm.id"
+            placeholder="回复ID"
+            class="input"
+            clearable
+          />
+        </el-form-item>
+        <el-form-item
+          label="文章ID"
+          prop="article_id"
+        >
+          <el-input
+            v-model.trim="searchForm.article_id"
             placeholder="文章ID"
             class="input"
             clearable
@@ -20,7 +31,7 @@
         </el-form-item>
 
         <el-form-item
-          label="文章状态："
+          label="分类状态："
           prop="status"
         >
           <el-select
@@ -28,29 +39,19 @@
             placeholder="请选择状态"
             clearable
           >
-            <el-option label="隐藏" value="0" />
-            <el-option label="正常" value="1" />
-          </el-select>
-        </el-form-item>
-
-        <el-form-item label="分类" prop="category_id">
-          <el-select v-model="searchForm.category_id" placeholder="请选择分类">
-            <el-option
-              v-for="item in categoryList"
-              :key="item.id"
-              :label="item.name"
-              :value="item.id"
-            />
+            <el-option label="审核中" value="0" />
+            <el-option label="审核通过" value="1" />
+            <el-option label="审核不通过" value="2" />
           </el-select>
         </el-form-item>
 
         <el-form-item
-          label="文章标题"
-          prop="title"
+          label="分类名称"
+          prop="content"
         >
           <el-input
-            v-model.trim="searchForm.title"
-            placeholder="文章名称"
+            v-model.trim="searchForm.content"
+            placeholder="回复内容"
             class="input"
             clearable
           />
@@ -76,7 +77,7 @@
             size="medium"
             @click="create"
           >
-            新增文章
+            新增分类
           </el-button>
         </el-form-item>
       </el-form>
@@ -96,75 +97,56 @@
             {{ scope.row.id }}
           </template>
         </el-table-column>
-        <el-table-column label="文章标题" width="150" align="center">
+        <el-table-column label="回复内容">
           <template slot-scope="scope">
-            {{ scope.row.title }}
+            <div v-html="mdRender(scope.row.content)" />
           </template>
         </el-table-column>
-        <el-table-column label="文章图片" align="center">
+        <el-table-column label="回复人信息" align="center">
           <template slot-scope="scope">
-            <img :src="scope.row.img_url" width="80" height="80" alt="">
+            {{ scope.row.user_info || '匿名' }}
           </template>
         </el-table-column>
-        <el-table-column label="作者" width="80" align="center">
+        <el-table-column label="回复文章" align="center">
           <template slot-scope="scope">
-            {{ scope.row.admin_info.nickname }}
+            {{ scope.row.article && scope.row.article[0].id }} -
+            {{ scope.row.article && scope.row.article[0].title }}
           </template>
         </el-table-column>
-        <el-table-column label="分类" align="center">
-          <template slot-scope="scope">
-            {{ scope.row.category_info.name }}
-          </template>
-        </el-table-column>
-        <el-table-column label="创建时间" align="center">
-          <template slot-scope="scope">
-            {{ scope.row.created_at }}
-          </template>
-        </el-table-column>
-        <el-table-column label="文章描述" align="center">
-          <template slot-scope="scope">
-            {{ scope.row.description }}
-          </template>
-        </el-table-column>
-        <el-table-column label="文章喜欢数量" align="center">
-          <template slot-scope="scope">
-            {{ scope.row.favorite_num }}
-          </template>
-        </el-table-column>
-        <el-table-column label="文章跳转链接" align="center">
-          <template slot-scope="scope">
-            {{ scope.row.jump_url }}
-          </template>
-        </el-table-column>
-        <el-table-column label="文章SEO关键字" align="center">
-          <template slot-scope="scope">
-            {{ scope.row.seo_keyword }}
-          </template>
-        </el-table-column>
-
-        <el-table-column label="排序" align="center">
-          <template slot-scope="scope">
-            {{ scope.row.sort_order }}
-          </template>
-        </el-table-column>
-
         <el-table-column class-name="status-col" label="状态" align="center">
           <template slot-scope="scope">
             <el-tag :type="scope.row.status | statusFilter">{{ scope.row.status | statusFilterText }}</el-tag>
           </template>
         </el-table-column>
-        <el-table-column fixed="right" width="180" label="操作" align="center">
+        <el-table-column label="操作" align="center">
           <template slot-scope="scope">
             <el-button
               size="mini"
               type="primary"
+              @click="changeStatus(scope.row.id, 1)"
+            >
+              审核通过
+            </el-button>
+            <el-button
+              size="mini"
+              type="warning"
+              @click="changeStatus(scope.row.id, 2)"
+            >
+              审核不通过
+            </el-button>
+            <el-button
+              size="mini"
+              type="primary"
               @click="handleEdit(scope.row.id)"
-            >编辑</el-button>
+            >编辑
+            </el-button>
             <el-button
               size="mini"
               type="danger"
               @click="handleDelete(scope.row.id)"
-            >删除</el-button>
+            >
+              删除
+            </el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -184,65 +166,74 @@
 </template>
 
 <script>
-import { list, detele } from '@/api/article'
-import { list as getCategoryList } from '@/api/category'
+import { list, detele, update } from '@/api/reply'
+
+const hljs = require('highlight.js')
+const md = require('markdown-it')({
+  highlight(str, lang) {
+    if (lang && hljs.getLanguage(lang)) {
+      try {
+        return '<pre class="hljs"><code>' +
+          hljs.highlight(str, {
+            language: lang,
+            ignoreIllegals: true
+          }).value + '</code></pre>'
+      } catch (__) {}
+    }
+
+    return '<pre class="hljs"><code>' + md.utils.escapeHtml(str) + '</code></pre>'
+  }
+})
 
 export default {
-  name: 'ArticleList',
+  name: 'ReplyList',
   filters: {
     statusFilter(status) {
       const statusMap = {
         0: 'danger',
-        1: 'success'
+        1: 'success',
+        2: 'warning'
       }
       return statusMap[status]
     },
+    // 回复状态：0-审核中,1-审核通过,2-审核不通过
     statusFilterText(status) {
       const statusMap = {
-        0: '隐藏',
-        1: '正常'
+        0: '待审核',
+        1: '审核通过',
+        2: '审核不通过'
       }
       return statusMap[status]
     }
   },
   data() {
     return {
-      categoryList: [],
       list: null,
       listLoading: true,
       count: 0,
       searchForm: {
         id: '',
-        title: '',
+        article_id: '',
+        content: '',
         status: '',
         page: 1,
-        category_id: ''
+        is_user: 1,
+        is_article: 1
       }
     }
   },
   mounted() {
-    this.getArticleList()
-    this.getCategoryList()
+    this.getReply()
   },
   methods: {
     create() {
-      this.$router.push('/article/create')
+      this.$router.push('/category/create')
     },
-    async getCategoryList() {
-      try {
-        this.listLoading = true
-        const res = await getCategoryList()
-        this.categoryList = res.data.data
-      } catch (err) {
-        console.log(err)
-      } finally {
-        this.listLoading = false
-      }
-    },
-    async getArticleList() {
+    async getReply() {
       try {
         this.listLoading = true
         const res = await list(this.searchForm)
+        console.log(res)
         this.list = res.data.data
         this.count = res.data.meta.count
       } catch (err) {
@@ -252,40 +243,51 @@ export default {
       }
     },
     handleEdit(id) {
-      this.$router.push('/article/edit?id=' + id)
+      this.$router.push('/comment/edit?id=' + id)
+    },
+    async changeStatus(id, status) {
+      await update({
+        id: id,
+        status
+      })
+      await this.getReply()
+      this.$message.success('更新成功')
     },
     handleDelete(id) {
       try {
-        this.$msgbox.confirm('确定需要删除这个文章吗', '提示', {
+        this.$msgbox.confirm('确定需要删除这个回复吗', '提示', {
           confirmButtonText: '删除',
           cancelButtonText: '取消',
           type: 'error'
         }).then(async() => {
           const r = await detele({ id })
           this.$message.success(r.msg)
-          await this.getArticleList()
+          await this.getReply()
         })
       } catch (err) {
         this.$message.error(err)
       }
     },
+    mdRender(content) {
+      return md.render(content)
+    },
     searchData() {
       this.searchForm.page = 1
-      this.getArticleList()
+      this.getReply()
     },
     handleSizeChange(size) {
       this.searchForm.page = 1
       this.searchForm.size = size
-      this.getArticleList()
+      this.getReply()
     },
     // 点击数字
     handleCurrentChange(page) {
       this.searchForm.page = page
-      this.getArticleList()
+      this.getReply()
     },
     resetSearchData() {
       this.$refs['searchForm'].resetFields()
-      this.getArticleList()
+      this.getReply()
     }
   }
 }
@@ -304,5 +306,72 @@ export default {
   display: flex;
   justify-content: center;
   margin: 24px 0;
+}
+</style>
+<style>
+
+/*highlight.js*/
+/*Syntax highlighting for the Web*/
+pre {
+  padding: 1em
+}
+pre code.hljs {
+  display: block;
+  overflow-x: auto;
+  padding: 1em
+}
+
+code.hljs {
+  padding: 3px 5px
+}
+
+.hljs {
+  color: #abb2bf;
+  background: #282c34
+}
+
+.hljs-comment,.hljs-quote {
+  color: #5c6370;
+  font-style: italic
+}
+
+.hljs-doctag,.hljs-formula,.hljs-keyword {
+  color: #c678dd
+}
+
+.hljs-deletion,.hljs-name,.hljs-section,.hljs-selector-tag,.hljs-subst {
+  color: #e06c75
+}
+
+.hljs-literal {
+  color: #56b6c2
+}
+
+.hljs-addition,.hljs-attribute,.hljs-meta .hljs-string,.hljs-regexp,.hljs-string {
+  color: #98c379
+}
+
+.hljs-attr,.hljs-number,.hljs-selector-attr,.hljs-selector-class,.hljs-selector-pseudo,.hljs-template-variable,.hljs-type,.hljs-variable {
+  color: #d19a66
+}
+
+.hljs-bullet,.hljs-link,.hljs-meta,.hljs-selector-id,.hljs-symbol,.hljs-title {
+  color: #61aeee
+}
+
+.hljs-built_in,.hljs-class .hljs-title,.hljs-title.class_ {
+  color: #e6c07b
+}
+
+.hljs-emphasis {
+  font-style: italic
+}
+
+.hljs-strong {
+  font-weight: 700
+}
+
+.hljs-link {
+  text-decoration: underline
 }
 </style>

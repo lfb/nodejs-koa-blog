@@ -13,12 +13,12 @@ class ReplyValidator extends LinValidator {
     this.comment_id = [
       new Rule("isLength", "comment_id 不能为空", { min: 1 })
     ]
-    this.user_id = [
-      new Rule("isLength", "user_id 不能为空", { min: 1 })
-    ]
-    this.reply_user_id = [
-      new Rule("isLength", "reply_user_id 不能为空", { min: 1 })
-    ]
+    // this.user_id = [
+    //   new Rule("isLength", "user_id 不能为空", { min: 1 })
+    // ]
+    // this.reply_user_id = [
+    //   new Rule("isLength", "reply_user_id 不能为空", { min: 1 })
+    // ]
   }
 }
 
