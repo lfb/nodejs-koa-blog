@@ -59,6 +59,7 @@
     "mysql2": "^2.2.5",
     "nodemon": "^2.0.12",
     "npm-check": "^5.9.0",
+    "qiniu": "^7.4.0",
     "require-directory": "^2.1.1",
     "sequelize": "^6.6.5",
     "supertest": "^4.0.2",

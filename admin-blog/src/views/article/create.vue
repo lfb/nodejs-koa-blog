@@ -8,7 +8,17 @@
         <el-input v-model="ruleForm.description" />
       </el-form-item>
       <el-form-item label="图片" prop="img_url">
-        <el-input v-model="ruleForm.img_url" />
+        <el-upload
+          class="avatar-uploader"
+          action="https://upload-z2.qiniup.com/"
+          :show-file-list="false"
+          :data="{token}"
+          :on-success="handleSuccess"
+        >
+          <img v-if="ruleForm.img_url" width="80" height="80" :src="ruleForm.img_url" class="avatar">
+          <i v-else class="el-icon-plus avatar-uploader-icon" />
+        </el-upload>
+
       </el-form-item>
       <el-form-item label="跳转链接" prop="jump_url">
         <el-input v-model="ruleForm.jump_url" />
@@ -53,11 +63,13 @@
 import { mapState } from 'vuex'
 import { create } from '@/api/article'
 import { list } from '@/api/category'
+import { getToken } from '@/api/upload'
 
 export default {
   name: 'CategoryCreate',
   data() {
     return {
+      token: '',
       categoryList: [],
       ruleForm: {
         title: '',
@@ -108,9 +120,35 @@ export default {
     })
   },
   mounted() {
+    this.fetchData()
     this.getCategoryList()
   },
   methods: {
+    async fetchData() {
+      try {
+        const res = await getToken()
+        this.token = res.data.token
+      } catch (err) {
+        console.log(err)
+      }
+    },
+    handleRemove(file, fileList) {
+      console.log(file, fileList)
+    },
+    handleSuccess(file) {
+      this.ruleForm.img_url = `https://cdn.boblog.com/${file.key}`
+      this.$message.success('上传成功!')
+    },
+    handleError(file, fileList) {
+      console.log(file, fileList)
+      this.$message.error('上传失败!')
+    },
+    handleExceed(files, fileList) {
+      this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`)
+    },
+    beforeRemove(file, fileList) {
+      return this.$confirm(`确定移除 ${file.name}？`)
+    },
     async getCategoryList() {
       try {
         this.listLoading = true
@@ -163,5 +201,31 @@ export default {
 .wrap {
   box-sizing: border-box;
   margin: 24px;
+}
+</style>
+<style>
+
+.avatar-uploader .el-upload {
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.avatar-uploader .el-upload:hover {
+  border-color: #409EFF;
+}
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 178px;
+  line-height: 178px;
+  text-align: center;
+}
+.avatar {
+  width: 178px;
+  height: 178px;
+  display: block;
 }
 </style>

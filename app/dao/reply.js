@@ -197,7 +197,6 @@ class ReplyDao {
   // 回复列表
   static async list(query) {
     try {
-      console.log('query', query)
       const {
         page = 1,
         is_article = 0,
