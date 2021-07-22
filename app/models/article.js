@@ -34,12 +34,6 @@ Article.init({
     allowNull: false,
     comment: '文章内容'
   },
-  jump_url: {
-    type: DataTypes.STRING,
-    unique: 'article_jump_url_unique',
-    allowNull: false,
-    comment: '根据规则生成的利于SEO的文章跳转链接'
-  },
   seo_keyword: {
     type: DataTypes.STRING(128),
     allowNull: false,

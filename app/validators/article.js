@@ -15,7 +15,6 @@ class ArticleValidator extends LinValidator {
     this.seo_keyword = [new Rule("isLength", "文章关键字 seo_keyword 不能为空", { min: 1 })];
     this.description = [new Rule("isLength", "文章简介 description 不能为空", { min: 1 })];
     this.category_id = [new Rule("isLength", "文章分类 category_id 不能为空", { min: 1 })];
-    this.jump_url = [new Rule("isLength", "jump_url 不能为空", { min: 1 })];
     this.admin_id = [new Rule("isLength", "admin_id 不能为空", { min: 1 })];
   }
 

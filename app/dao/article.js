@@ -31,7 +31,6 @@ class ArticleDao {
     article.description = v.get('body.description');
     article.img_url = v.get('body.img_url');
     article.content = v.get('body.content');
-    article.jump_url = v.get('body.jump_url');
     article.seo_keyword = v.get('body.seo_keyword');
     article.status = v.get('body.status') || 1;
     article.sort_order = v.get('body.sort_order');
@@ -226,7 +225,6 @@ class ArticleDao {
     article.description = v.get('body.description');
     article.img_url = v.get('body.img_url');
     article.content = v.get('body.content');
-    article.jump_url = v.get('body.jump_url');
     article.seo_keyword = v.get('body.seo_keyword');
     article.status = v.get('body.status');
     article.sort_order = v.get('body.sort_order');
@@ -260,11 +258,10 @@ class ArticleDao {
   }
 
   // 文章详情
-  static async detail(query) {
-    const { id, keyword } = query
+  static async detail(id, query) {
+    const {  keyword } = query
     try {
       let filter = {
-        id,
         deleted_at: null
       }
 

@@ -7,6 +7,9 @@
       <el-form-item label="描述" prop="description">
         <el-input v-model="ruleForm.description" />
       </el-form-item>
+      <el-form-item label="SEO关键字" prop="seo_keyword">
+        <el-input v-model="ruleForm.seo_keyword" />
+      </el-form-item>
       <el-form-item label="图片" prop="img_url">
         <el-upload
           class="avatar-uploader"
@@ -18,35 +21,26 @@
           <img v-if="ruleForm.img_url" width="80" height="80" :src="ruleForm.img_url" class="avatar">
           <i v-else class="el-icon-plus avatar-uploader-icon" />
         </el-upload>
-
       </el-form-item>
-      <el-form-item label="跳转链接" prop="jump_url">
-        <el-input v-model="ruleForm.jump_url" />
+      <el-form-item label="展示" prop="status">
+        <el-radio-group v-model="ruleForm.status">
+          <el-radio :label="1">显示</el-radio>
+          <el-radio :label="0">隐藏</el-radio>
+        </el-radio-group>
       </el-form-item>
-      <el-form-item label="SEO关键字" prop="seo_keyword">
-        <el-input v-model="ruleForm.seo_keyword" />
+      <el-form-item label="分类" prop="category_id">
+        <el-select v-model="ruleForm.category_id" placeholder="请选择分类">
+          <el-option
+            v-for="item in categoryList"
+            :key="item.id"
+            :label="item.name"
+            :value="item.id"
+          />
+        </el-select>
       </el-form-item>
-      <div>
-        <el-form-item label="展示" prop="status">
-          <el-radio-group v-model="ruleForm.status">
-            <el-radio :label="1">显示</el-radio>
-            <el-radio :label="0">隐藏</el-radio>
-          </el-radio-group>
-        </el-form-item>
-        <el-form-item label="分类" prop="category_id">
-          <el-select v-model="ruleForm.category_id" placeholder="请选择分类">
-            <el-option
-              v-for="item in categoryList"
-              :key="item.id"
-              :label="item.name"
-              :value="item.id"
-            />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="排序" prop="sort_order">
-          <el-input v-model="ruleForm.sort_order" />
-        </el-form-item>
-      </div>
+      <el-form-item label="排序" prop="sort_order">
+        <el-input v-model="ruleForm.sort_order" />
+      </el-form-item>
       <el-form-item label="内容" prop="content">
         <mavon-editor ref="md" v-model="ruleForm.content" code-style="atom-one-dark" @imgAdd="$imgAdd" @imgDel="$imgDel" />
       </el-form-item>
@@ -76,7 +70,6 @@ export default {
         title: '',
         description: '',
         img_url: '',
-        jump_url: '',
         seo_keyword: '',
         status: 1,
         sort_order: 1,
@@ -93,9 +86,6 @@ export default {
         ],
         img_url: [
           { required: true, message: '请输入图片链接', trigger: 'blur' }
-        ],
-        jump_url: [
-          { required: true, message: '请输入跳转链接', trigger: 'blur' }
         ],
         seo_keyword: [
           { required: true, message: '请输入 SEO 关键字', trigger: 'blur' }
@@ -133,9 +123,6 @@ export default {
       } catch (err) {
         console.log(err)
       }
-    },
-    handleRemove(file, fileList) {
-      console.log(file, fileList)
     },
     handleSuccess(file) {
       this.ruleForm.img_url = `https://cdn.boblog.com/${file.key}`

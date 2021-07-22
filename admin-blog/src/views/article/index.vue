@@ -131,11 +131,6 @@
             {{ scope.row.favorite_num }}
           </template>
         </el-table-column>
-        <el-table-column label="文章跳转链接" align="center">
-          <template slot-scope="scope">
-            {{ scope.row.jump_url }}
-          </template>
-        </el-table-column>
         <el-table-column label="文章SEO关键字" align="center">
           <template slot-scope="scope">
             {{ scope.row.seo_keyword }}

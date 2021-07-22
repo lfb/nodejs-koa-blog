@@ -10,35 +10,42 @@
       <el-form-item label="图片" prop="img_url">
         <el-input v-model="ruleForm.img_url" />
       </el-form-item>
-      <el-form-item label="跳转链接" prop="jump_url">
-        <el-input v-model="ruleForm.jump_url" />
-      </el-form-item>
       <el-form-item label="SEO关键字" prop="seo_keyword">
         <el-input v-model="ruleForm.seo_keyword" />
       </el-form-item>
-      <div>
-        <el-form-item label="展示" prop="status">
-          <el-radio-group v-model="ruleForm.status">
-            <el-radio :label="1">显示</el-radio>
-            <el-radio :label="0">隐藏</el-radio>
-          </el-radio-group>
-        </el-form-item>
-        <el-form-item label="分类" prop="category_id">
-          <el-select v-model="ruleForm.category_id" placeholder="请选择分类">
-            <el-option
-              v-for="item in categoryList"
-              :key="item.id"
-              :label="item.name"
-              :value="item.id"
-            />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="排序" prop="sort_order">
-          <el-input v-model="ruleForm.sort_order" />
-        </el-form-item>
-      </div>
+      <el-form-item label="图片" prop="img_url">
+        <el-upload
+          class="avatar-uploader"
+          action="https://upload-z2.qiniup.com/"
+          :show-file-list="false"
+          :data="{token}"
+          :on-success="handleSuccess"
+        >
+          <img v-if="ruleForm.img_url" width="80" height="80" :src="ruleForm.img_url" class="avatar">
+          <i v-else class="el-icon-plus avatar-uploader-icon" />
+        </el-upload>
+      </el-form-item>
+      <el-form-item label="展示" prop="status">
+        <el-radio-group v-model="ruleForm.status">
+          <el-radio :label="1">显示</el-radio>
+          <el-radio :label="0">隐藏</el-radio>
+        </el-radio-group>
+      </el-form-item>
+      <el-form-item label="分类" prop="category_id">
+        <el-select v-model="ruleForm.category_id" placeholder="请选择分类">
+          <el-option
+            v-for="item in categoryList"
+            :key="item.id"
+            :label="item.name"
+            :value="item.id"
+          />
+        </el-select>
+      </el-form-item>
+      <el-form-item label="排序" prop="sort_order">
+        <el-input v-model="ruleForm.sort_order" />
+      </el-form-item>
       <el-form-item label="内容" prop="content">
-        <mavon-editor v-model="ruleForm.content" code-style="atom-one-dark" />
+        <mavon-editor ref="md" v-model="ruleForm.content" code-style="atom-one-dark" @imgAdd="$imgAdd" @imgDel="$imgDel" />
       </el-form-item>
 
       <el-form-item>
@@ -53,19 +60,20 @@
 import { mapState } from 'vuex'
 import { detail, update } from '@/api/article'
 import { list } from '@/api/category'
+import { getToken } from '@/api/upload'
+import axios from 'axios'
 
 export default {
   name: 'CategoryCreate',
   data() {
     return {
-      value: '',
+      token: '',
       categoryList: [],
       ruleForm: {
         id: this.$route.query.id,
         title: '',
         description: '',
         img_url: '',
-        jump_url: '',
         seo_keyword: '',
         status: 1,
         sort_order: 1,
@@ -82,9 +90,6 @@ export default {
         ],
         img_url: [
           { required: true, message: '请输入图片链接', trigger: 'blur' }
-        ],
-        jump_url: [
-          { required: true, message: '请输入跳转链接', trigger: 'blur' }
         ],
         seo_keyword: [
           { required: true, message: '请输入 SEO 关键字', trigger: 'blur' }
@@ -110,10 +115,21 @@ export default {
     })
   },
   mounted() {
+    this.$axios = axios.create({ withCredentials: false })
     this.getArticleDetail()
+    this.fetchData()
     this.getCategoryList()
   },
   methods: {
+
+    async fetchData() {
+      try {
+        const res = await getToken()
+        this.token = res.data.token
+      } catch (err) {
+        console.log(err)
+      }
+    },
     async getArticleDetail() {
       try {
         const res = await detail({
@@ -124,7 +140,6 @@ export default {
         this.ruleForm.description = res.data.description
         this.ruleForm.img_url = res.data.img_url
         this.ruleForm.content = res.data.content
-        this.ruleForm.jump_url = res.data.jump_url
         this.ruleForm.seo_keyword = res.data.seo_keyword
         this.ruleForm.status = res.data.status
         this.ruleForm.sort_order = res.data.sort_order
@@ -134,6 +149,29 @@ export default {
       } catch (err) {
         console.log(err)
       }
+    },
+    handleSuccess(file) {
+      this.ruleForm.img_url = `https://cdn.boblog.com/${file.key}`
+      this.$message.success('上传成功!')
+    },
+    $imgDel(pos, $file) {
+      console.log(pos, $file)
+    },
+    // 绑定@imgAdd event
+    $imgAdd(pos, $file) {
+      // 第一步.将图片上传到服务器.
+      const formdata = new FormData()
+      formdata.append('file', $file)
+      formdata.append('token', this.token)
+      this.$axios({
+        url: 'https://upload-z2.qiniup.com/',
+        method: 'post',
+        data: formdata,
+        headers: { 'Content-Type': 'multipart/form-data' }
+      }).then((res) => {
+        const img_url = `https://cdn.boblog.com/${res.data.key}`
+        this.$refs.md.$img2Url(pos, img_url)
+      })
     },
     async getCategoryList() {
       try {
@@ -188,5 +226,29 @@ export default {
 .wrap {
   box-sizing: border-box;
   margin: 24px;
+}
+
+.avatar-uploader .el-upload {
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.avatar-uploader .el-upload:hover {
+  border-color: #409EFF;
+}
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 178px;
+  line-height: 178px;
+  text-align: center;
+}
+.avatar {
+  width: 178px;
+  height: 178px;
+  display: block;
 }
 </style>

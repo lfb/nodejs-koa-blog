@@ -125,7 +125,7 @@ router.get('/article/:id', async (ctx) => {
   // 获取文章ID参数
   const id = v.get('path.id');
   // 查询文章
-  const [err, data] = await ArticleDao.detail(ctx.query);
+  const [err, data] = await ArticleDao.detail(id, ctx.query);
   if (!err) {
     // 获取关联此文章的评论列表
     const [commentError, commentData] = await CommentDao.targetComment({
