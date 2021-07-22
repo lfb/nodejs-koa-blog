@@ -8,39 +8,39 @@ const { Admin } = require('@models/admin')
 const bcrypt = require('bcryptjs')
 
 class AdminDao {
-  // 创建用管理员
-  static async create(params) {
-    const { email, password, nickname } = params
+// 创建用管理员
+static async create(params) {
+  const { email, password, nickname } = params
 
-    const hasAdmin = await Admin.findOne({
-      where: {
-        email,
-        deleted_at: null
-      }
-    });
-
-    if (hasAdmin) {
-      throw new global.errs.Existing('管理员已存在');
+  const hasAdmin = await Admin.findOne({
+    where: {
+      email,
+      deleted_at: null
     }
+  });
 
-    const admin = new Admin();
-    admin.nickname = nickname
-    admin.email = email
-    admin.password = password
-
-    try {
-      const res = await admin.save();
-
-      const data = {
-        email: res.email,
-        nickname: res.nickname
-      }
-
-      return [null, data]
-    } catch (err) {
-      return [err, null]
-    }
+  if (hasAdmin) {
+    throw new global.errs.Existing('管理员已存在');
   }
+
+  const admin = new Admin();
+  admin.nickname = nickname
+  admin.email = email
+  admin.password = password
+
+  try {
+    const res = await admin.save();
+
+    const data = {
+      email: res.email,
+      nickname: res.nickname
+    }
+
+    return [null, data]
+  } catch (err) {
+    return [err, null]
+  }
+}
 
   // 验证密码
   static async verify(email, plainPassword) {

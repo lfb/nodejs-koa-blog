@@ -48,7 +48,7 @@
         </el-form-item>
       </div>
       <el-form-item label="内容" prop="content">
-        <mavon-editor v-model="ruleForm.content" code-style="atom-one-dark" />
+        <mavon-editor ref="md" v-model="ruleForm.content" code-style="atom-one-dark" @imgAdd="$imgAdd" @imgDel="$imgDel" />
       </el-form-item>
 
       <el-form-item>
@@ -64,6 +64,7 @@ import { mapState } from 'vuex'
 import { create } from '@/api/article'
 import { list } from '@/api/category'
 import { getToken } from '@/api/upload'
+import axios from 'axios'
 
 export default {
   name: 'CategoryCreate',
@@ -120,6 +121,7 @@ export default {
     })
   },
   mounted() {
+    this.$axios = axios.create({ withCredentials: false })
     this.fetchData()
     this.getCategoryList()
   },
@@ -138,6 +140,25 @@ export default {
     handleSuccess(file) {
       this.ruleForm.img_url = `https://cdn.boblog.com/${file.key}`
       this.$message.success('上传成功!')
+    },
+    $imgDel(pos, $file) {
+      console.log(pos, $file)
+    },
+    // 绑定@imgAdd event
+    $imgAdd(pos, $file) {
+      // 第一步.将图片上传到服务器.
+      const formdata = new FormData()
+      formdata.append('file', $file)
+      formdata.append('token', this.token)
+      this.$axios({
+        url: 'https://upload-z2.qiniup.com/',
+        method: 'post',
+        data: formdata,
+        headers: { 'Content-Type': 'multipart/form-data' }
+      }).then((res) => {
+        const img_url = `https://cdn.boblog.com/${res.data.key}`
+        this.$refs.md.$img2Url(pos, img_url)
+      })
     },
     handleError(file, fileList) {
       console.log(file, fileList)
