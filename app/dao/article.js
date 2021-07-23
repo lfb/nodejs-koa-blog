@@ -2,6 +2,7 @@ const { Op } = require('sequelize')
 
 const { Article } = require('@models/article')
 const { Category } = require('@models/category')
+const { Comment } = require('@models/comment')
 const { Admin } = require('@models/admin')
 const { isArray, unique } = require('@lib/utils')
 
@@ -281,8 +282,22 @@ class ArticleDao {
         article = dataAndAdmin
       }
 
+
       if (!article) {
         throw new global.errs.NotFound('没有找到相关文章');
+      }
+
+      const comment = await Comment.findAndCountAll({
+        where: {
+          article_id: id,
+          status: 1,
+          deleted_at: null
+        },
+        attributes: ['id']
+      })
+
+      if(comment) {
+        article.setDataValue('comment_count', comment.count || 0)
       }
 
       return [null, article];

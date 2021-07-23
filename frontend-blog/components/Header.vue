@@ -13,33 +13,42 @@
           </div>
         </div>
       </div>
-    </div>
 
-    <div class="category">
-      <ul class="category-box">
-        <li class="category-item">
-          HTML
-        </li>
-        <li class="category-item">
-          CSS
-        </li>
-        <li class="category-item">
-          JAVASCRIPT
-        </li>
-      </ul>
+      <div v-if="isCategory" class="category">
+        <ul v-if="Array.isArray(categoryList)" class="category-box">
+          <li v-for="item in categoryList" :key="item.id" class="category-item">
+            {{item.name}}
+          </li>
+        </ul>
+      </div>
+
     </div>
   </div>
 </template>
 
 <script>
+import {mapState} from "vuex";
+
 export default {
-  name: "Header"
+  name: "Header",
+  props: {
+    isCategory: {
+      type: Boolean,
+      default: true
+    }
+  },
+  computed: {
+    ...mapState({
+      categoryList: state => state.category.categoryList
+    })
+  }
 }
 </script>
 
 <style scoped lang="scss">
 .header {
   box-sizing: border-box;
+  box-shadow: 0 4px 12px 0 rgba(0,0,0,0.05);
 }
 
 .header-inner {
@@ -64,7 +73,6 @@ export default {
 
 .category {
   border-top: 1px solid #e6e6e6;
-  box-shadow: 0 4px 12px 0 rgba(0,0,0,0.05);
 
   &-box {
     padding: 0;

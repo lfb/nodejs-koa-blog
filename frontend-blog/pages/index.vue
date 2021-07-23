@@ -1,39 +1,62 @@
 <template>
   <div>
-    <Header />
+    <Header :is-category="false"/>
 
     <div class="container">
-      <ul class="article">
-        <li v-for="item in article.data" :key="item.id" class="article-list">
-          <a :href="'/article/detail?id=' + item.id" class="article-item">
-            <div class="article-image">
-              <img :src="item.img_url" alt="title" />
-            </div>
+      <div class="article">
+        <ul class="article-box">
+          <li v-for="item in article.data" :key="item.id" class="article-list">
+            <a :href="'/article/detail?id=' + item.id" class="article-item">
+              <div class="article-content">
+                <h1 class="article-title">
+                  {{ item.title }}
+                </h1>
+                <div class="article-description">
+                  {{ item.description }}
+                </div>
 
-            <div class="article-item-content">
-              <h1 class="article-title">
-                {{ item.title }}
-              </h1>
-              <div class="article-description">
-                {{ item.description }}
+                <div class="introduction">
+                  <div class="article-category">
+                    {{ item.category_info.name }}
+                  </div>
+                  <div class="article-date">
+                    {{ item.created_at }}
+                  </div>
+                </div>
               </div>
 
-              <div class="article-category">
-                {{ item.category_info.name }}
+              <div class="article-image">
+                <img :src="item.img_url" alt="title" />
               </div>
-            </div>
-          </a>
-        </li>
-      </ul>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="sidebar">
+
+        <div class="category">
+          <div class="category-title">
+            CATEGORY LIST
+          </div>
+          <ul v-if="Array.isArray(categoryList)" class="category-list">
+            <li v-for="item in categoryList" :key="item.id" class="category-item">
+              {{item.name}}
+            </li>
+          </ul>
+        </div>
+
+      </div>
     </div>
 
     <Footer />
   </div>
 </template>
 <script>
-import { getArticleList } from '@/request/api/article'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
+import { getArticleList } from '@/request/api/article'
+import {mapState} from 'vuex'
 
 export default {
   components: {
@@ -41,7 +64,8 @@ export default {
     Footer
   },
   async asyncData(context) {
-    const { id, keyword } = context.query
+    // eslint-disable-next-line camelcase
+    const { id, keyword} = context.query
 
     const [err, res] = await getArticleList({
       id,
@@ -49,8 +73,15 @@ export default {
       is_category: 1,
       is_admin: 1,
     })
+
+    let resultText = ''
+    if(keyword) {
+      resultText = "搜索结果："
+    }
+
     if (!err) {
       return {
+        resultText,
         article: res.data.data,
       }
     }
@@ -60,13 +91,23 @@ export default {
       article: null,
     }
   },
+  computed: {
+    ...mapState({
+      categoryList: state => state.category.categoryList
+    })
+  },
+  async fetch({store}) {
+   await store.dispatch('category/getCategoryData')
+  },
   mounted() {
     console.log(this.article)
+    console.log(this.categoryList)
+    // this.fetchData()
   },
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 html,
 body,
 div,
@@ -93,8 +134,50 @@ a {
 
 .container {
   box-sizing: border-box;
-  width: 750px;
+  width: 1024px;
   margin: 0 auto;
+  display: flex;
+
+  .article{
+    flex: 1;
+    padding-right: 24px;
+    padding-top: 32px;
+  }
+
+  .sidebar {
+    width: 280px;
+    padding-left: 24px;
+    padding-top: 32px;
+    border-left: 1px solid #e6e6e6;
+  }
+}
+
+.search-result {
+  padding: 32px 0 24px;
+  margin-bottom: 32px;
+  font-size: 13px;
+  color: #404040;
+  border-bottom: 1px solid #e6e6e6;
+}
+
+.category {
+  &-title {
+    color: #757575;
+    font-size: 13px;
+    padding-bottom: 32px;
+  }
+
+  &-item {
+    cursor: pointer;
+    display: inline-block;
+    padding: 8px 16px;
+    font-size: 14px;
+    color: #292929;
+    margin-right: 8px;
+    margin-bottom: 8px;
+    border-radius: 100px;
+    background-color: #f2f2f2;
+  }
 }
 
 /*文章*/
@@ -102,22 +185,24 @@ a {
   box-sizing: border-box;
   display: block;
   clear: both;
-  height: 148px;
-  padding-top: 24px;
-  border-bottom: 1px solid #f0f0f0;
+  margin-bottom: 48px;
 }
 
 .article-list:last-child {
   border: none;
 }
 
-.article-list:hover .article-title {
-  color: #0164da;
-  text-decoration: underline;
+//.article-list:hover .article-title {
+//  color: #0164da;
+//  text-decoration: underline;
+//}
+
+.article-content {
+  flex: 1;
 }
 
 .article-item {
-  display: block;
+  display: flex;
   height: 100%;
   width: 100%;
   text-decoration: none;
@@ -127,8 +212,7 @@ a {
 }
 
 .article-image {
-  float: left;
-  width: 100px;
+  width: 120px;
 }
 
 .article-image img {
@@ -136,26 +220,36 @@ a {
   border-radius: 4px;
 }
 
-.article-item-content {
-  overflow: hidden;
-  padding-left: 24px;
-  height: 124px;
-}
-
 .article-title {
-  font-weight: 600;
-  font-size: 18px;
+  font-weight: bold;
+  font-size: 22px;
   color: #404040;
+  line-height: 28px;
 }
 
 .article-description {
   font-size: 14px;
-  color: #404040;
-  margin: 12px 0 24px;
+  color: #757575;
+  margin: 4px 0 8px;
 }
 
-.article-category {
-  font-size: 14px;
-  color: #808080;
+
+.introduction {
+
+  .article-category {
+    font-size: 14px;
+    display: inline-block;
+    padding: 2px 12px;
+    border-radius: 100px;
+    color: #2d8cf0;
+    background: rgba(51, 119, 255, .1);
+  }
+
+  .article-date {
+    display: inline-block;
+    font-size: 14px;
+    color: #757575;
+    margin-left: 8px;
+  }
 }
 </style>

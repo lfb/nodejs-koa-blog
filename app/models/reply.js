@@ -52,7 +52,7 @@ Reply.init({
   created_at: {
     type: DataTypes.DATE,
     get() {
-      return moment(this.getDataValue('created_at')).format('YYYY-MM-DD');
+      return moment(this.getDataValue('created_at')).format('YYYY-MM-DD HH:mm:ss');
     }
   }
 }, {

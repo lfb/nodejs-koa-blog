@@ -10,17 +10,29 @@
           {{ article.description }}
         </div>
         <div class="info">
-          <el-avatar size="small" icon="el-icon-user-solid"></el-avatar>
-          <span class="category">
-            {{ article.category_info.name }}
-          </span>
+            <el-avatar size="small" icon="el-icon-user-solid"></el-avatar>
+            <span class="category">
+              {{ article.category_info.name }}
+            </span>
           <span class="created-at">{{article.created_at}}</span>
+          <span class="comment-count">
+            <i class="el-icon-chat-round" @click="onShowComment">评论 {{article.comment_count}}</i>
+          </span>
         </div>
         <div v-html="article.content"></div>
       </div>
     </div>
+    <div class="fixed-sidebar" >
+      <div class="fixed-comment">
+        <i class="el-icon-chat-round" @click="onShowComment"></i>
+      </div>
+      <div class="fixed-scroll-top">
+        <i class="el-icon-top" @click="scrollTop"></i>
+      </div>
 
-    <Comment :id="id"/>
+    </div>
+    <div id="comment"></div>
+    <Comment :id="id" ref="comment"/>
     <Footer/>
   </div>
 </template>
@@ -51,13 +63,43 @@ export default {
         article: res.data.data,
       }
     }
+  },
+  data() {
+    return{
+      showComment: false
+    }
+  },
+  async fetch({store}) {
+    await store.dispatch('category/getCategoryData')
+  },
+  head() {
+    const article = this.article || {}
+    return {
+      title: article.title,
+      meta: [
+        { name: 'keyword', content: article.seo_keyword },
+        { name: 'description', content: article.description }
+      ]
+    }
+  },
+  methods: {
+    goComment() {
+      const commentDOM = document.querySelector('#comment')
+      this.$scrollTo(commentDOM.getBoundingClientRect().top)
+    },
+    scrollTop() {
+      this.$scrollTo(0)
+    },
+    onShowComment() {
+      this.$refs.comment && this.$refs.comment.onShowComment()
+    }
   }
 }
 </script>
 
 <style scoped lang="scss">
 .container {
-  width: 750px;
+  width: 840px;
   margin: 0 auto;
 }
 
@@ -83,6 +125,20 @@ export default {
   font-size: 14px;
   display: inline-block;
   margin-right: 10px;
+}
+
+.comment-count {
+  cursor: pointer;
+  &:hover {
+    color: #2d8cf0;
+  }
+}
+
+.fixed-sidebar {
+  cursor: pointer;
+  position: fixed;
+  bottom: 32px;
+  right: 32px;
 }
 </style>
 
