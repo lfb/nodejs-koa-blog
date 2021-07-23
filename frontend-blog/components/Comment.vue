@@ -33,9 +33,16 @@
                 :key="item.id"
                 class="comment-item"
               >
-                {{ item.user_info || '匿名评论' }}：
-                <div v-html="mdRender(item.content)"></div>
-                （{{ item.created_at }}）
+                <div class="comment-info">
+                  <div class="comment-info-avatar">
+                    <el-avatar size="medium" icon="el-icon-user-solid"></el-avatar>
+                  </div>
+                  <div>
+                    <p class="comment-info-user">{{ item.user_info || '匿名评论' }}</p>
+                    <p class="comment-info-timer">{{item.created_at }}</p>
+                  </div>
+                </div>
+                <div class="comment-item-content" v-html="mdRender(item.content)"></div>
 
 <!--                <div class="comment">-->
 <!--                  <el-button type="primary" icon="el-icon-view" @click="onPreReply"-->
@@ -243,6 +250,34 @@ ul, li {
   margin-bottom: 20px;
   padding-bottom: 20px;
   border-bottom: 1px solid #eee;
+}
+
+.comment-box {
+  .comment-info {
+    display: flex;
+    align-items: center;
+  }
+  .comment-info-avatar {
+    margin-right: 12px;
+  }
+  .comment-info-user,
+  .comment-info-timer {
+    padding: 0;
+    margin: 0;
+    font-size: 14px;
+  }
+  .comment-info-user {
+    color: #292929;
+  }
+  .comment-info-timer {
+    color: #757575;
+  }
+
+  .comment-item-content {
+    font-size: 14px;
+    padding: 20px 0;
+    border-bottom: 1px solid #f0f0f0;
+  }
 }
 
 /deep/ .el-dialog__header {
