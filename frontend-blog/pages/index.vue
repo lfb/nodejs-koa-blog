@@ -1,24 +1,6 @@
 <template>
   <div>
-    <div class="header">
-      <div class="header-inner">
-        <a href="/" class="logo"></a>
-        <div class="navigator-fix">
-          <div class="navigator-box">
-            <div class="navigator-inner">
-              <form class="search-box" action="/">
-                <input
-                  name="keyword"
-                  type="text"
-                  class="search"
-                  placeholder="搜索"
-                />
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <Header />
 
     <div class="container">
       <ul class="article">
@@ -45,23 +27,19 @@
       </ul>
     </div>
 
-    <div class="copyright">
-      &copy;
-      <a href="http://www.boblog.com" class="copyright-item"
-        >波波博客 - BoBlog.com</a
-      >
-      <span class="copyright-mark"></span>
-      <a href="mailto:itbo@163.com" class="copyright-item">itbo@163.com</a>
-      <span class="copyright-mark"></span>
-      <a href="https://beian.miit.gov.cn" target="_blank" class="copyright-item"
-        >粤ICP备2020120493号</a
-      >
-    </div>
+    <Footer />
   </div>
 </template>
 <script>
 import { getArticleList } from '@/request/api/article'
+import Header from '@/components/Header'
+import Footer from '@/components/Footer'
+
 export default {
+  components: {
+    Header,
+    Footer
+  },
   async asyncData(context) {
     const { id, keyword } = context.query
 
@@ -109,76 +87,13 @@ li {
   list-style: none;
 }
 
-body {
-  font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB',
-    'Microsoft YaHei', '微软雅黑', Arial, sans-serif;
-}
-.header {
-  box-sizing: border-box;
-  border-bottom: 1px solid #f0f0f0;
-}
-
-.header-inner {
-  height: 64px;
-  width: 960px;
-  margin: 0 auto;
-}
-
-.logo {
-  position: relative;
-  float: left;
-  display: inline-block;
-  box-sizing: border-box;
-  width: 150px;
-  height: 64px;
-  background: url(https://img1.homary.com/common/2021/07/21/34a7ec704253d27043c9735d82245b22.png) -16px
-    center no-repeat;
-  -webkit-background-size: cover;
-  background-size: cover;
-  text-align: center;
-}
-
-.navigator-fix {
-  width: 100%;
-  height: 64px;
-  float: right;
-  margin-left: -150px;
-}
-
-.navigator-box {
-  height: 56px;
-  padding-left: 150px;
-}
-
-.navigator-inner {
-  text-align: right;
-  height: 64px;
-  clear: both;
-}
-
-.search-box {
-  position: relative;
-  height: 100%;
-  width: 100%;
-}
-
-.search {
-  box-sizing: border-box;
-  width: 320px;
-  padding: 0 12px;
-  margin-top: 14px;
-  height: 36px;
-  line-height: 36px;
-  color: #404040;
-  font-size: 14px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  outline: none;
+a {
+  color: #0164da;
 }
 
 .container {
   box-sizing: border-box;
-  width: 960px;
+  width: 750px;
   margin: 0 auto;
 }
 
@@ -228,7 +143,7 @@ body {
 }
 
 .article-title {
-  font-weight: bold;
+  font-weight: 600;
   font-size: 18px;
   color: #404040;
 }
@@ -242,28 +157,5 @@ body {
 .article-category {
   font-size: 14px;
   color: #808080;
-}
-
-.copyright {
-  padding: 32px 0;
-  color: #9199a1;
-  font-size: 13px;
-  text-align: center;
-  background: #f8f8f8;
-}
-
-.copyright-item {
-  color: #9199a1;
-  text-decoration: none;
-}
-.copyright-item:hover {
-  color: #0164da;
-}
-.copyright-mark {
-  display: inline-block;
-  margin: 0 10px;
-  height: 10px;
-  width: 1px;
-  background: #ccc;
 }
 </style>

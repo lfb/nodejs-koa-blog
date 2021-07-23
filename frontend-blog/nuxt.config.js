@@ -29,7 +29,7 @@ export default {
   plugins: [
     '@/plugins/axios',
     '@/plugins/axios-ports',
-    // '@/plugins/highlight',
+    '@/plugins/md',
     '@/plugins/element-ui'
   ],
 

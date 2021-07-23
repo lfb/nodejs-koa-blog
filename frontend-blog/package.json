@@ -19,7 +19,9 @@
     "element-ui": "^2.15.2",
     "highlight.js": "^11.1.0",
     "markdown-it": "^12.1.0",
-    "nuxt": "^2.15.7"
+    "node-sass": "^6.0.1",
+    "nuxt": "^2.15.7",
+    "sass-loader": "^10.1.1"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.14.7",

@@ -262,6 +262,7 @@ class ArticleDao {
     const {  keyword } = query
     try {
       let filter = {
+        id,
         deleted_at: null
       }
 

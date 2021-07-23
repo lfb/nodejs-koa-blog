@@ -1,7 +1,47 @@
 /*highlight.js*/
 /*Syntax highlighting for the Web*/
+/*@font-face {*/
+/*  font-family: "Roboto";*/
+/*  src: url("https://cdn.boblog.com/Roboto-Regular.ttf");*/
+/*}*/
+
+/*@font-face {*/
+/*  font-family: "NotoSansTC";*/
+/*  src: url("https://cdn.boblog.com/NotoSansTC-Regular.otf");*/
+/*}*/
+
+@font-face {
+  font-family: "SourceCodePro";
+  src: url("https://cdn.boblog.com/SourceCodePro-Regular.ttf");
+  font-weight: normal;
+}
+/*@font-face {*/
+/*  font-family: "SourceCodePro";*/
+/*  src: url("https://cdn.boblog.com/SourceCodePro-Bold.ttf");*/
+/*  font-weight: bold;*/
+/*}*/
+@font-face {
+  font-family: "SourceCodePro";
+  src: url("https://cdn.boblog.com/SourceCodePro-Medium.ttf");
+  font-weight: 600;
+}
+/*@font-face {*/
+/*  font-family: "JetBrainsMono";*/
+/*  src: url("https://cdn.boblog.com/JetBrainsMono-VariableFont_wght.ttf");*/
+/*}*/
+html, body {
+  font-family: SourceCodePro;
+}
+li {
+  list-style: none;
+}
+
+img {
+  width: 100%;
+}
+
 pre {
-  padding: 1em
+  padding: 1em;
 }
 pre code.hljs {
   display: block;
@@ -15,7 +55,12 @@ code.hljs {
 
 .hljs {
   color: #abb2bf;
+  font-size: 13px;
   background: #282c34
+}
+.hljs code {
+  font-family: SourceCodePro;
+  /*font-family: "JetBrainsMono";*/
 }
 
 .hljs-comment,.hljs-quote {
