@@ -20,20 +20,23 @@
       </div>
     </div>
 
+    <Comment :id="id"/>
     <Footer/>
   </div>
 </template>
 <script>
 import { getArticleDetail } from '@/request/api/article'
 
+import Comment from '@/components/Comment'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 
 export default {
   name: 'ArticleDetail',
   components: {
+    Comment,
     Header,
-    Footer
+    Footer,
   },
   async asyncData(context) {
     const { id } = context.query

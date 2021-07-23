@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div v-if="commentList">
       <div class="comment">
         <el-button type="primary" icon="el-icon-view" @click="onPreComment"
         >预览评论</el-button
@@ -59,11 +59,18 @@ import { createReply } from '@/request/api/reply'
 import { getCommentTarget, createComment } from '@/request/api/comment'
 export default {
   name: "Comment",
+  props: {
+    id: {
+      type: [String, Number],
+      default: () => -1
+    }
+  },
   data() {
     return{
       reply: '',
       preReplyContent: '',
       comment: '',
+      commentList: [],
       preCommentContent: '',
     }
   },
