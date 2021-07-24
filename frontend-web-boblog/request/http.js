@@ -11,7 +11,8 @@ export function GET(config) {
             return [null, res]
         })
         .catch(err => {
-            return [err, null]
+
+          return [err, null]
         })
 }
 export function POST(config) {
@@ -19,10 +20,10 @@ export function POST(config) {
     return service
         .post(url, data, opt)
         .then(res => {
-            return [null, res]
+          return [null, res]
         })
         .catch(err => {
-            return [err, null]
+          return [err, null]
         })
 }
 

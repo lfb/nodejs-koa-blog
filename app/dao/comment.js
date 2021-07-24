@@ -476,6 +476,7 @@ class CommentDao {
           userIds.push(replyData.user_id, replyData.reply_user_id)
         }
 
+
         newUserIds = unique(userIds).filter(v => v !== 0)
 
         const [userErr1, userData1] = await CommentDao.getUserData(newUserIds)

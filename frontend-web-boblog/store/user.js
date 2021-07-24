@@ -19,7 +19,6 @@ const actions = {
   async userLogin({ state, commit }, params = {}) {
     const [err, res] = await login(params)
     if(!err) {
-      debugger
       const user = res.data.data
       commit('SET_USERINFO', {
         id: user.id,

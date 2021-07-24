@@ -6,3 +6,6 @@ export function getToken() {
 export function setToken(val) {
   return localStorage.setItem('BOBLOG_TOKEN', val)
 }
+export function removeToken() {
+  return localStorage.removeItem('BOBLOG_TOKEN')
+}

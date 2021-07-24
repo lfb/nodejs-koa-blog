@@ -106,7 +106,7 @@
                         <button
                           :disabled="!item.reply_content"
                           :class="['submit-comment', {opacity: !item.reply_content}]"
-                          @click="submitReply(item)">
+                          @click="submitReply(item, index)">
                           回复
                         </button>
                       </div>
@@ -199,6 +199,7 @@
 <script>
 import {mapState} from 'vuex'
 import {getToken} from "@/lib/token";
+import {validEmail} from "@/lib/utils";
 import { createReply } from '@/request/api/reply'
 import { getCommentTarget, createComment } from '@/request/api/comment'
 
@@ -244,10 +245,23 @@ export default {
       }
     },
     async submitComment() {
+      if(!this.isLoginStatus) {
+        if(!this.email) {
+          this.$message.warning('请输入邮箱!')
+          return false;
+        }
+
+        if(this.email && !validEmail(this.email)) {
+          this.$message.warning('请输入正确的邮箱!')
+          return false;
+        }
+      }
+
       if(!this.comment) {
         this.$message.warning('请输入评论内容!')
         return false;
       }
+
       const [err, data] = await createComment({
         user_id: this.userId,
         article_id: this.id,
@@ -257,6 +271,7 @@ export default {
       if (!err) {
         console.log('data', data)
         this.comment = ''
+        this.email = ''
         this.$message.success('评论成功，审核通过后展示！')
       }
     },
@@ -269,14 +284,15 @@ export default {
       this.preContent = this.mdRender(content)
       this.showCommentInner = !this.showCommentInner
     },
-    async onShowComment() {
+    onShowComment() {
       this.showComment = true
+
       if(!this.isLoginStatus && getToken()) {
-        await this.getUserInfo()
+        this.getUserInfo()
       }
 
       if(!this.isLoad) {
-       await this.getComment()
+        this.getComment()
       }
     },
     mdRender(content) {
@@ -312,6 +328,9 @@ export default {
         const [err, data ] = await this.$store.dispatch('user/userLogin', user)
         if(!err) {
           console.log(data)
+          this.showLoginInner = false
+          this.user.username = ''
+          this.user.email = ''
           this.$message.success('登录成功')
         }
       }else {
@@ -324,16 +343,35 @@ export default {
         const [err, data] = await this.$store.dispatch('user/userRegister', registerParams)
         if(!err) {
           console.log(data)
+          this.showLoginInner = false
+          this.user.username = ''
+          this.user.email = ''
           this.$message.success('注册成功')
         }
       }
     },
-    onAnonymous() {
-      console.log('大大地')
-    },
     async submitReply(item) {
       // eslint-disable-next-line camelcase
       const {id, reply_content, email, user_id = 0} = item
+
+      if(!this.isLoginStatus) {
+        if(!email) {
+          this.$message.warning('请输入邮箱!')
+          return false;
+        }
+
+        if(this.email && !validEmail(email)) {
+          this.$message.warning('请输入正确的邮箱!')
+          return false;
+        }
+      }
+
+      // eslint-disable-next-line camelcase
+      if(!reply_content) {
+        this.$message.warning('请输入内容!')
+        return false;
+      }
+
       const [err, data] = await createReply({
         article_id: this.id,
         user_id: this.userId,
@@ -344,6 +382,7 @@ export default {
       })
       if (!err) {
         console.log('data', data)
+        this.showReply()
         this.$message.success('回复成功，审核通过后展示！')
       }
     },

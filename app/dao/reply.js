@@ -1,5 +1,6 @@
 const xss = require('xss')
 const { Reply } = require('@models/reply')
+const { User } = require('@models/user')
 const { Comment } = require('@models/comment')
 const { Article } = require('@models/article')
 const { extractQuery, isArray, unique } = require('@lib/utils')
@@ -120,6 +121,80 @@ class ReplyDao {
       throw new global.errs.Existing(JSON.stringify(articleErr));
     }
   }
+  /**
+   * 处理回复下的用户
+   * @param reply 评论数据 Array | Object
+   * @returns 新的评论数据
+   * @private
+   */
+  static async _handleUser(reply) {
+    // 判断评论数据是否是数组或者对象
+    // 如果是数组，遍历去到评论下的文章id列表
+    // 如果是对象，直接取该评论的id
+    const isArrayData = isArray(reply)
+    const userIds = isArrayData
+        ? unique(reply.map(c => c.user_id)).filter(v => v !== 0)
+        : reply.user_id
+
+    // 进行查询
+    const [userErr, userData] = await ReplyDao.getUserData(userIds)
+
+    if (!userErr) {
+      return ReplyDao.setReplyByDataValue(reply, userData, 'user_id', 'user_info')
+
+    } else {
+      console.log('userErr', userErr)
+      throw new global.errs.Existing(JSON.stringify(userErr));
+    }
+  }
+
+  /**
+   * 查询用户id，且处理数据为 key-value 形式
+   * @param ids 用户id | Array | Object
+   * @returns 根据传入的ids查询出来的用户数据
+   */
+  static async getUserData(ids) {
+    if (ids === 0) {
+      return [null, null]
+    }
+
+    const scope = 'bh'
+    const finner = {
+      where: {
+        id: {}
+      }
+      // attributes: ['id', 'title']
+    }
+    const isArrayIds = isArray(ids)
+    // 如果ids是数组，则使用 Op.in 查询
+    if (isArrayIds) {
+      finner.where.id = {
+        [Op.in]: ids
+      }
+    } else if (ids) {
+      // 反之id索引查询
+      finner.where.id = ids
+    }
+
+    try {
+      // 如果ids是数组，则使用 Op.in 查询，反之id索引查询
+      const fn = isArrayIds ? 'findAll' : 'findOne'
+      const res = await User.scope(scope)[fn](finner)
+
+      if (isArrayIds) {
+        const user = {}
+        res.forEach(item => {
+          user[item.id] = item
+        })
+        return [null, user]
+      }
+
+      return [null, res]
+
+    } catch (err) {
+      return [err, null]
+    }
+  }
 
   /**
    * 新增设置评论下的属性
@@ -238,6 +313,10 @@ class ReplyDao {
 
       if (parseInt(is_article, 10) === 1) {
         reply = await ReplyDao._handleArticle(reply)
+      }
+
+      if (parseInt(is_user, 10) === 1) {
+        reply = await ReplyDao._handleUser(reply)
       }
 
       const data = {
