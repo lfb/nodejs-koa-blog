@@ -16,7 +16,7 @@ const { LoginManager } = require('@service/login');
 const { Resolve } = require('@lib/helper');
 const res = new Resolve();
 
-const AUTH_USER = 16;
+const AUTH_USER = 8;
 
 const router = new Router({
     prefix: '/api/v1/user'
@@ -37,10 +37,14 @@ router.post('/register', async (ctx) => {
     });
 
     if (!err) {
-        data.token = await LoginManager.userLogin({
+        const [errToken, token, id] = await LoginManager.userLogin({
             email,
             password
         });
+        if(!errToken) {
+            data.token = token
+            data.id = id
+        }
         // 返回结果
         ctx.response.status = 200;
         ctx.body = res.json(data);
@@ -56,14 +60,18 @@ router.post('/login', async (ctx) => {
 
     const v = await new UserLoginValidator().validate(ctx);
 
-    let [err, token] = await LoginManager.userLogin({
+    let [err, token, id] = await LoginManager.userLogin({
         email: v.get('body.email'),
         password: v.get('body.password')
     });
 
     if (!err) {
-        ctx.response.status = 200;
-        ctx.body = res.json({ token });
+        let [err, data] = await UserDao.detail(id);
+        if(!err) {
+            data.setDataValue('token', token)
+            ctx.response.status = 200;
+            ctx.body = res.json(data);
+        }
     } else {
         ctx.body = res.fail(err, err.msg);
     }

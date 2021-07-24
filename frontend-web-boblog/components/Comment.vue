@@ -8,13 +8,16 @@
 
         <div class="comment">
           <div class="comment-header">
+            <span v-if="userInfo">
+              {{userInfo.username }}，
+            </span>
             欢迎您的评论
           </div>
-          <div class="login-tips">
+          <div v-if="!isLoginStatus" class="login-tips">
             当前是匿名评论，登录后让代码改变世界！ <span class="sign-in" @click="showLoginInner = true">登录</span>
           </div>
 
-          <div class="email-input">
+          <div v-if="!isLoginStatus" class="email-input">
             <input
               v-model="email"
               maxlength="1000"
@@ -50,7 +53,7 @@
                     <el-avatar size="medium" icon="el-icon-user-solid"></el-avatar>
                   </div>
                   <div>
-                    <p class="comment-info-user">{{ item.user_info || '匿名评论' }}</p>
+                    <p class="comment-info-user">{{ (item.user_info && item.user_info.username) || '匿名评论' }}</p>
                     <p class="comment-info-timer">{{item.created_at }}</p>
                   </div>
                 </div>
@@ -63,7 +66,7 @@
                         <el-avatar size="small" icon="el-icon-user-solid"></el-avatar>
                       </div>
                       <div>
-                        <p class="comment-info-user">{{ reply.user_info || '匿名回复' }}</p>
+                        <p class="comment-info-user">{{ (reply.user_info && reply.user_info.username) || '匿名回复' }}</p>
                         <p class="comment-info-timer">{{reply.created_at }}</p>
                       </div>
                     </div>
@@ -76,7 +79,7 @@
                     <i v-if="!item.is_show_reply" class="el-icon-chat-dot-round" > 回复</i>
                   </div>
                   <div v-if="item.is_show_reply" >
-                    <div class="email-input">
+                    <div v-if="!isLoginStatus" class="email-input">
                       <input
                         v-model="email"
                         maxlength="1000"
@@ -103,7 +106,7 @@
                         <button
                           :disabled="!item.reply_content"
                           :class="['submit-comment', {opacity: !item.reply_content}]"
-                          @click="submitReply(item.id, item.reply_content, item.email)">
+                          @click="submitReply(item)">
                           回复
                         </button>
                       </div>
@@ -147,6 +150,15 @@
             <h2 class="login-header">
               {{isLogin ? '登录' : '注册'}}
             </h2>
+
+            <div v-if="!isLogin" class="email-input">
+              <input
+                v-model="user.username"
+                maxlength="32"
+                class="comment-content"
+                placeholder="请输入你的昵称"
+              />
+            </div>
             <div class="email-input">
               <input
                 v-model="user.email"
@@ -158,8 +170,9 @@
 
             <div class="email-input">
               <input
-                v-model="user.password1"
+                v-model="user.password"
                 maxlength="16"
+                type="password"
                 class="comment-content"
                 placeholder="请输入密码"
               />
@@ -168,7 +181,7 @@
               {{ isLogin ? '未有账号？点击注册！' : '已有账号？点击登录！'}}
             </div>
             <div class="login-btn">
-              <button :disabled="!user.email || !user.password1" class="login-btn-submit" @click="onLogin(comment)">
+              <button :disabled="!user.email || !user.password" class="login-btn-submit" @click="onLogin(comment)">
                 {{ isLogin ? '登录' : '注册' }}
               </button>
               <button class="login-btn-default" @click="showLoginInner = false">
@@ -184,9 +197,11 @@
 </template>
 
 <script>
-
+import {mapState} from 'vuex'
+import {getToken} from "@/lib/token";
 import { createReply } from '@/request/api/reply'
 import { getCommentTarget, createComment } from '@/request/api/comment'
+
 export default {
   name: "Comment",
   props: {
@@ -199,9 +214,9 @@ export default {
     return{
       isLogin: true,
       user: {
+        username: '',
         email: '',
-        password1: '',
-        password2: ''
+        password: '',
       },
       email: '',
       showComment: false,
@@ -212,14 +227,29 @@ export default {
       preContent: ''
     }
   },
+  computed: {
+    ...mapState({
+      userInfo: state => state.user.userInfo,
+      isLoginStatus: state => state.user.isLoginStatus
+    }),
+    userId() {
+      return (this.userInfo && this.userInfo.id) || 0
+    }
+  },
   methods: {
+    async getUserInfo() {
+      const [err, data] = await this.$store.dispatch('user/userInfo')
+      if(!err) {
+        console.log(data)
+      }
+    },
     async submitComment() {
       if(!this.comment) {
         this.$message.warning('请输入评论内容!')
         return false;
       }
       const [err, data] = await createComment({
-        user_id: 0,
+        user_id: this.userId,
         article_id: this.id,
         email: this.email,
         content: this.comment,
@@ -239,10 +269,14 @@ export default {
       this.preContent = this.mdRender(content)
       this.showCommentInner = !this.showCommentInner
     },
-    onShowComment() {
+    async onShowComment() {
       this.showComment = true
+      if(!this.isLoginStatus && getToken()) {
+        await this.getUserInfo()
+      }
+
       if(!this.isLoad) {
-        this.getComment()
+       await this.getComment()
       }
     },
     mdRender(content) {
@@ -272,19 +306,40 @@ export default {
         item.email = ''
       })
     },
-    onLogin() {
-      console.log(this.user)
+    async onLogin() {
+      const user = this.user
+      if(this.isLogin) {
+        const [err, data ] = await this.$store.dispatch('user/userLogin', user)
+        if(!err) {
+          console.log(data)
+          this.$message.success('登录成功')
+        }
+      }else {
+        const registerParams = {
+          username: user.username,
+          email: user.email,
+          password1: user.password,
+          password2: user.password
+        }
+        const [err, data] = await this.$store.dispatch('user/userRegister', registerParams)
+        if(!err) {
+          console.log(data)
+          this.$message.success('注册成功')
+        }
+      }
     },
     onAnonymous() {
       console.log('大大地')
     },
-    async submitReply(commentId, content, email) {
+    async submitReply(item) {
+      // eslint-disable-next-line camelcase
+      const {id, reply_content, email, user_id = 0} = item
       const [err, data] = await createReply({
         article_id: this.id,
-        user_id: 0,
-        reply_user_id: 0,
-        comment_id: commentId,
-        content,
+        user_id: this.userId,
+        reply_user_id: user_id,
+        comment_id: id,
+        content: reply_content,
         email,
       })
       if (!err) {
