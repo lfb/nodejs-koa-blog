@@ -4,8 +4,11 @@
 
     <div class="container">
       <div class="article">
-        <div v-if="isEmptyData" class="empty-data">数据为空</div>
-        <ul class="article-box">
+        <div v-if="isEmptyData" class="empty-data">
+          数据为空
+          <a href="/">刷新</a>
+        </div>
+        <ul v-if="article" class="article-box">
           <li v-for="item in article.data" :key="item.id" class="article-list">
             <a :href="'/article/detail?id=' + item.id" class="article-item">
               <div class="article-content">

@@ -25,6 +25,7 @@
                   size="small"
                   icon="el-icon-user-solid"
                 ></el-avatar>
+                <span class="username">{{ userInfo.username }}</span>
                 <i class="el-icon-caret-bottom" />
               </div>
               <el-dropdown-menu slot="dropdown" class="user-dropdown">
@@ -71,6 +72,7 @@ export default {
   computed: {
     ...mapState({
       isLoginStatus: state => state.user.isLoginStatus,
+      userInfo: state => state.user.userInfo,
       categoryList: (state) => state.category.categoryList
     }),
   },
@@ -110,6 +112,9 @@ a{
   align-items: center;
   margin-left: 32px;
   height: 64px;
+}
+.username {
+  margin: 0 5px;
 }
 .logo {
   position: relative;
