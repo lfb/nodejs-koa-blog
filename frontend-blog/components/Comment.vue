@@ -20,8 +20,8 @@
               rows="10" />
 
             <div class="comment-action">
-              <button class="preview-comment" @click="onPreComment(comment)">预览</button>
-              <button class="submit-comment" @click="submitComment">提交</button>
+              <button :class="['preview-comment', {opacity: !comment}]" @click="onPreComment(comment)">预览</button>
+              <button :class="['submit-comment', {opacity: !comment}]" @click="submitComment">提交</button>
             </div>
           </div>
 
@@ -72,8 +72,16 @@
                       rows="10" />
 
                     <div class="comment-action">
-                      <button class="preview-comment" @click="onPreComment(item.reply_content)">预览</button>
-                      <button class="submit-comment" @click="submitReply(item.id, item.reply_content)">回复</button>
+                      <button
+                        :class="['preview-comment', {opacity: !item.reply_content}]"
+                        @click="onPreComment(item.reply_content)">
+                        预览
+                      </button>
+                      <button
+                        :class="['submit-comment', {opacity: !item.reply_content}]"
+                        @click="submitReply(item.id, item.reply_content)">
+                        回复
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -335,6 +343,10 @@ ul, li, p {
       color: #2d8cf0;
     }
   }
+}
+
+.opacity {
+  opacity: 0.5;
 }
 
 /deep/ .el-dialog__header {
