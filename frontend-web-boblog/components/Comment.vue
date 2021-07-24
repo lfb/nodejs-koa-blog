@@ -240,7 +240,7 @@
 
 <script>
 import { mapState } from 'vuex'
-import { getToken } from '@/lib/token'
+import { getToken } from '@/lib/auth'
 import { validEmail } from '@/lib/utils'
 import { createReply } from '@/request/api/reply'
 import { getCommentTarget, createComment } from '@/request/api/comment'

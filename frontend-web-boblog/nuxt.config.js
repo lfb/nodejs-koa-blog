@@ -30,6 +30,7 @@ export default {
     '@/plugins/axios',
     '@/plugins/axios-ports',
     '@/plugins/md',
+    '@/plugins/route',
     { src: '@/plugins/scrollTo', mode: 'client' },
     '@/plugins/element-ui'
   ],
@@ -45,7 +46,9 @@ export default {
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
-    '@nuxtjs/axios'
+    '@nuxtjs/axios',
+    'cookie-universal-nuxt',
+    ['cookie-universal-nuxt', { alias: 'cookiz' }],
   ],
   env: envConfig,
   // Build Configuration: https://go.nuxtjs.dev/config-build

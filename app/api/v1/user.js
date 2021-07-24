@@ -81,6 +81,7 @@ router.post('/login', async (ctx) => {
 router.get('/auth', new Auth(AUTH_USER).m, async (ctx) => {
     // 获取用户ID
     const id = ctx.auth.uid;
+    console.log('1024')
 
     // 查询用户信息
     let [err, data] = await UserDao.detail(id);

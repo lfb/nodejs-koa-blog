@@ -5,6 +5,9 @@ import {
   Dialog,
   Button,
   Avatar,
+  Dropdown,
+  DropdownMenu,
+  DropdownItem,
   Loading,
   MessageBox,
   Message,
@@ -17,6 +20,9 @@ const components = [
   Button,
   Avatar,
   Dialog,
+  Dropdown,
+  DropdownMenu,
+  DropdownItem,
   Drawer
 ]
 const Element = {

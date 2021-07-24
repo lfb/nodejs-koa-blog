@@ -1,5 +1,5 @@
 import { login, register, info } from '@/request/api/user'
-import { setToken } from "@/lib/token";
+import { setToken } from "@/lib/auth";
 
 const state = () => ({
   userInfo: null,

@@ -2,7 +2,7 @@
   <div>
     <div class="header">
       <div class="header-inner">
-        <a href="/" class="logo"></a>
+        <div class="logo" @click="goHome"></div>
         <div class="navigator-fix">
           <div class="navigator-box">
             <div class="navigator-inner">
@@ -17,6 +17,27 @@
             </div>
           </div>
         </div>
+        <client-only>
+          <div v-if="isLoginStatus">
+            <el-dropdown class="avatar-container" trigger="click">
+              <div class="avatar-wrapper">
+                <el-avatar
+                  size="small"
+                  icon="el-icon-user-solid"
+                ></el-avatar>
+                <i class="el-icon-caret-bottom" />
+              </div>
+              <el-dropdown-menu slot="dropdown" class="user-dropdown">
+                <router-link to="/user">
+                  <el-dropdown-item> 个人中心 </el-dropdown-item>
+                </router-link>
+                <el-dropdown-item divided @click.native="logout">
+                  <span style="display: block">Log Out</span>
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+          </div>
+        </client-only>
       </div>
 
       <div v-if="isCategory" class="category">
@@ -37,6 +58,7 @@
 
 <script>
 import { mapState } from 'vuex'
+import {removeToken} from '@/lib/auth'
 
 export default {
   name: 'Header',
@@ -48,13 +70,29 @@ export default {
   },
   computed: {
     ...mapState({
-      categoryList: (state) => state.category.categoryList,
+      isLoginStatus: state => state.user.isLoginStatus,
+      categoryList: (state) => state.category.categoryList
     }),
   },
+  methods: {
+    logout() {
+      removeToken()
+      this.$store.commit('user/SET_LOGIN_STATUS', false)
+      this.$store.commit('user/SET_USERINFO', null)
+      this.goHome()
+    },
+    goHome() {
+      this.$router.push('/')
+    }
+  }
 }
 </script>
 
 <style scoped lang="scss">
+a{
+  text-decoration: none;
+}
+
 .header {
   box-sizing: border-box;
   box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.05);
@@ -64,11 +102,17 @@ export default {
   height: 64px;
   width: 1024px;
   margin: 0 auto;
+  display: flex;
+  align-items: center;
 }
-
+.avatar-wrapper {
+  display: flex;
+  align-items: center;
+  margin-left: 32px;
+  height: 64px;
+}
 .logo {
   position: relative;
-  float: left;
   display: inline-block;
   box-sizing: border-box;
   width: 150px;
