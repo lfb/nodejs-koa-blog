@@ -50,6 +50,10 @@ const actions = {
 
   },
   async userInfo({ state, commit }, params = {}) {
+    if(state.isLoginStatus && state.userInfo) {
+      return  state.userInfo
+    }
+
     const [err, res] = await info(params)
     if (!err) {
       const user = res.data.data

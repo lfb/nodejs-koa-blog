@@ -82,7 +82,7 @@ export default {
       this.goHome()
     },
     goHome() {
-      this.$router.push('/')
+      window.location.href = '/'
     }
   }
 }
