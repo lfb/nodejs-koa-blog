@@ -1,5 +1,6 @@
 const xss = require('xss')
 const { Reply } = require('@models/reply')
+const { Comment } = require('@models/comment')
 const { Article } = require('@models/article')
 const { extractQuery, isArray, unique } = require('@lib/utils')
 const { Op } = require('sequelize')
@@ -8,14 +9,15 @@ class ReplyDao {
   // 创建回复
   static async create(v) {
     // 查询评论
-    const hasReply = await Reply.findByPk(v.get('body.reply_id'));
-    if (!hasReply) {
+    const hasComment = await Comment.findByPk(v.get('body.comment_id'));
+    if (!hasComment) {
       throw new global.errs.NotFound('没有找到相关评论');
     }
 
     const reply = new Reply();
     reply.reply_id = v.get('body.reply_id');
     reply.article_id = v.get('body.article_id');
+    reply.comment_id = v.get('body.comment_id');
     reply.user_id = v.get('body.user_id');
     reply.reply_user_id = v.get('body.reply_user_id');
     reply.content = xss(v.get('body.content'));

@@ -20,7 +20,7 @@
               rows="10" />
 
             <div class="comment-action">
-              <button class="preview-comment" @click="onPreComment">预览</button>
+              <button class="preview-comment" @click="onPreComment(comment)">预览</button>
               <button class="submit-comment" @click="submitComment">提交</button>
             </div>
           </div>
@@ -29,7 +29,7 @@
           <div v-if="commentList" class="comment-list">
             <ul class="comment-box">
               <li
-                v-for="item in commentList.data"
+                v-for="(item, index) in commentList.data"
                 :key="item.id"
                 class="comment-item"
               >
@@ -43,6 +43,40 @@
                   </div>
                 </div>
                 <div class="comment-item-content" v-html="mdRender(item.content)"></div>
+
+                <ul v-if="item.reply_list" class="reply-list">
+                  <li v-for="reply in item.reply_list" :key="reply.id" class="reply-item">
+                    <div class="comment-info">
+                      <div class="comment-info-avatar">
+                        <el-avatar size="small" icon="el-icon-user-solid"></el-avatar>
+                      </div>
+                      <div>
+                        <p class="comment-info-user">{{ reply.user_info || '匿名回复' }}</p>
+                        <p class="comment-info-timer">{{reply.created_at }}</p>
+                      </div>
+                    </div>
+                    <div class="comment-item-content" v-html="mdRender(reply.content)"></div>
+                  </li>
+                </ul>
+
+                <div class="reply-create">
+                  <i v-if="!item.is_show_reply" class="el-icon-chat-dot-round" @click="showReply(index)"> 回复</i>
+
+                  <div v-if="item.is_show_reply" class="comment-textarea">
+                    <textarea
+                      v-model="item.reply_content"
+                      maxlength="1000"
+                      class="comment-content"
+                      placeholder="请输入回复内容，支持 Markdown 语法.."
+                      cols="30"
+                      rows="10" />
+
+                    <div class="comment-action">
+                      <button class="preview-comment" @click="onPreComment(item.reply_content)">预览</button>
+                      <button class="submit-comment" @click="submitReply(item.id, item.reply_content)">回复</button>
+                    </div>
+                  </div>
+                </div>
 
 <!--                <div class="comment">-->
 <!--                  <el-button type="primary" icon="el-icon-view" @click="onPreReply"-->
@@ -71,14 +105,12 @@
           :append-to-body="true"
           :visible.sync="showCommentInner">
 
-
           <div class="comment">
             <div class="comment-header">
               预览：
             </div>
             <div>
-
-              <div v-html="preCommentContent"></div>
+              <div v-html="preContent"></div>
             </div>
           </div>
 
@@ -104,16 +136,10 @@ export default {
     return{
       showComment: false,
       showCommentInner: false,
-      reply: '',
-      preReplyContent: '',
       comment: '',
-      commentList: [],
-      preCommentContent: '',
-      showDialogVisible: false
+      commentList: null,
+      preContent: ''
     }
-  },
-  mounted() {
-    this.getComment()
   },
   methods: {
     async submitComment() {
@@ -132,17 +158,20 @@ export default {
         this.$message.success('评论成功，审核通过后展示！')
       }
     },
-    onPreComment() {
-      if(!this.comment) {
-        this.$message.warning('请输入评论内容!')
+    onPreComment(content) {
+      if(!content) {
+        this.$message.warning('请输入内容!')
         return false;
       }
 
-      this.preCommentContent = this.mdRender(this.comment)
+      this.preContent = this.mdRender(content)
       this.showCommentInner = !this.showCommentInner
     },
     onShowComment() {
-      this.showComment = !this.showComment
+      this.showComment = true
+      if(!this.isLoad) {
+        this.getComment()
+      }
     },
     mdRender(content) {
       return content ? this.$md && this.$md.render(content) : content
@@ -154,32 +183,40 @@ export default {
         is_user: 1,
       })
       if (!err) {
+        this.isLoad = true
+        res.data.data.data.forEach(item => {
+          item.is_show_reply = false
+          item.reply_content = ''
+        })
+
         this.commentList = res.data.data
       }
     },
-    async submitReply(commentId) {
+    showReply(index = -1) {
+      this.commentList.data.forEach((item, itemIndex) => {
+        item.is_show_reply = itemIndex === index
+        item.reply_content = ''
+      })
+    },
+    async submitReply(commentId, content) {
       const [err, data] = await createReply({
         article_id: this.id,
         user_id: 0,
         reply_user_id: 0,
         comment_id: commentId,
-        content: this.reply,
+        content,
       })
       if (!err) {
         console.log('data', data)
-        this.reply = ''
         this.$message.success('回复成功，审核通过后展示！')
       }
-    },
-    onPreReply() {
-      this.preReplyContent = this.mdRender(this.reply)
     },
   }
 }
 </script>
 
 <style scoped lang="scss">
-ul, li {
+ul, li, p {
   padding: 0;
   margin: 0;
 }
@@ -253,6 +290,10 @@ ul, li {
 }
 
 .comment-box {
+  .comment-item {
+    padding: 20px 0;
+    border-bottom: 1px solid #f0f0f0;
+  }
   .comment-info {
     display: flex;
     align-items: center;
@@ -264,19 +305,35 @@ ul, li {
   .comment-info-timer {
     padding: 0;
     margin: 0;
-    font-size: 14px;
   }
   .comment-info-user {
     color: #292929;
+    font-size: 14px;
   }
   .comment-info-timer {
     color: #757575;
+    font-size: 12px;
   }
 
   .comment-item-content {
     font-size: 14px;
-    padding: 20px 0;
-    border-bottom: 1px solid #f0f0f0;
+  }
+
+  .reply-list {
+    box-sizing: border-box;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    margin-left: 20px;
+    background: #f0f0f0;
+  }
+  .reply-create {
+    cursor: pointer;
+    font-size: 14px;
+
+    &:hover {
+      color: #2d8cf0;
+    }
   }
 }
 
@@ -284,6 +341,7 @@ ul, li {
   display: none;
   height: 0;
 }
+
 /deep/ .el-dialog__body {
   padding: 20px;
 }
