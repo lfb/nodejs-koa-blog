@@ -7,10 +7,7 @@
         :model="searchForm"
         inline
       >
-        <el-form-item
-          label="文章ID"
-          prop="id"
-        >
+        <el-form-item label="文章ID" prop="id">
           <el-input
             v-model.trim="searchForm.id"
             placeholder="文章ID"
@@ -19,10 +16,7 @@
           />
         </el-form-item>
 
-        <el-form-item
-          label="文章状态："
-          prop="status"
-        >
+        <el-form-item label="文章状态：" prop="status">
           <el-select
             v-model="searchForm.status"
             placeholder="请选择状态"
@@ -44,10 +38,7 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item
-          label="文章标题"
-          prop="title"
-        >
+        <el-form-item label="文章标题" prop="title">
           <el-input
             v-model.trim="searchForm.title"
             placeholder="文章名称"
@@ -57,25 +48,13 @@
         </el-form-item>
 
         <el-form-item>
-          <el-button
-            type="primary"
-            size="medium"
-            @click="searchData"
-          >
+          <el-button type="primary" size="medium" @click="searchData">
             搜索
           </el-button>
-          <el-button
-            type="primary"
-            size="medium"
-            @click="resetSearchData"
-          >
+          <el-button type="primary" size="medium" @click="resetSearchData">
             重置
           </el-button>
-          <el-button
-            type="primary"
-            size="medium"
-            @click="create"
-          >
+          <el-button type="primary" size="medium" @click="create">
             新增文章
           </el-button>
         </el-form-item>
@@ -145,7 +124,9 @@
 
         <el-table-column class-name="status-col" label="状态" align="center">
           <template slot-scope="scope">
-            <el-tag :type="scope.row.status | statusFilter">{{ scope.row.status | statusFilterText }}</el-tag>
+            <el-tag :type="scope.row.status | statusFilter">{{
+              scope.row.status | statusFilterText
+            }}</el-tag>
           </template>
         </el-table-column>
         <el-table-column fixed="right" width="180" label="操作" align="center">
@@ -251,15 +232,17 @@ export default {
     },
     handleDelete(id) {
       try {
-        this.$msgbox.confirm('确定需要删除这个文章吗', '提示', {
-          confirmButtonText: '删除',
-          cancelButtonText: '取消',
-          type: 'error'
-        }).then(async() => {
-          const r = await detele({ id })
-          this.$message.success(r.msg)
-          await this.getArticleList()
-        })
+        this.$msgbox
+          .confirm('确定需要删除这个文章吗', '提示', {
+            confirmButtonText: '删除',
+            cancelButtonText: '取消',
+            type: 'error'
+          })
+          .then(async() => {
+            const r = await detele({ id })
+            this.$message.success(r.msg)
+            await this.getArticleList()
+          })
       } catch (err) {
         this.$message.error(err)
       }

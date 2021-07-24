@@ -1,9 +1,10 @@
 <template>
   <div>
-    <Header :is-category="false"/>
+    <Header :is-category="false" @fetchData="fetchData" />
 
     <div class="container">
       <div class="article">
+        <div v-if="isEmptyData" class="empty-data">数据为空</div>
         <ul class="article-box">
           <li v-for="item in article.data" :key="item.id" class="article-list">
             <a :href="'/article/detail?id=' + item.id" class="article-item">
@@ -34,18 +35,22 @@
       </div>
 
       <div class="sidebar">
-
         <div class="category">
-          <div class="category-title">
-            CATEGORY LIST
-          </div>
+          <div class="category-title">CATEGORY LIST</div>
           <ul v-if="Array.isArray(categoryList)" class="category-list">
-            <li v-for="item in categoryList" :key="item.id" class="category-item">
-              {{item.name}}
+            <li
+              v-for="item in categoryList"
+              :key="item.id"
+              :class="[
+                'category-item',
+                { 'category-item-active': categoryId === item.id },
+              ]"
+              @click="fetchData(item.id)"
+            >
+              {{ item.name }}
             </li>
           </ul>
         </div>
-
       </div>
     </div>
 
@@ -56,53 +61,59 @@
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import { getArticleList } from '@/request/api/article'
-import {mapState} from 'vuex'
+import { mapState } from 'vuex'
 
 export default {
   components: {
     Header,
-    Footer
+    Footer,
   },
   async asyncData(context) {
     // eslint-disable-next-line camelcase
-    const { id, keyword} = context.query
+    const { id, keyword, category_id } = context.query
 
     const [err, res] = await getArticleList({
       id,
+      category_id,
       keyword,
       is_category: 1,
       is_admin: 1,
     })
 
-    let resultText = ''
-    if(keyword) {
-      resultText = "搜索结果："
-    }
-
     if (!err) {
       return {
-        resultText,
+        categoryId: category_id,
         article: res.data.data,
       }
     }
   },
-  data() {
-    return {
-      article: null,
-    }
-  },
   computed: {
     ...mapState({
-      categoryList: state => state.category.categoryList
-    })
+      categoryList: (state) => state.category.categoryList,
+    }),
+    isEmptyData() {
+      return (
+        this.article &&
+        Array.isArray(this.article.data) &&
+        this.article.data.length === 0
+      )
+    },
   },
-  async fetch({store}) {
-   await store.dispatch('category/getCategoryData')
+  async fetch({ store }) {
+    await store.dispatch('category/getCategoryData')
   },
-  mounted() {
-    console.log(this.article)
-    console.log(this.categoryList)
-    // this.fetchData()
+  methods: {
+    async fetchData(id) {
+      const [err, res] = await getArticleList({
+        category_id: id,
+        is_category: 1,
+        is_admin: 1,
+      })
+      if (!err) {
+        this.categoryId = id
+        this.article = res.data.data
+      }
+    },
   },
 }
 </script>
@@ -138,7 +149,7 @@ a {
   margin: 0 auto;
   display: flex;
 
-  .article{
+  .article {
     flex: 1;
     padding-right: 24px;
     padding-top: 32px;
@@ -160,6 +171,12 @@ a {
   border-bottom: 1px solid #e6e6e6;
 }
 
+.empty-data {
+  text-align: center;
+  padding: 24px 0;
+  font-size: 13px;
+  color: #989898;
+}
 .category {
   &-title {
     color: #757575;
@@ -176,7 +193,13 @@ a {
     margin-right: 8px;
     margin-bottom: 8px;
     border-radius: 100px;
+    text-decoration: none;
     background-color: #f2f2f2;
+
+    &-active {
+      color: #2d8cf0;
+      background: rgba(51, 119, 255, 0.1);
+    }
   }
 }
 
@@ -233,16 +256,14 @@ a {
   margin: 4px 0 8px;
 }
 
-
 .introduction {
-
   .article-category {
     font-size: 14px;
     display: inline-block;
     padding: 2px 12px;
     border-radius: 100px;
     color: #2d8cf0;
-    background: rgba(51, 119, 255, .1);
+    background: rgba(51, 119, 255, 0.1);
   }
 
   .article-date {

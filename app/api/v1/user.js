@@ -41,7 +41,7 @@ router.post('/register', async (ctx) => {
             email,
             password
         });
-        if(!errToken) {
+        if (!errToken) {
             data.token = token
             data.id = id
         }
@@ -67,7 +67,7 @@ router.post('/login', async (ctx) => {
 
     if (!err) {
         let [err, data] = await UserDao.detail(id);
-        if(!err) {
+        if (!err) {
             data.setDataValue('token', token)
             ctx.response.status = 200;
             ctx.body = res.json(data);

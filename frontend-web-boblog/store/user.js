@@ -1,5 +1,5 @@
 import { login, register, info } from '@/request/api/user'
-import {setToken} from "@/lib/token";
+import { setToken } from "@/lib/token";
 
 const state = () => ({
   userInfo: null,
@@ -18,7 +18,7 @@ const mutations = {
 const actions = {
   async userLogin({ state, commit }, params = {}) {
     const [err, res] = await login(params)
-    if(!err) {
+    if (!err) {
       const user = res.data.data
       commit('SET_USERINFO', {
         id: user.id,
@@ -28,30 +28,30 @@ const actions = {
       commit('SET_LOGIN_STATUS', true)
       setToken(user.token)
       return [null, user]
-    }else {
+    } else {
       return [err, null]
     }
   },
   async userRegister({ state, commit }, params = {}) {
-      const [err, res] = await register(params)
-      if(!err) {
-        const user = res.data.data
-        commit('SET_USERINFO', {
-          id: user.id,
-          username: user.username,
-          email: user.email
-        })
-        commit('SET_LOGIN_STATUS', true)
-        setToken(user.token)
-        return [null, user]
-      }else {
-        return [err, null]
-      }
+    const [err, res] = await register(params)
+    if (!err) {
+      const user = res.data.data
+      commit('SET_USERINFO', {
+        id: user.id,
+        username: user.username,
+        email: user.email
+      })
+      commit('SET_LOGIN_STATUS', true)
+      setToken(user.token)
+      return [null, user]
+    } else {
+      return [err, null]
+    }
 
   },
   async userInfo({ state, commit }, params = {}) {
     const [err, res] = await info(params)
-    if(!err) {
+    if (!err) {
       const user = res.data.data
       commit('SET_USERINFO', {
         id: user.id,
@@ -60,7 +60,7 @@ const actions = {
       })
       commit('SET_LOGIN_STATUS', true)
       return [null, user]
-    }else {
+    } else {
       return [err, null]
     }
   },

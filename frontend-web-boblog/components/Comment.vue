@@ -1,218 +1,260 @@
 <template>
-    <div>
-      <el-drawer
-        size="38.2%"
-        :with-header="false"
-        :visible.sync="showComment"
-        direction="rtl">
-
-        <div class="comment">
-          <div class="comment-header">
-            <span v-if="userInfo">
-              {{userInfo.username }}，
-            </span>
-            欢迎您的评论
-          </div>
-          <div v-if="!isLoginStatus" class="login-tips">
-            当前是匿名评论，登录后让代码改变世界！ <span class="sign-in" @click="showLoginInner = true">登录</span>
-          </div>
-
-          <div v-if="!isLoginStatus" class="email-input">
-            <input
-              v-model="email"
-              maxlength="1000"
-              class="comment-content"
-              placeholder="请输入联系邮箱"
-               />
-          </div>
-          <div class="comment-textarea">
-            <textarea
-              v-model="comment"
-              maxlength="1000"
-              class="comment-content"
-              placeholder="请输入内容，支持 Markdown 语法.."
-              cols="30"
-              rows="10" />
-
-            <div class="comment-action">
-              <button :disabled="!comment" :class="['preview-comment', {opacity: !comment}]" @click="onPreComment(comment)">预览</button>
-              <button :disabled="!comment" :class="['submit-comment', {opacity: !comment}]" @click="submitComment">提交</button>
-            </div>
-          </div>
-
-
-          <div v-if="commentList" class="comment-list">
-            <ul class="comment-box">
-              <li
-                v-for="(item, index) in commentList.data"
-                :key="item.id"
-                class="comment-item"
-              >
-                <div class="comment-info">
-                  <div class="comment-info-avatar">
-                    <el-avatar size="medium" icon="el-icon-user-solid"></el-avatar>
-                  </div>
-                  <div>
-                    <p class="comment-info-user">{{ (item.user_info && item.user_info.username) || '匿名评论' }}</p>
-                    <p class="comment-info-timer">{{item.created_at }}</p>
-                  </div>
-                </div>
-                <div class="comment-item-content" v-html="mdRender(item.content)"></div>
-
-                <ul v-if="item.reply_list" class="reply-list">
-                  <li v-for="reply in item.reply_list" :key="reply.id" class="reply-item">
-                    <div class="comment-info">
-                      <div class="comment-info-avatar">
-                        <el-avatar size="small" icon="el-icon-user-solid"></el-avatar>
-                      </div>
-                      <div>
-                        <p class="comment-info-user">{{ (reply.user_info && reply.user_info.username) || '匿名回复' }}</p>
-                        <p class="comment-info-timer">{{reply.created_at }}</p>
-                      </div>
-                    </div>
-                    <div class="comment-item-content" v-html="mdRender(reply.content)"></div>
-                  </li>
-                </ul>
-
-                <div class="reply-create">
-                  <div @click="showReply(index)">
-                    <i v-if="!item.is_show_reply" class="el-icon-chat-dot-round" > 回复</i>
-                  </div>
-                  <div v-if="item.is_show_reply" >
-                    <div v-if="!isLoginStatus" class="email-input">
-                      <input
-                        v-model="email"
-                        maxlength="1000"
-                        class="comment-content"
-                        placeholder="请输入联系邮箱"
-                      />
-                    </div>
-                    <div class="comment-textarea">
-                      <textarea
-                        v-model="item.reply_content"
-                        maxlength="1000"
-                        class="comment-content"
-                        placeholder="请输入回复内容，支持 Markdown 语法.."
-                        cols="30"
-                        rows="10" />
-
-                      <div class="comment-action">
-                        <button
-                          :disabled="!item.reply_content"
-                          :class="['preview-comment', {opacity: !item.reply_content}]"
-                          @click="onPreComment(item.reply_content)">
-                          预览
-                        </button>
-                        <button
-                          :disabled="!item.reply_content"
-                          :class="['submit-comment', {opacity: !item.reply_content}]"
-                          @click="submitReply(item, index)">
-                          回复
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </li>
-            </ul>
-          </div>
-
+  <div>
+    <el-drawer
+      size="38.2%"
+      :with-header="false"
+      :visible.sync="showComment"
+      direction="rtl"
+    >
+      <div class="comment">
+        <div class="comment-header">
+          <span v-if="userInfo"> {{ userInfo.username }}， </span>
+          欢迎您的评论
+        </div>
+        <div v-if="!isLoginStatus" class="login-tips">
+          当前是匿名评论，登录后让代码改变世界！
+          <span class="sign-in" @click="showLoginInner = true">登录</span>
         </div>
 
+        <div v-if="!isLoginStatus" class="email-input">
+          <input
+            v-model="email"
+            maxlength="1000"
+            class="comment-content"
+            placeholder="请输入联系邮箱"
+          />
+        </div>
+        <div class="comment-textarea">
+          <textarea
+            v-model="comment"
+            maxlength="1000"
+            class="comment-content"
+            placeholder="请输入内容，支持 Markdown 语法.."
+            cols="30"
+            rows="10"
+          />
 
-        <el-drawer
-          size="32%"
-          :with-header="false"
-          :append-to-body="true"
-          :visible.sync="showCommentInner">
-
-          <div class="comment">
-            <div class="comment-header">
-              预览：
-            </div>
-            <div>
-              <div v-html="preContent"></div>
-            </div>
+          <div class="comment-action">
+            <button
+              :disabled="!comment"
+              :class="['preview-comment', { opacity: !comment }]"
+              @click="onPreComment(comment)"
+            >
+              预览
+            </button>
+            <button
+              :disabled="!comment"
+              :class="['submit-comment', { opacity: !comment }]"
+              @click="submitComment"
+            >
+              提交
+            </button>
           </div>
+        </div>
 
-        </el-drawer>
+        <div v-if="commentList" class="comment-list">
+          <ul class="comment-box">
+            <li
+              v-for="(item, index) in commentList.data"
+              :key="item.id"
+              class="comment-item"
+            >
+              <div class="comment-info">
+                <div class="comment-info-avatar">
+                  <el-avatar
+                    size="medium"
+                    icon="el-icon-user-solid"
+                  ></el-avatar>
+                </div>
+                <div>
+                  <p class="comment-info-user">
+                    {{
+                      (item.user_info && item.user_info.username) || '匿名评论'
+                    }}
+                  </p>
+                  <p class="comment-info-timer">{{ item.created_at }}</p>
+                </div>
+              </div>
+              <div
+                class="comment-item-content"
+                v-html="mdRender(item.content)"
+              ></div>
 
-        <el-drawer
-          size="32%"
-          :with-header="false"
-          :append-to-body="true"
-          :visible.sync="showLoginInner">
+              <ul v-if="item.reply_list" class="reply-list">
+                <li
+                  v-for="reply in item.reply_list"
+                  :key="reply.id"
+                  class="reply-item"
+                >
+                  <div class="comment-info">
+                    <div class="comment-info-avatar">
+                      <el-avatar
+                        size="small"
+                        icon="el-icon-user-solid"
+                      ></el-avatar>
+                    </div>
+                    <div>
+                      <p class="comment-info-user">
+                        {{
+                          (reply.user_info && reply.user_info.username) ||
+                          '匿名回复'
+                        }}
+                      </p>
+                      <p class="comment-info-timer">{{ reply.created_at }}</p>
+                    </div>
+                  </div>
+                  <div
+                    class="comment-item-content"
+                    v-html="mdRender(reply.content)"
+                  ></div>
+                </li>
+              </ul>
 
-          <div class="comment">
-            <div class="login-logo">
+              <div class="reply-create">
+                <div @click="showReply(index)">
+                  <i v-if="!item.is_show_reply" class="el-icon-chat-dot-round">
+                    回复</i
+                  >
+                </div>
+                <div v-if="item.is_show_reply">
+                  <div v-if="!isLoginStatus" class="email-input">
+                    <input
+                      v-model="email"
+                      maxlength="1000"
+                      class="comment-content"
+                      placeholder="请输入联系邮箱"
+                    />
+                  </div>
+                  <div class="comment-textarea">
+                    <textarea
+                      v-model="item.reply_content"
+                      maxlength="1000"
+                      class="comment-content"
+                      placeholder="请输入回复内容，支持 Markdown 语法.."
+                      cols="30"
+                      rows="10"
+                    />
 
-            </div>
-            <h2 class="login-header">
-              {{isLogin ? '登录' : '注册'}}
-            </h2>
+                    <div class="comment-action">
+                      <button
+                        :disabled="!item.reply_content"
+                        :class="[
+                          'preview-comment',
+                          { opacity: !item.reply_content },
+                        ]"
+                        @click="onPreComment(item.reply_content)"
+                      >
+                        预览
+                      </button>
+                      <button
+                        :disabled="!item.reply_content"
+                        :class="[
+                          'submit-comment',
+                          { opacity: !item.reply_content },
+                        ]"
+                        @click="submitReply(item)"
+                      >
+                        回复
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
 
-            <div v-if="!isLogin" class="email-input">
-              <input
-                v-model="user.username"
-                maxlength="32"
-                class="comment-content"
-                placeholder="请输入你的昵称"
-              />
-            </div>
-            <div class="email-input">
-              <input
-                v-model="user.email"
-                maxlength="32"
-                class="comment-content"
-                placeholder="请输入联系邮箱"
-              />
-            </div>
-
-            <div class="email-input">
-              <input
-                v-model="user.password"
-                maxlength="16"
-                type="password"
-                class="comment-content"
-                placeholder="请输入密码"
-              />
-            </div>
-            <div class="register-tips" @click="isLogin = !isLogin">
-              {{ isLogin ? '未有账号？点击注册！' : '已有账号？点击登录！'}}
-            </div>
-            <div class="login-btn">
-              <button :disabled="!user.email || !user.password" class="login-btn-submit" @click="onLogin(comment)">
-                {{ isLogin ? '登录' : '注册' }}
-              </button>
-              <button class="login-btn-default" @click="showLoginInner = false">
-                匿名评论
-              </button>
-            </div>
+      <el-drawer
+        size="32%"
+        :with-header="false"
+        :append-to-body="true"
+        :visible.sync="showCommentInner"
+      >
+        <div class="comment">
+          <div class="comment-header">预览：</div>
+          <div>
+            <div v-html="preContent"></div>
           </div>
-
-        </el-drawer>
+        </div>
       </el-drawer>
 
-    </div>
+      <el-drawer
+        size="32%"
+        :with-header="false"
+        :append-to-body="true"
+        :visible.sync="showLoginInner"
+      >
+        <div class="comment">
+          <div class="login-logo"></div>
+          <h2 class="login-header">
+            {{ isLogin ? '登录' : '注册' }}
+          </h2>
+
+          <div v-if="!isLogin" class="email-input">
+            <input
+              v-model="user.username"
+              maxlength="32"
+              class="comment-content"
+              placeholder="请输入你的昵称"
+            />
+          </div>
+          <div class="email-input">
+            <input
+              v-model="user.email"
+              maxlength="32"
+              class="comment-content"
+              placeholder="请输入联系邮箱"
+            />
+          </div>
+
+          <div class="email-input">
+            <input
+              v-model="user.password"
+              maxlength="16"
+              type="password"
+              class="comment-content"
+              placeholder="请输入密码"
+            />
+          </div>
+          <div class="register-tips" @click="isLogin = !isLogin">
+            {{ isLogin ? '未有账号？点击注册！' : '已有账号？点击登录！' }}
+          </div>
+          <div class="login-btn">
+            <button
+              :disabled="!user.email || !user.password"
+              class="login-btn-submit"
+              @click="onLogin(comment)"
+            >
+              {{ isLogin ? '登录' : '注册' }}
+            </button>
+            <button class="login-btn-default" @click="showLoginInner = false">
+              匿名评论
+            </button>
+          </div>
+        </div>
+      </el-drawer>
+    </el-drawer>
+  </div>
 </template>
 
 <script>
-import {mapState} from 'vuex'
-import {getToken} from "@/lib/token";
-import {validEmail} from "@/lib/utils";
+import { mapState } from 'vuex'
+import { getToken } from '@/lib/token'
+import { validEmail } from '@/lib/utils'
 import { createReply } from '@/request/api/reply'
 import { getCommentTarget, createComment } from '@/request/api/comment'
 
 export default {
-  name: "Comment",
+  name: 'Comment',
   props: {
     id: {
       type: [String, Number],
-      default: () => -1
-    }
+      default: () => -1,
+    },
   },
   data() {
-    return{
+    return {
       isLogin: true,
       user: {
         username: '',
@@ -225,41 +267,41 @@ export default {
       showLoginInner: false,
       comment: '',
       commentList: null,
-      preContent: ''
+      preContent: '',
     }
   },
   computed: {
     ...mapState({
-      userInfo: state => state.user.userInfo,
-      isLoginStatus: state => state.user.isLoginStatus
+      userInfo: (state) => state.user.userInfo,
+      isLoginStatus: (state) => state.user.isLoginStatus,
     }),
     userId() {
       return (this.userInfo && this.userInfo.id) || 0
-    }
+    },
   },
   methods: {
     async getUserInfo() {
       const [err, data] = await this.$store.dispatch('user/userInfo')
-      if(!err) {
+      if (!err) {
         console.log(data)
       }
     },
     async submitComment() {
-      if(!this.isLoginStatus) {
-        if(!this.email) {
+      if (!this.isLoginStatus) {
+        if (!this.email) {
           this.$message.warning('请输入邮箱!')
-          return false;
+          return false
         }
 
-        if(this.email && !validEmail(this.email)) {
+        if (this.email && !validEmail(this.email)) {
           this.$message.warning('请输入正确的邮箱!')
-          return false;
+          return false
         }
       }
 
-      if(!this.comment) {
+      if (!this.comment) {
         this.$message.warning('请输入评论内容!')
-        return false;
+        return false
       }
 
       const [err, data] = await createComment({
@@ -273,12 +315,13 @@ export default {
         this.comment = ''
         this.email = ''
         this.$message.success('评论成功，审核通过后展示！')
+        this.showComment = false
       }
     },
     onPreComment(content) {
-      if(!content) {
+      if (!content) {
         this.$message.warning('请输入内容!')
-        return false;
+        return false
       }
 
       this.preContent = this.mdRender(content)
@@ -287,11 +330,11 @@ export default {
     onShowComment() {
       this.showComment = true
 
-      if(!this.isLoginStatus && getToken()) {
+      if (!this.isLoginStatus && getToken()) {
         this.getUserInfo()
       }
 
-      if(!this.isLoad) {
+      if (!this.isLoad) {
         this.getComment()
       }
     },
@@ -306,7 +349,7 @@ export default {
       })
       if (!err) {
         this.isLoad = true
-        res.data.data.data.forEach(item => {
+        res.data.data.data.forEach((item) => {
           item.is_show_reply = false
           item.reply_content = ''
           item.email = ''
@@ -324,24 +367,27 @@ export default {
     },
     async onLogin() {
       const user = this.user
-      if(this.isLogin) {
-        const [err, data ] = await this.$store.dispatch('user/userLogin', user)
-        if(!err) {
+      if (this.isLogin) {
+        const [err, data] = await this.$store.dispatch('user/userLogin', user)
+        if (!err) {
           console.log(data)
           this.showLoginInner = false
           this.user.username = ''
           this.user.email = ''
           this.$message.success('登录成功')
         }
-      }else {
+      } else {
         const registerParams = {
           username: user.username,
           email: user.email,
           password1: user.password,
-          password2: user.password
+          password2: user.password,
         }
-        const [err, data] = await this.$store.dispatch('user/userRegister', registerParams)
-        if(!err) {
+        const [err, data] = await this.$store.dispatch(
+          'user/userRegister',
+          registerParams
+        )
+        if (!err) {
           console.log(data)
           this.showLoginInner = false
           this.user.username = ''
@@ -352,24 +398,24 @@ export default {
     },
     async submitReply(item) {
       // eslint-disable-next-line camelcase
-      const {id, reply_content, email, user_id = 0} = item
+      const { id, reply_content, email, user_id = 0 } = item
 
-      if(!this.isLoginStatus) {
-        if(!email) {
+      if (!this.isLoginStatus) {
+        if (!email) {
           this.$message.warning('请输入邮箱!')
-          return false;
+          return false
         }
 
-        if(this.email && !validEmail(email)) {
+        if (this.email && !validEmail(email)) {
           this.$message.warning('请输入正确的邮箱!')
-          return false;
+          return false
         }
       }
 
       // eslint-disable-next-line camelcase
-      if(!reply_content) {
+      if (!reply_content) {
         this.$message.warning('请输入内容!')
-        return false;
+        return false
       }
 
       const [err, data] = await createReply({
@@ -384,14 +430,17 @@ export default {
         console.log('data', data)
         this.showReply()
         this.$message.success('回复成功，审核通过后展示！')
+        this.showComment = false
       }
     },
-  }
+  },
 }
 </script>
 
 <style scoped lang="scss">
-ul, li, p {
+ul,
+li,
+p {
   padding: 0;
   margin: 0;
 }
@@ -400,7 +449,7 @@ ul, li, p {
   padding: 20px;
   width: 100%;
 
-  &-header{
+  &-header {
     padding-bottom: 10px;
     font-size: 20px;
     color: #404040;
@@ -543,8 +592,7 @@ ul, li, p {
   width: 150px;
   height: 98px;
   margin: 0 auto;
-  background: url(https://cdn.boblog.com/boblog.png) -16px
-  center no-repeat;
+  background: url(https://cdn.boblog.com/boblog.png) -16px center no-repeat;
   -webkit-background-size: cover;
   background-size: cover;
   text-align: center;

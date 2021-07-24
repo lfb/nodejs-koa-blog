@@ -12,7 +12,7 @@ const md = require('markdown-it')({
           }).value +
           '</code></pre>'
         )
-      } catch (__) {}
+      } catch (__) { }
     }
 
     return (

@@ -10,31 +10,30 @@
           {{ article.description }}
         </div>
         <div class="info">
-            <el-avatar size="small" icon="el-icon-user-solid"></el-avatar>
-            <span class="category">
-              {{ article.category_info.name }}
-            </span>
-          <span class="created-at">{{article.created_at}}</span>
+          <el-avatar size="small" icon="el-icon-user-solid"></el-avatar>
+          <span class="category">
+            {{ article.category_info.name }}
+          </span>
+          <span class="created-at">{{ article.created_at }}</span>
           <span class="comment-count">
-            <i class="el-icon-chat-round" @click="onShowComment">评论 {{article.comment_count}}</i>
+            <i class="el-icon-chat-round" @click="onShowComment"
+              >评论 {{ article.comment_count }}</i
+            >
           </span>
         </div>
         <div v-html="article.content"></div>
       </div>
     </div>
-    <div class="fixed-sidebar" >
+    <div class="fixed-sidebar">
       <div class="fixed-comment">
         <i class="el-icon-chat-round" @click="onShowComment"></i>
       </div>
       <div class="fixed-scroll-top">
         <i class="el-icon-top" @click="scrollTop"></i>
       </div>
-
     </div>
     <div id="comment">
-      <div class="comment-header">
-        评论：
-      </div>
+      <div class="comment-header">评论：</div>
       <div class="comment-textarea">
         <textarea
           ref="textarea"
@@ -43,12 +42,13 @@
           placeholder="请输入内容，支持 Markdown 语法.."
           cols="30"
           rows="5"
-          @focus="onFocus" />
+          @focus="onFocus"
+        />
       </div>
     </div>
 
-    <Comment :id="id" ref="comment"/>
-    <Footer/>
+    <Comment :id="id" ref="comment" />
+    <Footer />
   </div>
 </template>
 <script>
@@ -80,11 +80,11 @@ export default {
     }
   },
   data() {
-    return{
-      showComment: false
+    return {
+      showComment: false,
     }
   },
-  async fetch({store}) {
+  async fetch({ store }) {
     await store.dispatch('category/getCategoryData')
   },
   head() {
@@ -93,8 +93,8 @@ export default {
       title: article.title,
       meta: [
         { name: 'keyword', content: article.seo_keyword },
-        { name: 'description', content: article.description }
-      ]
+        { name: 'description', content: article.description },
+      ],
     }
   },
   methods: {
@@ -113,8 +113,8 @@ export default {
     },
     onShowComment() {
       this.$refs.comment && this.$refs.comment.onShowComment()
-    }
-  }
+    },
+  },
 }
 </script>
 
@@ -168,7 +168,7 @@ export default {
   width: 840px;
   margin: 0 auto;
 
-  .comment-header{
+  .comment-header {
     padding-bottom: 20px;
     font-size: 20px;
     color: #404040;

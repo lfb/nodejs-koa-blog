@@ -7,10 +7,7 @@
         :model="searchForm"
         inline
       >
-        <el-form-item
-          label="回复ID"
-          prop="id"
-        >
+        <el-form-item label="回复ID" prop="id">
           <el-input
             v-model.trim="searchForm.id"
             placeholder="回复ID"
@@ -18,10 +15,7 @@
             clearable
           />
         </el-form-item>
-        <el-form-item
-          label="文章ID"
-          prop="article_id"
-        >
+        <el-form-item label="文章ID" prop="article_id">
           <el-input
             v-model.trim="searchForm.article_id"
             placeholder="文章ID"
@@ -30,10 +24,7 @@
           />
         </el-form-item>
 
-        <el-form-item
-          label="分类状态："
-          prop="status"
-        >
+        <el-form-item label="分类状态：" prop="status">
           <el-select
             v-model="searchForm.status"
             placeholder="请选择状态"
@@ -45,10 +36,7 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item
-          label="分类名称"
-          prop="content"
-        >
+        <el-form-item label="分类名称" prop="content">
           <el-input
             v-model.trim="searchForm.content"
             placeholder="回复内容"
@@ -58,25 +46,13 @@
         </el-form-item>
 
         <el-form-item>
-          <el-button
-            type="primary"
-            size="medium"
-            @click="searchData"
-          >
+          <el-button type="primary" size="medium" @click="searchData">
             搜索
           </el-button>
-          <el-button
-            type="primary"
-            size="medium"
-            @click="resetSearchData"
-          >
+          <el-button type="primary" size="medium" @click="resetSearchData">
             重置
           </el-button>
-          <el-button
-            type="primary"
-            size="medium"
-            @click="create"
-          >
+          <el-button type="primary" size="medium" @click="create">
             新增分类
           </el-button>
         </el-form-item>
@@ -104,7 +80,7 @@
         </el-table-column>
         <el-table-column label="回复人信息" align="center">
           <template slot-scope="scope">
-            {{ scope.row.user_info || '匿名' }}
+            {{ scope.row.user_info || "匿名" }}
           </template>
         </el-table-column>
         <el-table-column label="回复文章" align="center">
@@ -115,7 +91,9 @@
         </el-table-column>
         <el-table-column class-name="status-col" label="状态" align="center">
           <template slot-scope="scope">
-            <el-tag :type="scope.row.status | statusFilter">{{ scope.row.status | statusFilterText }}</el-tag>
+            <el-tag :type="scope.row.status | statusFilter">{{
+              scope.row.status | statusFilterText
+            }}</el-tag>
           </template>
         </el-table-column>
         <el-table-column label="操作" align="center">
@@ -173,15 +151,22 @@ const md = require('markdown-it')({
   highlight(str, lang) {
     if (lang && hljs.getLanguage(lang)) {
       try {
-        return '<pre class="hljs"><code>' +
+        return (
+          '<pre class="hljs"><code>' +
           hljs.highlight(str, {
             language: lang,
             ignoreIllegals: true
-          }).value + '</code></pre>'
-      } catch (__) {}
+          }).value +
+          '</code></pre>'
+        )
+      } catch (__) {
+        console.log(__)
+      }
     }
 
-    return '<pre class="hljs"><code>' + md.utils.escapeHtml(str) + '</code></pre>'
+    return (
+      '<pre class="hljs"><code>' + md.utils.escapeHtml(str) + '</code></pre>'
+    )
   }
 })
 
@@ -255,15 +240,17 @@ export default {
     },
     handleDelete(id) {
       try {
-        this.$msgbox.confirm('确定需要删除这个回复吗', '提示', {
-          confirmButtonText: '删除',
-          cancelButtonText: '取消',
-          type: 'error'
-        }).then(async() => {
-          const r = await detele({ id })
-          this.$message.success(r.msg)
-          await this.getReply()
-        })
+        this.$msgbox
+          .confirm('确定需要删除这个回复吗', '提示', {
+            confirmButtonText: '删除',
+            cancelButtonText: '取消',
+            type: 'error'
+          })
+          .then(async() => {
+            const r = await detele({ id })
+            this.$message.success(r.msg)
+            await this.getReply()
+          })
       } catch (err) {
         this.$message.error(err)
       }
@@ -309,69 +296,93 @@ export default {
 }
 </style>
 <style>
-
 /*highlight.js*/
 /*Syntax highlighting for the Web*/
 pre {
-  padding: 1em
+  padding: 1em;
 }
 pre code.hljs {
   display: block;
   overflow-x: auto;
-  padding: 1em
+  padding: 1em;
 }
 
 code.hljs {
-  padding: 3px 5px
+  padding: 3px 5px;
 }
 
 .hljs {
   color: #abb2bf;
-  background: #282c34
+  background: #282c34;
 }
 
-.hljs-comment,.hljs-quote {
+.hljs-comment,
+.hljs-quote {
   color: #5c6370;
-  font-style: italic
+  font-style: italic;
 }
 
-.hljs-doctag,.hljs-formula,.hljs-keyword {
-  color: #c678dd
+.hljs-doctag,
+.hljs-formula,
+.hljs-keyword {
+  color: #c678dd;
 }
 
-.hljs-deletion,.hljs-name,.hljs-section,.hljs-selector-tag,.hljs-subst {
-  color: #e06c75
+.hljs-deletion,
+.hljs-name,
+.hljs-section,
+.hljs-selector-tag,
+.hljs-subst {
+  color: #e06c75;
 }
 
 .hljs-literal {
-  color: #56b6c2
+  color: #56b6c2;
 }
 
-.hljs-addition,.hljs-attribute,.hljs-meta .hljs-string,.hljs-regexp,.hljs-string {
-  color: #98c379
+.hljs-addition,
+.hljs-attribute,
+.hljs-meta .hljs-string,
+.hljs-regexp,
+.hljs-string {
+  color: #98c379;
 }
 
-.hljs-attr,.hljs-number,.hljs-selector-attr,.hljs-selector-class,.hljs-selector-pseudo,.hljs-template-variable,.hljs-type,.hljs-variable {
-  color: #d19a66
+.hljs-attr,
+.hljs-number,
+.hljs-selector-attr,
+.hljs-selector-class,
+.hljs-selector-pseudo,
+.hljs-template-variable,
+.hljs-type,
+.hljs-variable {
+  color: #d19a66;
 }
 
-.hljs-bullet,.hljs-link,.hljs-meta,.hljs-selector-id,.hljs-symbol,.hljs-title {
-  color: #61aeee
+.hljs-bullet,
+.hljs-link,
+.hljs-meta,
+.hljs-selector-id,
+.hljs-symbol,
+.hljs-title {
+  color: #61aeee;
 }
 
-.hljs-built_in,.hljs-class .hljs-title,.hljs-title.class_ {
-  color: #e6c07b
+.hljs-built_in,
+.hljs-class .hljs-title,
+.hljs-title.class_ {
+  color: #e6c07b;
 }
 
 .hljs-emphasis {
-  font-style: italic
+  font-style: italic;
 }
 
 .hljs-strong {
-  font-weight: 700
+  font-weight: 700;
 }
 
 .hljs-link {
-  text-decoration: underline
+  text-decoration: underline;
 }
 </style>

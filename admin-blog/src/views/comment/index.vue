@@ -159,12 +159,11 @@ const md = require('markdown-it')({
           }).value +
           '</code></pre>'
         )
-      } catch (__) {}
+      } catch (__) {
+        console.log(__)
+      }
     }
-
-    return (
-      '<pre class="hljs"><code>' + md.utils.escapeHtml(str) + '</code></pre>'
-    )
+    return ('<pre class="hljs"><code>' + md.utils.escapeHtml(str) + '</code></pre>')
   }
 })
 

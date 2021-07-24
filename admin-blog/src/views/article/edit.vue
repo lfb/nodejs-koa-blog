@@ -1,6 +1,12 @@
 <template>
   <section class="wrap">
-    <el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="120px" class="demo-ruleForm">
+    <el-form
+      ref="ruleForm"
+      :model="ruleForm"
+      :rules="rules"
+      label-width="120px"
+      class="demo-ruleForm"
+    >
       <el-form-item label="标题" prop="title">
         <el-input v-model="ruleForm.title" />
       </el-form-item>
@@ -18,10 +24,16 @@
           class="avatar-uploader"
           action="https://upload-z2.qiniup.com/"
           :show-file-list="false"
-          :data="{token}"
+          :data="{ token }"
           :on-success="handleSuccess"
         >
-          <img v-if="ruleForm.img_url" width="80" height="80" :src="ruleForm.img_url" class="avatar">
+          <img
+            v-if="ruleForm.img_url"
+            width="80"
+            height="80"
+            :src="ruleForm.img_url"
+            class="avatar"
+          >
           <i v-else class="el-icon-plus avatar-uploader-icon" />
         </el-upload>
       </el-form-item>
@@ -45,12 +57,21 @@
         <el-input v-model="ruleForm.sort_order" />
       </el-form-item>
       <el-form-item label="内容" prop="content">
-        <mavon-editor ref="md" v-model="ruleForm.content" code-style="atom-one-dark" @imgAdd="$imgAdd" @imgDel="$imgDel" />
+        <mavon-editor
+          ref="md"
+          v-model="ruleForm.content"
+          code-style="atom-one-dark"
+          @imgAdd="$imgAdd"
+          @imgDel="$imgDel"
+        />
       </el-form-item>
 
       <el-form-item>
         <el-button @click="resetForm('ruleForm')">重置</el-button>
-        <el-button type="primary" @click="submitForm('ruleForm')">立即更新</el-button>
+        <el-button
+          type="primary"
+          @click="submitForm('ruleForm')"
+        >立即更新</el-button>
       </el-form-item>
     </el-form>
   </section>
@@ -82,9 +103,7 @@ export default {
         content: ''
       },
       rules: {
-        title: [
-          { required: true, message: '请输入文章标题', trigger: 'blur' }
-        ],
+        title: [{ required: true, message: '请输入文章标题', trigger: 'blur' }],
         description: [
           { required: true, message: '请输入文章描述', trigger: 'blur' }
         ],
@@ -103,15 +122,13 @@ export default {
         category_id: [
           { required: true, message: '请选择分类', trigger: 'blur' }
         ],
-        content: [
-          { required: true, message: '请输入内容', trigger: 'blur' }
-        ]
+        content: [{ required: true, message: '请输入内容', trigger: 'blur' }]
       }
     }
   },
   computed: {
     ...mapState({
-      adminInfo: state => state.admin.adminInfo
+      adminInfo: (state) => state.admin.adminInfo
     })
   },
   mounted() {
@@ -121,7 +138,6 @@ export default {
     this.getCategoryList()
   },
   methods: {
-
     async fetchData() {
       try {
         const res = await getToken()
@@ -145,7 +161,8 @@ export default {
         this.ruleForm.sort_order = res.data.sort_order
         this.ruleForm.category_id = res.data.category_info.id
         this.ruleForm.content = res.data.content
-        this.ruleForm.admin_id = (this.adminInfo && this.adminInfo.id) || res.data.adminInfo.id
+        this.ruleForm.admin_id =
+          (this.adminInfo && this.adminInfo.id) || res.data.adminInfo.id
       } catch (err) {
         console.log(err)
       }
@@ -203,13 +220,15 @@ export default {
       try {
         const res = await update(this.ruleForm)
         if (res.code === 200) {
-          this.$msgbox.confirm('更新成功，是否退出更新文章页面', '提示', {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: 'success'
-          }).then(() => {
-            this.$router.push('/article/index')
-          })
+          this.$msgbox
+            .confirm('更新成功，是否退出更新文章页面', '提示', {
+              confirmButtonText: '确定',
+              cancelButtonText: '取消',
+              type: 'success'
+            })
+            .then(() => {
+              this.$router.push('/article/index')
+            })
         }
       } catch (err) {
         this.$message.error(err)
@@ -236,7 +255,7 @@ export default {
   overflow: hidden;
 }
 .avatar-uploader .el-upload:hover {
-  border-color: #409EFF;
+  border-color: #409eff;
 }
 .avatar-uploader-icon {
   font-size: 28px;

@@ -1,6 +1,12 @@
 <template>
   <section class="wrap">
-    <el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="120px" class="demo-ruleForm">
+    <el-form
+      ref="ruleForm"
+      :model="ruleForm"
+      :rules="rules"
+      label-width="120px"
+      class="demo-ruleForm"
+    >
       <el-form-item label="标题" prop="title">
         <el-input v-model="ruleForm.title" />
       </el-form-item>
@@ -15,10 +21,16 @@
           class="avatar-uploader"
           action="https://upload-z2.qiniup.com/"
           :show-file-list="false"
-          :data="{token}"
+          :data="{ token }"
           :on-success="handleSuccess"
         >
-          <img v-if="ruleForm.img_url" width="80" height="80" :src="ruleForm.img_url" class="avatar">
+          <img
+            v-if="ruleForm.img_url"
+            width="80"
+            height="80"
+            :src="ruleForm.img_url"
+            class="avatar"
+          >
           <i v-else class="el-icon-plus avatar-uploader-icon" />
         </el-upload>
       </el-form-item>
@@ -42,12 +54,21 @@
         <el-input v-model="ruleForm.sort_order" />
       </el-form-item>
       <el-form-item label="内容" prop="content">
-        <mavon-editor ref="md" v-model="ruleForm.content" code-style="atom-one-dark" @imgAdd="$imgAdd" @imgDel="$imgDel" />
+        <mavon-editor
+          ref="md"
+          v-model="ruleForm.content"
+          code-style="atom-one-dark"
+          @imgAdd="$imgAdd"
+          @imgDel="$imgDel"
+        />
       </el-form-item>
 
       <el-form-item>
         <el-button @click="resetForm('ruleForm')">重置</el-button>
-        <el-button type="primary" @click="submitForm('ruleForm')">立即创建</el-button>
+        <el-button
+          type="primary"
+          @click="submitForm('ruleForm')"
+        >立即创建</el-button>
       </el-form-item>
     </el-form>
   </section>
@@ -78,9 +99,7 @@ export default {
         content: ''
       },
       rules: {
-        title: [
-          { required: true, message: '请输入文章标题', trigger: 'blur' }
-        ],
+        title: [{ required: true, message: '请输入文章标题', trigger: 'blur' }],
         description: [
           { required: true, message: '请输入文章描述', trigger: 'blur' }
         ],
@@ -107,7 +126,7 @@ export default {
   },
   computed: {
     ...mapState({
-      adminInfo: state => state.admin.adminInfo
+      adminInfo: (state) => state.admin.adminInfo
     })
   },
   mounted() {
@@ -152,7 +171,11 @@ export default {
       this.$message.error('上传失败!')
     },
     handleExceed(files, fileList) {
-      this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`)
+      this.$message.warning(
+        `当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${
+          files.length + fileList.length
+        } 个文件`
+      )
     },
     beforeRemove(file, fileList) {
       return this.$confirm(`确定移除 ${file.name}？`)
@@ -186,13 +209,15 @@ export default {
       try {
         const res = await create(this.ruleForm)
         if (res.code === 200) {
-          this.$msgbox.confirm('创建成功，是否退出创建文章页面', '提示', {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: 'success'
-          }).then(() => {
-            this.$router.push('/article/index')
-          })
+          this.$msgbox
+            .confirm('创建成功，是否退出创建文章页面', '提示', {
+              confirmButtonText: '确定',
+              cancelButtonText: '取消',
+              type: 'success'
+            })
+            .then(() => {
+              this.$router.push('/article/index')
+            })
         }
       } catch (err) {
         this.$message.error(err)
@@ -212,7 +237,6 @@ export default {
 }
 </style>
 <style>
-
 .avatar-uploader .el-upload {
   border: 1px dashed #d9d9d9;
   border-radius: 6px;
@@ -221,7 +245,7 @@ export default {
   overflow: hidden;
 }
 .avatar-uploader .el-upload:hover {
-  border-color: #409EFF;
+  border-color: #409eff;
 }
 .avatar-uploader-icon {
   font-size: 28px;

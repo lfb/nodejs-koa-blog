@@ -20,7 +20,7 @@ const components = [
   Drawer
 ]
 const Element = {
-  install (Vue) {
+  install(Vue) {
     components.forEach(component => {
       Vue.component(component.name, component)
     })

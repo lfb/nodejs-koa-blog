@@ -133,8 +133,8 @@ class ReplyDao {
     // 如果是对象，直接取该评论的id
     const isArrayData = isArray(reply)
     const userIds = isArrayData
-        ? unique(reply.map(c => c.user_id)).filter(v => v !== 0)
-        : reply.user_id
+      ? unique(reply.map(c => c.user_id)).filter(v => v !== 0)
+      : reply.user_id
 
     // 进行查询
     const [userErr, userData] = await ReplyDao.getUserData(userIds)

@@ -30,7 +30,7 @@ export default {
     '@/plugins/axios',
     '@/plugins/axios-ports',
     '@/plugins/md',
-    {src: '@/plugins/scrollTo', mode: 'client'},
+    { src: '@/plugins/scrollTo', mode: 'client' },
     '@/plugins/element-ui'
   ],
 

@@ -16,7 +16,7 @@ const router = new Router({
 })
 
 // 创建回复
-router.post('/upload/token', new Auth(AUTH_ADMIN).m,async (ctx) => {
+router.post('/upload/token', new Auth(AUTH_ADMIN).m, async (ctx) => {
     // console.log('mac', mac)
     const options = {
         scope: 'boblog-v2',

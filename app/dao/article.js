@@ -123,6 +123,7 @@ class ArticleDao {
   // 获取文章列表
   static async list(params = {}) {
     const { category_id, keyword, page_size = 10, status, page = 1 } = params;
+    console.log('page', category_id)
 
     // 筛选方式
     let filter = {
@@ -260,7 +261,7 @@ class ArticleDao {
 
   // 文章详情
   static async detail(id, query) {
-    const {  keyword } = query
+    const { keyword } = query
     try {
       let filter = {
         id,
@@ -296,7 +297,7 @@ class ArticleDao {
         attributes: ['id']
       })
 
-      if(comment) {
+      if (comment) {
         article.setDataValue('comment_count', comment.count || 0)
       }
 

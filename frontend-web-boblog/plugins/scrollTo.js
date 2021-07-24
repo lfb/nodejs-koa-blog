@@ -41,7 +41,7 @@ function scrollTo(to, duration, callback) {
     let currentTime = 0
     // eslint-disable-next-line no-param-reassign
     duration = typeof duration === 'undefined' ? 500 : duration
-    var animateScroll = function () {
+    const animateScroll = function () {
         // increment the time
         currentTime += increment
         // find the value with the quadratic in-out easing function
@@ -52,9 +52,9 @@ function scrollTo(to, duration, callback) {
         if (currentTime < duration) {
             requestAnimFrame(animateScroll)
         } else if (callback && typeof callback === 'function') {
-                // the animation is done so lets callback
-                callback()
-            }
+            // the animation is done so lets callback
+            callback()
+        }
     }
     animateScroll()
 }

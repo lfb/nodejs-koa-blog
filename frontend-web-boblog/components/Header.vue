@@ -6,8 +6,13 @@
         <div class="navigator-fix">
           <div class="navigator-box">
             <div class="navigator-inner">
-              <form class="search-box" action="/search">
-                <input type="text" class="search" placeholder="搜索" />
+              <form class="search-box" action="/">
+                <input
+                  name="keyword"
+                  type="text"
+                  class="search"
+                  placeholder="搜索"
+                />
               </form>
             </div>
           </div>
@@ -17,38 +22,42 @@
       <div v-if="isCategory" class="category">
         <ul v-if="Array.isArray(categoryList)" class="category-box">
           <li v-for="item in categoryList" :key="item.id" class="category-item">
-            {{item.name}}
+            <NuxtLink
+              class="category-item-link"
+              :to="'/?category_id=' + item.id"
+            >
+              {{ item.name }}
+            </NuxtLink>
           </li>
         </ul>
       </div>
-
     </div>
   </div>
 </template>
 
 <script>
-import {mapState} from "vuex";
+import { mapState } from 'vuex'
 
 export default {
-  name: "Header",
+  name: 'Header',
   props: {
     isCategory: {
       type: Boolean,
-      default: true
-    }
+      default: true,
+    },
   },
   computed: {
     ...mapState({
-      categoryList: state => state.category.categoryList
-    })
-  }
+      categoryList: (state) => state.category.categoryList,
+    }),
+  },
 }
 </script>
 
 <style scoped lang="scss">
 .header {
   box-sizing: border-box;
-  box-shadow: 0 4px 12px 0 rgba(0,0,0,0.05);
+  box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.05);
 }
 
 .header-inner {
@@ -64,8 +73,7 @@ export default {
   box-sizing: border-box;
   width: 150px;
   height: 64px;
-  background: url(https://cdn.boblog.com/boblog.png) -16px
-  center no-repeat;
+  background: url(https://cdn.boblog.com/boblog.png) -16px center no-repeat;
   -webkit-background-size: cover;
   background-size: cover;
   text-align: center;
@@ -84,12 +92,15 @@ export default {
   }
 
   &-item {
-    cursor: pointer;
-    height: 54px;
-    line-height: 54px;
-    font-size: 13px;
-    color: #757575;
-    margin-right: 24px;
+    &-link {
+      margin-right: 24px;
+      height: 54px;
+      line-height: 54px;
+      font-size: 13px;
+      color: #757575;
+      text-decoration: none;
+      display: inline-block;
+    }
   }
 }
 
@@ -130,5 +141,4 @@ export default {
   border-radius: 4px;
   outline: none;
 }
-
 </style>
