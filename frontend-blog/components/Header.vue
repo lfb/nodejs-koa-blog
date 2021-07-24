@@ -64,7 +64,7 @@ export default {
   box-sizing: border-box;
   width: 150px;
   height: 64px;
-  background: url(https://img1.homary.com/common/2021/07/21/34a7ec704253d27043c9735d82245b22.png) -16px
+  background: url(https://cdn.boblog.com/boblog.png) -16px
   center no-repeat;
   -webkit-background-size: cover;
   background-size: cover;

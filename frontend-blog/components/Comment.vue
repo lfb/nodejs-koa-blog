@@ -1,14 +1,26 @@
 <template>
     <div>
       <el-drawer
-        size="420px"
+        size="38.2%"
         :with-header="false"
         :visible.sync="showComment"
         direction="rtl">
 
         <div class="comment">
           <div class="comment-header">
-            评论：
+            欢迎您的评论
+          </div>
+          <div class="login-tips">
+            当前是匿名评论，登录后让代码改变世界！ <span class="sign-in" @click="showLoginInner = true">登录</span>
+          </div>
+
+          <div class="email-input">
+            <input
+              v-model="email"
+              maxlength="1000"
+              class="comment-content"
+              placeholder="请输入联系邮箱"
+               />
           </div>
           <div class="comment-textarea">
             <textarea
@@ -20,8 +32,8 @@
               rows="10" />
 
             <div class="comment-action">
-              <button :class="['preview-comment', {opacity: !comment}]" @click="onPreComment(comment)">预览</button>
-              <button :class="['submit-comment', {opacity: !comment}]" @click="submitComment">提交</button>
+              <button :disabled="!comment" :class="['preview-comment', {opacity: !comment}]" @click="onPreComment(comment)">预览</button>
+              <button :disabled="!comment" :class="['submit-comment', {opacity: !comment}]" @click="submitComment">提交</button>
             </div>
           </div>
 
@@ -60,55 +72,53 @@
                 </ul>
 
                 <div class="reply-create">
-                  <i v-if="!item.is_show_reply" class="el-icon-chat-dot-round" @click="showReply(index)"> 回复</i>
+                  <div @click="showReply(index)">
+                    <i v-if="!item.is_show_reply" class="el-icon-chat-dot-round" > 回复</i>
+                  </div>
+                  <div v-if="item.is_show_reply" >
+                    <div class="email-input">
+                      <input
+                        v-model="email"
+                        maxlength="1000"
+                        class="comment-content"
+                        placeholder="请输入联系邮箱"
+                      />
+                    </div>
+                    <div class="comment-textarea">
+                      <textarea
+                        v-model="item.reply_content"
+                        maxlength="1000"
+                        class="comment-content"
+                        placeholder="请输入回复内容，支持 Markdown 语法.."
+                        cols="30"
+                        rows="10" />
 
-                  <div v-if="item.is_show_reply" class="comment-textarea">
-                    <textarea
-                      v-model="item.reply_content"
-                      maxlength="1000"
-                      class="comment-content"
-                      placeholder="请输入回复内容，支持 Markdown 语法.."
-                      cols="30"
-                      rows="10" />
-
-                    <div class="comment-action">
-                      <button
-                        :class="['preview-comment', {opacity: !item.reply_content}]"
-                        @click="onPreComment(item.reply_content)">
-                        预览
-                      </button>
-                      <button
-                        :class="['submit-comment', {opacity: !item.reply_content}]"
-                        @click="submitReply(item.id, item.reply_content)">
-                        回复
-                      </button>
+                      <div class="comment-action">
+                        <button
+                          :disabled="!item.reply_content"
+                          :class="['preview-comment', {opacity: !item.reply_content}]"
+                          @click="onPreComment(item.reply_content)">
+                          预览
+                        </button>
+                        <button
+                          :disabled="!item.reply_content"
+                          :class="['submit-comment', {opacity: !item.reply_content}]"
+                          @click="submitReply(item.id, item.reply_content, item.email)">
+                          回复
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
-
-<!--                <div class="comment">-->
-<!--                  <el-button type="primary" icon="el-icon-view" @click="onPreReply"-->
-<!--                  >预览回复</el-button-->
-<!--                  >-->
-<!--                  <el-input-->
-<!--                    v-model="reply"-->
-<!--                    type="textarea"-->
-<!--                    :rows="2"-->
-<!--                    placeholder="请输入内容"-->
-<!--                  >-->
-<!--                  </el-input>-->
-<!--                  <el-button type="primary" @click="submitReply(item.id)"-->
-<!--                  >回复</el-button-->
-<!--                  >-->
-<!--                </div>-->
               </li>
             </ul>
           </div>
 
         </div>
 
+
         <el-drawer
-          size="320px"
+          size="32%"
           :with-header="false"
           :append-to-body="true"
           :visible.sync="showCommentInner">
@@ -119,6 +129,51 @@
             </div>
             <div>
               <div v-html="preContent"></div>
+            </div>
+          </div>
+
+        </el-drawer>
+
+        <el-drawer
+          size="32%"
+          :with-header="false"
+          :append-to-body="true"
+          :visible.sync="showLoginInner">
+
+          <div class="comment">
+            <div class="login-logo">
+
+            </div>
+            <h2 class="login-header">
+              {{isLogin ? '登录' : '注册'}}
+            </h2>
+            <div class="email-input">
+              <input
+                v-model="user.email"
+                maxlength="32"
+                class="comment-content"
+                placeholder="请输入联系邮箱"
+              />
+            </div>
+
+            <div class="email-input">
+              <input
+                v-model="user.password1"
+                maxlength="16"
+                class="comment-content"
+                placeholder="请输入密码"
+              />
+            </div>
+            <div class="register-tips" @click="isLogin = !isLogin">
+              {{ isLogin ? '未有账号？点击注册！' : '已有账号？点击登录！'}}
+            </div>
+            <div class="login-btn">
+              <button :disabled="!user.email || !user.password1" class="login-btn-submit" @click="onLogin(comment)">
+                {{ isLogin ? '登录' : '注册' }}
+              </button>
+              <button class="login-btn-default" @click="showLoginInner = false">
+                匿名评论
+              </button>
             </div>
           </div>
 
@@ -142,8 +197,16 @@ export default {
   },
   data() {
     return{
+      isLogin: true,
+      user: {
+        email: '',
+        password1: '',
+        password2: ''
+      },
+      email: '',
       showComment: false,
       showCommentInner: false,
+      showLoginInner: false,
       comment: '',
       commentList: null,
       preContent: ''
@@ -158,6 +221,7 @@ export default {
       const [err, data] = await createComment({
         user_id: 0,
         article_id: this.id,
+        email: this.email,
         content: this.comment,
       })
       if (!err) {
@@ -195,6 +259,7 @@ export default {
         res.data.data.data.forEach(item => {
           item.is_show_reply = false
           item.reply_content = ''
+          item.email = ''
         })
 
         this.commentList = res.data.data
@@ -204,15 +269,23 @@ export default {
       this.commentList.data.forEach((item, itemIndex) => {
         item.is_show_reply = itemIndex === index
         item.reply_content = ''
+        item.email = ''
       })
     },
-    async submitReply(commentId, content) {
+    onLogin() {
+      console.log(this.user)
+    },
+    onAnonymous() {
+      console.log('大大地')
+    },
+    async submitReply(commentId, content, email) {
       const [err, data] = await createReply({
         article_id: this.id,
         user_id: 0,
         reply_user_id: 0,
         comment_id: commentId,
         content,
+        email,
       })
       if (!err) {
         console.log('data', data)
@@ -234,10 +307,27 @@ ul, li, p {
   width: 100%;
 
   &-header{
-    padding-bottom: 20px;
+    padding-bottom: 10px;
     font-size: 20px;
     color: #404040;
     font-weight: 600;
+  }
+
+  .email-input {
+    display: block;
+    margin-bottom: 12px;
+  }
+
+  .login-tips {
+    font-size: 14px;
+    color: #404040;
+    padding-bottom: 20px;
+
+    span {
+      cursor: pointer;
+      color: #2d8cf0;
+      text-decoration: underline;
+    }
   }
 
   &-content {
@@ -347,6 +437,61 @@ ul, li, p {
 
 .opacity {
   opacity: 0.5;
+}
+
+.login-header {
+  display: none;
+  text-align: center;
+}
+.login-logo {
+  position: relative;
+  box-sizing: border-box;
+  width: 150px;
+  height: 98px;
+  margin: 0 auto;
+  background: url(https://cdn.boblog.com/boblog.png) -16px
+  center no-repeat;
+  -webkit-background-size: cover;
+  background-size: cover;
+  text-align: center;
+}
+.register-tips {
+  cursor: pointer;
+  font-size: 12px;
+  color: #999;
+
+  &:hover {
+    color: #2d8cf0;
+    text-decoration: underline;
+  }
+}
+.login-btn {
+  margin: 32px 0;
+  &-submit {
+    cursor: pointer;
+    width: 100%;
+    height: 40px;
+    font-size: 14px;
+    color: #fff;
+    text-align: center;
+    border: none;
+    outline: none;
+    border-radius: 32px;
+    background: #2d8cf0;
+    margin-bottom: 16px;
+  }
+  &-default {
+    cursor: pointer;
+    width: 100%;
+    height: 40px;
+    font-size: 14px;
+    color: #2d8cf0;
+    text-align: center;
+    border: 1px solid #2d8cf0;
+    outline: none;
+    border-radius: 32px;
+    background: #fff;
+  }
 }
 
 /deep/ .el-dialog__header {

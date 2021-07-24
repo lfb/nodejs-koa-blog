@@ -31,7 +31,22 @@
       </div>
 
     </div>
-    <div id="comment"></div>
+    <div id="comment">
+      <div class="comment-header">
+        评论：
+      </div>
+      <div class="comment-textarea">
+        <textarea
+          ref="textarea"
+          maxlength="1000"
+          class="comment-content"
+          placeholder="请输入内容，支持 Markdown 语法.."
+          cols="30"
+          rows="5"
+          @focus="onFocus" />
+      </div>
+    </div>
+
     <Comment :id="id" ref="comment"/>
     <Footer/>
   </div>
@@ -90,6 +105,12 @@ export default {
     scrollTop() {
       this.$scrollTo(0)
     },
+    onFocus() {
+      this.$refs.textarea.blur()
+      this.$nextTick(() => {
+        this.onShowComment()
+      })
+    },
     onShowComment() {
       this.$refs.comment && this.$refs.comment.onShowComment()
     }
@@ -139,6 +160,37 @@ export default {
   position: fixed;
   bottom: 32px;
   right: 32px;
+}
+
+#comment {
+  box-sizing: border-box;
+  padding: 20px 0;
+  width: 840px;
+  margin: 0 auto;
+
+  .comment-header{
+    padding-bottom: 20px;
+    font-size: 20px;
+    color: #404040;
+    font-weight: 600;
+  }
+
+  .comment-content {
+    resize: none;
+    outline: none;
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: 4px;
+    padding: 14px;
+    font-size: 14px;
+    color: #404040;
+    border: 1px solid #f0f0f0;
+    transition: 0.2s all ease-in;
+
+    &:focus {
+      box-shadow: rgba(0, 0, 0, 0.12) 0 2px 8px;
+    }
+  }
 }
 </style>
 
