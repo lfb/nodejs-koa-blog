@@ -17,6 +17,7 @@ class ReplyDao {
     const reply = new Reply();
     reply.reply_id = v.get('body.reply_id');
     reply.article_id = v.get('body.article_id');
+    reply.email = v.get('body.email') || 0;
     reply.comment_id = v.get('body.comment_id');
     reply.user_id = v.get('body.user_id');
     reply.reply_user_id = v.get('body.reply_user_id');

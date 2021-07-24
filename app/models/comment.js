@@ -35,6 +35,13 @@ Comment.init({
     defaultValue: 0,
     comment: '评论用户id,0-代表匿名回复'
   },
+  email: {
+    type: DataTypes.STRING,
+    allowNull: true,
+    defaultValue: 0,
+    comment: '匿名评论时，填的联系邮箱'
+  },
+
   created_at: {
     type: DataTypes.DATE,
     allowNull: false,

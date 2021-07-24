@@ -42,6 +42,12 @@ Reply.init({
     defaultValue: 0,
     comment: '回复用户id,0-代表匿名回复'
   },
+  email: {
+    type: DataTypes.STRING,
+    allowNull: true,
+    defaultValue: 0,
+    comment: '匿名评论时，填的联系邮箱'
+  },
   reply_user_id: {
     type: DataTypes.INTEGER(10).UNSIGNED,
     allowNull: true,

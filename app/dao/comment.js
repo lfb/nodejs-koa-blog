@@ -14,6 +14,7 @@ class CommentDao {
     const comment = new Comment();
     comment.article_id = v.get('body.article_id');
     comment.user_id = v.get('body.user_id');
+    comment.email = v.get('body.email') || 0;
     comment.content = xss(v.get('body.content'));
 
     try {
@@ -268,6 +269,7 @@ class CommentDao {
       return [null, data]
 
     } catch (err) {
+      console.log(err)
       return [err, null]
     }
   }
@@ -284,7 +286,7 @@ class CommentDao {
         status: 1,
         deleted_at: null
       },
-      attributes: ['id', 'content', 'comment_id', 'status', 'user_id', 'reply_user_id']
+      attributes: ['id', 'content', 'comment_id', 'status', 'user_id', 'reply_user_id', 'created_at']
     }
     const isArrayIds = isArray(ids)
 
