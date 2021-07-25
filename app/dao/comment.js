@@ -222,6 +222,8 @@ class CommentDao {
         deleted_at: null
       }
 
+      console.log(`page = ${page}`)
+
       if (user_id) {
         finner.user_id = user_id
       }

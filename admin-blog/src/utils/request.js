@@ -60,9 +60,9 @@ service.interceptors.response.use(
     const { response } = error
     if (response) {
       if ([401, 403].includes(response.status)) {
-        MessageBox.confirm('You have been logged out, you can cancel to stay on this page, or log in again', 'Confirm logout', {
-          confirmButtonText: 'Re-Login',
-          cancelButtonText: 'Cancel',
+        MessageBox.confirm('您已退出，您可以取消停留在此页面，或重新登录', '确认退出', {
+          confirmButtonText: '重新登录',
+          cancelButtonText: '取消',
           type: 'error'
         }).then(() => {
           store.dispatch('admin/resetToken').then(() => {

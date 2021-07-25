@@ -163,6 +163,17 @@
             </li>
           </ul>
         </div>
+
+        <div class="pagination">
+          <el-pagination
+            background
+            :current-page.sync="page"
+            layout="total, prev, pager, next"
+            :total="count"
+            @current-change="handleCurrentChange"
+          />
+        </div>
+
       </div>
 
       <el-drawer
@@ -255,6 +266,8 @@ export default {
   },
   data() {
     return {
+      page: 1,
+      count: 0,
       isLogin: true,
       user: {
         username: '',
@@ -280,6 +293,30 @@ export default {
     },
   },
   methods: {
+    // 点击数字
+    async handleCurrentChange(page) {
+      const drawerBody = document.querySelector('.el-drawer__body')
+      const commentList = document.querySelector('.comment-list')
+      const toTop = commentList.getBoundingClientRect().top + drawerBody.scrollTop
+      this.page = page
+      await this.getComment()
+      this.$nextTick(() => {
+        this.scrollTopTo(drawerBody, toTop, 0.3)
+      })
+    },
+    // 简单滚动动画
+    scrollTopTo(scroller, to, duration) {
+      let count = 0
+      const from = scroller.scrollTop
+      const frames = duration === 0 ? 1 : Math.round(duration * 1000 / 16)
+      function animate() {
+        scroller.scrollTop += (to - from) / frames
+        if (++count < frames) {
+          window.requestAnimationFrame(animate)
+        }
+      }
+      animate()
+    },
     async getUserInfo() {
       const [err, data] = await this.$store.dispatch('user/userInfo')
       if (!err) {
@@ -346,6 +383,7 @@ export default {
         article_id: this.id,
         is_replay: 1,
         is_user: 1,
+        page: this.page
       })
       if (!err) {
         this.isLoad = true
@@ -356,6 +394,7 @@ export default {
         })
 
         this.commentList = res.data.data
+        this.count = res.data.data.meta.count
       }
     },
     showReply(index = -1) {
@@ -634,6 +673,15 @@ p {
     border-radius: 32px;
     background: #fff;
   }
+}
+
+.pagination {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 15px 0;
+  width: 100%;
 }
 
 /deep/ .el-dialog__header {

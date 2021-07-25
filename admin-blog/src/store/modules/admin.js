@@ -57,10 +57,10 @@ const actions = {
           return reject('Verification failed, please Login again.')
         }
 
-        const { nickname, avatar } = data
+        const { nickname } = data
 
         commit('SET_NAME', nickname)
-        commit('SET_AVATAR', avatar)
+        commit('SET_AVATAR', 'https://cdn.boblog.com/boblog.png')
         commit('SET_ADMIN_INFO', data)
         resolve(data)
       }).catch(error => {

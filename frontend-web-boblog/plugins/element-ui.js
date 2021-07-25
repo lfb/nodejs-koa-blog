@@ -8,6 +8,7 @@ import {
   Dropdown,
   DropdownMenu,
   DropdownItem,
+  Pagination,
   Loading,
   MessageBox,
   Message,
@@ -23,6 +24,7 @@ const components = [
   Dropdown,
   DropdownMenu,
   DropdownItem,
+  Pagination,
   Drawer
 ]
 const Element = {

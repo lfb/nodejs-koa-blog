@@ -56,10 +56,6 @@
         @click.native.prevent="handleLogin"
       >Login</el-button>
 
-      <div class="tips">
-        <span style="margin-right: 20px">email: admin</span>
-        <span> password: any</span>
-      </div>
     </el-form>
   </div>
 </template>
@@ -208,18 +204,6 @@ $light_gray: #eee;
     padding: 160px 35px 0;
     margin: 0 auto;
     overflow: hidden;
-  }
-
-  .tips {
-    font-size: 14px;
-    color: #fff;
-    margin-bottom: 10px;
-
-    span {
-      &:first-of-type {
-        margin-right: 16px;
-      }
-    }
   }
 
   .svg-container {

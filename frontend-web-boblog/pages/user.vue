@@ -7,11 +7,28 @@
       <p style="text-indent: 2em">—— 假如生活欺骗了你，请你不要放弃，坚持下去！天是不会给绝路你的！</p>
 
       <div v-if="Array.isArray(commentList) && commentList.length > 0" class="comment">
+        评论列表：
         <ul class="comment-list">
           <li v-for="item in commentList" :key="item.id" class="comment-item">
-            {{item.id}}
+            <p>
+              文章：{{item.article.title}}
+            </p>
+            <p>
+              评论内容：{{item.content}}
+            </p>
+            <p>评论时间：{{item.created_at}}</p>
+            <p>回复：{{item.reply_list || '无'}} </p>
           </li>
         </ul>
+        <div class="pagination">
+          <el-pagination
+            background
+            :current-page.sync="page"
+            layout="total, prev, pager, next"
+            :total="count"
+            @current-change="handleCurrentChange"
+          />
+        </div>
       </div>
     </div>
   </div>
@@ -29,6 +46,8 @@ export default {
   },
   data() {
     return {
+      page: 1,
+      count: 0,
       commentList: []
     }
   },
@@ -49,12 +68,20 @@ export default {
       const [err, res] = await getCommentTarget({
         user_id: uid,
         is_replay: 1,
-        is_article: 1
+        is_article: 1,
+        page: this.page
       })
       if (!err) {
         this.isLoad = true
         this.commentList = res.data.data.data
+        this.count = res.data.data.meta.count
       }
+    },
+    // 点击数字
+    async handleCurrentChange(page) {
+      this.page = page
+      await this.getComment()
+      this.$scrollTo(0)
     },
   }
 }

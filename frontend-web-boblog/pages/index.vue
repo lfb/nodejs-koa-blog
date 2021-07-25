@@ -35,6 +35,15 @@
             </a>
           </li>
         </ul>
+        <div class="pagination">
+          <el-pagination
+            background
+            :current-page.sync="page"
+            layout="total, prev, pager, next"
+            :total="count"
+            @current-change="handleCurrentChange"
+          />
+        </div>
       </div>
 
       <div class="sidebar">
@@ -73,20 +82,23 @@ export default {
   },
   async asyncData(context) {
     // eslint-disable-next-line camelcase
-    const { id, keyword, category_id } = context.query
+    const { id, keyword, category_id, page = 1 } = context.query
 
     const [err, res] = await getArticleList({
       id,
       category_id,
       keyword,
+      page,
       is_category: 1,
       is_admin: 1,
     })
 
     if (!err) {
       return {
+        page,
+        count: res.data.data.meta.count,
         categoryId: category_id,
-        article: res.data.data,
+        article: res.data.data
       }
     }
   },
@@ -111,12 +123,19 @@ export default {
         category_id: id,
         is_category: 1,
         is_admin: 1,
+        page: this.page
       })
       if (!err) {
         this.categoryId = id
         this.article = res.data.data
       }
     },
+    // 点击数字
+    async handleCurrentChange(page) {
+      this.page = page
+      await this.fetchData()
+      this.$scrollTo(0)
+    }
   },
 }
 </script>
@@ -275,5 +294,14 @@ a {
     color: #757575;
     margin-left: 8px;
   }
+}
+
+.pagination {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 15px 0;
+  width: 100%;
 }
 </style>
