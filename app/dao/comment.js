@@ -202,7 +202,8 @@ class CommentDao {
   static async targetComment(params = {}) {
     try {
       const {
-        article_id,
+        article_id = 0,
+        user_id = 0,
         is_replay = 0,
         is_article = 0,
         is_user = 0,
@@ -212,19 +213,27 @@ class CommentDao {
         desc = 'created_at'
       } = params;
 
-      if (!article_id) {
-        throw new global.errs.NotFound('必须传入article id');
-      }
+      // if (!article_id) {
+      //   throw new global.errs.NotFound('必须传入article id');
+      // }
 
       const finner = {
-        article_id,
         status: 1,
         deleted_at: null
       }
 
-      if (status !== -1) {
+      if (user_id) {
+        finner.user_id = user_id
+      }
+
+      if (article_id) {
+        finner.article_id = article_id
+      }
+      if (status === -1) {
         delete finner.status
       }
+
+      console.log('finner', finner)
 
       const comment = await Comment.findAndCountAll({
         where: finner,
@@ -238,6 +247,7 @@ class CommentDao {
           exclude: ['updated_at']
         },
       })
+      console.log('comment', comment)
 
       let rows = comment.rows
       // 查询评论
@@ -354,13 +364,7 @@ class CommentDao {
         const res = await Article.scope(scope).findAll(finner)
         const article = {}
         res.forEach(item => {
-          // 如果有重复的map key 则直接装进去
-          if (article[item.id]) {
-            article[item.id].push(item)
-          } else {
-            // 反之，初始化数组
-            article[item.id] = [item]
-          }
+            article[item.id] = item
         })
         return [null, article]
       } else {

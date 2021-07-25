@@ -85,7 +85,7 @@ router.get('/comment', async (ctx) => {
 })
 
 // 获取评论详情
-router.get('/comment/:id', async (ctx) => {
+router.get('/comment/:id', new Auth(AUTH_ADMIN).m, async (ctx) => {
   // 通过验证器校验参数是否通过
   const v = await new PositiveArticleIdParamsValidator().validate(ctx);
 

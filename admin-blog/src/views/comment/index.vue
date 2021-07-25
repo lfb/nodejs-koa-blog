@@ -85,15 +85,15 @@
         </el-table-column>
         <el-table-column label="评论文章" align="center">
           <template slot-scope="scope">
-            {{ scope.row.article && scope.row.article[0].id }} -
-            {{ scope.row.article && scope.row.article[0].title }}
+            {{ scope.row.article && scope.row.article.id }} -
+            {{ scope.row.article && scope.row.article.title }}
           </template>
         </el-table-column>
         <el-table-column class-name="status-col" label="状态" align="center">
           <template slot-scope="scope">
-            <el-tag :type="scope.row.status | statusFilter">{{
-              scope.row.status | statusFilterText
-            }}</el-tag>
+            <el-tag :type="scope.row.status | statusFilter">
+              {{ scope.row.status | statusFilterText }}
+            </el-tag>
           </template>
         </el-table-column>
         <el-table-column label="操作" align="center">

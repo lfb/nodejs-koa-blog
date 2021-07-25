@@ -215,29 +215,3 @@ export default {
   margin: 24px 0;
 }
 </style>
-
-<!--<template>-->
-<!--  <section>-->
-<!--    ddd-->
-<!--  </section>-->
-<!--</template>-->
-
-<!--<script>-->
-<!--import { getUserList } from '@/api/user'-->
-<!--export default {-->
-<!--  name: 'User',-->
-<!--  mounted() {-->
-<!--    this.fetchData()-->
-<!--  },-->
-<!--  methods: {-->
-<!--    async fetchData() {-->
-<!--      const res = await getUserList()-->
-<!--      console.log(res)-->
-<!--    }-->
-<!--  }-->
-<!--}-->
-<!--</script>-->
-
-<!--<style scoped>-->
-
-<!--</style>-->
