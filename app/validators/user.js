@@ -85,9 +85,17 @@ class TokenNotEmptyValidator extends LinValidator {
   }
 }
 
-
+class PositiveIdParamsValidator extends LinValidator {
+  constructor() {
+    super();
+    this.id = [
+      new Rule('isInt', '用户ID需要正整数', { min: 1 })
+    ]
+  }
+}
 module.exports = {
   RegisterValidator,
   UserLoginValidator,
+  PositiveIdParamsValidator,
   TokenNotEmptyValidator
 }

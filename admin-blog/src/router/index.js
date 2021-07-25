@@ -126,7 +126,7 @@ export const constantRoutes = [
   {
     path: '/reply',
     component: Layout,
-    redirect: '/commreplyent/index',
+    redirect: '/reply/index',
     name: 'Reply',
     meta: { title: '回复管理', icon: 'el-icon-s-help' },
     children: [
@@ -135,6 +135,27 @@ export const constantRoutes = [
         name: 'ReplyIndex',
         component: () => import('@/views/reply/index'),
         meta: { title: '回复列表', icon: 'table' }
+      }
+    ]
+  },
+
+  {
+    path: '/user',
+    component: Layout,
+    redirect: '/user/index',
+    name: 'Reply',
+    meta: { title: '用户管理', icon: 'el-icon-s-help' },
+    children: [
+      {
+        path: 'index',
+        name: 'UserIndex',
+        component: () => import('@/views/user/index'),
+        meta: { title: '用户列表', icon: 'table' }
+      },
+      {
+        path: 'edit',
+        name: 'UserEdit',
+        component: () => import('@/views/user/edit')
       }
     ]
   },

@@ -39,6 +39,12 @@ User.init({
         allowNull: false,
         comment: '登录密码'
     },
+    status: {
+        type: DataTypes.TINYINT,
+        allowNull: true,
+        defaultValue: 1,
+        comment: '用户状态：0-禁用,1-正常'
+    },
     created_at: {
         type: DataTypes.DATE,
         allowNull: false,

@@ -25,7 +25,7 @@
                   size="small"
                   icon="el-icon-user-solid"
                 ></el-avatar>
-                <span class="username">{{ userInfo.username }}</span>
+                <div class="username">{{ userInfo.username }}</div>
                 <i class="el-icon-caret-bottom" />
               </div>
               <el-dropdown-menu slot="dropdown" class="user-dropdown">
@@ -108,6 +108,7 @@ a{
   align-items: center;
 }
 .avatar-wrapper {
+  width: 100px;
   display: flex;
   align-items: center;
   margin-left: 32px;

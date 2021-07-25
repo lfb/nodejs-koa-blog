@@ -23,6 +23,7 @@ export function detail(data) {
     data
   })
 }
+
 export function update(data) {
   return request({
     url: '/article/' + data.id,
