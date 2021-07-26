@@ -1,5 +1,6 @@
 import Vue from 'vue'
 const hljs = require('highlight.js')
+
 const md = require('markdown-it')({
   highlight(str, lang) {
     if (lang && hljs.getLanguage(lang)) {

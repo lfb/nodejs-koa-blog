@@ -213,14 +213,4 @@ export default {
     }
   }
 }
-
-.pagination {
-  box-sizing: border-box;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 15px 0;
-  width: 100%;
-}
-
 </style>

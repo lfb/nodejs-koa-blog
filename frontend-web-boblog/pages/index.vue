@@ -106,6 +106,7 @@ export default {
     ...mapState({
       categoryList: (state) => state.category.categoryList,
     }),
+    // 是否为空数据
     isEmptyData() {
       return (
         this.article &&
@@ -136,7 +137,7 @@ export default {
       await this.fetchData()
       this.$scrollTo(0)
     }
-  },
+  }
 }
 </script>
 
@@ -237,11 +238,6 @@ a {
   border: none;
 }
 
-//.article-list:hover .article-title {
-//  color: #0164da;
-//  text-decoration: underline;
-//}
-
 .article-content {
   flex: 1;
 }
@@ -294,14 +290,5 @@ a {
     color: #757575;
     margin-left: 8px;
   }
-}
-
-.pagination {
-  box-sizing: border-box;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 15px 0;
-  width: 100%;
 }
 </style>

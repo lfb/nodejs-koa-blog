@@ -1,29 +1,27 @@
 <template>
   <div>
     <Header />
-    <div class="container">
-      <div class="article">
-        <h1 class="title">
-          {{ article.title }}
-        </h1>
-        <div class="description">
-          {{ article.description }}
-        </div>
-        <div class="info">
-          <el-avatar size="small" icon="el-icon-user-solid"></el-avatar>
-          <span class="category">
-            {{ article.category_info.name }}
-          </span>
-          <span class="created-at">{{ article.created_at }}</span>
-          <span class="comment-count">
-            <i class="el-icon-chat-round" @click="onShowComment"
-              >评论 {{ article.comment_count }}</i
-            >
-          </span>
-        </div>
-        <div v-html="article.content"></div>
+
+    <div class="article">
+      <h1 class="title">
+        {{ article.title }}
+      </h1>
+      <div class="description">
+        {{ article.description }}
       </div>
+      <div class="info">
+        <el-avatar size="small" icon="el-icon-user-solid"></el-avatar>
+        <span v-if="article.category_info" class="category">
+          {{ article.category_info.name }}
+        </span>
+        <span class="created-at">{{ article.created_at }}</span>
+        <span class="comment-count" @click="onShowComment">
+          <i class="el-icon-chat-round">评论 {{ article.comment_count }}</i>
+        </span>
+      </div>
+      <div v-html="article.content"></div>
     </div>
+
     <div class="fixed-sidebar">
       <div class="fixed-comment">
         <i class="el-icon-chat-round" @click="onShowComment"></i>
@@ -32,23 +30,22 @@
         <i class="el-icon-top" @click="scrollTop"></i>
       </div>
     </div>
-    <div id="comment">
+
+    <div class="comment">
       <div class="comment-header">评论：</div>
       <div class="comment-textarea">
         <textarea
           ref="textarea"
-          maxlength="1000"
           class="comment-content"
           placeholder="请输入内容，支持 Markdown 语法.."
-          cols="30"
-          rows="5"
-          @focus="onFocus"
+          @focus="onCommentFocus"
         />
       </div>
     </div>
 
     <Comment ref="comment" />
     <Footer />
+
   </div>
 </template>
 <script>
@@ -74,13 +71,8 @@ export default {
     const [err, res] = await getArticleDetail(params)
     if (!err) {
       return {
-        article: res.data.data,
+        article: res.data.data
       }
-    }
-  },
-  data() {
-    return {
-      showComment: false,
     }
   },
   async fetch({ store }) {
@@ -91,34 +83,33 @@ export default {
     return {
       title: article.title,
       meta: [
-        { name: 'keyword', content: article.seo_keyword },
+        { name: 'keywords', content: article.seo_keyword },
         { name: 'description', content: article.description },
       ],
     }
   },
   methods: {
-    goComment() {
-      const commentDOM = document.querySelector('#comment')
-      this.$scrollTo(commentDOM.getBoundingClientRect().top)
-    },
+    // 回到顶部
     scrollTop() {
       this.$scrollTo(0)
     },
-    onFocus() {
+    // 展开评论
+    onCommentFocus() {
       this.$refs.textarea.blur()
       this.$nextTick(() => {
         this.onShowComment()
       })
     },
+    // 点击展开评论
     onShowComment() {
       this.$refs.comment && this.$refs.comment.onShowComment()
-    },
-  },
+    }
+  }
 }
 </script>
 
 <style scoped lang="scss">
-.container {
+.article {
   width: 840px;
   margin: 0 auto;
 }
@@ -161,20 +152,20 @@ export default {
   right: 32px;
 }
 
-#comment {
+.comment {
   box-sizing: border-box;
   padding: 20px 0;
   width: 840px;
   margin: 0 auto;
 
-  .comment-header {
+  &-header {
     padding-bottom: 20px;
     font-size: 20px;
     color: #404040;
     font-weight: 600;
   }
 
-  .comment-content {
+  &-content {
     resize: none;
     outline: none;
     width: 100%;

@@ -3,20 +3,14 @@
     <div class="header">
       <div class="header-inner">
         <div class="logo" @click="goHome"></div>
-        <div class="navigator-fix">
-          <div class="navigator-box">
-            <div class="navigator-inner">
-              <form class="search-box" action="/">
-                <input
-                  name="keyword"
-                  type="text"
-                  class="search"
-                  placeholder="搜索"
-                />
-              </form>
-            </div>
-          </div>
-        </div>
+        <form class="search-box" action="/">
+          <input
+            name="keyword"
+            type="text"
+            class="search"
+            placeholder="搜索"
+          />
+        </form>
         <client-only>
           <div v-if="isLoginStatus">
             <el-dropdown class="avatar-container" trigger="click">
@@ -71,18 +65,20 @@ export default {
   },
   computed: {
     ...mapState({
-      isLoginStatus: state => state.user.isLoginStatus,
       userInfo: state => state.user.userInfo,
+      isLoginStatus: state => state.user.isLoginStatus,
       categoryList: (state) => state.category.categoryList
     }),
   },
   methods: {
+    // 退出登录
     logout() {
       removeToken()
       this.$store.commit('user/SET_LOGIN_STATUS', false)
       this.$store.commit('user/SET_USERINFO', null)
       this.goHome()
     },
+    // 返回首页
     goHome() {
       window.location.href = '/'
     }
@@ -101,22 +97,15 @@ a{
 }
 
 .header-inner {
-  height: 64px;
+  box-sizing: border-box;
   width: 1024px;
+  height: 64px;
   margin: 0 auto;
   display: flex;
+  justify-content: space-between;
   align-items: center;
 }
-.avatar-wrapper {
-  width: 100px;
-  display: flex;
-  align-items: center;
-  margin-left: 32px;
-  height: 64px;
-}
-.username {
-  margin: 0 5px;
-}
+
 .logo {
   position: relative;
   display: inline-block;
@@ -127,6 +116,37 @@ a{
   -webkit-background-size: cover;
   background-size: cover;
   text-align: center;
+}
+
+.search-box {
+  position: relative;
+  height: 100%;
+  width: 280px;
+}
+
+.search {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0 12px;
+  margin-top: 14px;
+  height: 36px;
+  line-height: 36px;
+  color: #404040;
+  font-size: 14px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  outline: none;
+}
+
+.avatar-wrapper {
+  width: 100px;
+  display: flex;
+  align-items: center;
+  margin-left: 32px;
+  height: 64px;
+}
+.username {
+  margin: 0 5px;
 }
 
 .category {
@@ -154,41 +174,4 @@ a{
   }
 }
 
-.navigator-fix {
-  width: 100%;
-  height: 64px;
-  float: right;
-  margin-left: -150px;
-}
-
-.navigator-box {
-  height: 56px;
-  padding-left: 150px;
-}
-
-.navigator-inner {
-  text-align: right;
-  height: 64px;
-  clear: both;
-}
-
-.search-box {
-  position: relative;
-  height: 100%;
-  width: 100%;
-}
-
-.search {
-  box-sizing: border-box;
-  width: 320px;
-  padding: 0 12px;
-  margin-top: 14px;
-  height: 36px;
-  line-height: 36px;
-  color: #404040;
-  font-size: 14px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  outline: none;
-}
 </style>

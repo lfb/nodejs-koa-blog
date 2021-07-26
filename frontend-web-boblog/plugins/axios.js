@@ -1,8 +1,7 @@
-import { removeToken, encodeToken } from "@/lib/auth";
 import Vue from 'vue'
+import { removeToken, encodeToken } from "@/lib/auth";
 
-
-export default ({ $axios, redirect, store, app, env, error, $sentry, route }) => {
+export default ({ $axios, store }) => {
   $axios.onRequest(config => {
     config.baseURL = process.env.BASE_URL
     config.headers.Authorization = encodeToken()

@@ -1,5 +1,6 @@
 
 /**
+ * 验证邮箱
  * @param {string} email
  * @returns {Boolean}
  */
@@ -9,6 +10,7 @@ export function validEmail(email) {
 }
 
 /**
+ * 验证密码
  * @param {string} email
  * @returns {Boolean}
  */
