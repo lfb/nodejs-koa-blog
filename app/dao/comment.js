@@ -222,8 +222,6 @@ class CommentDao {
         deleted_at: null
       }
 
-      console.log(`page = ${page}`)
-
       if (user_id) {
         finner.user_id = user_id
       }
@@ -231,6 +229,7 @@ class CommentDao {
       if (article_id) {
         finner.article_id = article_id
       }
+
       if (status === -1) {
         delete finner.status
       }

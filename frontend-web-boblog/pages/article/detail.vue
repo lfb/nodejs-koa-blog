@@ -47,7 +47,7 @@
       </div>
     </div>
 
-    <Comment :id="id" ref="comment" />
+    <Comment ref="comment" />
     <Footer />
   </div>
 </template>
@@ -74,7 +74,6 @@ export default {
     const [err, res] = await getArticleDetail(params)
     if (!err) {
       return {
-        id,
         article: res.data.data,
       }
     }

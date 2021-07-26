@@ -108,3 +108,7 @@ code.hljs {
 .hljs-link {
   text-decoration: underline
 }
+
+.opacity {
+  opacity: 0.5;
+}
