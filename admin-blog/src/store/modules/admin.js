@@ -76,15 +76,6 @@ const actions = {
       resetRouter()
       commit('RESET_STATE')
       resolve()
-
-      // logout(state.token).then(() => {
-      //   removeToken() // must remove  token  first
-      //   resetRouter()
-      //   commit('RESET_STATE')
-      //   resolve()
-      // }).catch(error => {
-      //   reject(error)
-      // })
     })
   },
 

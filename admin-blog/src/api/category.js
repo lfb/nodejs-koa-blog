@@ -1,5 +1,6 @@
 import request from '@/utils/request'
 
+// 获取分类列表
 export function list(params) {
   return request({
     url: '/category',
@@ -8,6 +9,7 @@ export function list(params) {
   })
 }
 
+// 创建分类
 export function create(data) {
   return request({
     url: '/category',
@@ -16,6 +18,7 @@ export function create(data) {
   })
 }
 
+// 获取分类详情
 export function detail(data) {
   return request({
     url: '/category/' + data.id,
@@ -23,6 +26,8 @@ export function detail(data) {
     data
   })
 }
+
+// 更新分类
 export function update(data) {
   return request({
     url: '/category/' + data.id,
@@ -31,6 +36,7 @@ export function update(data) {
   })
 }
 
+// 删除分类
 export function detele(data) {
   return request({
     url: '/category/' + data.id,

@@ -103,7 +103,6 @@
           :current-page.sync="searchForm.page"
           layout="total, prev, pager, next"
           :total="count"
-          @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
         />
       </div>
@@ -148,14 +147,15 @@ export default {
     this.getCategoryList()
   },
   methods: {
+    // 跳转创建分类
     create() {
       this.$router.push('/category/create')
     },
+    // 获取分类列表
     async getCategoryList() {
       try {
         this.listLoading = true
         const res = await list(this.searchForm)
-        console.log(res)
         this.list = res.data.data
         this.count = res.data.meta.count
       } catch (err) {
@@ -164,9 +164,11 @@ export default {
         this.listLoading = false
       }
     },
+    // 跳转分类编辑
     handleEdit(id) {
       this.$router.push('/category/edit?id=' + id)
     },
+    // 删除分类
     handleDelete(id) {
       try {
         this.$msgbox
@@ -184,20 +186,17 @@ export default {
         this.$message.error(err)
       }
     },
+    // 搜索
     searchData() {
       this.searchForm.page = 1
       this.getCategoryList()
     },
-    handleSizeChange(size) {
-      this.searchForm.page = 1
-      this.searchForm.size = size
-      this.getCategoryList()
-    },
-    // 点击数字
+    // 点击页码
     handleCurrentChange(page) {
       this.searchForm.page = page
       this.getCategoryList()
     },
+    // 重置表单
     resetSearchData() {
       this.$refs['searchForm'].resetFields()
       this.getCategoryList()

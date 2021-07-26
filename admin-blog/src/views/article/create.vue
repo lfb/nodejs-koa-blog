@@ -22,7 +22,7 @@
           action="https://upload-z2.qiniup.com/"
           :show-file-list="false"
           :data="{ token }"
-          :on-success="handleSuccess"
+          :on-success="handleUploadSuccess"
         >
           <img
             v-if="ruleForm.img_url"
@@ -131,11 +131,12 @@ export default {
   },
   mounted() {
     this.$axios = axios.create({ withCredentials: false })
-    this.fetchData()
+    this.getUploadToken()
     this.getCategoryList()
   },
   methods: {
-    async fetchData() {
+    // 获取上传token
+    async getUploadToken() {
       try {
         const res = await getToken()
         this.token = res.data.token
@@ -143,15 +144,24 @@ export default {
         console.log(err)
       }
     },
-    handleSuccess(file) {
+    // 上传图片成功回调
+    handleUploadSuccess(file) {
       this.ruleForm.img_url = `https://cdn.boblog.com/${file.key}`
       this.$message.success('上传成功!')
     },
+    // 编辑器删除图片回调
     $imgDel(pos, $file) {
       console.log(pos, $file)
     },
-    // 绑定@imgAdd event
+    // 编辑器新增上传图片回调
     $imgAdd(pos, $file) {
+      const loading = this.$loading({
+        lock: true,
+        text: 'Loading',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.7)'
+      })
+
       // 第一步.将图片上传到服务器.
       const formdata = new FormData()
       formdata.append('file', $file)
@@ -164,22 +174,13 @@ export default {
       }).then((res) => {
         const img_url = `https://cdn.boblog.com/${res.data.key}`
         this.$refs.md.$img2Url(pos, img_url)
+        loading.close()
+      }).catch(err => {
+        console.log(err)
+        loading.close()
       })
     },
-    handleError(file, fileList) {
-      console.log(file, fileList)
-      this.$message.error('上传失败!')
-    },
-    handleExceed(files, fileList) {
-      this.$message.warning(
-        `当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${
-          files.length + fileList.length
-        } 个文件`
-      )
-    },
-    beforeRemove(file, fileList) {
-      return this.$confirm(`确定移除 ${file.name}？`)
-    },
+    // 获取分类列表
     async getCategoryList() {
       try {
         this.listLoading = true
@@ -191,6 +192,7 @@ export default {
         this.listLoading = false
       }
     },
+    // 提交表单
     submitForm(formName) {
       if (this.adminInfo) {
         this.ruleForm.admin_id = this.adminInfo.id
@@ -205,6 +207,11 @@ export default {
         }
       })
     },
+    // 重置表单
+    resetForm(formName) {
+      this.$refs[formName].resetFields()
+    },
+    // 创建文章
     async createArticle() {
       try {
         const res = await create(this.ruleForm)
@@ -222,9 +229,6 @@ export default {
       } catch (err) {
         this.$message.error(err)
       }
-    },
-    resetForm(formName) {
-      this.$refs[formName].resetFields()
     }
   }
 }

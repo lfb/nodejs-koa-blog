@@ -135,7 +135,6 @@
           :current-page.sync="searchForm.page"
           layout="total, prev, pager, next"
           :total="count"
-          @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
         />
       </div>
@@ -208,9 +207,15 @@ export default {
     this.getComment()
   },
   methods: {
+    // 跳转创建分类
     create() {
       this.$router.push('/category/create')
     },
+    // 跳转编辑分类
+    handleEdit(id) {
+      this.$router.push('/comment/edit?id=' + id)
+    },
+    // 获取评论列表
     async getComment() {
       try {
         this.listLoading = true
@@ -224,9 +229,7 @@ export default {
         this.listLoading = false
       }
     },
-    handleEdit(id) {
-      this.$router.push('/comment/edit?id=' + id)
-    },
+    // 更新-审核状态
     async changeStatus(id, status) {
       await update({
         id: id,
@@ -235,6 +238,7 @@ export default {
       await this.getComment()
       this.$message.success('更新成功')
     },
+    // 删除评论
     handleDelete(id) {
       try {
         this.$msgbox
@@ -252,23 +256,21 @@ export default {
         this.$message.error(err)
       }
     },
+    // Markdown 语法转换
     mdRender(content) {
       return md.render(content)
     },
+    // 搜索结果
     searchData() {
       this.searchForm.page = 1
       this.getComment()
     },
-    handleSizeChange(size) {
-      this.searchForm.page = 1
-      this.searchForm.size = size
-      this.getComment()
-    },
-    // 点击数字
+    // 点击页码
     handleCurrentChange(page) {
       this.searchForm.page = page
       this.getComment()
     },
+    // 重置表单
     resetSearchData() {
       this.$refs['searchForm'].resetFields()
       this.getComment()

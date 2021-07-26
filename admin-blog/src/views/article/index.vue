@@ -151,7 +151,6 @@
           :current-page.sync="searchForm.page"
           layout="total, prev, pager, next"
           :total="count"
-          @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
         />
       </div>
@@ -204,6 +203,7 @@ export default {
     create() {
       this.$router.push('/article/create')
     },
+    // 获取分类列表
     async getCategoryList() {
       try {
         this.listLoading = true
@@ -215,6 +215,7 @@ export default {
         this.listLoading = false
       }
     },
+    // 获取文章列表
     async getArticleList() {
       try {
         this.listLoading = true
@@ -227,9 +228,11 @@ export default {
         this.listLoading = false
       }
     },
+    // 文章编辑
     handleEdit(id) {
       this.$router.push('/article/edit?id=' + id)
     },
+    // 删除文章
     handleDelete(id) {
       try {
         this.$msgbox
@@ -247,20 +250,17 @@ export default {
         this.$message.error(err)
       }
     },
+    // 搜索
     searchData() {
       this.searchForm.page = 1
       this.getArticleList()
     },
-    handleSizeChange(size) {
-      this.searchForm.page = 1
-      this.searchForm.size = size
-      this.getArticleList()
-    },
-    // 点击数字
+    // 点击页码
     handleCurrentChange(page) {
       this.searchForm.page = page
       this.getArticleList()
     },
+    // 重置表单
     resetSearchData() {
       this.$refs['searchForm'].resetFields()
       this.getArticleList()

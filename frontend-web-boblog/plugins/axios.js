@@ -6,6 +6,7 @@ export default ({ $axios, store }) => {
     config.baseURL = process.env.BASE_URL
     config.headers.Authorization = encodeToken()
   })
+
   $axios.onResponse(res => {
     if (res.status === 200 && res.data.code === 200) {
       return res
@@ -14,8 +15,11 @@ export default ({ $axios, store }) => {
       return Promise.reject(res)
     }
   })
+
   $axios.onError(err => {
     const { response } = err
+
+    // 处理token过期无效情况，清除token，初始化store数据
     if ([401, 403].includes(response.status)) {
       removeToken()
       store.commit('user/SET_LOGIN_STATUS', false)

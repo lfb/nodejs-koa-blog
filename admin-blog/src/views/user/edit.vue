@@ -59,6 +59,7 @@ export default {
     this.getUser()
   },
   methods: {
+    // 提交表单
     submitForm(formName) {
       this.$refs[formName].validate(async(valid) => {
         if (valid) {
@@ -69,6 +70,7 @@ export default {
         }
       })
     },
+    // 获取用户信息
     async getUser() {
       try {
         const res = await userInfo({
@@ -81,6 +83,7 @@ export default {
         console.log(err)
       }
     },
+    // 更新用户再次确认
     updateConfirm(formName) {
       this.$refs[formName].validate(async(valid) => {
         if (valid) {
@@ -99,6 +102,7 @@ export default {
         }
       })
     },
+    // 更新用户信息
     async updateUser() {
       try {
         const res = await updateUser(this.ruleForm)
@@ -117,6 +121,7 @@ export default {
         this.$message.error(err)
       }
     },
+    // 重置表单
     resetForm(formName) {
       this.$refs[formName].resetFields()
     }

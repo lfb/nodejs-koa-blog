@@ -8,5 +8,8 @@ export function createComment(data) {
   })
 }
 export function getCommentTarget(params) {
-  return GET({ url: comment.target, params })
+  return GET({
+    url: comment.target,
+    params
+  })
 }

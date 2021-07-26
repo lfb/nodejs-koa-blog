@@ -100,7 +100,6 @@
           :current-page.sync="searchForm.page"
           layout="total, prev, pager, next"
           :total="count"
-          @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
         />
       </div>
@@ -146,6 +145,7 @@ export default {
     this.fetchData()
   },
   methods: {
+    // 获取用户信息
     async fetchData() {
       try {
         this.listLoading = true
@@ -158,9 +158,11 @@ export default {
         this.listLoading = false
       }
     },
+    // 跳转编辑
     handleEdit(id) {
       this.$router.push('/user/edit?id=' + id)
     },
+    // 删除用户
     handleDelete(id) {
       try {
         this.$msgbox
@@ -178,20 +180,17 @@ export default {
         this.$message.error(err)
       }
     },
+    // 搜索
     searchData() {
       this.searchForm.page = 1
       this.fetchData()
     },
-    handleSizeChange(size) {
-      this.searchForm.page = 1
-      this.searchForm.size = size
-      this.fetchData()
-    },
-    // 点击数字
+    // 点击页面
     handleCurrentChange(page) {
       this.searchForm.page = page
       this.fetchData()
     },
+    // 重置表单
     resetSearchData() {
       this.$refs['searchForm'].resetFields()
       this.fetchData()

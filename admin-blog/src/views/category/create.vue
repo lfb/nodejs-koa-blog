@@ -45,6 +45,7 @@ export default {
   },
   mounted() {},
   methods: {
+    // 提交表单
     submitForm(formName) {
       this.$refs[formName].validate(async(valid) => {
         if (valid) {
@@ -55,6 +56,7 @@ export default {
         }
       })
     },
+    // 创建分类
     async createCategory() {
       try {
         const res = await create(this.ruleForm)
@@ -73,6 +75,7 @@ export default {
         this.$message.error(err)
       }
     },
+    // 重置表单
     resetForm(formName) {
       this.$refs[formName].resetFields()
     }

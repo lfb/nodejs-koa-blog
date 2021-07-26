@@ -135,7 +135,6 @@
           :current-page.sync="searchForm.page"
           layout="total, prev, pager, next"
           :total="count"
-          @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
         />
       </div>
@@ -211,9 +210,11 @@ export default {
     this.getReply()
   },
   methods: {
+    // 跳转创建分类
     create() {
       this.$router.push('/category/create')
     },
+    // 获取回复列表
     async getReply() {
       try {
         this.listLoading = true
@@ -227,9 +228,11 @@ export default {
         this.listLoading = false
       }
     },
+    // 跳转编辑
     handleEdit(id) {
       this.$router.push('/comment/edit?id=' + id)
     },
+    // 更新回复评论-审核状态
     async changeStatus(id, status) {
       await update({
         id: id,
@@ -238,6 +241,7 @@ export default {
       await this.getReply()
       this.$message.success('更新成功')
     },
+    // 删除回复数据
     handleDelete(id) {
       try {
         this.$msgbox
@@ -255,23 +259,21 @@ export default {
         this.$message.error(err)
       }
     },
+    // Markdown语法解析
     mdRender(content) {
       return md.render(content)
     },
+    // 搜索
     searchData() {
       this.searchForm.page = 1
       this.getReply()
     },
-    handleSizeChange(size) {
-      this.searchForm.page = 1
-      this.searchForm.size = size
-      this.getReply()
-    },
-    // 点击数字
+    // 点击页码
     handleCurrentChange(page) {
       this.searchForm.page = page
       this.getReply()
     },
+    // 重置表单
     resetSearchData() {
       this.$refs['searchForm'].resetFields()
       this.getReply()

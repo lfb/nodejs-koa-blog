@@ -55,6 +55,7 @@ export default {
     this.getCategory()
   },
   methods: {
+    // 提交表单
     submitForm(formName) {
       this.$refs[formName].validate(async(valid) => {
         if (valid) {
@@ -65,6 +66,7 @@ export default {
         }
       })
     },
+    // 获取分类信息
     async getCategory() {
       try {
         const res = await detail({
@@ -77,6 +79,7 @@ export default {
         console.log(err)
       }
     },
+    // 更新分类
     async updateCategory() {
       try {
         const res = await update(this.ruleForm)
@@ -95,6 +98,7 @@ export default {
         this.$message.error(err)
       }
     },
+    // 重置表单
     resetForm(formName) {
       this.$refs[formName].resetFields()
     }

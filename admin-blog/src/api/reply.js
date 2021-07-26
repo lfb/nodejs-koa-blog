@@ -1,5 +1,6 @@
 import request from '@/utils/request'
 
+// 回复列表
 export function list(params) {
   return request({
     url: '/reply',
@@ -8,6 +9,7 @@ export function list(params) {
   })
 }
 
+// 创建回复
 export function create(data) {
   return request({
     url: '/reply',
@@ -16,6 +18,7 @@ export function create(data) {
   })
 }
 
+// 评论详情
 export function detail(data) {
   return request({
     url: '/reply/' + data.id,
@@ -23,6 +26,7 @@ export function detail(data) {
     data
   })
 }
+// 更新回复
 export function update(data) {
   return request({
     url: '/reply/' + data.id,
@@ -30,7 +34,7 @@ export function update(data) {
     data
   })
 }
-
+// 删除回复
 export function detele(data) {
   return request({
     url: '/reply/' + data.id,

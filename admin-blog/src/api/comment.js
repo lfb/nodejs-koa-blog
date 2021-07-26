@@ -1,5 +1,6 @@
 import request from '@/utils/request'
 
+// 获取评论列表
 export function list(params) {
   return request({
     url: '/comment',
@@ -8,6 +9,7 @@ export function list(params) {
   })
 }
 
+// 创建评论
 export function create(data) {
   return request({
     url: '/comment',
@@ -16,6 +18,7 @@ export function create(data) {
   })
 }
 
+// 评论详情
 export function detail(data) {
   return request({
     url: '/comment/' + data.id,
@@ -23,6 +26,8 @@ export function detail(data) {
     data
   })
 }
+
+// 更新详情
 export function update(data) {
   return request({
     url: '/comment/' + data.id,
@@ -31,6 +36,7 @@ export function update(data) {
   })
 }
 
+// 删除评论
 export function detele(data) {
   return request({
     url: '/comment/' + data.id,
