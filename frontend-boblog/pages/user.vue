@@ -7,7 +7,7 @@
       <p style="text-indent: 2em">—— 假如生活欺骗了你，请你不要放弃，坚持下去！天是不会给绝路你的！</p>
 
       <div v-if="Array.isArray(commentList) && commentList.length > 0" class="comment">
-        评论列表：
+        <h2>评论列表：</h2>
         <ul class="comment-list">
           <li v-for="item in commentList" :key="item.id" class="comment-item">
             <p>
@@ -92,5 +92,9 @@ export default {
   width: 1024px;
   margin: 32px auto;
   font-size: 14px;
+}
+.comment-item {
+  padding: 20px 0;
+  border-bottom: 1px solid #f0f0f0;
 }
 </style>

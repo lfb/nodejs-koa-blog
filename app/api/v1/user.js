@@ -85,12 +85,13 @@ router.get('/auth', new Auth(AUTH_USER).m, async (ctx) => {
     const id = ctx.auth.uid;
 
     // 查询用户信息
-    let [err, data] = await UserDao.detail(id);
+    let [err, data] = await UserDao.detail(id, 1);
     if (!err) {
         ctx.response.status = 200;
         ctx.body = res.json(data)
     } else {
-        ctx.body = res.fail(err)
+        ctx.response.status = 401;
+        ctx.body = res.fail(err, err.msg)
     }
 })
 

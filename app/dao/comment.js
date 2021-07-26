@@ -234,8 +234,6 @@ class CommentDao {
         delete finner.status
       }
 
-      console.log('finner', finner)
-
       const comment = await Comment.findAndCountAll({
         where: finner,
         // 每页10条
@@ -248,7 +246,6 @@ class CommentDao {
           exclude: ['updated_at']
         },
       })
-      console.log('comment', comment)
 
       let rows = comment.rows
       // 查询评论

@@ -47,7 +47,8 @@ class UserDao {
       // 查询用户是否存在
       const user = await User.findOne({
         where: {
-          email
+          email,
+          status: 1
         }
       })
 
@@ -68,24 +69,27 @@ class UserDao {
   }
 
   // 查询用户信息
-  static async detail(id) {
-    const scope = 'bh';
+  static async detail(id, status) {
     try {
+      const scope = 'bh';
+      const filter = {
+        id
+      }
+      if(status) {
+        filter.status = status
+      }
       // 查询用户是否存在
       const user = await User.scope(scope).findOne({
-        where: {
-          id
-        }
+        where: filter
       })
 
       if (!user) {
-        throw new global.errs.AuthFailed('账号不存在或者密码不正确')
+        throw new global.errs.AuthFailed('账号不存在或者已被禁用，请联系管理员！')
       }
 
       return [null, user]
     } catch (err) {
-      console.log(err)
-      throw new global.errs.NotFound(JSON.stringify(err))
+      return [err, null]
     }
   }
 
