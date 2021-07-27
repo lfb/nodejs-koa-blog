@@ -2,6 +2,12 @@
   "name": "frontend",
   "version": "1.0.0",
   "private": true,
+  "config": {
+    "nuxt": {
+      "host": "localhost",
+      "port": "3000"
+    }
+  },
   "scripts": {
     "dev": "cross-env NODE_ENV=development nuxt",
     "build": "nuxt build",
