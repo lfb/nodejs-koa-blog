@@ -13,7 +13,7 @@
         </div>
         <div v-if="!isLoginStatus" class="login-tips">
           当前是匿名评论，登录后让代码改变世界！
-          <span class="sign-in" @click="onShowLoginInner(true)">登录</span>
+          <span class="sign-in" @click="onShowLoginInner(true)">登录/注册</span>
         </div>
 
         <From @on-preview="onShowPreviewContent"></From>
