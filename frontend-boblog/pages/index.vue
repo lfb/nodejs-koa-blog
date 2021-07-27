@@ -102,6 +102,15 @@ export default {
       }
     }
   },
+  head() {
+    return {
+      title: '波波博客 - boblog.com - 技术博客',
+      meta: [
+        { name: 'keywords', content: '波波,博客,波波博客,梁凤波,bo,blog,boblog,前端开发工程师,前端性能优化,JavaScript,css,html' },
+        { name: 'description', content: '波波博客 - BoBlog.com，专注于前端开发技术，前端性能优化！' }
+      ]
+    }
+  },
   computed: {
     ...mapState({
       categoryList: (state) => state.category.categoryList,
