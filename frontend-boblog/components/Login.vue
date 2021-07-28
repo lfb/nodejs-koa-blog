@@ -43,7 +43,7 @@
         >
           {{ isLogin ? '登录' : '注册' }}
         </button>
-        <button class="login-btn-default" @click="onSuccess">
+        <button class="login-btn-default" @click="onSuccess(false)">
           匿名评论
         </button>
       </div>
