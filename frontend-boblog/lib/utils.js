@@ -18,3 +18,12 @@ export function validPassword(email) {
   const reg = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]/
   return reg.test(email)
 }
+
+/**
+ * 判断是否是数组
+ * @param arr
+ * @returns {boolean}
+ */
+export function isArray(arr) {
+  return Array.isArray(arr) && arr.length > 0
+}

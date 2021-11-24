@@ -1,85 +1,42 @@
 <template>
   <div>
-    <Header :is-category="false" @fetchData="fetchData" />
-
-    <div class="container">
-      <div class="article">
-        <div v-if="isEmptyData" class="empty-data">
-          数据为空
-          <a href="/">刷新</a>
+    <div v-if="isClear" class="clear-refresh">
+      <a href="/">清空搜索条件</a>
+    </div>
+    <div v-if="article" class="article">
+      <div
+        v-for="item in article.data"
+        :key="item.id"
+        class="article-item"
+        @click="jumpURL(item.id)"
+      >
+        <div class="article-image">
+          <img :src="item.img_url" :alt="item.title" />
         </div>
-        <ul v-if="article" class="article-box">
-          <li v-for="item in article.data" :key="item.id" class="article-list">
-            <a :href="'/article/detail?id=' + item.id" class="article-item">
-              <div class="article-content">
-                <h1 class="article-title">
-                  {{ item.title }}
-                </h1>
-                <div class="article-description">
-                  {{ item.description }}
-                </div>
-
-                <div class="introduction">
-                  <div class="article-category">
-                    {{ item.category_info.name }}
-                  </div>
-                  <div class="article-date">
-                    {{ item.created_at }}
-                  </div>
-                </div>
-              </div>
-
-              <div class="article-image">
-                <img :src="item.img_url" alt="title" />
-              </div>
-            </a>
-          </li>
-        </ul>
-        <div class="pagination">
-          <el-pagination
-            background
-            :current-page.sync="page"
-            layout="total, prev, pager, next"
-            :total="count"
-            @current-change="handleCurrentChange"
-          />
-        </div>
-      </div>
-
-      <div class="sidebar">
-        <div class="category">
-          <div class="category-title">CATEGORY LIST</div>
-          <ul v-if="Array.isArray(categoryList)" class="category-list">
-            <li
-              v-for="item in categoryList"
-              :key="item.id"
-              :class="[
-                'category-item',
-                { 'category-item-active': categoryId === item.id },
-              ]"
-              @click="fetchData(item.id)"
-            >
-              {{ item.name }}
-            </li>
-          </ul>
+        <div class="article-intro">
+          <h1 class="article-title">
+            {{ item.title }}
+          </h1>
+          <div class="article-create">
+            {{ item.created_at }}
+          </div>
         </div>
       </div>
     </div>
 
-    <Footer />
+    <div v-if="isLoad" class="more" @click="loadMore">
+      <div class="more-text">点击加载更多</div>
+      <div class="more-arrow">
+        <img src="https://cdn.boblog.com/arrow.png" alt="" />
+      </div>
+    </div>
   </div>
 </template>
 <script>
-import Header from '@/components/Header'
-import Footer from '@/components/Footer'
-import { getArticleList } from '@/request/api/article'
 import { mapState } from 'vuex'
+import { getArticleList } from '@/request/api/article'
 
 export default {
-  components: {
-    Header,
-    Footer,
-  },
   async asyncData(context) {
     // eslint-disable-next-line camelcase
     const { id, keyword, category_id, page = 1 } = context.query
@@ -94,21 +51,33 @@ export default {
     })
 
     if (!err) {
+      const isLoad = res.data.data.meta.total_pages > page
       return {
+        isClear: !!keyword,
         page,
-        count: res.data.data.meta.count,
+        isLoad,
         categoryId: category_id,
-        article: res.data.data
+        article: res.data.data,
       }
     }
+  },
+  async fetch({ store }) {
+    await store.dispatch('category/getCategoryData')
   },
   head() {
     return {
       title: '波波博客 - boblog.com - 技术博客',
       meta: [
-        { name: 'keywords', content: '波波,博客,波波博客,梁凤波,bo,blog,boblog,前端开发工程师,前端性能优化,JavaScript,css,html' },
-        { name: 'description', content: '波波博客 - BoBlog.com，专注于前端开发技术，前端性能优化！' }
-      ]
+        {
+          name: 'keywords',
+          content:
+            '波波,博客,波波博客,梁凤波,bo,blog,boblog,前端开发工程师,前端性能优化,JavaScript,css,html',
+        },
+        {
+          name: 'description',
+          content: '波波博客 - BoBlog.com，专注于前端开发技术，前端性能优化！',
+        },
+      ],
     }
   },
   computed: {
@@ -124,180 +93,118 @@ export default {
       )
     },
   },
-  async fetch({ store }) {
-    await store.dispatch('category/getCategoryData')
-  },
   methods: {
+    // 获取新数据
     async fetchData(id) {
       const [err, res] = await getArticleList({
         category_id: id,
         is_category: 1,
         is_admin: 1,
-        page: this.page
+        page: this.page,
       })
       if (!err) {
         this.categoryId = id
-        this.article = res.data.data
+        this.article.push(...res.data.data)
+        this.isLoad = res.data.data.meta.total_pages > this.page
       }
     },
-    // 点击数字
-    async handleCurrentChange(page) {
-      this.page = page
-      await this.fetchData()
-      this.$scrollTo(0)
-    }
-  }
+    // 加载更多分页
+    loadMore() {
+      this.page++
+      this.fetchData()
+    },
+    // 跳转URL
+    jumpURL(id) {
+      this.$router.push('/article?id=' + id)
+    },
+  },
 }
 </script>
 
 <style scoped lang="scss">
-html,
-body,
-div,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-a,
-ul,
-li {
-  padding: 0;
-  margin: 0;
-}
-
-li {
-  list-style: none;
-}
-
-a {
-  color: #0164da;
-}
-
-.container {
-  box-sizing: border-box;
-  width: 1024px;
-  margin: 0 auto;
-  display: flex;
-
-  .article {
-    flex: 1;
-    padding-right: 24px;
-    padding-top: 32px;
-  }
-
-  .sidebar {
-    width: 280px;
-    padding-left: 24px;
-    padding-top: 32px;
-    border-left: 1px solid #e6e6e6;
-  }
-}
-
-.search-result {
-  padding: 32px 0 24px;
-  margin-bottom: 32px;
-  font-size: 13px;
-  color: #404040;
-  border-bottom: 1px solid #e6e6e6;
-}
-
-.empty-data {
+.clear-refresh {
+  margin-top: 16px;
   text-align: center;
-  padding: 24px 0;
-  font-size: 13px;
-  color: #989898;
 }
-.category {
-  &-title {
-    color: #757575;
-    font-size: 13px;
-    padding-bottom: 32px;
-  }
-
-  &-item {
-    cursor: pointer;
-    display: inline-block;
-    padding: 8px 16px;
-    font-size: 14px;
-    color: #292929;
-    margin-right: 8px;
-    margin-bottom: 8px;
-    border-radius: 100px;
-    text-decoration: none;
-    background-color: #f2f2f2;
-
-    &-active {
-      color: #2d8cf0;
-      background: rgba(51, 119, 255, 0.1);
-    }
-  }
-}
-
-/*文章*/
-.article-list {
+.article {
   box-sizing: border-box;
-  display: block;
-  clear: both;
-  margin-bottom: 48px;
-}
-
-.article-list:last-child {
-  border: none;
-}
-
-.article-content {
-  flex: 1;
+  width: 1280px;
+  margin: 32px auto;
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .article-item {
-  display: flex;
-  height: 100%;
-  width: 100%;
-  text-decoration: none;
-  -webkit-transition: background-color 0.35s, color 0.35s, margin 0.45s,
-    -webkit-transform 0.5s;
-  transition: background-color 0.35s, color 0.35s, margin 0.45s, transform 0.5s;
+  cursor: pointer;
+  overflow: hidden;
+  box-sizing: border-box;
+  display: inline-block;
+  margin-right: 40px;
+  margin-bottom: 40px;
+  width: 400px;
+  height: 280px;
+  background: #ffffff;
+  box-shadow: 2px 4px 24px 0 rgba(0, 0, 0, 0.06);
+}
+.article-item:nth-child(3n) {
+  margin-right: 0;
 }
 
 .article-image {
-  width: 120px;
-}
-
-.article-image img {
+  position: relative;
   width: 100%;
-  border-radius: 4px;
+  height: 200px;
+  overflow: hidden;
 }
-
+.article-image img {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+.article-intro {
+  box-sizing: border-box;
+  padding: 16px;
+}
 .article-title {
-  font-weight: bold;
-  font-size: 22px;
-  color: #404040;
-  line-height: 28px;
+  overflow: hidden;
+  white-space: nowrap;
+  width: 100%;
+  height: 22px;
+  font-size: 16px;
+  font-weight: 400;
+  color: #222222;
+  line-height: 22px;
 }
-
-.article-description {
+.article-create {
+  height: 20px;
   font-size: 14px;
-  color: #757575;
-  margin: 4px 0 8px;
+  font-weight: 400;
+  color: #999999;
+  line-height: 20px;
+  margin-top: 8px;
 }
 
-.introduction {
-  .article-category {
-    font-size: 14px;
-    display: inline-block;
-    padding: 2px 12px;
-    border-radius: 100px;
-    color: #2d8cf0;
-    background: rgba(51, 119, 255, 0.1);
-  }
-
-  .article-date {
-    display: inline-block;
-    font-size: 14px;
-    color: #757575;
-    margin-left: 8px;
-  }
+.more {
+  cursor: pointer;
+  width: 1280px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.more-text {
+  font-size: 16px;
+  font-weight: 400;
+  color: #222222;
+  line-height: 22px;
+}
+.more-arrow {
+  width: 16px;
+  margin-top: 24px;
+}
+.more-arrow img {
+  width: 100%;
 }
 </style>

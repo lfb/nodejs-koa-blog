@@ -20,47 +20,75 @@
 /*  src: url("https://cdn.boblog.com/SourceCodePro-Bold.ttf");*/
 /*  font-weight: bold;*/
 /*}*/
-/*@font-face {*/
-/*  font-family: "SourceCodePro";*/
-/*  src: url("https://cdn.boblog.com/SourceCodePro-Medium.ttf");*/
-/*  font-weight: 600;*/
-/*}*/
+@font-face {
+  font-family: "SourceCodePro";
+  src: url("https://cdn.boblog.com/SourceCodePro-Medium.ttf");
+  font-weight: 600;
+}
 /*@font-face {*/
 /*  font-family: "JetBrainsMono";*/
 /*  src: url("https://cdn.boblog.com/JetBrainsMono-VariableFont_wght.ttf");*/
 /*}*/
 
-html, body {
-  /*font-family: SourceCodePro;*/
-}
-li {
-  list-style: none;
-}
+/*html,*/
+/*body,*/
+/*div,*/
+/*h1,*/
+/*h2,*/
+/*h3,*/
+/*h4,*/
+/*h5,*/
+/*h6,*/
+/*a,*/
+/*p,*/
+/*ul,*/
+/*li {*/
+/*  padding: 0;*/
+/*  margin: 0;*/
+/*  box-sizing: border-box;*/
+/*}*/
 
-img {
-  width: 100%;
-}
+/*a {*/
+/*  color: #0164da;*/
+/*  text-decoration: none;*/
+/*}*/
 
-pre {
-  padding: 1em;
-}
-pre code.hljs {
-  display: block;
-  overflow-x: auto;
-  padding: 1em
-}
+/*li {*/
+/*  list-style: none;*/
+/*}*/
 
-code.hljs {
-  padding: 3px 5px
-}
+/*img {*/
+/*  width: 100%;*/
+/*}*/
+
+/*pre {*/
+/*  padding: 1em;*/
+/*}*/
+/*pre code.hljs {*/
+/*  display: block;*/
+/*  overflow-x: auto;*/
+/*  padding: 1em*/
+/*}*/
+
+/*code.hljs {*/
+/*  padding: 3px 5px*/
+/*}*/
+ img {
+   width: 100%;
+ }
 
 .hljs {
+  box-sizing: border-box;
   color: #abb2bf;
   font-size: 13px;
-  background: #282c34
+  background: #282c34;
+  padding: 16px;
+  border-radius: 4px;
 }
 .hljs code {
-  /*font-family: SourceCodePro;*/
+  line-height: 1.5;
+  box-sizing: border-box;
+  font-family: SourceCodePro;
   /*font-family: "JetBrainsMono";*/
 }
 
@@ -121,3 +149,4 @@ code.hljs {
   justify-content: center;
   padding: 15px 0;
 }
+

@@ -1,12 +1,12 @@
 <template>
   <div>
-    <Header />
     <div v-if="userInfo" class="userinfo">
       <p>昵称：{{ userInfo.username }}</p>
       <p>邮箱：{{ userInfo.email }}</p>
       <p style="text-indent: 2em">
         —— 假如生活欺骗了你，请你不要放弃，坚持下去！天是不会给绝路你的！
       </p>
+      <el-button @click="logout"> 退出登录 </el-button>
 
       <div
         v-if="Array.isArray(commentList) && commentList.length > 0"
@@ -37,14 +37,11 @@
 
 <script>
 import { mapState } from 'vuex'
-import Header from '@/components/common/Header'
 import { getCommentTarget } from '@/request/api/comment'
+import { removeToken } from '@/lib/auth'
 
 export default {
   name: 'User',
-  components: {
-    Header,
-  },
   data() {
     return {
       page: 1,
@@ -62,7 +59,9 @@ export default {
   },
   head() {
     return {
-      title: `${this.userInfo.username} - 个人中心  - boblog.com`,
+      title: `${
+        this.userInfo && this.userInfo.username
+      } - 个人中心  - boblog.com`,
       meta: [
         {
           name: 'keywords',
@@ -80,6 +79,13 @@ export default {
     this.getComment()
   },
   methods: {
+    // 退出登录
+    logout() {
+      removeToken()
+      this.$store.commit('user/SET_LOGIN_STATUS', false)
+      this.$store.commit('user/SET_USERINFO', null)
+      this.$router.push('/')
+    },
     async getComment() {
       const uid = this.userInfo && this.userInfo.id
       const [err, res] = await getCommentTarget({

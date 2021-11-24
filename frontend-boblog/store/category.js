@@ -16,11 +16,11 @@ const actions = {
       return state.categoryList
     } else {
       const [err, res] = await getCategory(params)
-      if(!err) {
+      if (!err) {
         const category = res.data.data.data
         commit('SET_CATEGORY_LIST', category)
         return category
-      }else {
+      } else {
         return err
       }
     }

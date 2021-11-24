@@ -12,7 +12,7 @@ export function getArticleDetail(params) {
 // 获取文章列表
 export function getArticleList(params) {
   return GET({
-      url: article.list,
-      params
-    })
+    url: article.list,
+    params
+  })
 }

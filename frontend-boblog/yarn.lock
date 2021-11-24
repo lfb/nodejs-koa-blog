@@ -1762,8 +1762,8 @@
 
 "@xunlei/vue-lazy-component@^1.1.3":
   version "1.1.3"
-  resolved "https://registry.yarnpkg.com/@xunlei/vue-lazy-component/-/vue-lazy-component-1.1.3.tgz#b99bf88e85748bd45a0500e032194605d5e80521"
-  integrity sha512-S0Jimzyo7o6jTckzcYaJvBPu2MCoVtJYNJZbtP/lx8JWuPWbiIMCY2MNxUY8Z8QmDKMUC+fG1Hgh1u9R2jKfqQ==
+  resolved "https://registry.npmmirror.com/@xunlei/vue-lazy-component/download/@xunlei/vue-lazy-component-1.1.3.tgz#b99bf88e85748bd45a0500e032194605d5e80521"
+  integrity sha1-uZv4joV0i9RaBQDgMhlGBdXoBSE=
 
 abbrev@1:
   version "1.1.1"
