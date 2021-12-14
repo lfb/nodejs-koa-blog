@@ -123,7 +123,6 @@ class ArticleDao {
   // 获取文章列表
   static async list(params = {}) {
     const { category_id, keyword, page_size = 10, status, page = 1 } = params;
-    console.log('page', category_id)
 
     // 筛选方式
     let filter = {
@@ -169,6 +168,12 @@ class ArticleDao {
       const [userError, dataAndAdmin] = await ArticleDao._handleAdmin(rows, adminIds)
       if (!userError) {
         rows = dataAndAdmin
+      }
+
+      console.log(rows)
+      console.log(Array.isArray(rows) && rows.length > 0)
+      if (Array.isArray(rows) && rows.length > 0) {
+        rows.sort((a, b) => b.sort_order - a.sort_order)
       }
 
       const data = {

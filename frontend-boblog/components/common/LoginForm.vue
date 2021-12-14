@@ -53,7 +53,7 @@ import { validEmail, validPassword } from '@/lib/utils'
 import { mapState } from 'vuex'
 
 export default {
-  name: 'Login',
+  name: 'LoginForm',
   data() {
     return {
       // true-登录，false-注册

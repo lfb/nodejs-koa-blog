@@ -1,5 +1,5 @@
 <template>
-  <div class="footer">
+  <div class="response-wrap footer">
     <div class="site">
       <span>© 波波博客 - BoBlog.com</span>
       <span>itbo@163.com</span>
@@ -18,13 +18,12 @@
 
 <script>
 export default {
-  name: 'Footer',
+  name: 'FooterIndex',
 }
 </script>
 
 <style scoped lang="scss">
 .footer {
-  width: 1280px;
   display: flex;
   justify-content: space-between;
   margin: 120px auto 64px;
@@ -41,6 +40,16 @@ export default {
     font-size: 14px;
     color: #666666;
     text-decoration: none;
+  }
+}
+
+@media screen and (max-width: 540px) {
+  .footer {
+    flex-direction: column;
+    margin: 32px auto;
+  }
+  .copyright {
+    margin-top: 10px;
   }
 }
 </style>

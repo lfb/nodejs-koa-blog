@@ -1,27 +1,33 @@
 <template>
   <div>
-    <div v-if="isClear" class="clear-refresh">
-      <a href="/">清空搜索条件</a>
-    </div>
-    <div v-if="article" class="article">
-      <div
-        v-for="item in article.data"
-        :key="item.id"
-        class="article-item"
-        @click="jumpURL(item.id)"
-      >
-        <div class="article-image">
-          <img :src="item.img_url" :alt="item.title" />
-        </div>
-        <div class="article-intro">
-          <h1 class="article-title">
-            {{ item.title }}
-          </h1>
-          <div class="article-create">
-            {{ item.created_at }}
+    <ul
+      v-if="article && article.data && article.data.length > 0"
+      class="response-wrap article"
+    >
+      <li v-for="item in article.data" :key="item.id" class="article-list">
+        <a :href="'/article?id=' + item.id" class="article-item" @click="(e) => jumpURL(e, item.id)">
+          <div class="article-image">
+            <img :src="item.img_url" :alt="item.title" />
           </div>
-        </div>
-      </div>
+
+          <div class="article-item-content">
+            <h1 class="article-title">
+              {{ item.title }}
+            </h1>
+            <div class="article-description">
+              {{ item.description }}
+            </div>
+
+            <div class="article-category">
+              {{ item.category_info.name }}
+            </div>
+          </div>
+        </a>
+      </li>
+    </ul>
+    <div v-else class="empty-data">
+      暂无数据
+      <a v-if="isClear" href="/">清空搜索条件</a>
     </div>
 
     <div v-if="isLoad" class="more" @click="loadMore">
@@ -37,6 +43,7 @@ import { mapState } from 'vuex'
 import { getArticleList } from '@/request/api/article'
 
 export default {
+  name: 'HomeIndex',
   async asyncData(context) {
     // eslint-disable-next-line camelcase
     const { id, keyword, category_id, page = 1 } = context.query
@@ -53,7 +60,7 @@ export default {
     if (!err) {
       const isLoad = res.data.data.meta.total_pages > page
       return {
-        isClear: !!keyword,
+        isClear: !!keyword || !!category_id,
         page,
         isLoad,
         categoryId: category_id,
@@ -93,7 +100,22 @@ export default {
       )
     },
   },
+  beforeDestroy() {
+    this.progress.removeProgress()
+    this.progress = null
+  },
+  mounted() {
+    this.$nextTick(() => {
+      const ProgressIndicator = require('@/lib/progress-indicator')
+      // eslint-disable-next-line no-new
+      this.progress = new ProgressIndicator()
+    })
+  },
   methods: {
+    jumpURL(e, id) {
+      e.preventDefault()
+      this.$router.push('/article?id=' + id)
+    },
     // 获取新数据
     async fetchData(id) {
       const [err, res] = await getArticleList({
@@ -113,76 +135,71 @@ export default {
       this.page++
       this.fetchData()
     },
-    // 跳转URL
-    jumpURL(id) {
-      this.$router.push('/article?id=' + id)
-    },
   },
 }
 </script>
 
 <style scoped lang="scss">
-.clear-refresh {
-  margin-top: 16px;
-  text-align: center;
-}
-.article {
+/*文章*/
+.article-list {
   box-sizing: border-box;
-  width: 1280px;
-  margin: 32px auto;
-  display: flex;
-  flex-wrap: wrap;
+  display: block;
+  clear: both;
+  padding: 32px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.article-list:hover .article-title {
+  color: #0164da;
+  text-decoration: underline;
 }
 
 .article-item {
-  cursor: pointer;
-  overflow: hidden;
-  box-sizing: border-box;
-  display: inline-block;
-  margin-right: 40px;
-  margin-bottom: 40px;
-  width: 400px;
-  height: 280px;
-  background: #ffffff;
-  box-shadow: 2px 4px 24px 0 rgba(0, 0, 0, 0.06);
-}
-.article-item:nth-child(3n) {
-  margin-right: 0;
+  display: flex;
+  height: 100%;
+  width: 100%;
+  text-decoration: none;
+  -webkit-transition: background-color 0.35s, color 0.35s, margin 0.45s,
+    -webkit-transform 0.5s;
+  transition: background-color 0.35s, color 0.35s, margin 0.45s, transform 0.5s;
 }
 
 .article-image {
-  position: relative;
-  width: 100%;
-  height: 200px;
-  overflow: hidden;
+  width: 100px;
+  & img {
+    width: 100%;
+    border-radius: 4px;
+  }
 }
-.article-image img {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
+
+.article-item-content {
+  padding-left: 24px;
+  flex: 1;
 }
-.article-intro {
-  box-sizing: border-box;
-  padding: 16px;
-}
+
 .article-title {
-  overflow: hidden;
-  white-space: nowrap;
-  width: 100%;
-  height: 22px;
-  font-size: 16px;
-  font-weight: 400;
-  color: #222222;
-  line-height: 22px;
+  font-weight: bold;
+  font-size: 18px;
+  color: #404040;
+  padding: 0;
+  margin: 0;
 }
-.article-create {
-  height: 20px;
+
+.article-description {
   font-size: 14px;
-  font-weight: 400;
-  color: #999999;
-  line-height: 20px;
-  margin-top: 8px;
+  color: #404040;
+  margin: 12px 0 24px;
+}
+
+.article-category {
+  font-size: 14px;
+  color: #808080;
+}
+
+.empty-data {
+  padding: 80px 0;
+  text-align: center;
+  font-size: 14px;
 }
 
 .more {
@@ -206,5 +223,15 @@ export default {
 }
 .more-arrow img {
   width: 100%;
+}
+
+@media screen and (max-width: 540px) {
+  .article-list {
+    padding: 24px 0;
+  }
+
+  .article-image {
+    width: 90px;
+  }
 }
 </style>

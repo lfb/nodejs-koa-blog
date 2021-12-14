@@ -256,6 +256,11 @@ export default {
   width: 100%;
   margin: 0 auto;
 
+  &-list {
+    margin: 0;
+    padding: 0;
+  }
+
   .comment-from {
     display: flex;
     width: 100%;
@@ -271,6 +276,7 @@ export default {
 
   &-textarea {
     position: relative;
+    flex: 1;
   }
 
   &-login {
@@ -316,7 +322,7 @@ export default {
     padding: 16px;
     font-size: 14px;
     color: #222;
-    width: 824px;
+    width: 100%;
     height: 130px;
     background: #fff;
     border: 1px solid #ccc;

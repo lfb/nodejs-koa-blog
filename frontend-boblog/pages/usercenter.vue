@@ -41,7 +41,7 @@ import { getCommentTarget } from '@/request/api/comment'
 import { removeToken } from '@/lib/auth'
 
 export default {
-  name: 'User',
+  name: 'UserCenter',
   data() {
     return {
       page: 1,

@@ -73,6 +73,10 @@
 /*code.hljs {*/
 /*  padding: 3px 5px*/
 /*}*/
+html, body {
+  margin: 0;
+  padding: 0;
+}
  img {
    width: 100%;
  }
@@ -84,6 +88,8 @@
   background: #282c34;
   padding: 16px;
   border-radius: 4px;
+  overflow: hidden;
+  overflow-x: scroll;
 }
 .hljs code {
   line-height: 1.5;
@@ -150,3 +156,33 @@
   padding: 15px 0;
 }
 
+.response-wrap {
+  box-sizing: border-box;
+  max-width: 61.8%;
+  padding: 0;
+  margin: 0 auto;
+}
+
+
+.progress-indicator {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  background-color: #0A74DA;
+}
+
+@media screen and (max-width: 540px) {
+  .response-wrap {
+    max-width: 100%;
+    padding: 0 24px;
+  }
+}
+
+.page-enter-active, .page-leave-active {
+  transition: opacity 500ms;
+}
+
+.page-enter, .page-leave-active {
+  opacity: 0;
+}

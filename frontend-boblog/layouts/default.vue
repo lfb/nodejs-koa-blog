@@ -11,7 +11,7 @@ import Footer from '@/components/common/Footer'
 export default {
   components: {
     Header,
-    Footer,
+    Footer
   },
 }
 </script>

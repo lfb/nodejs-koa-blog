@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="container">
+    <div class="response-wrap">
       <div class="article">
         <h1 class="title">
           {{ article.title }}
@@ -15,17 +15,14 @@
         <div class="article-content" v-html="article.content"></div>
       </div>
       <div class="fixed-sidebar">
-        <div class="fixed-comment">
-          <i class="el-icon-chat-round" @click="onShowComment"></i>
-        </div>
         <div class="fixed-scroll-top">
           <i class="el-icon-top" @click="scrollTop"></i>
         </div>
       </div>
     </div>
 
-    <vue-lazy-component>
-      <ArticleComment class="container" />
+    <vue-lazy-component @after-leave="onLoadEnd">
+      <ArticleComment class="response-wrap" />
       <img
         width="0"
         height="0"
@@ -85,28 +82,46 @@ export default {
       isLoginStatus: (state) => state.user.isLoginStatus,
     }),
   },
+  beforeDestroy() {
+    this.progress.removeProgress()
+    this.progress = null
+  },
   mounted() {
-    console.log(this.article)
+    this.initData()
   },
   methods: {
+    initData() {
+      this.$nextTick(() => {
+        const ProgressIndicator = require('@/lib/progress-indicator')
+        // eslint-disable-next-line no-new
+        this.progress = new ProgressIndicator()
+      })
+    },
     // 回到顶部
     scrollTop() {
       this.$scrollTo(0)
     },
     // 点击展开评论
-    onShowComment() {
-      this.$refs.comment && this.$refs.comment.onShowComment()
-    },
+    onLoadEnd() {
+      this.$nextTick(() => {
+        this.progress.calculateWidthPrecent()
+      })
+    }
   },
 }
 </script>
 
 <style scoped lang="scss">
+ul,
+li {
+  margin: 0;
+  padding: 0;
+}
 .container {
   box-sizing: border-box;
-  width: 880px;
   margin: 0 auto;
 }
+
 .article {
   box-sizing: border-box;
   width: 100%;
@@ -116,7 +131,6 @@ export default {
 }
 
 .title {
-  height: 42px;
   font-size: 36px;
   font-weight: 600;
   color: #222222;
@@ -149,6 +163,24 @@ export default {
   position: fixed;
   bottom: 32px;
   right: 32px;
+}
+
+@media screen and (max-width: 540px) {
+  .article {
+    margin: 32px auto 0;
+  }
+  .title {
+    font-size: 32px;
+    text-align: left;
+  }
+  .info {
+    flex-direction: column;
+    align-items: flex-start;
+
+    & span {
+      margin-right: 0;
+    }
+  }
 }
 </style>
 

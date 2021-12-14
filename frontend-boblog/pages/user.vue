@@ -41,7 +41,7 @@ import Header from '@/components/common/Header'
 import { getCommentTarget } from '@/request/api/comment'
 
 export default {
-  name: 'User',
+  name: 'UserIndex',
   components: {
     Header,
   },
