@@ -13,7 +13,7 @@ Reply.init({
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true,
-    comment: '回复id'
+    comment: '回复主键ID'
   },
   content: {
     type: DataTypes.TEXT,
@@ -29,18 +29,18 @@ Reply.init({
   comment_id: {
     type: DataTypes.INTEGER(10).UNSIGNED,
     allowNull: false,
-    comment: '关联的评论id'
+    comment: '关联的评论ID'
   },
   article_id: {
     type: DataTypes.INTEGER(10).UNSIGNED,
     allowNull: false,
-    comment: '关联的文章id'
+    comment: '关联的文章ID'
   },
   user_id: {
     type: DataTypes.INTEGER(10).UNSIGNED,
     allowNull: true,
     defaultValue: 0,
-    comment: '回复用户id,0-代表匿名回复'
+    comment: '回复用户ID,0-代表匿名回复'
   },
   email: {
     type: DataTypes.STRING,
@@ -52,13 +52,30 @@ Reply.init({
     type: DataTypes.INTEGER(10).UNSIGNED,
     allowNull: true,
     defaultValue: 0,
-    comment: '回复对象id,0-代表匿名回复'
+    comment: '回复对象ID,0-代表匿名回复'
   },
-  // 创建时间
   created_at: {
     type: DataTypes.DATE,
+    allowNull: false,
+    comment: '创建时间',
     get() {
       return moment(this.getDataValue('created_at')).format('YYYY-MM-DD HH:mm:ss');
+    }
+  },
+  updated_at: {
+    type: DataTypes.DATE,
+    allowNull: false,
+    comment: '更新时间',
+    get() {
+      return moment(this.getDataValue('updated_at')).format('YYYY-MM-DD HH:mm:ss');
+    }
+  },
+  deleted_at: {
+    type: DataTypes.DATE,
+    allowNull: false,
+    comment: '删除时间',
+    get() {
+      return moment(this.getDataValue('deleted_at')).format('YYYY-MM-DD HH:mm:ss');
     }
   }
 }, {

@@ -14,7 +14,7 @@ Category.init({
     type: DataTypes.INTEGER(10).UNSIGNED,
     primaryKey: true,
     autoIncrement: true,
-    comment: '分类id'
+    comment: '分类主键ID'
   },
   name: {
     type: DataTypes.STRING(50),
@@ -31,19 +31,36 @@ Category.init({
     type: DataTypes.INTEGER(10).UNSIGNED,
     allowNull: true,
     defaultValue: 1,
-    comment: "排序编号,默认1,数值越大排越前,相等则自然排序",
+    comment: "排序编号",
   },
   parent_id: {
     type: DataTypes.INTEGER(10).UNSIGNED,
     allowNull: true,
     defaultValue: 0,
-    comment: '父类别id,当id=0时,说明是根节点'
+    comment: '父类别id,id=0代表根节点'
   },
   created_at: {
     type: DataTypes.DATE,
     allowNull: false,
+    comment: '创建时间',
     get() {
       return moment(this.getDataValue('created_at')).format('YYYY-MM-DD HH:mm:ss');
+    }
+  },
+  updated_at: {
+    type: DataTypes.DATE,
+    allowNull: false,
+    comment: '更新时间',
+    get() {
+      return moment(this.getDataValue('updated_at')).format('YYYY-MM-DD HH:mm:ss');
+    }
+  },
+  deleted_at: {
+    type: DataTypes.DATE,
+    allowNull: false,
+    comment: '删除时间',
+    get() {
+      return moment(this.getDataValue('deleted_at')).format('YYYY-MM-DD HH:mm:ss');
     }
   }
 }, {

@@ -14,7 +14,7 @@ Admin.init({
     type: DataTypes.INTEGER(10).UNSIGNED,
     primaryKey: true,
     autoIncrement: true,
-    comment: '管理员id'
+    comment: '管理员主键ID'
   },
   email: {
     type: DataTypes.STRING(50),
@@ -45,8 +45,25 @@ Admin.init({
   created_at: {
     type: DataTypes.DATE,
     allowNull: false,
+    comment: '创建时间',
     get() {
       return moment(this.getDataValue('created_at')).format('YYYY-MM-DD HH:mm:ss');
+    }
+  },
+  updated_at: {
+    type: DataTypes.DATE,
+    allowNull: false,
+    comment: '更新时间',
+    get() {
+      return moment(this.getDataValue('updated_at')).format('YYYY-MM-DD HH:mm:ss');
+    }
+  },
+  deleted_at: {
+    type: DataTypes.DATE,
+    allowNull: false,
+    comment: '删除时间',
+    get() {
+      return moment(this.getDataValue('deleted_at')).format('YYYY-MM-DD HH:mm:ss');
     }
   }
 }, {

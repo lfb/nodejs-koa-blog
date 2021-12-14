@@ -12,7 +12,7 @@ Article.init({
     type: DataTypes.INTEGER(10).UNSIGNED,
     primaryKey: true,
     autoIncrement: true,
-    comment: '文章id'
+    comment: '文章主键ID'
   },
   title: {
     type: DataTypes.STRING(128),
@@ -27,7 +27,7 @@ Article.init({
   img_url: {
     type: DataTypes.STRING,
     allowNull: false,
-    comment: '文章封面图URL'
+    comment: '文章封面图'
   },
   content: {
     type: DataTypes.TEXT,
@@ -49,7 +49,7 @@ Article.init({
     type: DataTypes.INTEGER(10).UNSIGNED,
     allowNull: true,
     defaultValue: 1,
-    comment: "排序编号,默认1,数值越大排越前,相等则自然排序",
+    comment: "排序编号",
   },
   browse: {
     type: DataTypes.INTEGER(10).UNSIGNED,
@@ -66,18 +66,35 @@ Article.init({
   admin_id: {
     type: DataTypes.INTEGER(10).UNSIGNED,
     allowNull: false,
-    comment: '发布文章的管理员id'
+    comment: '发布管理员ID'
   },
   category_id: {
     type: DataTypes.INTEGER(10).UNSIGNED,
     allowNull: false,
-    comment: '分类id'
+    comment: '关联分类ID'
   },
   created_at: {
     type: DataTypes.DATE,
     allowNull: false,
+    comment: '创建时间',
     get() {
       return moment(this.getDataValue('created_at')).format('YYYY-MM-DD HH:mm:ss');
+    }
+  },
+  updated_at: {
+    type: DataTypes.DATE,
+    allowNull: false,
+    comment: '更新时间',
+    get() {
+      return moment(this.getDataValue('updated_at')).format('YYYY-MM-DD HH:mm:ss');
+    }
+  },
+  deleted_at: {
+    type: DataTypes.DATE,
+    allowNull: false,
+    comment: '删除时间',
+    get() {
+      return moment(this.getDataValue('deleted_at')).format('YYYY-MM-DD HH:mm:ss');
     }
   }
 }, {

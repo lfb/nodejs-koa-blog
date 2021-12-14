@@ -11,7 +11,8 @@ Comment.init({
   id: {
     type: DataTypes.INTEGER(10).UNSIGNED,
     primaryKey: true,
-    autoIncrement: true
+    autoIncrement: true,
+    comment: '评论主键ID'
   },
   content: {
     type: DataTypes.TEXT,
@@ -27,26 +28,42 @@ Comment.init({
   article_id: {
     type: DataTypes.INTEGER(10).UNSIGNED,
     allowNull: false,
-    comment: '关联的评论文章id'
+    comment: '关联的评论文章ID'
   },
   user_id: {
     type: DataTypes.INTEGER(10).UNSIGNED,
     allowNull: true,
     defaultValue: 0,
-    comment: '评论用户id,0-代表匿名回复'
+    comment: '评论用户ID,0-代表匿名回复'
   },
   email: {
     type: DataTypes.STRING,
     allowNull: true,
     defaultValue: 0,
-    comment: '匿名评论时，填的联系邮箱'
+    comment: '匿名评论时填的邮箱'
   },
-
   created_at: {
     type: DataTypes.DATE,
     allowNull: false,
+    comment: '创建时间',
     get() {
       return moment(this.getDataValue('created_at')).format('YYYY-MM-DD HH:mm:ss');
+    }
+  },
+  updated_at: {
+    type: DataTypes.DATE,
+    allowNull: false,
+    comment: '更新时间',
+    get() {
+      return moment(this.getDataValue('updated_at')).format('YYYY-MM-DD HH:mm:ss');
+    }
+  },
+  deleted_at: {
+    type: DataTypes.DATE,
+    allowNull: false,
+    comment: '删除时间',
+    get() {
+      return moment(this.getDataValue('deleted_at')).format('YYYY-MM-DD HH:mm:ss');
     }
   }
 }, {

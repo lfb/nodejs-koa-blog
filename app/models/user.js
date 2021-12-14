@@ -13,7 +13,8 @@ User.init({
     id: {
         type: DataTypes.INTEGER(10).UNSIGNED,
         primaryKey: true,
-        autoIncrement: true
+        autoIncrement: true,
+        comment: '用户主键ID'
     },
     username: {
         type: DataTypes.STRING(50),
@@ -43,13 +44,30 @@ User.init({
         type: DataTypes.TINYINT,
         allowNull: true,
         defaultValue: 1,
-        comment: '用户状态：0-禁用,1-正常'
+        comment: '用户状态:0-禁用,1-正常'
     },
     created_at: {
         type: DataTypes.DATE,
         allowNull: false,
+        comment: '创建时间',
         get() {
             return moment(this.getDataValue('created_at')).format('YYYY-MM-DD HH:mm:ss');
+        }
+    },
+    updated_at: {
+        type: DataTypes.DATE,
+        allowNull: false,
+        comment: '更新时间',
+        get() {
+            return moment(this.getDataValue('updated_at')).format('YYYY-MM-DD HH:mm:ss');
+        }
+    },
+    deleted_at: {
+        type: DataTypes.DATE,
+        allowNull: false,
+        comment: '删除时间',
+        get() {
+            return moment(this.getDataValue('deleted_at')).format('YYYY-MM-DD HH:mm:ss');
         }
     }
 }, {
