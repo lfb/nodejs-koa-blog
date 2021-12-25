@@ -24,7 +24,7 @@
           />
         </el-form-item>
 
-        <el-form-item label="分类状态：" prop="status">
+        <el-form-item label="回复状态：" prop="status">
           <el-select
             v-model="searchForm.status"
             placeholder="请选择状态"
@@ -36,7 +36,7 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item label="分类名称" prop="content">
+        <el-form-item label="回复名称" prop="content">
           <el-input
             v-model.trim="searchForm.content"
             placeholder="回复内容"
@@ -51,9 +51,6 @@
           </el-button>
           <el-button type="primary" size="medium" @click="resetSearchData">
             重置
-          </el-button>
-          <el-button type="primary" size="medium" @click="create">
-            新增分类
           </el-button>
         </el-form-item>
       </el-form>
@@ -111,12 +108,6 @@
               @click="changeStatus(scope.row.id, 2)"
             >
               审核不通过
-            </el-button>
-            <el-button
-              size="mini"
-              type="primary"
-              @click="handleEdit(scope.row.id)"
-            >编辑
             </el-button>
             <el-button
               size="mini"
@@ -210,10 +201,6 @@ export default {
     this.getReply()
   },
   methods: {
-    // 跳转创建分类
-    create() {
-      this.$router.push('/category/create')
-    },
     // 获取回复列表
     async getReply() {
       try {
@@ -227,10 +214,6 @@ export default {
       } finally {
         this.listLoading = false
       }
-    },
-    // 跳转编辑
-    handleEdit(id) {
-      this.$router.push('/comment/edit?id=' + id)
     },
     // 更新回复评论-审核状态
     async changeStatus(id, status) {

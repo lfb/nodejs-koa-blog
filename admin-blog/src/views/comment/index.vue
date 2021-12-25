@@ -24,7 +24,7 @@
           />
         </el-form-item>
 
-        <el-form-item label="分类状态：" prop="status">
+        <el-form-item label="评论状态：" prop="status">
           <el-select
             v-model="searchForm.status"
             placeholder="请选择状态"
@@ -36,7 +36,7 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item label="分类名称" prop="content">
+        <el-form-item label="评论名称" prop="content">
           <el-input
             v-model.trim="searchForm.content"
             placeholder="评论内容"
@@ -51,9 +51,6 @@
           </el-button>
           <el-button type="primary" size="medium" @click="resetSearchData">
             重置
-          </el-button>
-          <el-button type="primary" size="medium" @click="create">
-            新增分类
           </el-button>
         </el-form-item>
       </el-form>
@@ -111,12 +108,6 @@
               @click="changeStatus(scope.row.id, 2)"
             >
               审核不通过
-            </el-button>
-            <el-button
-              size="mini"
-              type="primary"
-              @click="handleEdit(scope.row.id)"
-            >编辑
             </el-button>
             <el-button
               size="mini"
@@ -207,14 +198,6 @@ export default {
     this.getComment()
   },
   methods: {
-    // 跳转创建分类
-    create() {
-      this.$router.push('/category/create')
-    },
-    // 跳转编辑分类
-    handleEdit(id) {
-      this.$router.push('/comment/edit?id=' + id)
-    },
     // 获取评论列表
     async getComment() {
       try {
