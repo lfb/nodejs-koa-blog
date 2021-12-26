@@ -10,11 +10,11 @@
 /*  src: url("https://cdn.boblog.com/NotoSansTC-Regular.otf");*/
 /*}*/
 
-/*@font-face {*/
-/*  font-family: "SourceCodePro";*/
-/*  src: url("https://cdn.boblog.com/SourceCodePro-Regular.ttf");*/
-/*  font-weight: normal;*/
-/*}*/
+@font-face {
+  font-family: "SourceCodePro-Regular";
+  src: url("https://cdn.boblog.com/SourceCodePro-Regular.ttf");
+  font-weight: normal;
+}
 /*@font-face {*/
 /*  font-family: "SourceCodePro";*/
 /*  src: url("https://cdn.boblog.com/SourceCodePro-Bold.ttf");*/
@@ -76,6 +76,7 @@
 html, body {
   margin: 0;
   padding: 0;
+  font-family: SourceCodePro-Regular;
 }
  img {
    width: 100%;
