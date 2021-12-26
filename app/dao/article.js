@@ -146,7 +146,7 @@ class ArticleDao {
     }
     try {
       const article = await Article.scope('iv').findAndCountAll({
-        // limit: page_size, //每页10条
+        limit: page_size, //每页10条
         offset: (page - 1) * page_size,
         where: filter,
         order: [
@@ -170,8 +170,6 @@ class ArticleDao {
         rows = dataAndAdmin
       }
 
-      console.log(rows)
-      console.log(Array.isArray(rows) && rows.length > 0)
       if (Array.isArray(rows) && rows.length > 0) {
         rows.sort((a, b) => b.sort_order - a.sort_order)
       }

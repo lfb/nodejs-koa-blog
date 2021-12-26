@@ -30,7 +30,7 @@
       <a v-if="isClear" href="/">清空搜索条件</a>
     </div>
 
-    <div v-if="isLoad" class="more" @click="loadMore">
+    <div v-if="isLoad" class="response-wrap more" @click="loadMore">
       <div class="more-text">点击加载更多</div>
       <div class="more-arrow">
         <img src="https://cdn.boblog.com/arrow.png" alt="" />
@@ -126,7 +126,7 @@ export default {
       })
       if (!err) {
         this.categoryId = id
-        this.article.push(...res.data.data)
+        this.article.data.push(...res.data.data.data)
         this.isLoad = res.data.data.meta.total_pages > this.page
       }
     },
@@ -204,8 +204,7 @@ export default {
 
 .more {
   cursor: pointer;
-  width: 1280px;
-  margin: 0 auto;
+  padding: 32px 0;
   display: flex;
   align-items: center;
   justify-content: center;
