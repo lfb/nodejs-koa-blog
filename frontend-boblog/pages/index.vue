@@ -19,7 +19,7 @@
             </div>
 
             <div class="article-category">
-              {{ item.category_info.name }}
+              {{ item.category_info ? item.category_info.name : '' }}
             </div>
           </div>
         </a>
@@ -101,8 +101,11 @@ export default {
     },
   },
   beforeDestroy() {
-    this.progress.removeProgress()
-    this.progress = null
+    if(this.progress) {
+      this.progress.removeProgress()
+      this.progress = null
+    }
+
   },
   mounted() {
     this.$nextTick(() => {

@@ -6,7 +6,7 @@
           {{ article.title }}
         </h1>
         <div class="info">
-          <span class="author"> By {{ article.admin_info.nickname }} </span>
+          <span v-if="nickname" class="author"> By {{ nickname }} </span>
           <span class="created-at">{{ article.created_at }}</span>
           <span v-if="article.category_info" class="category">
             文章分类：{{ article.category_info.name }}
@@ -81,10 +81,19 @@ export default {
       userInfo: (state) => state.user.userInfo,
       isLoginStatus: (state) => state.user.isLoginStatus,
     }),
+    nickname() {
+      if(this.article && this.article.admin_info) {
+        return this.article.admin_info.nickname
+      }
+      return ''
+    }
   },
   beforeDestroy() {
-    this.progress.removeProgress()
-    this.progress = null
+    if(this.progress) {
+      this.progress.removeProgress()
+      this.progress = null
+    }
+
   },
   mounted() {
     this.initData()

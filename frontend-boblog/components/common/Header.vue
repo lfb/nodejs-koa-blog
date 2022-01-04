@@ -88,7 +88,7 @@ export default {
   },
   mounted() {
     this.handleNav()
-    this.getCategory
+    this.getCategory()
   },
   methods: {
     getCategory() {
