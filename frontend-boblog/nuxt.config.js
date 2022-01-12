@@ -1,4 +1,4 @@
-const dotenv = require('dotenv')
+import dotenv from "dotenv"
 const envConfig = dotenv.config({ path: `.env.${process.env.NODE_ENV}` }).parsed
 
 export default {
