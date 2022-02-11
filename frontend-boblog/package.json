@@ -29,7 +29,7 @@
     "js-base64": "^3.6.1",
     "js-cookie": "^2.2.1",
     "markdown-it": "^12.1.0",
-    "node-sass": "^6.0.1",
+    "node-sass": "^7.0.0",
     "nuxt": "^2.15.7",
     "sass-loader": "^10.1.1"
   },
