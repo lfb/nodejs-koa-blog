@@ -141,7 +141,7 @@ class CommentDao {
       if (article_id) {
         finner.article_id = article_id
       }
-      if (status) {
+      if (status != null) {
         finner.status = status
       }
       if (content) {

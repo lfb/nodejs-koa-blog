@@ -141,9 +141,10 @@ class ArticleDao {
       };
     }
 
-    if (status) {
+    if (status != null) {
       filter.status = status
     }
+
     try {
       const article = await Article.scope('iv').findAndCountAll({
         limit: page_size, //每页10条

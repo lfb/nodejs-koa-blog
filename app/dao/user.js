@@ -144,7 +144,7 @@ class UserDao {
     if(id) {
       filter.id = id
     }
-    if(status) {
+    if (status != null) {
       filter.status = status
     }
     if(username) {

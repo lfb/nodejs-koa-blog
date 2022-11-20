@@ -106,7 +106,7 @@ class CategoryDao {
   static async list(query = {}) {
     const { status, name, id, page_size = 10, page = 1 } = query
     let params = {}
-    if (status) {
+    if (status != null) {
       params.status = status
     }
 
