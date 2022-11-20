@@ -1,14 +1,13 @@
 <p align="center"><a href="http://www.boblog.com" target="_blank" rel="noopener noreferrer"><img width="234" src="https://cdn.boblog.com/boblog.png" alt="logo"></a></p>
 
-前言：这个项目我花了很多时间去学习维护迭代，其中2020年4月到今年6月份，其中有非常多原因没有继续维护迭代，这一年中，我经历了很多事情：有痛苦的，有快乐的，也有大起大落的。这一年的经历总结一句话：喜欢的，就赶紧去做吧，选择了，就别后悔了。现在，我回来了，这个月我删掉了所有的commit log，删了之前大量的辣鸡代码，把我积累到的知识重新写了一版本，我会继续优化迭代这个项目，希望能和伙伴们继续快乐的生活，快乐的工作！
-
-线上地址：[www.boblog.com](http://www.boblog.com)
-
+#
 ## 一、这是个什么的项目？
-实战开发的一套完整的博客项目网站：
-- Node.js + Koa2 + MySQL 开发的一套完整 RESTful API
-- Vue.js + element-ui 管理后台
-- SSR Nuxtjs 前台服务端渲染
+基于 Node.js Koa2 实战开发的一套完整的博客项目网站，使用 Node.js + Koa2 + MySQL 开发的一套完整 RESTful API，同时配套完整的后台管理系统，且搭配 React.js 和 Vue.js 管理后台，Nuxt.js SSR 前端网站。线上展示地址：[www.boblog.com](http://www.boblog.com)
+
+另外的 C 端项目学习地址：
+- 基于 React.js + Ant Design 实现的博客管理后台项目: [https://github.com/lfb/react-blog-admin](https://github.com/lfb/react-blog-admin)
+- 基于 Vue.js 实现的博客管理后台 管理后台：[https://github.com/lfb/vue-blog-admin](https://github.com/lfb/vue-blog-admin)
+- 基于 Nuxt.js 实现的博客 SSR 网站：[https://github.com/lfb/nuxtjs-blog-web](https://github.com/lfb/nuxtjs-blog-web)
 
 
 ## 二、项目包含什么功能？
@@ -32,8 +31,9 @@
 
 ### 2.4.知识点
 - 服务端：`Node.js, Koa, MySQL, Sequelize`
-- 前端服务端渲染：`Nuxt.js, Markdown`
-- 后端管理系统：`Vue.js, element-ui, Markdown`
+- 后台管理后台：`React.js, Vue.js, Markdown`
+- 前端服务端渲染：`Nuxt.js SSR, Markdown`
+- UI 框架：`Ant Design, Element-ui`
 - 性能优化
 - 非常适合想用 `Node.js Koa2` 做网站的朋友，相信你一定能学到知识。
 
