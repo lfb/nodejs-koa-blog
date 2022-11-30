@@ -1,89 +1,109 @@
+
 <p align="center"><a href="http://www.boblog.com" target="_blank" rel="noopener noreferrer"><img width="234" src="https://cdn.boblog.com/boblog.png" alt="logo"></a></p>
 
-#
-## 一、这是个什么的项目？
-基于 Node.js Koa2 实战开发的一套完整的博客项目网站，使用 Node.js + Koa2 + MySQL 开发的一套完整 RESTful API，同时配套完整的后台管理系统，且搭配 React.js 和 Vue.js 管理后台，Nuxt.js SSR 前端网站。线上展示地址：[www.boblog.com](http://www.boblog.com)
+## 一、项目介绍
+我们这个项目就是完成一个完整的博客项目，包含服务端接口API，管理后台，前端网站，以及部署上线流程。为了项目更好的区分，这个项目主要介绍使用 Node.js Koa2 框架开发一套完整的服务端接口 API 项目，另外的项目请点击以下：
 
-另外的 C 端项目学习地址：
-- 基于 React.js + Ant Design 实现的博客管理后台项目: [https://github.com/lfb/react-blog-admin](https://github.com/lfb/react-blog-admin)
-- 基于 Vue.js 实现的博客管理后台 管理后台：[https://github.com/lfb/vue-blog-admin](https://github.com/lfb/vue-blog-admin)
-- 基于 Nuxt.js 实现的博客 SSR 网站：[https://github.com/lfb/nuxtjs-blog-web](https://github.com/lfb/nuxtjs-blog-web)
+- 基于 React.js + Ant Design 实现的博客管理后台：[react-blog-admin](https://github.com/lfb/react-blog-admin)
+- 基于 Vue.js + Element-UI 实现的博客管理后台：[vue-blog-admin](https://github.com/lfb/vue-blog-admin)
+- 基于 Nuxt.js SSR 实现的博客前端展示网站：[nuxtjs-blog-web](https://github.com/lfb/nuxtjs-blog-web)
 
+### 1.1.项目模块
+使用精小而强大的 Node.js Koa2 框架做服务端 API 接口，非常适合想用 Node.js Koa2 做服务的朋友，相信你一定能学到知识。
 
-## 二、项目包含什么功能？
+- 管理员模块
+    - 实现权限管理，能够对其他模块进行增删改查权限
+    - 登录注册模块，登录管理后台
+- 用户模块
+    - 实现在前台博客网站中登录注册
+- 文章模块
+    - 实现文章的新增，修改，删除，查询
+    - 文章进行对分类，评论，回复关联
+- 分类模块
+    - 实现分类的新增，修改，删除，查询
+    - 实现分类与文章进行关联
+- 评论 / 回复模块
+    - 实现评论 / 回复的新增，修改，删除，查询
+    - 实现评论 / 回复与文章进行关联
 
-[![koa](https://img.shields.io/badge/koa-%5E2.7.0-brightgreen.svg) ](https://www.npmjs.com/package/koa)
-[![koa-router](https://img.shields.io/badge/koa--router-%5E7.4.0-brightgreen.svg)](https://www.npmjs.com/package/koa-router)
-[![sequelize](https://img.shields.io/badge/sequelize-%5E5.6.1-brightgreen.svg)](https://www.npmjs.com/package/sequelize)
-[![mysql2](https://img.shields.io/badge/mysql2-%5E1.6.5-brightgreen.svg)](https://www.npmjs.com/package/mysql2)
+### 1.2.接口文档
+记录和完善接口文档是一个良好的习惯，接口文档放在 doc 目录下，比如管理员的接口文档：[https://github.com/lfb/nodejs-koa-blog/blob/master/doc/admin.md](https://github.com/lfb/nodejs-koa-blog/blob/master/doc/admin.md)
 
-### 2.1.Node.js Koa2服务端 RESTful API
-- 管理员管理
-- 用户管理
-- 文章管理
-- 分类管理
-- 评论管理
-- 回复管理
+### 1.3.项目展示
+- 前端线上展示地址：www.boblog.com
 
-### 2.2.优势
-- 使用精小而强大的 Node.js Koa2 框架做服务端 API 接口。
-- 前端既有服务端渲染，也有前后端分离，且做了大量的优化工作，前端展示网站打开快。
-
-### 2.4.知识点
-- 服务端：`Node.js, Koa, MySQL, Sequelize`
-- 后台管理后台：`React.js, Vue.js, Markdown`
-- 前端服务端渲染：`Nuxt.js SSR, Markdown`
-- UI 框架：`Ant Design, Element-ui`
-- 性能优化
-- 非常适合想用 `Node.js Koa2` 做网站的朋友，相信你一定能学到知识。
-
-## 三、如何学习？
-### 3.1.克隆项目
+## 二、使用项目
+### 2.1.克隆项目
 首先使克隆项目，然后进入项目根目录使用命令安装包，最后命令启动项目，代码会根据模型自动创建数据库表的。
 ```
 # 克隆项目代码
-$ git clone https://github.com/lgb/nodejs-koa-blog.git
+
+git clone https://github.com/lgb/nodejs-koa-blog.git
 ```
 
-### 3.2.数据库
-启动项目前一定要在创建好 `boblog` 数据库，以下是执行数据库命令：
+
+### 2.2.项目架构
+拉取代码下来后，简单说明一下项目架构，我们简单熟悉一下，目的是为了了解清楚每个文件夹有什么作用的，好的代码结构并不仅仅是为了看上去清晰，它更像是我们对一个系统的拆解和组装。
+
+```iterm2
+.
+├── _tests 单元测试
+├── app *重点, 项目工程入口
+    ├── api 接口
+    ├── dao 数据存取对象（Data Access Objects）
+    ├── lib 工具库
+    ├── models 建模，把业务逻辑映射成数据模型
+    ├── service 数据处理
+    └── validators 数据验证
+├── app.js 入口文件
+├── config 配置文件
+├── core 核心公共工具库
+├── doc 接口文档
+├── jest.config.js  测试配置文件
+├── middlewares 中间件
+├── package-lock.json
+├── package.json
+└── yarn.lock
+```
+
+### 2.3.创建数据库
+
+启动项目前一定要在创建好 boblog 数据库，如果你还没安装上数据库，请点击[MySQL 下载](https://dev.mysql.com/downloads/mysql/)，请在根目录下的 |——config/config.js 文件下修改您本地的数据库名字（boblog）和数据库密码 ( password )。以下是执行数据库命令：
+
 ```
 # 登录数据库
-$ mysql -uroot -p密码
+
+mysql -uroot -p (回车然后输入你的本机数据库密码)
 
 # 创建 boblog 数据库
-$ CREATE DATABASE IF NOT EXISTS boblog DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+CREATE DATABASE IF NOT EXISTS boblog DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 ```
 
-### 3.3.修改 Koa2 项目数据库配置
-请在根目录下的 [|——config/config.js](https://github.com/LFB/nodejs-koa-blog/blob/master/config/config.js) 文件下修改您本地的数据库名字（`boblog`）和数据库密码 ( `password` )。
 
-根目录都是 Node.js + Koa2 API 开发源代码，重点是 app 文件夹下的 api 开发；根目录下的 frontend-boblog 文件夹下都是前端网站项目源代码；根目录下的 admin 文件夹下都是后台管理系统的源代码。
-
+### 2.4.启动项目
 以下是启动服务端项目的操作命令：
 ```
 # 进入项目根目录
-$ cd nodejs-koa-blog
+
+cd nodejs-koa-blog
 
 # 安装依赖包
-$ npm install 或者 yarn install
+
+npm install 或者 yarn install
 
 # 启动 Node.js Koa2 项目
-$ npm run dev 或者 yarn dev
+
+npm run dev 或者 yarn dev
+
 ```
 
-打开浏览器输入回车：http://localhost:5000 可以看到服务端渲染的前端网站，当然可能该网站是个空数据网站，可以查看目录下的 `./app/api/v1` 下的接口或者看 doc 目录下的 markdown 接口文档，在 postman 测试接口。
+API 端口默认是 `5000`，打开浏览器输入回车：`http://localhost:5000` 可以看到浏览器返回数据，可以查看目录下的 ./app/api/v1 下的接口或者看 doc 目录下的 markdown 接口文档，在 postman 测试接口。
+
+Postman 下载地址：[https://www.postman.com/downloads/](https://www.postman.com/downloads/)
 
 
-以下是启动后台管理系统的操作命令：
-```
-# 启动后台管理系统
-1. 在根目录下进入admin项目：cd admin，
-2. 安装包，执行: npm install 或者 yarn install 命令，
-3. 启动服务: npm run dev 或者 yarn dev; 浏览器打开：http://localhost:9528/ 即可以访问。
-```
-
-## 五、FAQ
+## 三、FAQ
 1. 没有yarn环境，npm 可以吗？
 > 答：可以的，建议使用 yarn，yarn 比 npm 速度快，主要是安装版本统一。
 
@@ -91,11 +111,10 @@ $ npm run dev 或者 yarn dev
 > 答：首先，请检查一下使用 npm 或 yarn 安装依赖包没。然后，再请检查一下确保安装好数据库，新建好数据库：boblog，请看上面的数据库配置。最后看下启动打印日志是否有报错的信息。
 3. ... 更多问题请到 [Issues](https://github.com/lfb/nodejs-koa-blog/issues)查阅，或者有问题请到 [Issues 提问](https://github.com/lfb/nodejs-koa-blog/issues/new)。
 
-## License
 
-项目已实现管理员、权限管理、文章、分类、评论等接口，前端模板网站和后台管理系统。自己可以根据项目代码学习，可以到 postman 软件中测试API或学习。
+## License
+[MIT](https://github.com/lfb/nodejs-koa-blog/blob/master/LICENSE), by LFB
 
 喜欢或对你有帮助的话，请你点一个星星 <strong style='color:red;'>star</strong> 鼓励我，或者您有更好的建议和意见，请提出来告知我，可以留言 [Issues](https://github.com/lfb/nodejs-koa-blog/issues/new)。希望能够帮助到你学习！Thanks！共勉！
 
-[MIT](https://github.com/lfb/nodejs-koa-blog/blob/master/LICENSE), by 梁凤波
 
