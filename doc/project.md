@@ -43,7 +43,7 @@ app.use(() => {
     console.log("Hello Koa2")
 })
 
-app.listen(3000)
+app.listen(5000)
 ```
 
 ## Koa中间件
@@ -77,7 +77,7 @@ app.use(async (ctx, next) => {
     console.log(4)
 })
 
-app.listen(3000)
+app.listen(5000)
 ```
 输出的顺序是： 1 3 4 2
 
