@@ -6,10 +6,18 @@ const ratelimit = require('koa-ratelimit');
 
 require('module-alias/register')
 
+const views = require('koa-views');
+const {resolve} = require('path')
+const koaStatic = require('koa-static')
 
 const catchError = require('./middlewares/exception')
 
 const app = new Koa()
+
+app.use(koaStatic(__dirname + '/public'))
+app.use(views(resolve(__dirname, './views'), {
+  extension: 'ejs'
+}))
 
 app.use(cors())
 app.use(catchError)
