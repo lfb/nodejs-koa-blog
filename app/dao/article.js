@@ -126,6 +126,7 @@ class ArticleDao {
 
     // 筛选方式
     let filter = {
+      status: status === '' ? 1 : status,
       deleted_at: null
     };
 
@@ -139,10 +140,6 @@ class ArticleDao {
       filter.title = {
         [Op.like]: `%${keyword}%`
       };
-    }
-
-    if (status != null) {
-      filter.status = status
     }
 
     try {
