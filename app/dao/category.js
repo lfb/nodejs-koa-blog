@@ -106,8 +106,11 @@ class CategoryDao {
   static async list(query = {}) {
     const { status = 1, name, id, page_size = 10, page = 1 } = query
 
-    let params = {
-      status: status === '' ? 1 : status
+    let params = {}
+
+    // 状态筛选，0-隐藏，1-正常
+    if (status || status === 0) {
+      params.status = status
     }
 
     if (name) {

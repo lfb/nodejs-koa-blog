@@ -126,9 +126,13 @@ class ArticleDao {
 
     // 筛选方式
     let filter = {
-      status: status === '' ? 1 : status,
       deleted_at: null
     };
+
+    // 状态筛选，0-隐藏，1-正常
+    if (status || status === 0) {
+      filter.status = status
+    }
 
     // 筛选方式：存在分类ID
     if (category_id) {
