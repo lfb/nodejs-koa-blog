@@ -45,6 +45,7 @@
     "@koa/cors": "^3.0.0",
     "basic-auth": "^2.0.1",
     "bcryptjs": "^2.4.3",
+    "ejs": "^3.1.8",
     "hashids": "^2.1.0",
     "highlight.js": "^11.1.0",
     "jest": "^24.9.0",
