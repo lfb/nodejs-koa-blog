@@ -144,9 +144,11 @@ class UserDao {
     if(id) {
       filter.id = id
     }
-    if (status != null) {
+    // 状态筛选，0-隐藏，1-正常
+    if (status || status === 0) {
       filter.status = status
     }
+
     if(username) {
       if (username) {
         filter.username = {
