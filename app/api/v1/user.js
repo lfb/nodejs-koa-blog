@@ -126,7 +126,7 @@ router.get('/detail/:id', new Auth(AUTH_USER).m, async (ctx) => {
 })
 
 
-// 获取用户列表
+// 删除指定用户
 // 需要管理员及以上才能操作
 router.delete('/delete/:id', new Auth(AUTH_ADMIN).m, async (ctx) => {
     // 通过验证器校验参数是否通过
