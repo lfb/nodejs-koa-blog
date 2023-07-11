@@ -47,7 +47,7 @@ password | 密码 | 是
 ```
 ## 管理员身份验证
 ```
-POST    /admin/auth
+GET    /admin/auth
 ```
 ### 参数说明
 无
