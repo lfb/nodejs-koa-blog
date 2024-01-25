@@ -38,7 +38,7 @@
 ```
 # 克隆项目代码
 
-git clone https://github.com/lgb/nodejs-koa-blog.git
+git clone https://github.com/lfb/nodejs-koa-blog.git
 ```
 
 
