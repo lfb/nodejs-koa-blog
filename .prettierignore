@@ -1,0 +1,17 @@
+package.json
+yarn.lock
+yarn-error.log
+dist/
+CNAME
+LICENSE
+netlify.toml
+*.sh
+*.snap
+.gitignore
+.npmignore
+.prettierignore
+.DS_Store
+.editorconfig
+.eslintignore
+.nuxt/
+**/*.yml

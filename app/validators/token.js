@@ -1,18 +1,12 @@
-const {
-  Rule,
-  LinValidator
-} = require('@core/lin-validator-v2')
+const { Rule, ParamsValidator } = require('@core/params-validator')
 
-
-class TokenNotEmptyValidator extends LinValidator {
-  constructor() {
-    super()
-    this.token = [
-      new Rule('isLength', '不允许为空', { min: 1 })
-    ]
-  }
+class TokenNotEmptyValidator extends ParamsValidator {
+    constructor() {
+        super()
+        this.token = [new Rule('isLength', '不允许为空', { min: 1 })]
+    }
 }
 
 module.exports = {
-  TokenNotEmptyValidator
+    TokenNotEmptyValidator
 }
