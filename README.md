@@ -8,37 +8,37 @@
 
 **项目功能包括：**
 
-*   基于 Node.js + Koa.js 的服务端 API 接口：[nodejs-koa-blog](https://github.com/lfb/nodejs-koa-blog)
-*   管理后台（Vue.js / React.js）：[vue-blog-admin](https://github.com/lfb/vue-blog-admin), [react-blog-admin](https://github.com/lfb/react-blog-admin)
-*   前端网站（Vue.js / Nuxt.js）：[nuxtjs-blog-web](https://github.com/lfb/nuxtjs-blog-web)
-*   使用 PM2 进行部署
+- 基于 Node.js + Koa.js 的服务端 API 接口：[nodejs-koa-blog](https://github.com/lfb/nodejs-koa-blog)
+- 管理后台（Vue.js / React.js）：[vue-blog-admin](https://github.com/lfb/vue-blog-admin), [react-blog-admin](https://github.com/lfb/react-blog-admin)
+- 前端网站（Vue.js / Nuxt.js）：[nuxtjs-blog-web](https://github.com/lfb/nuxtjs-blog-web)
+- 使用 PM2 进行部署
 
 ### 二、技术优点
 
 #### 2.1 项目架构
 
-*   设计了清晰的分层架构，使项目结构一目了然，便于维护和扩展。
+设计了清晰的分层架构，使项目结构一目了然，便于维护和扩展。
 
 #### 2.2 项目工程化
 
-*   采用了完整的工程化配置，提高开发效率。包括 eslint 代码规范、环境变量管理、参数自动校验、中间件错误处理等，确保项目开发和运行的高效性和稳定性。
+采用了完整的工程化配置，提高开发效率。包括 eslint 代码规范、环境变量管理、参数自动校验、中间件错误处理等，确保项目开发和运行的高效性和稳定性。
 
 #### 2.3 功能简洁且完善
 
 项目实现了功能全面的博客系统，设计简洁但功能完备，涵盖以下模块：
 
-*   **核心功能**：
-  *   管理员权限管理
-  *   文章分类管理
-  *   文章内容管理
+**核心功能**：
+- 管理员权限管理
+- 文章分类管理
+- 文章内容管理
 
-*   **重要功能**：
-  *   数据库操作
-  *   图片上传与存储
-  *   Markdown 支持与存储
-  *   日志记录
-  *   API 文档生成
-  *   单元测试
+**重要功能**：
+- 数据库操作
+- 图片上传与存储
+- Markdown 支持与存储
+- 日志记录
+- API 文档生成
+- 单元测试
 
 ## 三、使用
 
