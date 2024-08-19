@@ -4,6 +4,7 @@ class CategoryValidator extends ParamsValidator {
     constructor() {
         super()
         this.name = [new Rule('isLength', '分类 name 名字不能为空', { min: 1 })]
+        this.category_key = [new Rule('isLength', '分类英文 key 不能为空', { min: 1 })]
     }
 }
 

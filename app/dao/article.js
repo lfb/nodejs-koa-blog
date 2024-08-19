@@ -1,4 +1,4 @@
-const { Op } = require('sequelize')
+const { Op, fn, col, literal } = require('sequelize')
 
 const { Article } = require('@models/article')
 const { Category } = require('@models/category')
@@ -269,19 +269,81 @@ class ArticleDao {
         }
     }
 
+    // 获取按照年份获取文章列表
+    static async listGroup(params = {}) {
+        const { category_id, keyword, page_size = 10, status, page = 1 } = params
+
+        // 筛选方式
+        let filter = {
+            deleted_at: null
+        }
+
+        // 状态筛选，0-隐藏，1-正常
+        if (status || status === 0) {
+            filter.status = status
+        }
+
+        // 筛选方式：存在分类ID
+        if (category_id) {
+            filter.category_id = category_id
+        }
+
+        // 筛选方式：存在搜索关键字
+        if (keyword) {
+            filter.title = {
+                [Op.like]: `%${keyword}%`
+            }
+        }
+
+        try {
+            // 查询有多少年份
+            const years = await Article.scope('iv').findAll({
+                attributes: [[fn('YEAR', col('created_at')), 'year']],
+                group: [fn('YEAR', col('created_at'))],
+                order: [[fn('YEAR', col('created_at')), 'DESC']]
+            })
+
+            // 存储年份分组和文章的结果
+            const groupedArticles = {}
+            // 第二次查询：获取每个年份的文章
+            for (const yearEntry of years) {
+                const year = yearEntry.dataValues.year
+                const articles = await Article.scope('iv').findAll({
+                    where: filter,
+                    order: [['created_at', 'DESC']]
+                })
+
+                groupedArticles[year] = articles
+            }
+            return [null, groupedArticles]
+        } catch (err) {
+            console.log('article err', err)
+            return [err, null]
+        }
+    }
+
     // 文章详情
     static async detail(id, query) {
-        const { keyword } = query
+        const { keyword, is_meta } = query
         try {
             let filter = {
                 id,
                 deleted_at: null
             }
 
+            // 如果只是 seo 信息
+            if (is_meta) {
+                let scope = 'iv'
+                let article = await Article.scope(scope).findOne({
+                    where: filter
+                })
+
+                return [null, article]
+            }
+
             let article = await Article.findOne({
                 where: filter
             })
-
             const [categoryError, dataAndCategory] = await ArticleDao._handleCategory(article, article.category_id)
             if (!categoryError) {
                 article = dataAndCategory

@@ -4,11 +4,12 @@ const { Category } = require('@models/category')
 class CategoryDao {
     // 创建分类
     static async create(params = {}) {
-        const { name, sort_order = 1, parent_id = 0 } = params
+        const { name, category_key, sort_order = 1, parent_id = 0 } = params
         // 查询是否存在重复的分类
         const hasCategory = await Category.findOne({
             where: {
                 name,
+                category_key,
                 deleted_at: null
             }
         })
@@ -19,6 +20,7 @@ class CategoryDao {
 
         const category = new Category()
         category.name = name
+        category.category_key = category_key
         category.sort_order = sort_order
         category.parent_id = parent_id
 
@@ -26,7 +28,7 @@ class CategoryDao {
             const res = await category.save()
             const data = {
                 name: res.name,
-                key: res.key,
+                category_key: res.category_key,
                 parent_id: res.parent_id,
                 msg: '创建成功'
             }
@@ -82,6 +84,7 @@ class CategoryDao {
             throw new global.errs.NotFound('没有找到相关分类')
         }
         category.name = v.get('body.name')
+        category.category_key = v.get('body.category_key')
         category.status = v.get('body.status')
         category.sort_order = v.get('body.sort_order')
         category.parent_id = v.get('body.parent_id') || 0
@@ -114,6 +117,7 @@ class CategoryDao {
         if (id) {
             params.id = id
         }
+
         try {
             const category = await Category.scope('bh').findAndCountAll({
                 where: params,

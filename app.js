@@ -55,11 +55,10 @@ app.use(
 
 InitManager.initCore(app)
 
-app.listen(process.env.NODE_PORT, () => {
-    console.log(`
-        当前环境: ${process.env.NODE_ENV}
-        Node.js 已启动服务，地址: http://localhost:${process.env.NODE_PORT}
-    `)
-})
+let serverLogs = `
+    当前环境: ${process.env.NODE_ENV}
+    Node.js 已启动服务，地址: http://localhost:${process.env.NODE_PORT}
+`
+app.listen(process.env.NODE_PORT, () => console.log(serverLogs))
 
 module.exports = app

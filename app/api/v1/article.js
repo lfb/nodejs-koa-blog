@@ -78,10 +78,19 @@ router.put('/article/:id', new Auth(AUTH_ADMIN).m, async ctx => {
  */
 router.get('/article', async ctx => {
     // 尝试获文章取缓存
-    const { category_id = 0, page = 1 } = ctx.query
+    const { category_id = 0, page = 1, is_year_group = 0 } = ctx.query
 
-    // 没有缓存，则读取数据库
-    const [err, data] = await ArticleDao.list(ctx.query)
+    let err = null
+    let data = null
+
+    // 如果是按照年份
+    if (is_year_group) {
+        ;[err, data] = await ArticleDao.listGroup(ctx.query)
+    } else {
+        ;[err, data] = await ArticleDao.list(ctx.query)
+    }
+
+    // is_year_group：按年分组
     if (!err) {
         ctx.response.status = 200
         ctx.body = res.json(data)
@@ -98,24 +107,29 @@ router.get('/article/:id', async ctx => {
     const v = await new PositiveIdParamsValidator().validate(ctx)
     // 获取文章ID参数
     const id = v.get('path.id')
+
     // 查询文章
     const [err, data] = await ArticleDao.detail(id, ctx.query)
     if (!err) {
-        // 获取关联此文章的评论列表
-        const [commentError, commentData] = await CommentDao.targetComment({
-            article_id: id
-        })
+        // 只是获取seo信息的
+        const isMeta = ctx.query.is_meta
+        if (!isMeta) {
+            // 获取关联此文章的评论列表
+            const [commentError, commentData] = await CommentDao.targetComment({
+                article_id: id
+            })
+            if (!commentError) {
+                data.article_comment = commentData
+            }
 
-        if (!commentError) {
-            data.article_comment = commentData
+            if (ctx.query.is_markdown) {
+                data.content = markdownIt.render(data.content)
+            }
         }
 
-        if (ctx.query.is_markdown) {
-            data.content = markdownIt.render(data.content)
-        }
+        // 更新文章浏览，暂时不用
+        // await ArticleDao.updateBrowse(id, ++data.browse)
 
-        // 更新文章浏览
-        await ArticleDao.updateBrowse(id, ++data.browse)
         // 返回结果
         ctx.response.status = 200
         ctx.body = res.json(data)

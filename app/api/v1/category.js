@@ -28,6 +28,7 @@ router.post('/category', new Auth(AUTH_ADMIN).m, async ctx => {
     const v = await new CategoryValidator().validate(ctx)
     const [err, data] = await CategoryDao.create({
         name: v.get('body.name'),
+        category_key: v.get('body.category_key'),
         status: v.get('status'),
         sort_order: v.get('sort_order'),
         parent_id: v.get('body.parent_id')
