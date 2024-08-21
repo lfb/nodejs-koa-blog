@@ -126,7 +126,7 @@ class ArticleDao {
 
     // 获取文章列表
     static async list(params = {}) {
-        const { category_id, keyword, page_size = 10, status, page = 1 } = params
+        const { category_id, keyword, page_size = 20, status, page = 1 } = params
 
         // 筛选方式
         let filter = {
@@ -152,7 +152,7 @@ class ArticleDao {
 
         try {
             const article = await Article.scope('iv').findAndCountAll({
-                limit: page_size, //每页10条
+                limit: page_size, //每页20条
                 offset: (page - 1) * page_size,
                 where: filter,
                 order: [['created_at', 'DESC']]
@@ -183,10 +183,10 @@ class ArticleDao {
                 // 分页
                 meta: {
                     current_page: parseInt(page),
-                    per_page: 10,
+                    per_page: 20,
                     count: article.count,
                     total: article.count,
-                    total_pages: Math.ceil(article.count / 10)
+                    total_pages: Math.ceil(article.count / 20)
                 }
             }
 
