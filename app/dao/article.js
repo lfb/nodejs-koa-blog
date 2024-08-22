@@ -93,7 +93,7 @@ class ArticleDao {
             where: {
                 id: {}
             },
-            attributes: ['id', 'name']
+            attributes: ['id', 'name', 'category_key']
         }
         if (isArray(ids)) {
             finner.where.id = {
@@ -308,13 +308,21 @@ class ArticleDao {
             // 第二次查询：获取每个年份的文章
             for (const yearEntry of years) {
                 const year = yearEntry.dataValues.year
-                const articles = await Article.scope('iv').findAll({
+                let articles = await Article.scope('iv').findAll({
                     where: filter,
                     order: [['created_at', 'DESC']]
                 })
 
+                // 处理分类
+                const categoryIds = unique(articles.map(item => item.category_id))
+                const [categoryError, dataAndCategory] = await ArticleDao._handleCategory(articles, categoryIds)
+                if (!categoryError) {
+                    articles = dataAndCategory
+                }
+
                 groupedArticles[year] = articles
             }
+
             return [null, groupedArticles]
         } catch (err) {
             console.log('article err', err)
