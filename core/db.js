@@ -1,5 +1,7 @@
 const Sequelize = require('sequelize')
 
+const dbScopes = require('@core/db-scopes')
+
 const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD, {
     dialect: 'mysql',
     host: process.env.DB_HOST,
@@ -16,18 +18,7 @@ const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, proces
         deletedAt: 'deleted_at',
         // 把驼峰命名转换为下划线
         underscored: true,
-        scopes: {
-            bh: {
-                attributes: {
-                    exclude: ['password', 'updated_at', 'deleted_at', 'created_at']
-                }
-            },
-            iv: {
-                attributes: {
-                    exclude: ['content', 'password', 'updated_at', 'deleted_at']
-                }
-            }
-        }
+        scopes: dbScopes
     }
 })
 

@@ -119,7 +119,11 @@ const markdownIt = require('markdown-it')({
     }
 })
 
-// 生成 markdown 文件
+/**
+ * 生成 markdown 文件
+ *
+ * @param data 文章的详情数据
+ */
 const handleMarkdownFile = data => {
     if (!isObject(data)) return
 

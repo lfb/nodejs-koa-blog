@@ -7,9 +7,8 @@ const { ArticleDao } = require('@dao/article')
 const { CommentDao } = require('@dao/comment')
 
 const { Resolve } = require('@lib/helper')
-const res = new Resolve()
 
-const { markdownIt } = require('@core/markdown')
+const res = new Resolve()
 
 const AUTH_ADMIN = 16
 
@@ -121,14 +120,7 @@ router.get('/article/:id', async ctx => {
             if (!commentError) {
                 data.article_comment = commentData
             }
-
-            if (ctx.query.is_markdown) {
-                data.content = markdownIt.render(data.content)
-            }
         }
-
-        // 更新文章浏览，暂时不用
-        // await ArticleDao.updateBrowse(id, ++data.browse)
 
         // 返回结果
         ctx.response.status = 200

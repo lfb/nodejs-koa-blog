@@ -37,7 +37,12 @@ Article.init(
         content: {
             type: DataTypes.TEXT,
             allowNull: false,
-            comment: '文章内容'
+            comment: '文章内容 markdown 格式（管理者端创建/更新的内容）'
+        },
+        content_html: {
+            type: DataTypes.TEXT,
+            allowNull: false,
+            comment: '文章内容 html 格式'
         },
         seo_keyword: {
             type: DataTypes.STRING(128),

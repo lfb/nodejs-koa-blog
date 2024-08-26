@@ -5,7 +5,7 @@ const { Category } = require('@models/category')
 const { Comment } = require('@models/comment')
 const { Admin } = require('@models/admin')
 const { isArray, unique } = require('@lib/utils')
-const { handleMarkdownFile } = require('@core/markdown')
+const { markdownIt } = require('@core/markdown')
 
 // 定义文章模型
 class ArticleDao {
@@ -27,12 +27,15 @@ class ArticleDao {
 
         // 创建文章
         const article = new Article()
-        const articleContent = v.get('body.content')
+        const articleContentMarkdown = v.get('body.content')
+        // md 内容转 HTML 内容
+        const articleContentHtml = markdownIt.render(articleContentMarkdown)
 
         article.title = title
         article.description = v.get('body.description')
         article.img_url = v.get('body.img_url')
-        article.content = articleContent
+        article.content = articleContentMarkdown
+        article.content_html = articleContentHtml
         article.article_path = v.get('body.article_path')
         article.seo_keyword = v.get('body.seo_keyword')
         article.status = v.get('body.status') || 1
@@ -42,7 +45,6 @@ class ArticleDao {
 
         try {
             const res = await article.save()
-            handleMarkdownFile(res)
 
             return [null, res]
         } catch (err) {
@@ -232,18 +234,20 @@ class ArticleDao {
         article.description = v.get('body.description')
         article.article_path = v.get('body.article_path')
         article.img_url = v.get('body.img_url')
-        article.content = v.get('body.content')
         article.seo_keyword = v.get('body.seo_keyword')
         article.status = v.get('body.status')
         article.sort_order = v.get('body.sort_order')
         article.admin_id = v.get('body.admin_id')
         article.category_id = v.get('body.category_id')
 
+        const articleContentMarkdown = v.get('body.content')
+        const articleContentHtml = markdownIt.render(articleContentMarkdown)
+
+        article.content = articleContentMarkdown
+        article.content_html = articleContentHtml
+
         try {
             const res = await article.save()
-
-            // 更新文章 Markdown 文档
-            handleMarkdownFile(res)
 
             return [null, res]
         } catch (err) {
@@ -332,7 +336,7 @@ class ArticleDao {
 
     // 文章详情
     static async detail(id, query) {
-        const { keyword, is_meta } = query
+        const { is_markdown, is_meta } = query
         try {
             let filter = {
                 id,
@@ -349,7 +353,8 @@ class ArticleDao {
                 return [null, article]
             }
 
-            let article = await Article.findOne({
+            const scope = parseInt(is_markdown, 10) ? 'content' : 'html'
+            let article = await Article.scope(scope).findOne({
                 where: filter
             })
             const [categoryError, dataAndCategory] = await ArticleDao._handleCategory(article, article.category_id)
