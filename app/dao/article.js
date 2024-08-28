@@ -128,7 +128,9 @@ class ArticleDao {
 
     // 获取文章列表
     static async list(params = {}) {
-        const { category_id, keyword, page_size = 20, status, page = 1 } = params
+        // 默认分页 - 10篇文章为一页~
+        const DEFAULT_PAGE_SIZE = 10
+        const { category_id, keyword, page_size = DEFAULT_PAGE_SIZE, status, page = 1 } = params
 
         // 筛选方式
         let filter = {
@@ -185,10 +187,10 @@ class ArticleDao {
                 // 分页
                 meta: {
                     current_page: parseInt(page),
-                    per_page: 20,
+                    per_page: DEFAULT_PAGE_SIZE,
                     count: article.count,
                     total: article.count,
-                    total_pages: Math.ceil(article.count / 20)
+                    total_pages: Math.ceil(article.count / DEFAULT_PAGE_SIZE)
                 }
             }
 
