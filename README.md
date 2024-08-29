@@ -12,7 +12,7 @@
 -   基于 Node.js + Koa.js 的服务端 API 接口：[nodejs-koa-blog](https://github.com/lfb/nodejs-koa-blog)
 -   管理后台（Vue.js / React.js）：[vue-blog-admin](https://github.com/lfb/vue-blog-admin),
     [react-blog-admin](https://github.com/lfb/react-blog-admin)
--   前端网站（Vue.js / Nuxt.js）：[nuxtjs-blog-web](https://github.com/lfb/nuxtjs-blog-web)
+-   前端网站（Vue.js / Nuxt.js）：[nextjs-blog](https://github.com/lfb/nextjs-blog)，[nuxtjs-blog-web](https://github.com/lfb/nuxtjs-blog-web)
 -   使用 PM2 进行部署
 
 ### 二、技术优点
